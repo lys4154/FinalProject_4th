@@ -6,9 +6,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class TestController {
 	
-	@GetMapping("/test")
-	public String headerTest() {
-		
-		return "test";
+	@GetMapping("/")
+	public String mainpage() {
+		return "common/mainpage";
 	}
+	
+	@GetMapping("/login")
+	public String login() {
+		return "member/login";
+	}
+	
 }
