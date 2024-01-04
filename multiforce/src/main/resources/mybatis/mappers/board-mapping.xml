@@ -3,6 +3,9 @@
 	<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="board.dao.TmpDAO1">
-
+<mapper namespace="board">
+    <insert id="insertBoard" parameterType="board.dto.BoardDTO">
+    INSERT INTO board (member_seq, title, contents)
+    VALUES (#{title}, #{contents})
+	</insert>
 </mapper>
