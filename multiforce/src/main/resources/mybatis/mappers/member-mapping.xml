@@ -3,6 +3,10 @@
 	<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="member.dao.TmpDAO3">
+<mapper namespace="member.dao.MemberDAO">
+
+<select id="loginMember" parameterType="String" resultType="memberdto">
+	select * from member_info
+</select>
 
 </mapper>
