@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+   <link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/cs_style.css" />">
 
 
 
@@ -37,7 +37,7 @@
             
         </div>
      
-        <form id="write_form" action="/boardwrite" method="POST" >
+        <form id="write_form" action="/multiforce/boardwrite" method="POST" >
            
             <div class="write-title">
                 <input type="text" name="title" id="title" placeholder="제목">

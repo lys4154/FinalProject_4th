@@ -8,16 +8,16 @@ public class ProjectController {
 	
 	@RequestMapping("/projectdesign")
 	public String projectDesign() {
-		return "project/ProjectDesign";
+		return "project/projectdesign";
 	}
 	
 	@RequestMapping("/projectinform")
 	public String projectInform() {
-		return "project/ProjectInform";
+		return "project/projectinform";
 	}
 	
 	@RequestMapping("/projectmanagement")
 	public String projectManagement() {
-		return "project/ProjectManagement";
+		return "project/projectmanagement";
 	}
 }
