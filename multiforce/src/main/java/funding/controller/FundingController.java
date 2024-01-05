@@ -8,16 +8,26 @@ public class FundingController {
 
 	@RequestMapping("/patronmanagement")
 	public String patronManagement() {
-		return "funding/PatronManagement";
+		return "funding/patronmanagement";
 	}
 	
 	@RequestMapping("/payment")
 	public String payment() {
-		return "funding/Payment";
+		return "funding/payment";
 	}
 	
 	@RequestMapping("/payresult")
 	public String payResult() {
-		return "funding/PayResult";
+		return "funding/payresult";
+	}
+	
+	@RequestMapping("/cardpay")
+	public String cardPay() {
+		return "funding/cardpay";
+	}
+	
+	@RequestMapping("/cashpay")
+	public String cashPay() {
+		return "funding/cashpay";
 	}
 }
