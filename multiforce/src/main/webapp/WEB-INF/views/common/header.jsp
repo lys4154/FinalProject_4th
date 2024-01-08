@@ -69,7 +69,7 @@ $(document).ready(function(){
 	if (loginUserId == 'null' || loginUserId == null || loginUserId == '') {
 		let html = `<div id = "logout_wrap">
 						<a id="login_btn" href="login">로그인</a>
-						<a href="sign_up">회원가입</a>
+						<a href="signup">회원가입</a>
 					</div>`;
 		$("#change_part").html(html);
 	//로그인 상태일 때

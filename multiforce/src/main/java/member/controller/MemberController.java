@@ -1,15 +1,22 @@
 package member.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import jakarta.servlet.http.HttpSession;
+import member.service.MemberService;
+import member.service.MemberServiceImpl;
 
 @Controller
 public class MemberController {
+	
+	@Autowired
+	MemberServiceImpl memberService;
 	
 	@GetMapping("/login")
 	public String login() {
@@ -41,5 +48,29 @@ public class MemberController {
 	@GetMapping("/signup")
 	public String signUp() {
 		return "member/sign_up";
+	}
+	
+	@PostMapping("/iddupcheck")
+	@ResponseBody
+	public String idDupCheck(String id) {
+		boolean isUniqueId = true;
+		if(id.equals("testid")) {
+			isUniqueId = false;
+		}else {
+			isUniqueId = true;
+		}
+		return "{\"isUniqueId\": \"" + isUniqueId + "\"}";
+	}
+	
+	@PostMapping("/nicknamedupcheck")
+	@ResponseBody
+	public String nicknameDupCheck(String nickname) {
+		boolean isUniqueNickname = true;
+		if(nickname.equals("testnn")) {
+			isUniqueNickname = false;
+		}else {
+			isUniqueNickname = true;
+		}
+		return "{\"isUniqueNickname\": \"" + isUniqueNickname + "\"}";
 	}
 }
