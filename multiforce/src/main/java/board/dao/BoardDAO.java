@@ -8,10 +8,9 @@ import board.dto.BoardDTO;
 
 @Repository
 public class BoardDAO {
-	
+	@Autowired
 	private final SqlSession sqlSession;
 	
-	@Autowired
     public BoardDAO(SqlSession sqlSession) {
         this.sqlSession = sqlSession;
     }
