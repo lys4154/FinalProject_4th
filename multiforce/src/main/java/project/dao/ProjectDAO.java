@@ -1,4 +1,4 @@
-package member.dao;
+package project.dao;
 
 
 import java.util.List;
@@ -14,15 +14,8 @@ import project.dto.ProjectDTO;
 
 @Repository
 @Mapper
-public interface MemberDAO {
+public interface ProjectDAO {
 
-	MemberDTO loginMember(String email);
-
-	List<ProjectDTO> getMyproject(int memberSeq);
-
-	List<MemberDTO> MyFollowerList(List<Integer> getMyFollower);
-
-	List<MemberDTO> MyFollowingList(List<Integer> getMyFollower);
-
+	List<ProjectDTO> getProjectsByMemberSeq(int memberSeq);
 	
 }
