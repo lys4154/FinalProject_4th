@@ -5,6 +5,8 @@
 <configuration>
 	<typeAliases>
 		<typeAlias type="member.dto.MemberDTO" alias="memberdto"/>
-		
+		<typeAlias type="member.dto.FollowDTO" alias="followdto"/>
+		<typeAlias type="project.dto.ProjectDTO" alias="projectdto"/>		
+		<typeAlias type="funding.dto.FundingDTO" alias="fundingdto"/>		
 	</typeAliases>
 </configuration>

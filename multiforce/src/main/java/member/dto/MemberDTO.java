@@ -1,6 +1,7 @@
 package member.dto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.stereotype.Component;
 
@@ -21,7 +22,31 @@ public class MemberDTO {
 	LocalDateTime resign_date;
 	
 	
+	public MemberDTO() {
+		
+	} 
 	
+	
+	public MemberDTO(int member_seq, String member_id, String password, String member_name, String nickname,
+			String profile_img, String email, String address, String description, int level, boolean gender,
+			boolean resign, LocalDateTime resign_date) {
+		super();
+		this.member_seq = member_seq;
+		this.member_id = member_id;
+		this.password = password;
+		this.member_name = member_name;
+		this.nickname = nickname;
+		this.profile_img = profile_img;
+		this.email = email;
+		this.address = address;
+		this.description = description;
+		this.level = level;
+		this.gender = gender;
+		this.resign = resign;
+		this.resign_date = resign_date;
+	}
+
+
 	public int getMember_seq() {
 		return member_seq;
 	}
@@ -100,6 +125,18 @@ public class MemberDTO {
 	public void setResign_date(LocalDateTime resign_date) {
 		this.resign_date = resign_date;
 	}
+
+
+	@Override
+	public String toString() {
+		return "MemberDTO [member_seq=" + member_seq + ", member_id=" + member_id + ", password=" + password
+				+ ", member_name=" + member_name + ", nickname=" + nickname + ", profile_img=" + profile_img
+				+ ", email=" + email + ", address=" + address + ", description=" + description + ", level=" + level
+				+ ", gender=" + gender + ", resign=" + resign + ", resign_date=" + resign_date + "]";
+	}
+
+
+	
 	
 			
 }

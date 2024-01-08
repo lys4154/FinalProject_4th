@@ -17,25 +17,12 @@ import org.springframework.context.annotation.ComponentScan;
 @MapperScan(basePackages="project")
 @SpringBootApplication
 @ComponentScan
-public class MultiforceApplication implements CommandLineRunner{
+public class MultiforceApplication{
 
 	public static void main(String[] args) {
 		SpringApplication.run(MultiforceApplication.class, args);
 		
 	}
-	@Autowired 
-	ApplicationContext factory;
-	
-	
-	@Override
-	public void run(String... args) throws Exception {
-		System.out.println("===bean 출력 시작===");
-		
-		for(String bean : factory.getBeanDefinitionNames()) {
-			System.out.println(bean);
-		}
-		System.out.println("===bean 출력 종료===");
-		
-	}
+
 
 }
