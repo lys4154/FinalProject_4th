@@ -51,6 +51,7 @@
 			window.open(url, name, option);	
 	}
  	 
+ 	 //merge test
  </script>
 </body>
 </html>
