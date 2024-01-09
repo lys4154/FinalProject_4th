@@ -14,10 +14,18 @@
 	height: 200px;
 	border: 1px solid rgb(0, 0, 0);
 }
+#change_part{
+	display: inline-block;
+}
 </style>
 <script src="/js/jquery-3.7.1.min.js"></script>
 <script>
 $(document).ready(function(){
+// ==========헤더의 로그인 버튼 클릭시 파라미터로 원래 있던 페이지에 대한 정보 넘겨주면서 로그인 페이지로====================
+	console.log(window.location.pathname);
+	let fromPath = window.location.pathname.substring(1) == "" ? "mainpage" : window.location.pathname.substring(1);
+	$("#login_btn").attr("href", "login?from=" + fromPath)
+	
 // =======================카테고리 이벤트=========================
 	$("#category").on("mouseenter", function(e){
 		$("#category_list").css("display","block");
@@ -55,7 +63,41 @@ $(document).ready(function(){
 		}
 		$("#search_result").html(result);
 	})
-	
+//		===============================로그인 상태에 따라 change_part부분 다르게====================================
+	let loginUserId = '${login_user_id}';
+	//로그인 상태 아닐때
+	if (loginUserId == 'null' || loginUserId == null || loginUserId == '') {
+		let html = `<div id = "logout_wrap">
+						<a id="login_btn" href="login">로그인</a>
+						<a href="signup">회원가입</a>
+					</div>`;
+		$("#change_part").html(html);
+	//로그인 상태일 때
+	} else {
+		let html = `<div id = "login_wrap">
+						이미지 태그, ${login_user_name}<br>
+						<div id="my_menu_list" style="display:none">
+							<a href="">프로필</a>
+							<a href="">후원 프로젝트</a>
+							<a href="">관심 프로젝트</a>
+							<a href="">팔로우</a>
+							<a href="">메세지</a>
+							<a href="">내 프로젝트</a>
+							<a href="">회원정보 수정</a>
+							<a href="">로그아웃</a>
+						</div>
+					</div>
+					`;
+		$("#change_part").html(html);
+	}
+	//나의 메뉴 리스트 버튼 클릭 이벤트 처리
+	$("#login_wrap").on("click", function(){
+		if($("#my_menu_list").css("display") == "block"){
+			$("#my_menu_list").css("display", "none");
+		}else{
+			$("#my_menu_list").css("display", "block");
+		}
+	})
 });
 
 </script>
@@ -71,8 +113,9 @@ $(document).ready(function(){
 		<a href="">인기</a>
 		<a href="">마감임박</a>
 		<button><a href="">프로젝트 등록</a></button>
-		<a href="login">로그인</a>
-		<a href="sign_up">회원가입</a>
+		<div id = "change_part">
+			
+		</div>
 		<%
 		HashMap<String, String> categoryNameMap = new HashMap<>();
 		categoryNameMap.put("보드게임", "board_game");

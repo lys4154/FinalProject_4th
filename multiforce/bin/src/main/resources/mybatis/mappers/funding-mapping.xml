@@ -3,6 +3,41 @@
 	<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="funding.dao.TmpDAO2">
+<mapper namespace="funding.dao.FundingDAO">
+
+<select id="getFundedProject" parameterType="int" resultType="fundingdto">
+	select * from funding where member_seq=#{memberSeq}
+</select>
+
+
+<!-- 후원한 프로젝트 페이지 - 후원 진행중 -->
+<select id="ongoingFunded" parameterType="int" resultType="fundingdto">
+<![CDATA[
+	SELECT * FROM FUNDING
+	WHERE member_seq =#{memberSeq}
+	AND fund_duedate > now()
+	AND del_status = false
+]]>
+</select>
+
+<!-- 후원한 프로젝트 페이지 - 후원 성공 -->
+<select id="successFunded" parameterType="int" resultType="fundingdto">
+<![CDATA[
+	SELECT * FROM FUNDING
+	WHERE member_seq =#{memberSeq}
+	AND fund_duedate < now()
+	AND pay_status = true
+]]>
+</select>
+
+<!-- 후원한 프로젝트 페이지 - 후원 취소 -->
+<select id="cancelFunded" parameterType="int" resultType="fundingdto">
+<![CDATA[
+	SELECT * FROM FUNDING
+	WHERE member_seq =#{memberSeq}
+	AND del_status= true 
+]]>
+</select>
+
 
 </mapper>
