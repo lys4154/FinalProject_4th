@@ -19,7 +19,9 @@ public class ProjectService {
 		return projectDao.getProjectsByMemberSeq(memberSeq);
 	}
 	
-
+	public List<ProjectDTO> getAllProjects() {
+        return projectDao.getAllProjects(); 
+    }
 
 
 }

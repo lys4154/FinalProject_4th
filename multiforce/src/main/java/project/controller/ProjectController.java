@@ -1,10 +1,22 @@
 package project.controller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+
+
+import project.dto.ProjectDTO;
+import project.service.ProjectService;
 
 @Controller
 public class ProjectController {
+	@Autowired
+	private ProjectService projectService;
 	
 	@RequestMapping("/projectdesign")
 	public String projectDesign() {
@@ -19,5 +31,27 @@ public class ProjectController {
 	@RequestMapping("/projectmanagement")
 	public String projectManagement() {
 		return "project/projectmanagement";
+	}
+	//프로젝트 승인 리스트
+	@GetMapping("project_approve_list")
+	public String showAppoveList(Model model) {
+		List<ProjectDTO> projects = projectService.getAllProjects(); 
+		
+		
+        model.addAttribute("projects", projects);
+		return "project/project_approve_list";
+		
+	}
+	
+	//프로젝트 상세
+	@GetMapping("project_detail")
+	public String ShowProjectDetail() {
+		return "project/project_detail";
+	}
+	
+	//프로젝트 상세 내 커뮤니티
+	@GetMapping("project_detail/community")
+	public String ShowProjectCommunity() {
+		return "project/project_community";
 	}
 }

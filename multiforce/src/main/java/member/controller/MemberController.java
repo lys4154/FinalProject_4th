@@ -1,6 +1,6 @@
 package member.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,13 +10,13 @@ import org.springframework.web.servlet.ModelAndView;
 
 import jakarta.servlet.http.HttpSession;
 import member.service.MemberService;
-import member.service.MemberServiceImpl;
+//import member.service.MemberServiceImpl;
 
 @Controller
 public class MemberController {
 	
-	@Autowired
-	MemberServiceImpl memberService;
+//	@Autowired
+//	MemberServiceImpl memberService;
 	
 	@GetMapping("/login")
 	public String login() {
