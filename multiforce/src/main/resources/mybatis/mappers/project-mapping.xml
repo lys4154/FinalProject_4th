@@ -9,4 +9,51 @@
 	select * from project where member_seq=#{memberSeq}
 </select>
 
+
+<select id="ongoingProject" parameterType="java.util.List" resultType="projectdto">
+    SELECT * FROM project
+    WHERE project_seq IN
+    <foreach collection="list" item="item" open="(" separator="," close=")">
+        #{item}
+    </foreach>
+</select>
+
+
+<select id="successProject" parameterType="java.util.List" resultType="projectdto">
+    SELECT * FROM project
+    WHERE project_seq IN
+    <foreach collection="list" item="item" open="(" separator="," close=")">
+        #{item}
+    </foreach>
+</select>
+
+
+<select id="cancelProject" parameterType="java.util.List" resultType="projectdto">
+    SELECT * FROM project
+    WHERE project_seq IN
+    <foreach collection="list" item="item" open="(" separator="," close=")">
+        #{item}
+    </foreach>
+</select>
+
+
+<select id="searchFunded" parameterType="java.util.Map" resultType="projectdto">
+	SELECT * FROM project
+	WHERE (long_title LIKE concat("%", #{searchKeyword, jdbcType=VARCHAR}, "%")
+	OR short_title LIKE concat("%", #{searchKeyword, jdbcType=VARCHAR}, "%"))
+	AND  member_seq=#{memberSeq, jdbcType=INTEGER}	
+</select>
+
+
+
+
+
+
+
+
+
+
+
+
+
 </mapper>
