@@ -35,24 +35,40 @@ $(document).ready(function(){
 	}
 
 	//이름 양식: 완성된 한글 + 알파벳
-	let user_name_reg = /^[가-힣a-zA-z]{1,}$/g;
+	let user_name_en_reg = /^[a-zA-Z]{1,}$/g;
+	let user_name_ko_reg = /^[가-힣]{1,}$/g;
 
-	user_name.on("change", function(){
-		if(user_name_reg.test(user_name.val()) == false && user_name.val() != ""){
-			user_name_errmsg.css("display", "block");
-		}else{
+	user_name.on("change", userNameCheck);
+	
+	let isNamePassed = false;
+	function userNameCheck(){
+		if(user_name_en_reg.test(user_name.val())== true){
 			user_name_errmsg.css("display", "none");
+			isNamePassed = true;
+		}else if(user_name_ko_reg.test(user_name.val())== true){
+			user_name_errmsg.css("display", "none");
+			isNamePassed = true;
+		}else if(user_name.val() == ""){
+			user_name_errmsg.css("display", "none");
+			isNamePassed = false;
+		}else{
+			user_name_errmsg.css("display", "block");
+			isNamePassed = false;
 		}
-	})
+	}
 
 	//생년월일: 오늘 날짜 이후를 선택하면 잘못된 날짜라고 알려주기
-	user_birth.on("change", function(){
-		if(new Date(user_birth.value) - Date.now() > 0){
+	user_birth.on("change", userBirthCheck);
+	let isBirthPassed = false;
+	function userBirthCheck(){
+		if(new Date(user_birth.val()) - Date.now() > 0){
 			user_birth_errmsg.css("display", "block");
+			isBirthPassed = false;
 		}else{
 			user_birth_errmsg.css("display", "none");
+			isBirthPassed = true;
 		}
-	});
+	}
 	
 	//아이디 중복체크 및 형식체크
 	let user_id_reg = /^[A-Za-z0-9]{4,12}$/;
@@ -69,6 +85,7 @@ $(document).ready(function(){
 		}
 		//아이디 입력 변경있으면 중복체크 false로 
 		$("#user_id_pass_msg").css("display", "none");
+		$("#user_id_dup_errmsg").css("display", "none");
 		isIdnameDupCheckPassed = false;
 	});
 	
@@ -102,8 +119,8 @@ $(document).ready(function(){
 			alert("아이디를 다시 입력해주세요");
 			$("#user_id").focus();
 		}
-		
 	});
+	
 	//별명 중복체크 및 형식체크
 	let user_nickname_reg = /^[A-Za-z0-9가-힣]{2,10}$/;
 	let isNicknameTestPassed = false;
@@ -138,8 +155,8 @@ $(document).ready(function(){
 						isNicknameDupCheckPassed = true;
 					//중복있을 경우
 					}else{
-						$("#user_nickname_dup_errmsg").css("display", "block");
 						$("#user_nickname_pass_msg").css("display", "none");
+						$("#user_nickname_dup_errmsg").css("display", "block");
 						isNicknameDupCheckPassed = false;
 					}
 				},
@@ -150,27 +167,44 @@ $(document).ready(function(){
 		}else{
 			//형식 테스트 못넘긴 상황에서 중복체크했을때
 			alert("별명을 다시 입력해주세요");
-			$("#user_id").focus();
+			$("#user_nickname").focus();
 		}
 		
 	});
 	
 	//비밀번호 양식 체크
 	let user_pw_reg = /[~!@#$%^*+=-?_]{1}/g; //이 이외의 특수문자 걸러내기
-
-	user_pw.on("input",function(e){
+	let isPwPassed = false;
+	user_pw.on("change",function(e){
 		let spcl_num = user_pw.val().match(user_pw_reg) == null ? 0 : user_pw.val().match(user_pw_reg).length;
-		
+		let spclNumCheck = false;
 		if(spcl_num < 2 && user_pw.val() != ""){
 			user_pw_errmsg_spcl_num.css("display","block");
+			spclNumCheck = false;
+		}else if(user_pw.val() == ""){
+			user_pw_errmsg_spcl_num.css("display","none");
+			spclNumCheck = false;
 		}else{
 			user_pw_errmsg_spcl_num.css("display","none");
+			spclNumCheck = true;
 		}
 		
+		let pwNumCheck = false;
 		if(user_pw.val().length < 8 && user_pw.val() != ""){
 			user_pw_errmsg_pw_num.css("display","block");
+			pwNumCheck = false;
+		}else if(user_pw.val() == ""){
+			user_pw_errmsg_pw_num.css("display","none");
+			pwNumCheck = false;
 		}else{
 			user_pw_errmsg_pw_num.css("display","none");
+			pwNumCheck = true;
+		}
+		
+		if(spclNumCheck && pwNumCheck){
+			isPwPassed = true;
+		}else{
+			isPwPassed = false;
 		}
 		
 	});
@@ -184,11 +218,14 @@ $(document).ready(function(){
 	});
 
 	//비밀번호 확인: 일치하는지
+	let isPwCheckPassed = false;
 	user_pw_check.on("change",function(){
 		if(user_pw_check.val() != user_pw.val()){
 			user_pw_check_errmsg.css("display","block");
+			isPwCheckPassed = false;
 		}else{
 			user_pw_check_errmsg.css("display","none");
+			isPwCheckPassed = true;
 		}
 	});
 	
@@ -202,9 +239,9 @@ $(document).ready(function(){
 	let user_email_dir_reg = /^[A-Za-z0-9]{1,}.(co\.kr|com|net)$/
 	let email_reg =/^[A-Za-z0-9]{4,12}@[A-Za-z0-9]{1,}.(co\.kr|com|net)$/
 	
+	let isEmailPassed = false;
 	user_email.on("change", emailCheck);
 	user_email_dir.on("change", emailCheck);
-	
 	email_select.on("change",function () {
 		if (email_select.val() == "직접입력") {
 			user_email_dir.css("display","inline-block");
@@ -219,11 +256,13 @@ $(document).ready(function(){
 		console.log("emailCheck");
 		if (user_email_reg.test(user_email.val()) == false) {
 			user_email_id_errmsg.css("display","block");
+			isEmailPassed = false;
 			return false;
 		}else{
 			user_email_id_errmsg.css("display","none");
 			if (email_select.val() == "직접입력" && user_email_dir_reg.test(user_email_dir.val()) == false) {
 				user_email_domain_errmsg.css("display","block");
+				isEmailPassed = false;
 				return false;
 			}else{
 				user_email_domain_errmsg.css("display","none");
@@ -243,11 +282,13 @@ $(document).ready(function(){
 	
 	var authCode = "";
 	var authRequestEmail = "";
+	
 	$("#mail_auth_btn").on("click", function(e){
 		e.preventDefault();
 		if(emailCheck() == false){
 			alert("이메일을 다시 입력해주세요");
 		}else{
+			$("#mail_send_msg").css("display","inline-block");
 			$.ajax({
 				url: "mailauth",
 				data:{'email': $("#email").val()},
@@ -255,6 +296,7 @@ $(document).ready(function(){
 				dataType: 'json',
 				success: function(response){
 					if(response.isUniqueEmail == "true"){
+						$("#mail_send_msg").css("display","none");
 						authCode = response.authCode;
 						$("#auth_code_input").css("display", "inline-block");
 						$("#auth_code_check_btn").css("display", "inline-block");
@@ -262,6 +304,7 @@ $(document).ready(function(){
 						authRequestEmail = $("#email").val();
 					}else{
 						alert("이미 존재하는 이메일입니다");
+						$("#mail_send_msg").css("display","none");
 					}
 				},
 				error: function(request, e){
@@ -271,7 +314,6 @@ $(document).ready(function(){
 		}
 	});
 	
-	let isEmailPassed = false;
 	$("#auth_code_check_btn").on("click", function(e){
 		e.preventDefault();
 		if($("#auth_code_input").val() == authCode){
@@ -289,6 +331,7 @@ $(document).ready(function(){
 				user_email_dir.attr("disabled", true);
 			}else{
 				alert("인증요청한 이메일이 일치하지 않습니다");
+				isEmailPassed = false;
 			}
 			
 		}else{
@@ -296,48 +339,14 @@ $(document).ready(function(){
 			isEmailPassed = false;
 		}
 	})
-
-	//회원가입 클릭시
-	//양식에 적혀있는 것들을 재검증한 후 통과못하면 오류메세지 + 포커스
-	function goBack(err_target, e){
-		err_target.focus();
-		e.preventDefault();
-		alert("다시 입력해주세요");
-	}
-	btn_join.on("click", event =>{
-		let spcl_char_num = user_pw.val().match(user_pw_reg) == null ? 0 : user_pw.val().match(user_pw_reg).length;
-		
-		console.log(user_name_reg.test(user_name.val()));
-		if(user_name_reg.test(user_name.val()) == false){
-			goBack(user_name, event);
-			console.log("이름값: " + user_name.value);
-			console.log("이름 확인: " +user_name_reg.test(user_name.value));
-			console.log("이름 오류");
-		}
-		else if(new Date(user_birth.val()) - Date.now() > 0 || user_birth.val() == ""){
-			goBack(user_birth, event);
-			console.log("생년월일 오류");
-		}
-		else if(spcl_char_num < 2){
-			goBack(user_pw, event);
-			console.log("비번 오류1");
-		}
-		else if(user_pw.val().length < 8){
-			goBack(user_pw, event);
-			console.log("비번 오류2");
-		}
-		else if(user_pw_check.val() != user_pw.val()){
-			goBack(user_pw_check, event);
-			console.log("비번확인 오류");
-		}
-	})
 	
+	let isAddressPassed = false;
 	$("#find_address").on("click", execDaumPostcode);
 	function execDaumPostcode() {
         new daum.Postcode({
             oncomplete: function(data) {
                 // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
-
+				isAddressPassed = true;
                 // 도로명 주소의 노출 규칙에 따라 주소를 표시한다.
                 // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
                 var roadAddr = data.roadAddress; // 도로명 주소 변수
@@ -368,25 +377,56 @@ $(document).ready(function(){
                 } else {
                     document.getElementById("extraAddress").value = '';
                 }
-
-                var guideTextBox = document.getElementById("guide");
-                // 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
-                if(data.autoRoadAddress) {
-                    var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
-                    guideTextBox.innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
-                    guideTextBox.style.display = 'block';
-
-                } else if(data.autoJibunAddress) {
-                    var expJibunAddr = data.autoJibunAddress;
-                    guideTextBox.innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
-                    guideTextBox.style.display = 'block';
-                } else {
-                    guideTextBox.innerHTML = '';
-                    guideTextBox.style.display = 'none';
-                }
             }
         }).open();
     }
+
+	//회원가입 클릭시
+	//양식에 적혀있는 것들을 재검증한 후 통과못하면 오류메세지 + 포커스
+	function goBack(err_target, e, message){
+		err_target.focus();
+		e.preventDefault();
+		if(message == null){
+			alert("다시 입력해주세요");
+		}else if(message == ""){
+			
+		}else{
+			alert(message);
+		}
+		
+	}
+	btn_join.on("click", e =>{
+		if(!isNamePassed){
+			goBack($("#user_name"), e);
+		}else if(!isBirthPassed){
+			goBack($("#user_birth"), e);
+		}else if(!isIdTestPassed){
+			goBack($("#user_id"), e);
+		}else if(!isIdDupCheckPassed){
+			goBack($("#user_id"), e, "아이디 중복확인이 필요합니다");
+		}else if(!isNicknameTestPassed){
+			goBack($("#user_nickname"), e);
+		}else if(!isNicknameDupCheckPassed){
+			goBack($("#user_nickname"), e, "별명 중복확인이 필요합니다");
+		}else if(!isPwPassed){
+			goBack($("#user_pw"), e);
+		}else if(!isPwCheckPassed){
+			goBack($("#user_pw_check"), e);
+		}else if(!emailCheck()){
+			goBack($("#user_email"), e);
+		}else if(!isEmailPassed){
+			goBack($("#user_email"), e, "이메일 인증이 되지않았습니다");
+		}else if(!isAddressPassed){
+			goBack($("#postcode"), e);
+		}else if($("#detailAddress").val() == ""){
+			if(!confirm("상세주소가 작성되지 않았습니다 이대로 회원가입하시겠습니까?")){
+				goBack($("#detailAddress"), e, "");
+			}
+		}
+		
+	})
+	
+	
 	
 	
 });
@@ -398,21 +438,21 @@ $(document).ready(function(){
 		<tr>
 			<th>이름</th>
 			<td>
-				<input type="text" class="text" id="user_name" name="user_name" placeholder="성함을 입력해주세요.">
+				<input type="text" class="text" id="user_name" name="member_name" placeholder="성함을 입력해주세요.">
 				<p style="display:none" id="user_name_errmsg">올바르지 않은 이름입니다</p>
 			</td>
 		</tr>
 		<tr>
 			<th>생년월일</th>
 			<td>
-				<input type="date" id="user_birth" name="user_birthday">
+				<input type="date" id="user_birth" >
 				<p style="display:none" id="user_birth_errmsg">올바르지 않은 날짜입니다</p>
 			</td>
 		</tr>
 		<tr>
 			<th>아이디</th>
 			<td>
-				<input type="text" id="user_id" name="user_id" placeholder="4~12글자 영문+숫자 조합">
+				<input type="text" id="user_id" name="member_id" placeholder="4~12글자 영문+숫자 조합">
 				<button id="user_id_dup_check_btn">중복확인</button>
 				<p id="user_id_pass_msg" style="display:none">사용가능한 아이디입니다</p>
 				<p style="display:none" id="user_id_dup_errmsg">중복된 아이디입니다</p>
@@ -424,7 +464,7 @@ $(document).ready(function(){
 			<td>
 				<input type="text" id="user_nickname" name="nickname" placeholder="10글자이내 영문,한글,숫자를 입력해주세요" maxlength=10>
 				<button id="user_nickname_dup_check_btn">중복확인</button>
-				<p id="user_id_pass_msg" style="display:none">사용가능한 별명입니다</p>
+				<p id="user_nickname_pass_msg" style="display:none">사용가능한 별명입니다</p>
 				<p style="display:none" id="user_nickname_dup_errmsg">중복된 별명입니다</p>
 				<p style="display:none" id="user_nickname_check_errmsg">형식에 맞지않는 별명입니다</p>
 			</td>
@@ -432,8 +472,8 @@ $(document).ready(function(){
 		<tr>
 			<th>비밀번호</th>
 			<td>
-				<input type="password" id="user_pw" name="user_pw" placeholder="특수문자 2개 이상을 포함한 8~16자의 비밀번호를 입력해주세요" maxlength="16">
-				<p style="color: black">사용가능한 특수문자 ~ ! @ # $ % ^ * + = - ? _</p>
+				<input type="password" id="user_pw" name="password" placeholder="특수문자 2개 이상을 포함한 8~16자의 비밀번호를 입력해주세요" maxlength="16">
+				<span>사용가능한 특수문자 ~ ! @ # $ % ^ * + = - ? _</span>
 				<p id="user_pw_on_caps" style="display:none">CAPS LOCK이 켜져있습니다</p>
 				<p id="user_pw_errmsg_spcl_num" style="display:none">특수문자를 반드시 2글자 이상 넣어야합니다</p>
 				<p id="user_pw_errmsg_pw_num" style="display:none">비밀번호를 최소 8자리 입력해주세요</p>
@@ -460,6 +500,7 @@ $(document).ready(function(){
 				<input type="text" class="text" id="user_email_dir" placeholder="도메인을 입력해주세요" style="display:none" >
 				<input type="hidden" id="email" name="email">
 				<button id="mail_auth_btn">인증메일 전송</button>
+				<span id="mail_send_msg" style="display:none">전송 중</span>
 				<div>
 					<input type="text" id="auth_code_input" style="display:none" placeholder="인증번호 6자리를 입력해주세요">
 					<button id="auth_code_check_btn" style="display:none">인증</button>
@@ -473,7 +514,7 @@ $(document).ready(function(){
 			<th>성별</th>
 			<td>
 				남<input type="radio" name="gender" value="0" checked>
-				녀<input type="radio" name="gender" value="1">
+				여<input type="radio" name="gender" value="1">
 			</td>
 		</tr>
 		<tr>
@@ -481,11 +522,10 @@ $(document).ready(function(){
 			<td>
 				<input type="text" id="postcode" placeholder="우편번호" readonly>
 				<input type="button" id="find_address" value="우편번호 찾기"><br>
-				<input type="text" id="roadAddress" placeholder="도로명주소" readonly>
+				<input type="text" id="roadAddress" name="address" placeholder="도로명주소" readonly>
 				<input type="text" id="jibunAddress" placeholder="지번주소" readonly>
-				<span id="guide" style="color:#999;display:none"></span>
+				<input type="text" id="extraAddress" placeholder="참고항목" readonly><br>
 				<input type="text" id="detailAddress" placeholder="상세주소">
-				<input type="text" id="extraAddress" placeholder="참고항목" readonly>
 			</td>
 		</tr>
 	</table>

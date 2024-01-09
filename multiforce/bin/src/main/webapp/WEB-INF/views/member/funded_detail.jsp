@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ include file="/WEB-INF/views/common/header.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,7 +10,7 @@
 </head>
 <body>
 
-<span><img alt="대표 이미지" src=""></span>
+<span><a href=""><img alt="대표 이미지" src=""></a></span>
 <span id="긴제목"><a href="">[다시 만난 블루베어] 내 노트 속 파란 곰이 돌아왔다!</a></span><br>
 <span>현재까지 모금액 </span> <span>현재까지 달성율</span> <span> 마감까지 기한</span>
 <p>
@@ -53,6 +55,7 @@
 
 <input type="button" value="후원 목록 보기">
 <input type="button" value="후원을 취소하시겠어요?">
+<!-- 후원 취소 다시묻는 모달창 -->
 
 </div>
 

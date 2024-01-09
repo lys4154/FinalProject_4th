@@ -11,6 +11,7 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan(basePackages="funding")
 @ComponentScan(basePackages="member")
 @ComponentScan(basePackages="project")
+@ComponentScan(basePackages="admin")
 @MapperScan(basePackages="board")
 @MapperScan(basePackages="funding")
 @MapperScan(basePackages="member")

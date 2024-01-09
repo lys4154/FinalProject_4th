@@ -4,15 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import member.service.AuthMailService;
 import member.service.MailService;
 
 @Controller
 public class MailController {
 	
 	@Autowired
-	AuthMailService mailService;
+	MailService mailService;
 	
 	@PostMapping(value="/mailauth", produces = {"application/json;charset=utf-8"})
 	@ResponseBody String mailAuth(String email) {
@@ -21,8 +19,7 @@ public class MailController {
 		//중복된 이메일이 없다
 		if(Math.random() > 0.5) {
 			isUniqueEmail = true;
-			String authCode = mailService.sendEmail(email);
-//			String authCode = "123456";
+			String authCode = mailService.sendAuthEmail(email);
 			return "{"
 			+ "\"authCode\": \"" + authCode + "\","
 			+ "\"isUniqueEmail\": \"" + true + "\""
@@ -32,9 +29,15 @@ public class MailController {
 			isUniqueEmail = false;
 			return "{\"isUniqueEmail\": \"" + isUniqueEmail + "\"}";
 		}
-		
-		
-		
-		
 	}
+	
+	@PostMapping(value="/findid", produces = {"application/json;charset=utf-8"})
+	@ResponseBody
+	public String findIdProcess(String email) {
+		boolean result = mailService.sendIdEmail(email);
+		return "{\"result\": \"" + result + "\"}";
+	}
+	
+	
+	
 }
