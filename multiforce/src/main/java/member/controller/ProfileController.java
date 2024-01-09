@@ -45,7 +45,7 @@ public class ProfileController {
 	}
 	
 	
-	//로그인 회원 정보
+	//마이 프로필 - 로그인 회원 정보
 	@RequestMapping(value = {"/myprofile"}, method = RequestMethod.GET)
 	public ModelAndView memberInfo (HttpSession session){		
 		//실제 로그인 시 수정할 부분
@@ -61,7 +61,7 @@ public class ProfileController {
 	}
 		
 	
-	
+	//마이 프로필 - 올린 프로젝트
     @PostMapping("/getMyproject")
     @ResponseBody
     List<ProjectDTO> getMyproject(HttpSession session) { 
@@ -75,32 +75,35 @@ public class ProfileController {
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("myprojectList", myprojectList);	
 		return myprojectList;    	
-    }//올린 프로젝트
+    }
     
     
     
-    
-
-    @PostMapping("/getFunded")//마이페이지 - 후원한 프로젝트(진행중만 나오게 수정해야함)
+    //마이 프로필 - 후원한 프로젝트
+    @PostMapping("/getFunded")
     @ResponseBody
-    List<FundingDTO> getFunded(HttpSession session) { 
+    List<ProjectDTO> getFunded(HttpSession session) { 
 		//실제 로그인 시 수정할 부분
-		 session.setAttribute("member_seq", 2);
+		 session.setAttribute("member_seq", 6);
 
 		int memberSeq = (int)session.getAttribute("member_seq");
-		List<FundingDTO> myFundedList = fundingservice.getFundedProject(memberSeq);
-		System.out.println(myFundedList);
+		List<FundingDTO> ongoingFunded = fundingservice.ongoingFunded(memberSeq); //후원 진행중
+		List<Integer> ongoingProjectSeq = new ArrayList<>();
+		for (FundingDTO projectSeq : ongoingFunded) {
+			ongoingProjectSeq.add(projectSeq.getProject_seq());
+		}
+		List<ProjectDTO> ongoingProject = projectservice.ongoingProject(ongoingProjectSeq);
+		//후원 진행중 ProjectDTO	
 		
 		ModelAndView mv = new ModelAndView();
-		mv.addObject("myFundedList", myFundedList);
+		mv.addObject("ongoingProject", ongoingProject);
 	
-		return myFundedList;    	
-    }//후원한 프로젝트
-	
+		return ongoingProject;    	
+    }
 	
 
     
-  
+    //마이 프로필 - 팔로워
     @PostMapping("/getFollower")
     @ResponseBody
     List<MemberDTO> getFollower(HttpSession session) { 
@@ -120,10 +123,11 @@ public class ProfileController {
 		mv.addObject("myFollower", myFollower);
 		
 		return myFollower;    	
-    }//팔로워
+    }
     
     
     
+    //마이 프로필 - 팔로잉
     @PostMapping("/getFollowing")
     @ResponseBody
     List<MemberDTO> getFollowing(HttpSession session) { 
@@ -143,11 +147,12 @@ public class ProfileController {
 		mv.addObject("myFollowing", myFollowing);
 
 		return myFollowing;    	
-    }//팔로잉
+    }
  
 	
 	
-    //후원한 프로젝트
+    
+    //후원한 프로젝트 페이지
 	@RequestMapping("/funded")
 	ModelAndView fundedProject (HttpSession session) {
 		//실제 로그인 시 수정할 부분
@@ -158,32 +163,89 @@ public class ProfileController {
 		List<FundingDTO> ongoingFunded = fundingservice.ongoingFunded(memberSeq); //후원 진행중
 		List<FundingDTO> successFunded = fundingservice.successFunded(memberSeq); //후원 성공
 		List<FundingDTO> cancelFunded = fundingservice.cancelFunded(memberSeq); //후원 취소
-		System.out.println(cancelFunded);
+
+
+		List<Integer> ongoingProjectSeq = new ArrayList<>();
+		for (FundingDTO projectSeq : ongoingFunded) {
+			ongoingProjectSeq.add(projectSeq.getProject_seq());
+		}
+		List<ProjectDTO> ongoingProject = projectservice.ongoingProject(ongoingProjectSeq);
+		//후원 진행중 ProjectDTO		
 		
-		//프로젝트 정보도 갖구와야함.... 
+		
+		List<Integer> successProjectSeq = new ArrayList<>();
+		for (FundingDTO projectSeq : successFunded) {
+			successProjectSeq.add(projectSeq.getProject_seq());
+		}
+		List<ProjectDTO> successProject = projectservice.successProject(successProjectSeq);
+		// 후원 진행중 ProjectDTO		
+		
+		
+		List<Integer> cancelProjectSeq = new ArrayList<>();
+		for (FundingDTO projectSeq : cancelFunded) {
+			cancelProjectSeq.add(projectSeq.getProject_seq());
+		}
+		List<ProjectDTO> cancelProject = projectservice.cancelProject(cancelProjectSeq);
+		//후원 취소 ProjectDTO
+
 		
 		ModelAndView mv = new ModelAndView();
-		mv.addObject("ongoingFunded", ongoingFunded);
+		mv.addObject("ongoingFunded", ongoingFunded);		
 		mv.addObject("successFunded", successFunded);
 		mv.addObject("cancelFunded", cancelFunded);
+		mv.addObject("ongoingProject", ongoingProject);
+		mv.addObject("successProject", successProject);
+		mv.addObject("cancelProject", cancelProject);
 		
 		mv.setViewName("member/funded");
 		
-		
-		
-		
-
+		//쿼리 조회문에 정렬 넣어야한다!!
 		return mv;
 	}
 
 
     
-    
-    
-	
-	
+
+	//후원한 프로젝트 페이지 - 검색
+    @GetMapping("/funded_search")
+    @ResponseBody
+    List<ProjectDTO> fundedSearch(String keyword, HttpSession session) { 
+		//실제 로그인 시 수정할 부분
+		session.setAttribute("member_seq", 6);
+
+		int memberSeq = (int)session.getAttribute("member_seq");
+//		List<ProjectDTO> myprojectList = projectservice.getProjectsByMemberSeq(memberSeq); // 회원의 모든 프로젝트
+//		System.out.println(myprojectList); //4개 확인		
+		System.out.println(keyword.toString());//키워드 확인
+		
+		String searchKeyword = keyword.toString();
+		List<ProjectDTO> searchFunded = projectservice.searchFunded(searchKeyword, memberSeq); //프로젝트 긴제목 또는 짧은제목 + 회원번호 일치 조건
+																								//선물 이름으로도 검색 가능하게.
+																								//지금 클릭이벤트인데 체인지로 변경, 검색창이 null일때는 전체 나오게 
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("searchFunded", searchFunded);
+
+		return searchFunded;    	
+    }
+
 	
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
 
 	

@@ -32,6 +32,7 @@ public class ProjectController {
 	public String projectManagement() {
 		return "project/projectmanagement";
 	}
+
 	//프로젝트 승인 리스트
 	@GetMapping("project_approve_list")
 	public String showAppoveList(Model model) {
@@ -53,5 +54,26 @@ public class ProjectController {
 	@GetMapping("project_detail/community")
 	public String ShowProjectCommunity() {
 		return "project/project_community";
+
+	
+	@RequestMapping("/tab_info")
+	public String tabInfo() {
+		return "project/tab_info";
+	}
+	
+	@RequestMapping("/tab_fundingPlan")
+	public String tabFundingPlan() {
+		return "project/tab_fundingPlan";
+	}
+	
+	@RequestMapping("/tab_gift")
+	public String tabGift() {
+		return "project/tab_gift";
+	}
+	
+	@RequestMapping("/tab_projectPlan")
+	public String tabProjectPlan() {
+		return "project/tab_projectPlan";
+
 	}
 }
