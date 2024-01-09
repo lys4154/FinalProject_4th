@@ -9,6 +9,11 @@
 	select * from project where member_seq=#{memberSeq}
 </select>
 
+<select id="getAllProjects" resultType="projectdto">
+    select * from project
+</select>
+
+
 
 <select id="ongoingProject" parameterType="java.util.List" resultType="projectdto">
     SELECT * FROM project
@@ -43,6 +48,7 @@
 	OR short_title LIKE concat("%", #{searchKeyword, jdbcType=VARCHAR}, "%"))
 	AND  member_seq=#{memberSeq, jdbcType=INTEGER}	
 </select>
+
 
 
 

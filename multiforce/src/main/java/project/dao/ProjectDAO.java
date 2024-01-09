@@ -4,6 +4,14 @@ package project.dao;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
+
+
+
+
+import jakarta.annotation.ManagedBean;
+import member.dto.MemberDTO;
+
+
 import project.dto.ProjectDTO;
 
 @Repository
@@ -24,4 +32,5 @@ public interface ProjectDAO {
 	//후원 페이지 - 검색
 	List<ProjectDTO> searchFunded(String searchKeyword, int memberSeq);
 	
+	List<ProjectDTO> getAllProjects();
 }

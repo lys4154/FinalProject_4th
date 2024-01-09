@@ -5,19 +5,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import board.dto.BoardDTO;
+import board.dto.updateBoardDTO;
 
 @Repository
-public class BoardDAO {
+public class UpdateBoardDAO {
 	
 	@Autowired
 	private final SqlSession sqlSession;
 	
 	
-    public BoardDAO(SqlSession sqlSession) {
+    public UpdateBoardDAO(SqlSession sqlSession) {
         this.sqlSession = sqlSession;
     }
 	
-	public void insertBoard(BoardDTO dto) {
-        sqlSession.insert("insertBoard", dto);
-    }
+	public void insertUpdateBoard(updateBoardDTO dto) {
+		sqlSession.insert("insertUpdateBoard", dto);
+	}
 }

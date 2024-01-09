@@ -17,6 +17,11 @@ public class ProjectService {
 		return projectDao.getProjectsByMemberSeq(memberSeq);
 	}
 	
+
+	public List<ProjectDTO> getAllProjects() {
+        return projectDao.getAllProjects(); 
+    }
+
 	//후원 페이지 - 진행중
 	public List<ProjectDTO> ongoingProject(List<Integer> ongoingProjectSeq) {
 		return projectDao.ongoingProject(ongoingProjectSeq);
@@ -39,7 +44,7 @@ public class ProjectService {
 	}
 	
 	
-	
+
 
 
 }

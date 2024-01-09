@@ -3,14 +3,35 @@ package board.dto;
 import java.time.LocalDateTime;
 
 public class BoardDTO {
+
+
+
 	 private int helpAskSeq;
 	    private int memberSeq;
 	    private String title;
 	    private String content;
 	    private LocalDateTime helpAskDate;
-	    private Integer parentSeq;
-	    private int replyStatus;
+	    private Integer parentSeq; // Use Integer for nullable columns
+	    private boolean replyStatus; // Assuming reply_status is mapped to a boolean
 
+	    // Constructors, Getters, and Setters
+	    // Constructor with all fields
+	    public BoardDTO(int helpAskSeq, int memberSeq, String title, String content,
+	                      LocalDateTime helpAskDate, Integer parentSeq, boolean replyStatus) {
+	        this.helpAskSeq = helpAskSeq;
+	        this.memberSeq = memberSeq;
+	        this.title = title;
+	        this.content = content;
+	        this.helpAskDate = helpAskDate;
+	        this.parentSeq = parentSeq;
+	        this.replyStatus = replyStatus;
+	    }
+
+	    // Default constructor
+	    public BoardDTO() {
+	    }
+
+	    // Getters and Setters for all fields
 	    public int getHelpAskSeq() {
 	        return helpAskSeq;
 	    }
@@ -59,13 +80,13 @@ public class BoardDTO {
 	        this.parentSeq = parentSeq;
 	    }
 
-	    public int getReplyStatus() {
+	    public boolean isReplyStatus() {
 	        return replyStatus;
 	    }
 
-	    public void setReplyStatus(int replyStatus) {
+	    public void setReplyStatus(boolean replyStatus) {
 	        this.replyStatus = replyStatus;
 	    }
-    
-    
+	
+
 }
