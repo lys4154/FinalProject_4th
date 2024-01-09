@@ -10,13 +10,13 @@ import org.springframework.web.servlet.ModelAndView;
 
 import jakarta.servlet.http.HttpSession;
 import member.service.MemberService;
-import member.service.MemberServiceImpl;
+
 
 @Controller
 public class MemberController {
 	
 	@Autowired
-	MemberServiceImpl memberService;
+	MemberService memberService;
 	
 	@GetMapping("/login")
 	public String login() {

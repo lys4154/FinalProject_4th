@@ -20,4 +20,24 @@ public class ProjectController {
 	public String projectManagement() {
 		return "project/projectmanagement";
 	}
+	
+	@RequestMapping("/tab_info")
+	public String tabInfo() {
+		return "project/tab_info";
+	}
+	
+	@RequestMapping("/tab_fundingPlan")
+	public String tabFundingPlan() {
+		return "project/tab_fundingPlan";
+	}
+	
+	@RequestMapping("/tab_gift")
+	public String tabGift() {
+		return "project/tab_gift";
+	}
+	
+	@RequestMapping("/tab_projectPlan")
+	public String tabProjectPlan() {
+		return "project/tab_projectPlan";
+	}
 }
