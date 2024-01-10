@@ -1,29 +1,32 @@
 package member.controller;
 
-
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.ibatis.javassist.compiler.ast.Member;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
 import funding.dto.FundingDTO;
 import funding.service.FundingService;
 import jakarta.servlet.http.HttpSession;
-import member.dto.FollowDTO;
 import member.dto.MemberDTO;
 import member.service.FollowService;
 import member.service.MemberService;
+import project.dto.BundleDTO;
 import project.dto.ProjectDTO;
+import project.dto.ItemDTO;
+import project.service.BundleService;
+import project.service.ItemService;
 import project.service.ProjectService;
 
 @Controller
@@ -37,6 +40,10 @@ public class ProfileController {
 	private FundingService fundingservice;
 	@Autowired
 	private FollowService followservice;
+	@Autowired
+	private BundleService bundleservice;
+	@Autowired
+	private ItemService itemservice;
 
 	
 	@GetMapping("/profile")
@@ -206,7 +213,7 @@ public class ProfileController {
 
     
 
-	//후원한 프로젝트 페이지 - 검색
+	//후원한 프로젝트 페이지 - 검색 --- 추가필요(선물이름, 창작자도 가능하게) 
     @GetMapping("/funded_search")
     @ResponseBody
     List<ProjectDTO> fundedSearch(String keyword, HttpSession session) { 
@@ -214,13 +221,12 @@ public class ProfileController {
 		session.setAttribute("member_seq", 6);
 
 		int memberSeq = (int)session.getAttribute("member_seq");
-//		List<ProjectDTO> myprojectList = projectservice.getProjectsByMemberSeq(memberSeq); // 회원의 모든 프로젝트
 //		System.out.println(myprojectList); //4개 확인		
-		System.out.println(keyword.toString());//키워드 확인
+//		System.out.println(keyword.toString());//키워드 확인
 		
 		String searchKeyword = keyword.toString();
 		List<ProjectDTO> searchFunded = projectservice.searchFunded(searchKeyword, memberSeq); //프로젝트 긴제목 또는 짧은제목 + 회원번호 일치 조건
-																								//선물 이름으로도 검색 가능하게.
+																							//선물 이름으로도 검색 가능하게.
 																								//지금 클릭이벤트인데 체인지로 변경, 검색창이 null일때는 전체 나오게 
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("searchFunded", searchFunded);
@@ -230,30 +236,44 @@ public class ProfileController {
 
 	
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-
 	
+
 	//후원 프로젝트 상세
-	@GetMapping("/funded_detail")
-	public String funded_detail() {		
-		return "member/funded_detail";
+	@GetMapping("/funded_detail/{fund_seq}")			
+	ModelAndView fundedDetail (@PathVariable int fund_seq) {
+		int fundseq = fund_seq;
+		FundingDTO getFundedDetail = fundingservice.getFundedDetail(fundseq); //후원정보		
+		int projectSeq = getFundedDetail.getProject_seq();
+		
+		ProjectDTO getProjectDetail = projectservice.getProjectDetail(projectSeq); //프로젝트정보
+		
+		LocalDateTime dueDate = getProjectDetail.getDue_date();
+		LocalDateTime currentTime = LocalDateTime.now();
+		int dDay = (int) ChronoUnit.DAYS.between(currentTime, dueDate); // 남은기한
+		
+		BundleDTO getBundle = bundleservice.getBundle(projectSeq);//꾸러미(번들)
+		int bundleSeq = getBundle.getBundle_seq();
+		
+		List<ItemDTO> getItem = itemservice.getItem(bundleSeq);
+		System.out.println(getItem);
+		
+		
+		
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("getItem", getItem); //남은기한
+		mv.addObject("dDay", dDay); //남은기한
+		mv.addObject("fundedDetail", getFundedDetail); //후원정보
+		mv.addObject("projectDetail", getProjectDetail); //프로젝정보
+		mv.setViewName("member/funded_detail");		
+		return mv;
 	}
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	//후원 취소

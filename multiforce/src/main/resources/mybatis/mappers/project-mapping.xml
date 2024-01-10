@@ -5,16 +5,17 @@
 
 <mapper namespace="project.dao.ProjectDAO">
 
+
 <select id="getProjectsByMemberSeq" parameterType="int" resultType="projectdto">
 	select * from project where member_seq=#{memberSeq}
 </select>
 
 <select id="getAllProjects" resultType="projectdto">
-    select * from project
+    select * from project where
 </select>
 
 
-
+<!-- 후원한 프로젝트 페이지 - 후원 진행중 -->
 <select id="ongoingProject" parameterType="java.util.List" resultType="projectdto">
     SELECT * FROM project
     WHERE project_seq IN
@@ -24,6 +25,7 @@
 </select>
 
 
+<!-- 후원한 프로젝트 페이지 - 후원 성공 -->
 <select id="successProject" parameterType="java.util.List" resultType="projectdto">
     SELECT * FROM project
     WHERE project_seq IN
@@ -33,6 +35,7 @@
 </select>
 
 
+<!-- 후원한 프로젝트 페이지 - 후원 취소 -->
 <select id="cancelProject" parameterType="java.util.List" resultType="projectdto">
     SELECT * FROM project
     WHERE project_seq IN
@@ -42,6 +45,7 @@
 </select>
 
 
+<!-- 후원한 프로젝트 페이지 - 검색 -->
 <select id="searchFunded" parameterType="java.util.Map" resultType="projectdto">
 	SELECT * FROM project
 	WHERE (long_title LIKE concat("%", #{searchKeyword, jdbcType=VARCHAR}, "%")
@@ -51,7 +55,10 @@
 
 
 
-
+<!-- 후원한 프로젝트 페이지 -> 후원 내역 상세 -->	
+<select id="getProjectDetail" parameterType="int" resultType="projectdto">
+	select * from project where project_seq=#{projectSeq}
+</select>	
 
 
 

@@ -7,10 +7,6 @@ import org.springframework.stereotype.Service;
 
 import funding.dao.FundingDAO;
 import funding.dto.FundingDTO;
-import member.dao.MemberDAO;
-import member.dto.MemberDTO;
-import project.dto.ProjectDTO;
-
 @Service
 public class FundingService {
 	
@@ -35,6 +31,11 @@ public class FundingService {
 	//후원한 프로젝트 페이지 - 취소한 후원
 	public List<FundingDTO> cancelFunded(int memberSeq) {
 		return fundingDao.cancelFunded(memberSeq);
+	}
+
+	//후원한 프로젝트 페이지 -> 후원 내역 상세
+	public FundingDTO getFundedDetail(int fundseq) {
+		return fundingDao.getFundedDetail(fundseq);
 	}
 
 

@@ -7,11 +7,6 @@ import org.springframework.stereotype.Repository;
 
 
 
-
-import jakarta.annotation.ManagedBean;
-import member.dto.MemberDTO;
-
-
 import project.dto.ProjectDTO;
 
 @Repository
@@ -33,4 +28,11 @@ public interface ProjectDAO {
 	List<ProjectDTO> searchFunded(String searchKeyword, int memberSeq);
 	
 	List<ProjectDTO> getAllProjects();
+
+	//후원한 프로젝트 페이지 -> 후원 내역 상세
+	ProjectDTO getProjectDetail(int projectSeq);
+	
+	
+	
+	
 }

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+	<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="project.dao.ItemDAO">
+
+<!-- 후원 상세 - 아이템 -->
+<select id="getItem" parameterType="int" resultType="itemdto">
+	select * from item where bundle_seq=#{bundleSeq}
+</select>
+
+
+</mapper>	
