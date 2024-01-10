@@ -27,6 +27,7 @@ public class ProjectDTO {
    String account;
    String main_images_url;
 
+
    public ProjectDTO() {
 	    
 	}
@@ -204,10 +205,4 @@ public class ProjectDTO {
             + ", goal_achieve=" + goal_achieve + ", dibs_count=" + dibs_count + ", share_count=" + share_count
             + ", account=" + account + ", main_images_url=" + main_images_url + "]";
    }
-
-	
-	
-	   
-   
-
 }

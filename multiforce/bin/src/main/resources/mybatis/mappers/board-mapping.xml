@@ -5,4 +5,9 @@
         INSERT INTO help_ask (title, content, member_seq)
         VALUES (#{title}, #{content}, #{memberSeq})
     </insert>
+    <insert id="insertUpdateBoard" parameterType="board.dto.updateBoardDTO">
+        INSERT INTO update_board (project_seq, member_seq, content)
+        VALUES (#{projectSeq}, #{memberSeq}, #{content})
+    </insert>
+    
 </mapper>

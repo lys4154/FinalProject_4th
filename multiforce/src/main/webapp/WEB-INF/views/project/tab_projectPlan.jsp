@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-<h1>tab_info</h1>
+<h1>프로젝트 계획</h1>
 </body>
 </html>
