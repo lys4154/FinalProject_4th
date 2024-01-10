@@ -12,7 +12,49 @@
 
 <script>
 $(document).ready(function() {
+	
+	//후원 총개수
+	var ongoingCount = ${ongoingFunded.size()};
+    var successCount = ${successFunded.size()};
+    var cancelCount = ${cancelFunded.size()};
+    var totalCount = ongoingCount + successCount + cancelCount;
+    $("#total_funded").html(totalCount); 
+  
 
+	//프로젝트 긴제목, 짧은제목 검색
+ 	$("#search_btn").click(function() {
+ 		let keyword = $("#search_keyword").val();
+	       $.ajax({
+	          type: "get",
+	          data: { "keyword": keyword},
+	          url: "/funded_search",	          
+	          dataType: "JSON",
+	          success: function(response) {
+	        	$("#total_funded").html(response.length);
+	          	$(".all_funded").empty();
+	          	if(response.length == 0) {
+	          		$(".all_funded").append("<div> 검색어와 일치하는 내역이 없습니다. </div>");
+	          	} else {
+	          		$(".all_funded").empty();
+	          		$("#total_funded").html(response.length);
+	  	            for (var i = 0; i < response.length; i++) {
+	  	                $(".all_funded").append("<div style=\"color: blue\">" + response[i].long_title + "</div>");
+	  	                }
+	  	            }
+	          },
+	          error: function(error) {
+	              console.log(error);
+	          }
+	     });        
+	 }); 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+    
 });
 
 </script>
@@ -27,42 +69,81 @@ $(document).ready(function() {
 <p>
 <div>
 	<div>
-	후원수량 <span id="total_funded"></span> 건의 후원 내역이 있습니다.
+		<div>
+		<span id="total_funded" style="color: red"></span> 건의 후원 내역이 있습니다.
+		</div>
+		<div>
+		<input type="text" size="30" id="search_keyword" placeholder="프로젝트, 선물, 창작자를 검색하세요">
+		<input type="button" id="search_btn" value="검색">
+		</div>		
 	</div>
-<input type="text" placeholder="프로젝트, 선물, 창작자를 검색하세요">
-<p>
-
-<div>후원 진행중</div><div id="미결제이고, 취소를 안한">1</div><br>
-<div><img alt="대표 이미지" src=""></div> 
-<div>후원일 </div><div id="후원일자"> 24.01.04 </div> | 
-<div>후원번호 </div><div id="후원고유번호"> 111111 </div> <br>
-<div id="긴제목"><a href="">[다시 만난 블루베어] 내 노트 속 파란 곰이 돌아왔다!</a></div><br>
-<div id="꾸러미 이름">스마트톡 S 세트</div><div id="꾸러미 개수">2</div><div>개</div><br>
-<div>결제 예정일 </div><div id="프로젝트 종료일자 +1 "> 24.01.05</div><br>
-<div id="총계">50000</div><div>원 결제예정</div>
-<p>
-
-
-
-<div>후원 성공</div><div id="성공수량">1</div><br>
-<div><img alt="대표 이미지" src=""></div> 
-<div>후원일 </div><div id="후원일자"> 24.01.04 </div> | 
-<div>후원번호 </div><div id="후원고유번호"> 111111 </div> <br>
-<div id="긴제목"><a href="">[다시 만난 블루베어] 내 노트 속 파란 곰이 돌아왔다!</a></div><br>
-<div id="꾸러미 이름">스마트톡 S 세트</div><div id="꾸러미 개수">2</div><div>개</div><br>
-<div>결제 완료일 </div><div id="프로젝트 종료날짜 +1 "> 24.01.05</div><br>
-<div id="총계">50000</div><div>원 결제 완료</div>
-<p>
-
-<div>후원 실패</div><div id="실패수량">1</div><br>
-<div><img alt="대표 이미지" src=""></div> 
-<div>후원일 </div><div id="후원일자"> 24.01.04 </div> | 
-<div>후원번호 </div><div id="후원고유번호"> 111111 </div> <br>
-<div id="긴제목"><a href="">[다시 만난 블루베어] 내 노트 속 파란 곰이 돌아왔다!</a></div><br>
-<div id="꾸러미 이름">스마트톡 S 세트</div><div id="꾸러미 개수">2</div><div>개</div><br>
-<div>결제 예약 취소일 </div><div id="취소 날짜 "> 24.01.04</div><br>
-<div id="총계">50000</div><div>원 결제 예약 취소</div>
-<p>
+	<p>
+	
+	
+	<div class="all_funded" >
+	    <!-- 후원 진행중 리스트 -->
+	    <c:if test="${not empty ongoingFunded}">
+	    	<hr>
+	        <div>후원 진행중 <span style="color: orange;"> (${ongoingFunded.size()}) </span> </div>
+	        <c:forEach var="ongoing" items="${ongoingFunded}" varStatus="out">
+	            <div>
+	            <c:forEach var="project" items="${ongoingProject}" varStatus="inner">
+	            	<c:if test="${out.index eq inner.index}">	
+		            	<div><a href="디테일페이지"><img src="${project.main_images_url}" alt="프로젝트 이미지"></a></div>
+		            	<div><span> 후원일 ${ongoing.fund_date.toLocalDate()}</span> | <span> 후원번호 ${ongoing.fund_seq}</span></div>
+		            	<div><a href="디테일페이지"> ${project.long_title }</a></div>
+		            	<div> ${ongoing.fund_option}</div>
+		            	<div> 결제 예정일 ${ongoing.fund_duedate.toLocalDate().plusDays(1)}</div>
+		            	<div style="color: purple;"> ${ongoing.price}원 결제 예정</div>		            	
+	            	</c:if>
+            	</c:forEach> 
+	            </div>
+	        </c:forEach>
+	        <br>
+	    </c:if>
+	
+	    <!-- 후원 성공 리스트 -->
+	    <c:if test="${not empty successFunded}">
+	    	<hr>
+	        <div>후원 성공 <span style="color: orange;"> (${successFunded.size()}) </span> </div>
+	        <c:forEach var="success" items="${successFunded}" varStatus="out">
+        		<div>
+        		<c:forEach var="project" items="${successProject}" varStatus="inner">
+        			<c:if test="${out.index eq inner.index}">	
+		            	<div><a href="디테일페이지"><img src="${project.main_images_url}" alt="프로젝트 이미지"></a></div>
+		            	<div><span> 후원일 ${success.fund_date.toLocalDate()}</span> | <span> 후원번호 ${success.fund_seq}</span></div>
+		            	<div><a href="디테일페이지"> ${project.long_title }</a></div>
+		            	<div> ${success.fund_option}</div>
+		            	<div> 결제 완료일 ${success.fund_duedate.toLocalDate().plusDays(1)}</div>
+		            	<div style="color: purple;"> ${success.price}원 결제 완료</div>
+	            	</c:if>
+	            </c:forEach>
+	            </div> 
+	        </c:forEach>
+	        <br>
+	    </c:if>
+	
+	    <!-- 후원 실패 리스트  -->
+	    <c:if test="${not empty cancelFunded}">
+	    	<hr>
+	        <div>후원 실패 <span style="color: orange;"> (${cancelFunded.size()}) </span></div>
+	        <c:forEach var="cancel" items="${cancelFunded}" varStatus="out">
+        		<div>
+        		<c:forEach var="project" items="${cancelProject}" varStatus="inner">
+        			<c:if test="${out.index eq inner.index}">
+		            	<div><a href="디테일페이지"><img src="${project.main_images_url}" alt="프로젝트 이미지"></a></div>
+		            	<div><span> 후원일 ${cancel.fund_date.toLocalDate()}</span> | <span> 후원번호 ${cancel.fund_seq}</span></div>
+		            	<div> <<a href="디테일페이지">${project.long_title }</a></div>
+		            	<div> ${cancel.fund_option}</div>
+		            	<div> 결제 예약 취소일 ${cancel.del_date.toLocalDate()}</div>
+		            	<div style="color: purple;"> ${cancel.price}원 결제 예약 취소</div>
+	            	</c:if>
+	            </c:forEach>
+	            </div>            
+	        </c:forEach>
+	        <br>
+	    </c:if>	
+	</div>
 </div>
 
 </body>
