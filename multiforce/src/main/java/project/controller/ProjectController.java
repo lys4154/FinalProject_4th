@@ -54,7 +54,7 @@ public class ProjectController {
 	@GetMapping("project_detail/community")
 	public String ShowProjectCommunity() {
 		return "project/project_community";
-
+	}
 	
 	@RequestMapping("/tab_info")
 	public String tabInfo() {
