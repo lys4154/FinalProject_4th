@@ -36,11 +36,35 @@ public class ProjectController {
 	//프로젝트 승인 리스트
 	@GetMapping("project_approve_list")
 	public String showAppoveList(Model model) {
-		List<ProjectDTO> projects = projectService.getAllProjects(); 
+		int approvedCount = projectService.approvedCount(); 
+		int unapprovedCount = projectService.unapprovedCount();
+		
+		
+		model.addAttribute("approvedCount", approvedCount);
+		model.addAttribute("unapprovedCount", unapprovedCount);
+		return "project/project_approve_list";
+		
+	}
+	
+	//승인 리스트
+	@GetMapping("approve_list/approved")
+	public String showApprovedOnly(Model model) {
+		List<ProjectDTO> projects = projectService.getAllApprovedProjects(); 
 		
 		
         model.addAttribute("projects", projects);
-		return "project/project_approve_list";
+		return "project/approve_list_table";
+		
+	}
+	
+	//승인 대기 리스트
+	@GetMapping("approve_list/unapproved")
+	public String showUnapprovedOnly(Model model) {
+		List<ProjectDTO> projects = projectService.getAllUnapprovedProjects(); 
+		
+		
+        model.addAttribute("projects", projects);
+		return "project/approve_list_table";
 		
 	}
 	
@@ -55,7 +79,7 @@ public class ProjectController {
 	public String ShowProjectCommunity() {
 		return "project/project_community";
 
-	
+	}
 	@RequestMapping("/tab_info")
 	public String tabInfo() {
 		return "project/tab_info";

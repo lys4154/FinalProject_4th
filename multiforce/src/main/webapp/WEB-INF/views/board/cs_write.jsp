@@ -10,29 +10,14 @@
 
 
 
-	<%
-
-	    String data = (String) request.getAttribute("boardType");
-	    String board = "";
-	    
-
-	    if (data != null) {
-	        if (data.equals("community")) {
-	            board = "커뮤니티";
-	        } else if (data.equals("cs")) {
-	            board = "고객센터";
-	        }
-	    }
-	%>
-
-    <title><%= board %> 글쓰기</title>
+    <title>1:1 고객센터 게시판 글쓰기</title>
 
 
 
 </head>
 <body>
     <div class="cs-container">
-        <h2><%= board %> 글쓰기</h2>
+        <h2>1:1 고객센터 게시판 글쓰기</h2>
         <div style="margin-bottom:15px;" id="cs_menu_bar">
             
         </div>

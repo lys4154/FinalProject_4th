@@ -1,92 +1,67 @@
 package board.dto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class BoardDTO {
+	private int help_ask_seq;
+    private int member_seq;
+    private String title;
+    private String content;
+    private LocalDateTime help_ask_date;
+    private Integer parent_seq;
+    private int reply_status;
+    
+    public BoardDTO() {
+    	
+    }
+    
+	public int getHelp_ask_seq() {
+		return help_ask_seq;
+	}
+	public void setHelp_ask_seq(int help_ask_seq) {
+		this.help_ask_seq = help_ask_seq;
+	}
+	public int getMember_seq() {
+		return member_seq;
+	}
+	public void setMember_seq(int member_seq) {
+		this.member_seq = member_seq;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	public String getContent() {
+		return content;
+	}
+	public void setContent(String content) {
+		this.content = content;
+	}
+	public LocalDateTime getHelp_ask_date() {
+		return help_ask_date;
+	}
+	public void setHelp_ask_date(LocalDateTime help_ask_date) {
+		this.help_ask_date = help_ask_date;
+	}
+	public Integer getParent_seq() {
+		return parent_seq;
+	}
+	public void setParent_seq(Integer parent_seq) {
+		this.parent_seq = parent_seq;
+	}
+	public int getReply_status() {
+		return reply_status;
+	}
+	public void setReply_status(int reply_status) {
+		this.reply_status = reply_status;
+	}
+	
+    
 
 
-
-	 private int helpAskSeq;
-	    private int memberSeq;
-	    private String title;
-	    private String content;
-	    private LocalDateTime helpAskDate;
-	    private Integer parentSeq; // Use Integer for nullable columns
-	    private boolean replyStatus; // Assuming reply_status is mapped to a boolean
-
-	    // Constructors, Getters, and Setters
-	    // Constructor with all fields
-	    public BoardDTO(int helpAskSeq, int memberSeq, String title, String content,
-	                      LocalDateTime helpAskDate, Integer parentSeq, boolean replyStatus) {
-	        this.helpAskSeq = helpAskSeq;
-	        this.memberSeq = memberSeq;
-	        this.title = title;
-	        this.content = content;
-	        this.helpAskDate = helpAskDate;
-	        this.parentSeq = parentSeq;
-	        this.replyStatus = replyStatus;
-	    }
-
-	    // Default constructor
-	    public BoardDTO() {
-	    }
-
-	    // Getters and Setters for all fields
-	    public int getHelpAskSeq() {
-	        return helpAskSeq;
-	    }
-
-	    public void setHelpAskSeq(int helpAskSeq) {
-	        this.helpAskSeq = helpAskSeq;
-	    }
-
-	    public int getMemberSeq() {
-	        return memberSeq;
-	    }
-
-	    public void setMemberSeq(int memberSeq) {
-	        this.memberSeq = memberSeq;
-	    }
-
-	    public String getTitle() {
-	        return title;
-	    }
-
-	    public void setTitle(String title) {
-	        this.title = title;
-	    }
-
-	    public String getContent() {
-	        return content;
-	    }
-
-	    public void setContent(String content) {
-	        this.content = content;
-	    }
-
-	    public LocalDateTime getHelpAskDate() {
-	        return helpAskDate;
-	    }
-
-	    public void setHelpAskDate(LocalDateTime helpAskDate) {
-	        this.helpAskDate = helpAskDate;
-	    }
-
-	    public Integer getParentSeq() {
-	        return parentSeq;
-	    }
-
-	    public void setParentSeq(Integer parentSeq) {
-	        this.parentSeq = parentSeq;
-	    }
-
-	    public boolean isReplyStatus() {
-	        return replyStatus;
-	    }
-
-	    public void setReplyStatus(boolean replyStatus) {
-	        this.replyStatus = replyStatus;
-	    }
 	
 
 }

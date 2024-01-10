@@ -31,7 +31,22 @@ public class boardService {
         updateBoardDAO.insertUpdateBoard(dto);
     }
     
-//    public List<ProjectDTO> getAllProjects() {
-//        return projectDAO.getAllProjects(); 
-//    }
+    public List<BoardDTO> getAllCsPosts(){
+		return boardDAO.getAllCsPosts();
+	}
+    public BoardDTO getCsPostById(int help_ask_seq){
+    	return boardDAO.getCsPostById(help_ask_seq);
+    }
+
+	public void saveCsComment(BoardDTO comment_dto) {
+		boardDAO.saveCsComment(comment_dto);
+		
+	}
+
+	public BoardDTO getCsCommentsById(int help_ask_seq) {
+		return boardDAO.getCsCommentsById(help_ask_seq);
+	}
+
+
+	
 }

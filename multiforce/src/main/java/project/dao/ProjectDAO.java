@@ -32,5 +32,22 @@ public interface ProjectDAO {
 	//후원 페이지 - 검색
 	List<ProjectDTO> searchFunded(String searchKeyword, int memberSeq);
 	
+	//전체 프로젝트
 	List<ProjectDTO> getAllProjects();
+	
+	//only 승인
+	List<ProjectDTO> getAllApprovedProjects();
+	
+	//only 승인 대기
+	List<ProjectDTO> getAllUnapprovedProjects();
+	
+	//승인된 프로젝트 개수
+	int approvedCount();
+	
+	//승인 대기 프로젝트 개수
+	int unapprovedCount();
+	
+	
+
+
 }
