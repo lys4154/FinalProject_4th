@@ -13,13 +13,6 @@ public class BundleService {
 	@Autowired
 	private BundleDAO bundleDao;
 
-	public BundleDTO getBundle(int projectSeq) {
-		return bundleDao.getBundle(projectSeq);
-	}
-
-
-	//후원 상세 - 꾸러미 
-
 	
 
 }

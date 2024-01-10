@@ -9,9 +9,6 @@ import project.dto.BundleDTO;
 @Mapper
 public interface BundleDAO {
 
-	//후원 상세 - 꾸러미
-	BundleDTO getBundle(int projectSeq);
-
 
 	
 }

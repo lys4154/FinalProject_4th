@@ -251,16 +251,17 @@ public class ProfileController {
 		LocalDateTime currentTime = LocalDateTime.now();
 		int dDay = (int) ChronoUnit.DAYS.between(currentTime, dueDate); // 남은기한
 		
-		BundleDTO getBundle = bundleservice.getBundle(projectSeq);//꾸러미(번들)
-		int bundleSeq = getBundle.getBundle_seq();
+//		List<BundleDTO> getBundle = bundleservice.getBundle(projectSeq);//꾸러미(번들)
+//		int bundleSeq = getBundle.getBundle_seq();
+
 		
-		List<ItemDTO> getItem = itemservice.getItem(bundleSeq);
-		System.out.println(getItem);
+//		List<ItemDTO> getItem = itemservice.getItem(bundleSeq);
+//		System.out.println(getItem);
 		
 		
 		
 		ModelAndView mv = new ModelAndView();
-		mv.addObject("getItem", getItem); //남은기한
+//		mv.addObject("getItem", getItem); //남은기한
 		mv.addObject("dDay", dDay); //남은기한
 		mv.addObject("fundedDetail", getFundedDetail); //후원정보
 		mv.addObject("projectDetail", getProjectDetail); //프로젝정보
