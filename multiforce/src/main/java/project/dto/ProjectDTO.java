@@ -147,6 +147,7 @@ public class ProjectDTO {
 	public String getMain_images_url() {
 		return main_images_url;
 	}
+
 	public void setMain_images_url(String main_images_url) {
 		this.main_images_url = main_images_url;
 	}
@@ -169,10 +170,6 @@ public class ProjectDTO {
 				+ ", account=" + account + ", main_images_url=" + main_images_url + ", delivery_date=" + delivery_date
 				+ "]";
 	}
-	
 
-	
-	
-	
 
 }

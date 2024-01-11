@@ -12,9 +12,6 @@ public class BoardDTO {
     private Integer parent_seq;
     private int reply_status;
     
-    public BoardDTO() {
-    	
-    }
     
 	public int getHelp_ask_seq() {
 		return help_ask_seq;

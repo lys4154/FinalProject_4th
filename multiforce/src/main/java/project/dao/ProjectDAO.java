@@ -30,15 +30,9 @@ public interface ProjectDAO {
 	//전체 프로젝트
 	List<ProjectDTO> getAllProjects();
 
-
 	//후원한 프로젝트 페이지 -> 후원 내역 상세
 	ProjectDTO getProjectDetail(int projectSeq);
-	
-	
-	
-	
 
-	
 	//only 승인
 	List<ProjectDTO> getAllApprovedProjects();
 	
@@ -50,7 +44,4 @@ public interface ProjectDAO {
 	
 	//승인 대기 프로젝트 개수
 	int unapprovedCount();
-	
-	
-
 }

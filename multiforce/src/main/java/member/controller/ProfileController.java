@@ -243,6 +243,7 @@ public class ProfileController {
 	
 
 	//후원 프로젝트 상세
+
 	@GetMapping("/funded_detail/{fund_seq}")			
 	ModelAndView fundedDetail (@PathVariable int fund_seq) {
 		int fundseq = fund_seq;//후원번호
@@ -270,13 +271,7 @@ public class ProfileController {
 			itemList.add(seq.getItem_seq());
 		}
 
-		List<ItemOptionDTO> getItemOption = itemoptionservice.getItemOption(itemList); //옵션찾기
-		
-
-		
-		
-		
-		
+		List<ItemOptionDTO> getItemOption = itemoptionservice.getItemOption(itemList); //옵션찾기		
 		
 		
 		
@@ -295,12 +290,7 @@ public class ProfileController {
 		mv.setViewName("member/funded_detail");		
 		return mv;
 	}
-	
-	
-	
-	
-	
-	
+
 	
 	
 	
