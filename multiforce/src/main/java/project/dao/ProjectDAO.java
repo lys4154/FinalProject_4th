@@ -29,7 +29,7 @@ public interface ProjectDAO {
 	
 	//전체 프로젝트
 	List<ProjectDTO> getAllProjects();
-<<<<<<< HEAD
+
 
 	//후원한 프로젝트 페이지 -> 후원 내역 상세
 	ProjectDTO getProjectDetail(int projectSeq);
@@ -37,8 +37,7 @@ public interface ProjectDAO {
 	
 	
 	
-=======
-	
+
 	//only 승인
 	List<ProjectDTO> getAllApprovedProjects();
 	
@@ -54,5 +53,5 @@ public interface ProjectDAO {
 	
 
 
->>>>>>> 630471aa118c9ead4fc0b6dd2a34d65273c1a66f
+
 }
