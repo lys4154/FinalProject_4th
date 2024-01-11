@@ -44,8 +44,4 @@ public interface ProjectDAO {
 	
 	//승인 대기 프로젝트 개수
 	int unapprovedCount();
-	
-	
-
-
 }
