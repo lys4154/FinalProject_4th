@@ -82,7 +82,7 @@ $(document).ready(function(){
 							<a href="">메세지</a>
 							<a href="">내 프로젝트</a>
 							<a href="">회원정보 수정</a>
-							<a href="logout">로그아웃</a>
+							<a href="/logout">로그아웃</a>
 						</div>
 					</div>
 					`;
