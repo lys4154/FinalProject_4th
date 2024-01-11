@@ -58,8 +58,12 @@ public class ProjectService {
 	
 	//후원 페이지 - 검색
 	public List<ProjectDTO> searchFunded(String searchKeyword, int memberSeq) {
-		return projectDao.searchFunded(searchKeyword, memberSeq);
-		
+		return projectDao.searchFunded(searchKeyword, memberSeq);		
+	}
+
+	//후원한 프로젝트 페이지 -> 후원 내역 상세
+	public ProjectDTO getProjectDetail(int projectSeq) {
+		return projectDao.getProjectDetail(projectSeq);
 	}
 	
 	

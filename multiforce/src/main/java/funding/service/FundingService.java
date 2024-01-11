@@ -37,6 +37,11 @@ public class FundingService {
 		return fundingDao.cancelFunded(memberSeq);
 	}
 
+	//후원한 프로젝트 페이지 -> 후원 내역 상세
+	public FundingDTO getFundedDetail(int fundseq) {
+		return fundingDao.getFundedDetail(fundseq);
+	}
+
 
 
 
