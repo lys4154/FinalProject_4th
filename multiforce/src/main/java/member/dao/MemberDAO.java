@@ -24,5 +24,7 @@ public interface MemberDAO {
 
 	List<MemberDTO> MyFollowingList(List<Integer> getMyFollower);
 
+	MemberDTO getNicknameById(int member_seq);
+
 	
 }

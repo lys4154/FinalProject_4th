@@ -24,7 +24,7 @@ public interface BoardDAO {
 	// CS 댓글 insert
 	void saveCsComment(BoardDTO comment_dto);
 
-	BoardDTO getCsCommentsById(int help_ask_seq);
+	List<BoardDTO> getCsCommentsById(int help_ask_seq);
 	
 
 }
