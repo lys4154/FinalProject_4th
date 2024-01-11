@@ -8,5 +8,9 @@
 		<typeAlias type="member.dto.FollowDTO" alias="followdto"/>
 		<typeAlias type="project.dto.ProjectDTO" alias="projectdto"/>		
 		<typeAlias type="funding.dto.FundingDTO" alias="fundingdto"/>		
+		<typeAlias type="project.dto.BundleDTO" alias="bundledto"/>		
+		<typeAlias type="project.dto.ItemDTO" alias="itemdto"/>	
+		<typeAlias type="project.dto.ItemOptionDTO" alias="itemoptiondto"/>	
+		<typeAlias type="project.dto.FundingBundleCountDTO" alias="countdto"/>
 	</typeAliases>
 </configuration>
