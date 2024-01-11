@@ -158,7 +158,6 @@ public class ProjectDTO {
 		this.delivery_date = delivery_date;
 	}
 	
-	
 	@Override
 	public String toString() {
 		return "ProjectDTO [project_seq=" + project_seq + ", member_seq=" + member_seq + ", content=" + content
@@ -170,6 +169,4 @@ public class ProjectDTO {
 				+ ", account=" + account + ", main_images_url=" + main_images_url + ", delivery_date=" + delivery_date
 				+ "]";
 	}
-
-
 }

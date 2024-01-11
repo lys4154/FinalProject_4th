@@ -28,19 +28,19 @@
 <div class="menuTab">
 	<ul class="menu">
 		<li class="tab_info">
-			<a class href="#tab_info">기본정보</a>
+			<a class href="tab_info">기본정보</a>
 		</li>
 		
 		<li class="tab_fundingPlan">
-			<a class href="#tab_fundingPlan">펀딩 계획</a>
+			<a class href="tab_fundingPlan">펀딩 계획</a>
 		</li>
 		
 		<li class="tab_gift">
-			<a class href="#tab_gift">상품 구성</a>
+			<a class href="tab_gift">상품 구성</a>
 		</li>
 		
 		<li class="tab_projectPlan">
-			<a class href="#tab_projectPlan">기본정보</a>
+			<a class href="tab_projectPlan">기본정보</a>
 		</li>
 	</ul>
 	

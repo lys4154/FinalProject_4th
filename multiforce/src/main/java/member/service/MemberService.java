@@ -32,6 +32,10 @@ public class MemberService {
 		return memberDao.MyFollowingList(getMyFollower);
 	}
 
+	public MemberDTO getNicknameById(int member_seq) {
+		return memberDao.getNicknameById(member_seq);
+	}
+
 
 
 }

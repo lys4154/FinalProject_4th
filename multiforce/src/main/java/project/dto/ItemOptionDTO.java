@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class ItemOptionDTO {
 	
-
 	int item_option_seq;
 	int item_seq;
 	String item_option_name;
@@ -37,10 +36,5 @@ public class ItemOptionDTO {
 	public String toString() {
 		return "ItemOptionDTO [item_option_seq=" + item_option_seq + ", item_seq=" + item_seq + ", item_option_name="
 				+ item_option_name + "]";
-	}
-	
-	
-	
-	
-	
+	}	
 }

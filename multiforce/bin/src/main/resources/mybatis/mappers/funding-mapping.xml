@@ -40,4 +40,14 @@
 </select>
 
 
+<!-- 후원한 프로젝트 페이지 -> 후원 내역 상세 -->
+<select id="getFundedDetail" parameterType="int" resultType="fundingdto">
+	select * from funding where fund_seq=#{fundseq}
+</select>
+
+
+
+
+
+
 </mapper>

@@ -43,7 +43,7 @@ public class boardService {
 		
 	}
 
-	public BoardDTO getCsCommentsById(int help_ask_seq) {
+	public List<BoardDTO> getCsCommentsById(int help_ask_seq) {
 		return boardDAO.getCsCommentsById(help_ask_seq);
 	}
 

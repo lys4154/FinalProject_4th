@@ -1,6 +1,10 @@
 package board.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,12 +19,17 @@ import board.dto.BoardDTO;
 import board.dto.updateBoardDTO;
 import board.service.boardService;
 import jakarta.servlet.http.HttpSession;
+import member.dto.MemberDTO;
+import member.service.MemberService;
 import project.dto.ProjectDTO;
 
 @Controller
 public class BoardController {
 	@Autowired
 	private boardService boardService;
+	
+	@Autowired
+	private MemberService member;
 	
 	@GetMapping("update/write")
 	public String WriteUpdateBoard() {
@@ -59,6 +68,7 @@ public class BoardController {
         return "board/cs_write"; 
     }
 	
+	//게시물 리스트 페이징
 	@GetMapping("board_list/cs")
 	public String showAllCsPosts(Model model, @RequestParam(defaultValue = "0") int page) {
 		int pageSize = 10; // 한 페이지에 보여줄 게시물 수
@@ -74,16 +84,34 @@ public class BoardController {
 	    return "board/cs_board_list"; // cs_board_list로 값 전달
 	}
 	
+	//1:1 게시물 글보기, 댓글정보 보내기
 	@GetMapping("cs/read_post/{help_ask_seq}")
 	public String showPostDetail(@PathVariable("help_ask_seq") int help_ask_seq, Model model) {
         BoardDTO board = boardService.getCsPostById(help_ask_seq);
-        BoardDTO board_comment = boardService.getCsCommentsById(help_ask_seq);
+        List<BoardDTO> board_comment = boardService.getCsCommentsById(help_ask_seq);
+        MemberDTO post_writer = member.getNicknameById(board.getMember_seq());
+        
+        List<Map<String, String>> comments = new ArrayList<>();
+        
+        for (BoardDTO comment : board_comment) {
+        	Map<String, String> commentMap = new HashMap<>();
+        	MemberDTO nick = member.getNicknameById(board.getMember_seq());
+            commentMap.put("nickname", nick.getNickname());
+            commentMap.put("content", comment.getContent());
+            commentMap.put("date", comment.getHelp_ask_date().toString());
+            
+            comments.add(commentMap);
+        }
 
-        model.addAttribute("board_comment",board_comment);
+        model.addAttribute("comments", comments);
+        
+        model.addAttribute("board_comment",board_comment); //댓글들
         model.addAttribute("board", board);
+        model.addAttribute("post_writer",post_writer.getNickname()); //게시물 작성자 닉네임 
         return "board/cs_board_read";
     }
 
+	// 댓글 작성 POST
 	@PostMapping("cs_comment")
 	public String writeCsComment(@RequestParam String comment
 			,@RequestParam int post_id, Model model) {
@@ -102,6 +130,7 @@ public class BoardController {
 		
 	}
 	
+	//1:1 게시물 등록 POST
 	@PostMapping("boardwrite")
     public String writeProcess(@RequestParam String title,
                                @RequestParam String contents,

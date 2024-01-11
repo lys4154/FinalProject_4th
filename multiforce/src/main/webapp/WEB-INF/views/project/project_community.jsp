@@ -20,10 +20,13 @@
     </div>
     
 
-    <div class="comment">
-        <input type="text" placeholder="댓글을 작성해주세요...">
-        <button>등록</button>
-    </div>
+    <form action="/cs_comment" method="POST">
+    <label for="comment_text">댓글:</label><br>
+    <input type="hidden" name="post_id" value="${board.help_ask_seq}">
+    <textarea id="comment_text" name="comment" rows="4" cols="50"></textarea><br><br>
+    <input type="submit" value="댓글 작성">
+</form>
+
 </section>
 </body>
 </html>

@@ -20,7 +20,7 @@
         </dl>
         <dl>
             <dt>글쓴이</dt>
-            <dd>${board.member_seq}</dd>
+            <dd>${post_writer}</dd>
         </dl>
         <dl>
             <dt>작성일</dt>
@@ -44,7 +44,19 @@
     <input type="submit" value="댓글 작성">
 </form>
 
+<!-- 댓글 표시 div 영역 -->
 <div>
+<c:forEach var="comment" items="${comments}">
+    <div>
+        <p><b>Comment ID:</b>
+        <fmt:parseDate var="parsedDate" value="${comment.date}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
+			<fmt:formatDate value="${parsedDate}" pattern="yyyy-MM-dd" />
+        </p>
+        <p><b>Author:</b> ${comment.nickname}</p>
+        <p><b>Content:</b> ${comment.content}</p>
+        <!-- 추가 필요한 속성들에 대해 필요한대로 출력 -->
+    </div>
+</c:forEach>
 </div>
 
 </body>
