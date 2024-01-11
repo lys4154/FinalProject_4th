@@ -14,6 +14,24 @@
     select * from project where
 </select>
 
+<select id="getAllApprovedProjects" resultType="projectdto">
+    select * from project where approval_status=true
+</select>
+
+<select id="getAllUnapprovedProjects" resultType="projectdto">
+    select * from project where approval_status=false
+</select>
+
+<select id="approvedCount" resultType="int">
+    select count(*) from project where approval_status=true
+</select>
+
+<select id="unapprovedCount" resultType="int">
+    select count(*) from project where approval_status=false
+</select>
+
+
+
 
 <!-- 후원한 프로젝트 페이지 - 후원 진행중 -->
 <select id="ongoingProject" parameterType="java.util.List" resultType="projectdto">

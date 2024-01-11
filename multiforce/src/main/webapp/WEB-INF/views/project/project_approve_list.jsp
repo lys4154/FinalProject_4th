@@ -9,34 +9,39 @@
 <html>
 <head>
     <title>Project Table</title>
-
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
     <h1>Project Table</h1>
-    <table border="1">
-    <thead>
-        <tr>
-            <th>프로젝트 번호</th>
-            <th>회원 번호</th>
-            <th>목표 금액</th>
-            <th>제목</th>
-            <th>카테고리</th>
-            <th>승인 여부</th>
-        </tr>
-    </thead>
-    <tbody>
-        <c:forEach items="${projects}" var="project">
-            <tr>
-                <td>${project.projectSeq}</td>
-                <td>${project.memberSeq}</td>
-                <td>${project.goalPrice}</td>
-                <td>${project.shortTitle}</td>
-                <td>${project.category}</td>
-                <td>${project.shareCount}</td>
-            </tr>
-        </c:forEach>
-    </tbody>
-</table>
+    
+    <div id="menu">
+        <a href="#" onclick="getApproveList('unapproved')">승인 대기 (${unapprovedCount})</a>
+        <a href="#" onclick="getApproveList('approved')">승인 완료 (${approvedCount})</a>
+    </div>
+    
+
+    
+    <!-- 리스트 보여질 div -->
+    <div id="list_box">
+    </div>
+    
+
+
+<script>
+function getApproveList(approve_status){
+	$.ajax({
+		url: '/approve_list/'+approve_status,
+		method:'GET',
+		success: function(data){
+			$('#list_box').html(data);
+		},
+		error:function(){
+			alert("에러남");
+		}
+	});
+}
+</script>
+
 
 </body>
 </html>

@@ -21,17 +21,12 @@
 <script src="/js/jquery-3.7.1.min.js"></script>
 <script>
 $(document).ready(function(){
-// ==========헤더의 로그인 버튼 클릭시 파라미터로 원래 있던 페이지에 대한 정보 넘겨주면서 로그인 페이지로====================
-	console.log(window.location.pathname);
-	let fromPath = window.location.pathname.substring(1) == "" ? "mainpage" : window.location.pathname.substring(1);
-	$("#login_btn").attr("href", "login?from=" + fromPath)
-	
 // =======================카테고리 이벤트=========================
 	$("#category").on("mouseenter", function(e){
 		$("#category_list").css("display","block");
 	});
 	
-	$("#navigator").on("mouseleave", function(e){
+	$("#category_list").on("mouseleave", function(e){
 		$("#category_list").css("display","none");
 	});
 	
@@ -47,13 +42,16 @@ $(document).ready(function(){
 		"강아지 슬개골 탈구 예방 미끄럼 방지 실리콘 패드"
 	];
 	
-	$("#search").on("input", function(){
+	$("#search").on("keyup", function(){
 		let result = "";
 		let checkWord = $("#search").val();
+		let ko_reg = /[ㄱ-ㅎㅏ-ㅣ]{1}/g;
 		$("#search_result").html();
 		
 		if(checkWord == ""){
 			$("#search_result").html();
+		}else if(ko_reg.test(checkWord)){
+			
 		}else{
 			for(let i = 0; i < dummyProjectNameArr.length; i++){
 				if(dummyProjectNameArr[i].includes(checkWord)){
@@ -75,7 +73,7 @@ $(document).ready(function(){
 	//로그인 상태일 때
 	} else {
 		let html = `<div id = "login_wrap">
-						이미지 태그, ${login_user_name}<br>
+						프로필 사진, ${login_user_name}(클릭시 메뉴)<br>
 						<div id="my_menu_list" style="display:none">
 							<a href="">프로필</a>
 							<a href="">후원 프로젝트</a>
@@ -84,7 +82,7 @@ $(document).ready(function(){
 							<a href="">메세지</a>
 							<a href="">내 프로젝트</a>
 							<a href="">회원정보 수정</a>
-							<a href="">로그아웃</a>
+							<a href="logout">로그아웃</a>
 						</div>
 					</div>
 					`;
@@ -98,13 +96,19 @@ $(document).ready(function(){
 			$("#my_menu_list").css("display", "block");
 		}
 	})
+	// ==========헤더의 로그인 버튼 클릭시 파라미터로 원래 있던 페이지에 대한 정보 넘겨주면서 로그인 페이지로====================
+	let fromPath = window.location.pathname.substring(1) == "" ? "mainpage" : window.location.pathname.substring(1);
+	$("#login_btn").attr("href", "login?from=" + fromPath)
 });
 
 </script>
 <header>
 	<div>
-		<h1><a href="">멀티포스 펀딩</a></h1>
-		<input id="search" type="text">
+		<h1><a href="/">멀티포스 펀딩</a></h1>
+		<form>
+			<input id="search" type="text">
+			<input type="button" value="검색">
+		</form>
 		<div id="search_result"></div>
 	</div>
 	<div id="navigator">
@@ -113,9 +117,7 @@ $(document).ready(function(){
 		<a href="">인기</a>
 		<a href="">마감임박</a>
 		<button><a href="">프로젝트 등록</a></button>
-		<div id = "change_part">
-			
-		</div>
+		<div id = "change_part"></div>
 		<%
 		HashMap<String, String> categoryNameMap = new HashMap<>();
 		categoryNameMap.put("보드게임", "board_game");

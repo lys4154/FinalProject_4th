@@ -21,6 +21,25 @@ public class ProjectService {
 	public List<ProjectDTO> getAllProjects() {
         return projectDao.getAllProjects(); 
     }
+	
+	public List<ProjectDTO> getAllApprovedProjects() {
+        return projectDao.getAllApprovedProjects(); 
+    }
+	
+	public List<ProjectDTO> getAllUnapprovedProjects() {
+        return projectDao.getAllUnapprovedProjects(); 
+    }
+	
+	
+	//승인 프로젝트 개수
+	public int approvedCount() {
+		return projectDao.approvedCount();
+	}
+		
+	//승인 프로젝트 개수
+	public int unapprovedCount() {
+		return projectDao.unapprovedCount();
+	}
 
 	//후원 페이지 - 진행중
 	public List<ProjectDTO> ongoingProject(List<Integer> ongoingProjectSeq) {

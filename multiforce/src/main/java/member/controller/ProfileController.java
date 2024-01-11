@@ -45,7 +45,7 @@ public class ProfileController {
 	@Autowired
 	private ItemService itemservice;
 
-	//커밋
+	
 	@GetMapping("/profile")
 	public String profile() {		
 		return "member/profile";
