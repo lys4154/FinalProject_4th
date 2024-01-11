@@ -13,6 +13,11 @@ public class BundleService {
 	@Autowired
 	private BundleDAO bundleDao;
 
-	
+	//후원 상세 - 번들
+	public List<BundleDTO> getBundle(List<Integer> bundleList) {
+		return bundleDao.getBundle(bundleList);
+	}
+
+
 
 }

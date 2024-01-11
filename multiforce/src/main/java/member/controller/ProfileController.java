@@ -3,8 +3,9 @@ package member.controller;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -23,9 +24,13 @@ import member.dto.MemberDTO;
 import member.service.FollowService;
 import member.service.MemberService;
 import project.dto.BundleDTO;
+import project.dto.FundingBundleCountDTO;
 import project.dto.ProjectDTO;
 import project.dto.ItemDTO;
+import project.dto.ItemOptionDTO;
 import project.service.BundleService;
+import project.service.FundingBundleCountService;
+import project.service.ItemOptionService;
 import project.service.ItemService;
 import project.service.ProjectService;
 
@@ -44,6 +49,10 @@ public class ProfileController {
 	private BundleService bundleservice;
 	@Autowired
 	private ItemService itemservice;
+	@Autowired
+	private ItemOptionService itemoptionservice;
+	@Autowired
+	private FundingBundleCountService countservice;
 
 	
 	@GetMapping("/profile")
@@ -157,7 +166,6 @@ public class ProfileController {
     }
  
 	
-	
     
     //후원한 프로젝트 페이지
 	@RequestMapping("/funded")
@@ -210,8 +218,7 @@ public class ProfileController {
 		return mv;
 	}
 
-
-    
+ 
 
 	//후원한 프로젝트 페이지 - 검색 --- 추가필요(선물이름, 창작자도 가능하게) 
     @GetMapping("/funded_search")
@@ -221,9 +228,7 @@ public class ProfileController {
 		session.setAttribute("member_seq", 6);
 
 		int memberSeq = (int)session.getAttribute("member_seq");
-//		System.out.println(myprojectList); //4개 확인		
-//		System.out.println(keyword.toString());//키워드 확인
-		
+
 		String searchKeyword = keyword.toString();
 		List<ProjectDTO> searchFunded = projectservice.searchFunded(searchKeyword, memberSeq); //프로젝트 긴제목 또는 짧은제목 + 회원번호 일치 조건
 																							//선물 이름으로도 검색 가능하게.
@@ -235,36 +240,58 @@ public class ProfileController {
     }
 
 	
-
 	
 
 	//후원 프로젝트 상세
 	@GetMapping("/funded_detail/{fund_seq}")			
 	ModelAndView fundedDetail (@PathVariable int fund_seq) {
-		int fundseq = fund_seq;
+		int fundseq = fund_seq;//후원번호
 		FundingDTO getFundedDetail = fundingservice.getFundedDetail(fundseq); //후원정보		
-		int projectSeq = getFundedDetail.getProject_seq();
+		int projectSeq = getFundedDetail.getProject_seq();//프로젝트번호
 		
 		ProjectDTO getProjectDetail = projectservice.getProjectDetail(projectSeq); //프로젝트정보
 		
 		LocalDateTime dueDate = getProjectDetail.getDue_date();
 		LocalDateTime currentTime = LocalDateTime.now();
 		int dDay = (int) ChronoUnit.DAYS.between(currentTime, dueDate); // 남은기한
+
+				
+		//꾸러미가 여러개일 수 있다.
+		List<FundingBundleCountDTO> getCount = countservice.getCount(fundseq); //후원번호로 꾸러미 개수 찾기 -> 꾸러미 2000, 2001 2개.
+		List<Integer> bundleList = new ArrayList<>();
+		for (FundingBundleCountDTO seq : getCount) {
+			bundleList.add(seq.getBundle_seq());
+		}		
+				
+		List<BundleDTO> getBundle = bundleservice.getBundle(bundleList); //꾸러미 찾기		
+		List<ItemDTO> getItem = itemservice.getItem(bundleList);	//아이템 찾기
+		List<Integer> itemList = new ArrayList<>();
+		for (ItemDTO seq : getItem) {
+			itemList.add(seq.getItem_seq());
+		}
+
+		List<ItemOptionDTO> getItemOption = itemoptionservice.getItemOption(itemList); //옵션찾기
 		
-//		List<BundleDTO> getBundle = bundleservice.getBundle(projectSeq);//꾸러미(번들)
-//		int bundleSeq = getBundle.getBundle_seq();
 
 		
-//		List<ItemDTO> getItem = itemservice.getItem(bundleSeq);
-//		System.out.println(getItem);
 		
 		
 		
-		ModelAndView mv = new ModelAndView();
-//		mv.addObject("getItem", getItem); //남은기한
-		mv.addObject("dDay", dDay); //남은기한
+		
+		
+		
+		
+		
+		
+
+		ModelAndView mv = new ModelAndView();		
 		mv.addObject("fundedDetail", getFundedDetail); //후원정보
 		mv.addObject("projectDetail", getProjectDetail); //프로젝정보
+		mv.addObject("dDay", dDay); //남은기한
+		mv.addObject("getCount", getCount); //꾸러미개수
+		mv.addObject("getBundle", getBundle); //꾸러미정보
+		mv.addObject("getItem", getItem); //아이템정보
+		mv.addObject("getItemOption", getItemOption); //아이템의옵션		
 		mv.setViewName("member/funded_detail");		
 		return mv;
 	}

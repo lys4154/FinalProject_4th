@@ -6,9 +6,11 @@
 <mapper namespace="project.dao.ItemDAO">
 
 <!-- 후원 상세 - 아이템 -->
-<select id="getItem" parameterType="int" resultType="itemdto">
-	select * from item where bundle_seq=#{bundleSeq}
+<select id="getItem" parameterType="java.util.List" resultType="itemdto">
+	select * from item where bundle_seq in
+	<foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+		#{item}
+	</foreach>
 </select>
-
 
 </mapper>	
