@@ -3,17 +3,16 @@
 	<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="project.dao.BundleDAO">
+<mapper namespace="project.dao.ItemOptionDAO">
 
-<!-- 후원 상세 - 꾸러미 -->
-<select id="getBundle" parameterType="java.util.List" resultType="bundledto">
-	select * from bundle where bundle_seq in
+<!-- 후원 상세 - 아이템의 옵션 -->
+<select id="getItemOption" parameterType="java.util.List" resultType="itemoptiondto">
+	select * from item_option where item_seq in
 	<foreach collection="list" item="item" index="index" open="(" separator="," close=")">
 		#{item}
-	</foreach>
+	</foreach>	
 </select>
 
 
 </mapper>	
-
 

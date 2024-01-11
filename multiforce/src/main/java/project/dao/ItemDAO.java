@@ -11,5 +11,10 @@ import project.dto.ItemDTO;
 @Repository
 @Mapper
 public interface ItemDAO {
+	
+	//후원 상세 - 아이템
+	List<ItemDTO> getItem(List<Integer> bundleList);
+
+	
 
 }

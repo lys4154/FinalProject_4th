@@ -41,6 +41,7 @@
  	 		url = "cashpay";
  	 	} else {
  	 		document.getElementById("result").innerHTML = "결제수단을 선택해주세요.";
+ 	 		ev.preventDefault();
  	 		// 이 경우에는 팝업창이 나오면 안 됨
  	 	}	 	
  	 	popup(url);	 	

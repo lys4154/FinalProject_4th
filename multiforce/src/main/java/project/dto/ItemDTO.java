@@ -28,6 +28,10 @@ public class ItemDTO {
 	public void setItem_name(String item_name) {
 		this.item_name = item_name;
 	}
+	@Override
+	public String toString() {
+		return "ItemDTO [item_seq=" + item_seq + ", bundle_seq=" + bundle_seq + ", item_name=" + item_name + "]";
+	}
 	
 	
 	

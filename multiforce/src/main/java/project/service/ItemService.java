@@ -13,5 +13,11 @@ public class ItemService {
 	
 	@Autowired
 	private ItemDAO itemdao;
+	
+	//후원 상세 - 아이템
+	public List<ItemDTO> getItem(List<Integer> bundleList) {
+		return itemdao.getItem(bundleList);
+	}
+
 
 }
