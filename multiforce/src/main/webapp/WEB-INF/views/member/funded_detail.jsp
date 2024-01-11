@@ -12,17 +12,21 @@
 <script>
 $(document).ready(function() {	
 
+	${fundedDetail.track_num}
 	if (${dDay} < 0) {
 		$("#pro_status").html("펀딩 종료")
 		$("#d_day").html("펀딩 종료")
 	}
 	
-
-	console.log(${getItem})
+	if (${fundedDetail.track_num }.equals() == null) {
+		#("track_num").html("등록된 운송장이 없습니다.")
+	}
 	
 })
 
 </script>
+
+
 
 
 <body>
@@ -49,39 +53,40 @@ $(document).ready(function() {
 	</div>
 <p>
 
-${projectDetail}
-
-${fundedDetail}
-
-
 
 	<div style="border: 2px solid; ">
-		<div>선물 정보</div> <input type="button" value="변경"><br>
-		<div>선물 구성 </div> <div >꾸러미 이름</div><br>
+		<div>
+			<div>선물 정보</div>
+		</div>
+		 
+		<div>선물 구성 </div>
+		<c:forEach var="bundle" items="${getBundle }" varStatus="current">
+		</c:forEach>
+		<div >꾸러미 이름</div><br>
 			<ul>
 			<li> 아이템 이름 </li>
 				<div> 아이템</div>
 			</ul>
-		<div>배송 예정일, 전달 예정</div><br>
-		<div>후원 금액 </div> <div id="총금액">50000원</div>
+		<div>배송 예정일 </div> <div>${projectDetail.delivery_date.toLocalDate()}</div>
+		<div>후원 금액 </div> <div >${fundedDetail.price }</div>
 	</div>
 <p>
 
 	<div style="border: 2px solid; ">
-		<div>결제 정보</div> <input type="button" value="변경"><br>
-		<div>결제 수단 </div> <div id="결제 수단">신용카드</div><br>
-		<div>결제 금액 </div> <div id="총금액">50000원</div><br>
-		<div>결제 상태 </div> <div id="프로젝트 종료일자+1"> 24.01.05 </div> <div>결제 예정</div><br>
+		<div>결제 정보</div> 
+		<div>결제 수단 </div> <div> ${fundedDetail.pay_option }</div>
+		<div>결제 금액 </div> <div> ${fundedDetail.price }</div>
+		<div>결제 상태 </div> <div> ${fundedDetail.fund_duedate.toLocalDate().plusDays(1)} 결제 예정</div>
 	</div>
 <p>
 
 	<div style="border: 2px solid; ">
-		<div>배송 정보</div> <input type="button" value="변경"><br>
-		<div>받는 사람 </div> <div id="받는분 성함">받는분 성함</div><br>
-		<div>연락처 </div> <div id="받는분 전화번호">010-3333-3333</div><br>
-		<div>주소 </div> (<div id="우편번호">우편번호</div>) <div id="받는분 주소">받는분 주소 </div>
-		<div id="상세주소">상세 주소(동,호수)</div><br>
-		<div>운송장 번호 </div> <div id="운송장">운송장 번호</div>
+		<div>배송 정보</div>
+		<div>받는 사람 </div> <div> ${fundedDetail.name}</div>
+		<div>연락처 </div> <div> ${fundedDetail.phone }</div><br>
+		<div>주소 </div> <div>(${fundedDetail.postalcode })</div> <div> ${fundedDetail.address }</div>
+		<div> ${fundedDetail.address_detail }</div><br>
+		<div>운송장 번호 </div> <div id="track_num" >${fundedDetail.track_num }</div>
 		<p>
 		
 		<input type="button" value="후원 목록 보기">

@@ -6,13 +6,16 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 import project.dto.BundleDTO;
+import project.dto.FundingBundleCountDTO;
 
 @Repository
 @Mapper
-public interface BundleDAO {
+public interface FundingBundleCountDAO {
 
-	//후원 상세 - 번들
-	List<BundleDTO> getBundle(List<Integer> bundleList);
+	//후원 상세 - 꾸러미 개수 
+	List<FundingBundleCountDTO> getCount(int fundseq);
 
-	
+
 }
+
+
