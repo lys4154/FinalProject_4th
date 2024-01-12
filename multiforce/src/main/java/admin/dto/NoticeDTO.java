@@ -15,6 +15,14 @@ public class NoticeDTO {
 	boolean del_status;
 	String del_date;
 	
+	
+	
+	public int getNotice_seq() {
+		return notice_seq;
+	}
+	public void setNotice_seq(int notice_seq) {
+		this.notice_seq = notice_seq;
+	}
 	public String getTitle() {
 		return title;
 	}

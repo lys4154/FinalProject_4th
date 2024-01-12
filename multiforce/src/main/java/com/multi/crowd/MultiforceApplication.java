@@ -13,10 +13,12 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan(basePackages="project")
 @ComponentScan(basePackages="admin")
 @ComponentScan(basePackages="config")
+@ComponentScan(basePackages="summernote")
 @MapperScan(basePackages="board")
 @MapperScan(basePackages="funding")
 @MapperScan(basePackages="member")
 @MapperScan(basePackages="project")
+@MapperScan(basePackages="admin")
 @SpringBootApplication
 @ComponentScan
 public class MultiforceApplication{

@@ -62,12 +62,13 @@ $(document).ready(function(){
 		$("#search_result").html(result);
 	})
 //		===============================로그인 상태에 따라 change_part부분 다르게====================================
+	//url 경로 무조건 절대 경로로 주기
 	let loginUserId = '${login_user_id}';
 	//로그인 상태 아닐때
 	if (loginUserId == 'null' || loginUserId == null || loginUserId == '') {
 		let html = `<div id = "logout_wrap">
-						<a id="login_btn" href="login">로그인</a>
-						<a href="signup">회원가입</a>
+						<a id="login_btn" href="/login">로그인</a>
+						<a href="/signup">회원가입</a>
 					</div>`;
 		$("#change_part").html(html);
 	//로그인 상태일 때

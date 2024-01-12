@@ -19,11 +19,22 @@ if(login_user_level != "2"){
 	location.href = "/";
 }
 
-$(document).ready(function() {
-	//dto가 들어있다면
-	//$("#notice_form").attr("action","/notice/modify");
-	//입력칸에 값들 그대로 입력해주기
+$(document).ready(function(){
+	//수정인지 확인 및 값 채워넣기
+	if("${dto.notice_seq}" != ""){
+		$("#notice_form").attr("action","/notice/modify");
+		$("#title").val("${dto.title}");
+		$("#summernote").val("${dto.content}");
+		$("option[value='${dto.category}']").attr("selected", true);
+		if("${dto.category}" == "event"){
+			$("#event_priod").css("display","inline-block");
+			$("#event_start_date").val("2023-08-07 02:08:44");
+			$("#event_end_date").val("2023-08-07 02:08:44");
+		}
+		$("#write_btn").val("수정");
+	}
 	$("#title").focus();
+	
 	$('#summernote').summernote({
 		width:1000,
 		height: 500,                 // 에디터 높이
@@ -51,6 +62,8 @@ $(document).ready(function() {
 	function uploadImageFile(file, editor) {
 		data = new FormData();
 		data.append("file", file);
+		data.append("path", "C:\\fullstack\\workspace_springboot\\images\\notices\\");
+		data.append("url", "/noticesimages/");
 		$.ajax({
 			data : data,
 			type : "POST",
@@ -64,16 +77,17 @@ $(document).ready(function() {
 		});
 	}
 	
-	$("#category").on("change",function(){
-		if($("#category").val() == "event"){
+	$("#notice_category").on("change", function(){
+		console.log($("#category").val());
+		console.log("테스트");
+		if($("#notice_category").val() == "event"){
 			$("#event_priod").css("display","inline-block");
 		}else{
 			$("#event_priod").css("display","none");
 		}
 	});
-	
-	$("#event_start_date").on("change", eventStartCheck);
 
+	$("#event_start_date").on("change", eventStartCheck);
 	function eventStartCheck(){
 		if(new Date($("#event_start_date").val()) - Date.now() <= 0 ||$("#event_start_date").val() == ""){
 			alert("시작날짜를 다시 설정해주세요");
@@ -117,7 +131,7 @@ $(document).ready(function() {
 
 <form id="notice_form" method="post" action="/notices/detail">
 	<input type="text" id="title" name="title" placeholder="제목을 입력해주세요">
-	<select id="category" name="category">
+	<select id="notice_category" name="category">
 		<option value="notice">공지사항</option>
 		<option value="event">이벤트</option>
 	</select>
@@ -127,7 +141,7 @@ $(document).ready(function() {
 		이벤트 종료<input id="event_end_date" name="event_end_date" type="datetime-local">
 	</div>
 	<textarea id="summernote" name="content"></textarea>
-	<button id="write_btn">등록</button>
+	<input type="submit" id="write_btn" value="등록">
 </form>
 </body>
 </html>
