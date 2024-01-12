@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import board.dto.BoardDTO;
+import board.dto.CommunityDTO;
 
 @Repository
 @Mapper
@@ -25,6 +26,8 @@ public interface BoardDAO {
 	void saveCsComment(BoardDTO comment_dto);
 
 	List<BoardDTO> getCsCommentsById(int help_ask_seq);
+
+	void saveCommunityPost(CommunityDTO com_post);
 	
 
 }
