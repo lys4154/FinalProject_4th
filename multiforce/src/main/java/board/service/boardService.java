@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import board.dto.BoardDTO;
+import board.dto.CommunityDTO;
 import board.dto.updateBoardDTO;
 import project.dao.ProjectDAO;
 import project.dto.ProjectDTO;
@@ -20,6 +21,8 @@ public class boardService {
 
     @Autowired
     private UpdateBoardDAO updateBoardDAO;
+    
+    
     
 
     
@@ -45,6 +48,11 @@ public class boardService {
 
 	public List<BoardDTO> getCsCommentsById(int help_ask_seq) {
 		return boardDAO.getCsCommentsById(help_ask_seq);
+	}
+
+	public void saveCommunityPost(CommunityDTO com_post) {
+		boardDAO.saveCommunityPost(com_post);
+		
 	}
 
 
