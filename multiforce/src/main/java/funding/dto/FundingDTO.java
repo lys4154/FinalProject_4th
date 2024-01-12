@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Component;
 
+
 @Component
 public class FundingDTO {
 	int fund_seq;	
@@ -169,6 +170,8 @@ public class FundingDTO {
 				+ track_status + "]";
 	}
 	
+	
+
 	
 }
 
