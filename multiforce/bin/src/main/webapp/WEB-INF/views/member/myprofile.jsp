@@ -33,7 +33,7 @@ $(document).ready(function() {
 	 
 	 $("#myproject_detail").click(function() {
              $.ajax({
-                type: "post",
+                type: "get",
                 url: "/getMyproject",
                 success: function(response) {
                 	console.log(response); // 받은 JSON 데이터 확인
@@ -55,7 +55,7 @@ $(document).ready(function() {
 	 
 	 $("#funded_detail").click(function() {
             $.ajax({
-                type: "post",
+                type: "get",
                 url: "/getFunded",
                 success: function(response) {
                 	console.log(response); // 받은 JSON 데이터 확인
@@ -64,7 +64,7 @@ $(document).ready(function() {
                 		$(".result").append("<div> 후원한 프로젝트가 없습니다. </div>");
                 	} else {
         	            for (var i = 0; i < response.length; i++) {
-        	                $(".result").append("<div>" + response[i].name + "</div>");
+        	                $(".result").append("<div>" + response[i].long_title + "</div>");
         	            }     		
                 	}                 
                 },
@@ -78,7 +78,7 @@ $(document).ready(function() {
 	    
 	 $("#follower_detail").click(function() {
             $.ajax({
-                type: "post",
+                type: "get",
                 url: "/getFollower",
                 success: function(response) {
                 	console.log(response); // 받은 JSON 데이터 확인
@@ -102,7 +102,7 @@ $(document).ready(function() {
 	 
 	 $("#following_detail").click(function() {
             $.ajax({
-                type: "post",
+                type: "get",
                 url: "/getFollowing",
                 success: function(response) {
                 	console.log(response); // 받은 JSON 데이터 확인

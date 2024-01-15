@@ -25,4 +25,8 @@
     <select id="getCsCommentsById" resultType="board.dto.BoardDTO">
 	    select * from help_ask where parent_seq = #{help_ask_seq}
 	</select>
+	 <insert id="saveCommunityPost" parameterType="board.dto.BoardDTO">
+        INSERT INTO community_board (project_seq, member_seq, category, content)
+        VALUES (#{project_seq}, #{member_seq}, #{category}, #{content})
+    </insert>
 </mapper>

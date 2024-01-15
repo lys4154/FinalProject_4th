@@ -26,15 +26,18 @@ public class NoticeController {
 	@Autowired
 	NoticeService service;
 	@GetMapping("/notices")
-	public ModelAndView notices(String category, String page) {
+	public ModelAndView notices(String category, String page, String query) {
 		if(page == null || page.equals("")) {
 			page = "1";
 		}
 		if(category == null || category.equals("")) {
 			category = "notice";
 		}
+		if(query == null || query.equals("")) {
+			query = "";
+		}
 		int parsedPage = Integer.parseInt(page);
-		HashMap<String, Object> resultMap = service.selectPagingNotices(category, parsedPage);
+		HashMap<String, Object> resultMap = service.selectPagingNotices(category, parsedPage, query);
 		@SuppressWarnings("unchecked")
 		List<NoticeDTO> list = (List<NoticeDTO>)resultMap.get("list");
 		Integer totalPage = (Integer)resultMap.get("totalPage");
@@ -44,45 +47,39 @@ public class NoticeController {
 		mv.addObject("totalPage", totalPage);
 		mv.addObject("nowPage", parsedPage);
 		mv.addObject("category", category);
+		mv.addObject("query", query);
 		mv.setViewName("admin/notices");
 		return mv;
 	}
 	
 	@GetMapping("/notices/write")
 	public String noticesWrite(String seq, Model m) {
-		if(seq != null) {
-			//seq로 dto 채워오기
-			//dto Model에 추가
-			if(seq.equals("")) {
-				System.out.println("seq테스트");
-			}
-			NoticeDTO dto = new NoticeDTO();
-			dto.setCategory("event");
-			dto.setNotice_seq(1);
-			dto.setTitle("테스트");
-			dto.setWrite_date("2023-01-02");
-			dto.setContent("<h1>테스트qwdqwwqdwdwq</h1>");
+		if(!seq.equals("")||seq != null) {
+			int parsedSeq = Integer.parseInt(seq);
+			NoticeDTO dto = service.selectNotice(parsedSeq);
 			m.addAttribute("dto", dto);
-			System.out.println("작동확인");
 		}
 		return "admin/notice_write";
 	}
 		
 	@GetMapping("/notices/detail")
 	public ModelAndView noticeDetail(String seq, NoticeDTO dtoAfterInsert) {
+		ModelAndView mv = new ModelAndView();
 		if(seq == null || seq.equals("")) {
 			//seq없이 접근 시도시
 		}
 		int parsedSeq = Integer.parseInt(seq);
-		ModelAndView mv = new ModelAndView();
-		
 		if(dtoAfterInsert.getTitle() == null) {
-			//seq로 dto 채워오기
 			NoticeDTO dto = service.selectNotice(parsedSeq);
-			mv.addObject("dto", dto);
+			if(dto == null || dto.getTitle() == null) {
+				System.out.println("if내부");
+				mv.addObject("result", "false");
+			}else {
+				mv.addObject("result", "true");
+				mv.addObject("dto", dto);
+			}
 			mv.setViewName("admin/notice_detail");
 		}else {
-
 			mv.addObject("dto", dtoAfterInsert);
 			mv.setViewName("admin/notice_detail");
 		}
@@ -97,7 +94,25 @@ public class NoticeController {
 	
 	@PostMapping("/notice/modify")
 	public ModelAndView modifyNotice(NoticeDTO dto) {
-		//dto db 수정
-		return noticeDetail("", dto);
+		NoticeDTO dto2 = service.modifyNotice(dto);
+		return noticeDetail(dto2.getNotice_seq() + "", dto2);
 	}
+	
+	@PostMapping("deletenotice")
+	@ResponseBody
+	public String deleteNotice(int notice_seq) {
+		int result = service.deleteNotice(notice_seq);
+		if(result == 0) {
+			return "{\"result\": \"" + false + "\"}";
+		}else {
+			return "{\"result\": \"" + true + "\"}";
+		}
+	}
+	
+	@GetMapping("/notices/discover")
+	public ModelAndView discoverNotice(String query, String category) {
+		return notices(category, "", query);
+	}
+	
+	
 }
