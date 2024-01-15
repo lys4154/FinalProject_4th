@@ -113,6 +113,12 @@ public class ProjectController {
 		return "project/tab_info";
 	}
 	
+	@PostMapping("/projectInfo")
+	public String projectInfo(ProjectDTO dto, Model model) {
+		model.addAttribute("dto", dto);
+		return "project/projectmain";
+	}
+	
 	@RequestMapping("/tab_fundingPlan")
 	public String tabFundingPlan() {
 		return "project/tab_fundingPlan";
@@ -126,6 +132,10 @@ public class ProjectController {
 	@RequestMapping("/tab_projectPlan")
 	public String tabProjectPlan() {
 		return "project/tab_projectPlan";
-
+	}
+	
+	@RequestMapping("/projectmain")
+	public String projectMain() {
+		return "project/projectmain";
 	}
 }
