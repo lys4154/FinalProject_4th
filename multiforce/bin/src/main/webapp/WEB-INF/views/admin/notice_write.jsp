@@ -23,14 +23,13 @@ $(document).ready(function(){
 	//수정인지 확인 및 값 채워넣기
 	if("${dto.notice_seq}" != ""){
 		$("#notice_form").attr("action","/notice/modify");
-		$("#notice_seq").val("${dto.notice_seq}");
 		$("#title").val("${dto.title}");
-		$("#summernote").val('${dto.content}');
+		$("#summernote").val("${dto.content}");
 		$("option[value='${dto.category}']").attr("selected", true);
 		if("${dto.category}" == "event"){
 			$("#event_priod").css("display","inline-block");
-			$("#event_start_date").val("${dto.event_start_date}");
-			$("#event_end_date").val("${dto.event_end_date}");
+			$("#event_start_date").val("2023-08-07 02:08:44");
+			$("#event_end_date").val("2023-08-07 02:08:44");
 		}
 		$("#write_btn").val("수정");
 	}
@@ -131,7 +130,6 @@ $(document).ready(function(){
 <h1>공지사항 작성</h1>
 
 <form id="notice_form" method="post" action="/notices/detail">
-	<input type="hidden" id="notice_seq" name="notice_seq">
 	<input type="text" id="title" name="title" placeholder="제목을 입력해주세요">
 	<select id="notice_category" name="category">
 		<option value="notice">공지사항</option>

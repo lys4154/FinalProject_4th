@@ -14,6 +14,7 @@ public class NoticeService {
 
 	@Autowired
 	NoticeDAO dao;
+	private int numberPerPage = 10;
 	
 	public NoticeDTO enrollNotice(NoticeDTO dto) {
 		if(dto.getCategory().equals("event")){
@@ -25,27 +26,46 @@ public class NoticeService {
 		return dao.selectNoticewithDTO(dto);
 	}
 
-	public HashMap<String, Object> selectPagingNotices(String category, int page) {	
-		int noticesCount = 0;
-		int numberPerPage = 10;
-		//페이지 당 10개
-		if(category.equals("event")) {
-			noticesCount = dao.noticesCount(category);
+	public HashMap<String, Object> selectPagingNotices(String category, int page, String query) {	
+		List<NoticeDTO> list = null;
+		Integer totalPage = 0;
+		if(query == null ||query.equals("")) {
+			int noticesCount = dao.noticesCount(category);
+			int noticesStart = (page - 1) * numberPerPage;
+			totalPage = noticesCount % numberPerPage == 0 ? noticesCount / numberPerPage 
+					: noticesCount / numberPerPage + 1;
+			
+			list = dao.selectPagingNotices(category, noticesStart, numberPerPage);
 		}else {
-			noticesCount = dao.noticesCount(category);
+			int noticesCount = dao.noticesCountWithQuery(category, query);
+			int noticesStart = (page - 1) * numberPerPage;
+			totalPage = noticesCount % numberPerPage == 0 ? noticesCount / numberPerPage 
+					: noticesCount / numberPerPage + 1;
+			list = dao.selectPagingNoticesWithQuery(category, noticesStart, numberPerPage, query);
 		}
-		int noticesStart = (page - 1) * numberPerPage;
-		Integer totalPage = noticesCount % numberPerPage == 0 ? noticesCount / numberPerPage 
-				: noticesCount / numberPerPage + 1;
 		HashMap<String, Object> resultMap = new HashMap<>();
-		List<NoticeDTO> list = dao.selectPagingNotices(category, noticesStart, numberPerPage);
 		resultMap.put("list", list);
 		resultMap.put("totalPage", totalPage);
-		
 		return resultMap;
 	}
 
 	public NoticeDTO selectNotice(int seq) {
 		return dao.selectNotice(seq);
 	}
+
+	public NoticeDTO modifyNotice(NoticeDTO dto) {
+		int result = 0;
+		if(dto.getCategory().equals("event")) {
+			result = dao.updateEvent(dto);
+		}else {
+			result = dao.updateNotice(dto);
+		}
+		return dao.selectNotice(dto.getNotice_seq());
+		
+	}
+
+	public int deleteNotice(int notice_seq) {
+		return dao.updateDelStatus(notice_seq);
+	}
+
 }

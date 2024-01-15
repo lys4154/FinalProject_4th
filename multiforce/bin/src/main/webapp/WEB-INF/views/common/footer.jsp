@@ -12,8 +12,8 @@
 
 </script>
 <footer>
-<a href="notices?category=notice">공지사항</a>
-<a href="notices?category=event">이벤트</a>
+<a href="notices?category=notice&page=1">공지사항</a>
+<a href="notices?category=event&page=1">이벤트</a>
 <a href="">팀소개</a>
 <a href="">고객센터 1대1 문의</a>
 

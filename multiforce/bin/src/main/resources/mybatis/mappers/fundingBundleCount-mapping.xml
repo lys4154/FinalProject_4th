@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+	<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="project.dao.FundingBundleCountDAO">
+
+
+<!-- 후원 상세 - 꾸러미 개수  -->
+<select id="getCount" parameterType="int" resultType="countdto">
+	select * from funding_bundle_count where fund_seq=#{fundseq}
+</select>
+	
+</mapper>	

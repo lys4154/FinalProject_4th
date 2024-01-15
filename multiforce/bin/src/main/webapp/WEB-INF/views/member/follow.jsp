@@ -13,38 +13,42 @@
 
 <script>
 $(document).ready(function() {	
-
-	 $("#funded_detail").click(function() {
-         $.ajax({
-             type: "post",
-             url: "/getFunded",
-             success: function(response) {
-             	console.log(response); // 받은 JSON 데이터 확인
-             	$(".result").empty();
-             	if(response.length == 0) {
-             		$(".result").append(
-             				"<div> 후원한 프로젝트가 없습니다. </div>" +
-                            "<button id='backToMain'> 프로젝트 둘러보기 </button>"
-                   		 );
+	
+	function fundedDetailClick() {
+        $.ajax({
+            type: "get",
+            url: "/getFunded",
+            success: function(response) {
+            	console.log(response); // 받은 JSON 데이터 확인
+            	$(".result").empty();
+            	if(response.length == 0) {
+            		$(".result").append(
+            				"<div> 후원한 프로젝트가 없습니다. </div>" +
+                           "<button id='backToMain'> 프로젝트 둘러보기 </button>"
+                  		 );
 	                    $("#backToMain").click(function() {
 	                    	location.href = '/';		//최종 메인페이지 넣기
 	                    });
-             	} else {
-     	            for (var i = 0; i < response.length; i++) {
-     	                $(".result").append("<div>" + response[i].name + "</div>");
-     	            }     		
-             	}                 
-             },
-             error: function(error) {
-                 console.log(error);
-             }
-         });	        
-	    }); //후원한 프로젝트 클릭
+            	} else {
+    	            for (var i = 0; i < response.length; i++) {
+    	                $(".result").append("<div>" + response[i].member_seq + "번 회원 </div>");
+    	            }     		
+            	}                 
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });		
+	}//후원한 프로젝트 초기
+	
+	fundedDetailClick();	
+    $("#funded_detail").click(fundedDetailClick);
+	//후원한 프로젝트 클릭   
 	   
 	    
 	 $("#following_detail").click(function() {
             $.ajax({
-                type: "post",
+                type: "get",
                 url: "/getFollowing",
                 success: function(response) {
                 	console.log(response); // 받은 JSON 데이터 확인
@@ -66,7 +70,7 @@ $(document).ready(function() {
 	    
 	 $("#follower_detail").click(function() {
             $.ajax({
-                type: "post",
+                type: "get",
                 url: "/getFollower",
                 success: function(response) {
                 	console.log(response); // 받은 JSON 데이터 확인
@@ -102,7 +106,7 @@ $(document).ready(function() {
 <h1>팔로우</h1>
 <p>
 <div><!-- 상단 선택바 고정 -->
-	<div id="funded_detail" style="cursor:pointer;"> 후원한 창작자 </div>
+	<div id="funded_detail" style="cursor:pointer;" > 후원한 창작자 </div>
 	<div id="following_detail" style="cursor:pointer;"> 팔로잉 </div>
 	<div id="follower_detail" style="cursor:pointer;"> 팔로워 </div>
 </div>
