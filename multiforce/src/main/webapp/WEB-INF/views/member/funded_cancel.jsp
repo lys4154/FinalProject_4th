@@ -9,6 +9,24 @@
 <title>Insert title here</title>
 <script src="http://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+	
+	
+
+    });
+
+</script>
+
+
+
+
+
+
+
+
 <body>
 
 <h1>후원이 취소되었습니다.</h1>
