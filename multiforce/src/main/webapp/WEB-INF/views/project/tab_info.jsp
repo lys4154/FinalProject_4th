@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>기본정보</title>
 <style>
     li {
       list-style: none;
@@ -38,6 +38,7 @@
 <h1>프로젝트 정보</h1>
 <!-- header -->
 <hr>
+<form action="/projectInfo" method="post">
 <div class="contents">
 	<div class="planContents">
 		<div class="projectItem_itemDesign">
@@ -112,6 +113,8 @@
 	</div>
 	<hr>
 </div>
+<button type="submit">저장</button>
+</form>
 <!-- footer -->
 
 <script> // 이미지 관련 스크립트
