@@ -52,6 +52,20 @@ public class ProjectController {
 		return "project/project_approve_list";
 		
 	}
+	@GetMapping("project_reject/{project_seq}")
+	public String showRejectDetail(Model model, @PathVariable("project_seq") int project_seq) {
+		ProjectDTO project_detail = projectService.getProjectDetail(project_seq);
+		model.addAttribute("project", project_detail);
+		return "project/project_reject";
+	}
+	
+	//프로젝트 반려 and 승인 상세
+	@GetMapping("project_approve_detail/{project_seq}")
+	public String showApproveDetail(Model model, @PathVariable("project_seq") int project_seq) {
+		ProjectDTO project_detail = projectService.getProjectDetail(project_seq);
+		model.addAttribute("project", project_detail);
+		return null;
+	}
 	
 	//승인 리스트
 	@GetMapping("approve_list/approved")

@@ -33,6 +33,9 @@ public class boardService {
     public void saveUpdateBoard(updateBoardDTO dto) {
         updateBoardDAO.insertUpdateBoard(dto);
     }
+    public List<updateBoardDTO> getAllUpdatePost(int project_seq){
+    	return updateBoardDAO.getAllUpdatePost(project_seq);
+    }
     
     public List<BoardDTO> getAllCsPosts(){
 		return boardDAO.getAllCsPosts();

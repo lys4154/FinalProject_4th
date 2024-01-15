@@ -13,6 +13,10 @@
 	    select * from help_ask
 	</select>
 	
+	<select id="getAllUpdatePost" resultType="board.dto.updateBoardDTO">
+	    select * from update_board where project_seq = #{project_seq}
+	</select>
+	
 	<select id="getCsPostById" resultType="board.dto.BoardDTO">
 	    select * from help_ask where help_ask_seq = #{help_ask_seq}
 	</select>
@@ -30,3 +34,4 @@
         VALUES (#{project_seq}, #{member_seq}, #{category}, #{content})
     </insert>
 </mapper>
+

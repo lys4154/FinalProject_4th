@@ -1,5 +1,8 @@
 package board.dao;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -8,17 +11,12 @@ import board.dto.BoardDTO;
 import board.dto.updateBoardDTO;
 
 @Repository
-public class UpdateBoardDAO {
-	
-	@Autowired
-	private final SqlSession sqlSession;
+@Mapper
+public interface UpdateBoardDAO {
 	
 	
-    public UpdateBoardDAO(SqlSession sqlSession) {
-        this.sqlSession = sqlSession;
-    }
+	void insertUpdateBoard(updateBoardDTO dto);
 	
-	public void insertUpdateBoard(updateBoardDTO dto) {
-		sqlSession.insert("insertUpdateBoard", dto);
-	}
+	List<updateBoardDTO> getAllUpdatePost(int project_seq);
+
 }

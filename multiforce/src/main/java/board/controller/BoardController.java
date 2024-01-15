@@ -22,12 +22,14 @@ import jakarta.servlet.http.HttpSession;
 import member.dto.MemberDTO;
 import member.service.MemberService;
 import project.dto.ProjectDTO;
+import project.service.ProjectService;
 
 @Controller
 public class BoardController {
 	@Autowired
 	private boardService boardService;
-	
+	@Autowired
+	private ProjectService projectService;
 	@Autowired
 	private MemberService member;
 	
@@ -37,6 +39,13 @@ public class BoardController {
         return "board/update_write"; 
     }
 	
+	//업데이트 글읽기
+	@GetMapping("update/view/{project_seq}")
+	public String UpdateShow(Model model, @PathVariable("project_seq") int project_seq) {
+		BoardDTO project_dto = (BoardDTO) boardService.getAllUpdatePost(project_seq);
+		model.addAttribute("project", project_dto);
+		return "board/update_view";
+	}
 	@PostMapping("update_write")
 	 public String updateWriteProcess(
              @RequestParam String contents,
