@@ -14,8 +14,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import funding.dto.FundingDTO;
@@ -317,17 +319,23 @@ public class ProfileController {
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	//후원 취소
-	@GetMapping("/funded_cancel")
-	public String funded_cancel() {		
-		return "member/funded_cancel";
-	}
+	//후원 상세에서 취소로 ajax 받기
+    @PostMapping("/funded_cancel/{fundSeq}")
+    public ModelAndView funded_cancel(@PathVariable int fundSeq, @RequestBody Map<String, Object> bundleData) {
+        System.out.println(fundSeq);
+        System.out.println(bundleData);
+
+        
+
+        ModelAndView mv = new ModelAndView();
+        mv.addObject("fundSeq", fundSeq);
+        mv.setViewName("member/funded_cancel"); 
+        
+
+        return mv;
+    }
+
+
 	
 	
 	//찜한 프로젝트

@@ -17,7 +17,7 @@ public class FundingService {
 	@Autowired
 	private FundingDAO fundingDao;
 
-	//마이페이지 - 후원한 프로젝트(진행중만 나오게 수정해야함)
+	//마이페이지 - 후원한 프로젝트
 	public List<FundingDTO> getFundedProject(int memberSeq) {
 		return fundingDao.getFundedProject(memberSeq);
 	}

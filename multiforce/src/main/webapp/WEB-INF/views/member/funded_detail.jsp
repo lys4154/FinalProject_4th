@@ -20,14 +20,65 @@
 <script>
 $(document).ready(function() {	
 
-	if (${dDay} < 0) {
-		$("#pro_status").html("펀딩 종료")
-		$("#d_day").html("펀딩 종료")
+	if ("${dDay}" < 0) {
+	    $("#pro_status").html("펀딩 종료")
+	    $("#d_day").html("펀딩 종료")
 	}
+
+	if ("${trackNum}" == 0) {
+	    $("#track_num").html("등록된 운송장이 없습니다.")
+	}
+		
 	
-	if (${trackNum } == 0) {
-		$("#track_num").html("등록된 운송장이 없습니다.")
-	}
+	//ajax로 넘길 꾸러미 정보 
+	var bundleData = [
+	   <c:forEach var="bundleEntry" items="${bundleItem}" varStatus="status">
+	     {
+	       name: "${bundleEntry.key}",
+	       count: ${bundleCount[bundleEntry.key]},
+	       items: [
+	         <c:forEach var="itemEntry" items="${bundleEntry.value}" varStatus="innerStatus">
+	           {
+	             itemName: "${itemEntry}",
+	             options: [
+	               <c:forEach var="optionEntry" items="${itemOption[itemEntry]}" varStatus="optionStatus">
+	                 "${optionEntry}"<c:if test="${!optionStatus.last}">, </c:if>
+	               </c:forEach>
+	             ]
+	           }<c:if test="${!innerStatus.last}">, </c:if>
+	         </c:forEach>
+	       ]
+	     }<c:if test="${!status.last}">, </c:if>
+	   </c:forEach>
+	 ];	
+	
+
+		
+	$("#cancel").click(function() {
+		let fundSeq = ${fundedDetail.fund_seq };
+		let longTitle = "${projectDetail.long_title}";
+		
+		
+        $.ajax({
+            type: "POST",
+            url: "/funded_cancel/" + fundSeq,
+            contentType: "application/json",
+            data: JSON.stringify({
+                fundSeq: fundSeq,
+                longTitle: longTitle,
+                bundleData: bundleData
+            }),
+            success: function(response) {
+                window.location.href = "/funded_cancel";
+
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    });
+	
+	
 	
 })
 
@@ -127,7 +178,7 @@ $(document).ready(function() {
 					</div>
 			      <div class="modal-footer">
 		        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">후원 유지</button>
-		        <button type="button" class="btn btn-secondary">그래도 취소</button>
+		        <button type="button" class="btn btn-secondary" id="cancel" onclick="location='../funded_cancel'">그래도 취소</button>
 		      </div>
 		    </div>
 		  </div>
