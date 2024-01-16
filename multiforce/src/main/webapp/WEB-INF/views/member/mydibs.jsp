@@ -25,7 +25,7 @@ $(document).ready(function() {
         $.ajax({
             type: "POST",
             url: "/getDibsOngoing",
-            contentType: "application/json", 
+            contentType: "application/json"
             data: {projectSeqArray: projectSeqArray},
             success: function(response) {
                 console.log(response); // 받은 JSON 데이터 확인
