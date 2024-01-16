@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -16,11 +17,9 @@ import member.service.MemberService;
 @Controller
 public class MemberController {
 	
-
 	@Autowired
 	MemberService memberService;
 
-	
 	@GetMapping("/login")
 	public String login() {
 		return "member/login";
@@ -48,9 +47,21 @@ public class MemberController {
 			}
 			return "redirect:/" + from;
 		}else {
-			m.addAttribute("fail_id", id);
-			m.addAttribute("result", "실패");
-			return "member/login";
+			MemberDTO result = memberService.loginProcess(id, pw);
+			if(result != null) {
+				session.setAttribute("login_user_id", result.getMember_id());
+				session.setAttribute("login_user_level", result.getLevel());
+				session.setAttribute("login_user_name", result.getMember_name());
+				session.setAttribute("login_user_seq", result.getMember_seq());
+				if(from.equals("mainpage")) {
+					return "redirect:/";
+				}
+				return "redirect:/" + from;
+			}else {
+				m.addAttribute("fail_id", id);
+				m.addAttribute("result", "실패");
+				return "member/login";
+			}
 		}
 	}
 	
@@ -72,8 +83,9 @@ public class MemberController {
 	@PostMapping("/iddupcheck")
 	@ResponseBody
 	public String idDupCheck(String id) {
-		boolean isUniqueId = true;
-		if(id.equals("testid")) {
+		boolean isUniqueId = false;
+		MemberDTO result = memberService.idDupCheck(id);
+		if(result != null) {
 			isUniqueId = false;
 		}else {
 			isUniqueId = true;
@@ -84,8 +96,9 @@ public class MemberController {
 	@PostMapping("/nicknamedupcheck")
 	@ResponseBody
 	public String nicknameDupCheck(String nickname) {
-		boolean isUniqueNickname = true;
-		if(nickname.equals("testnn")) {
+		boolean isUniqueNickname = false;
+		MemberDTO result = memberService.nicknameDupCheck(nickname);
+		if(result != null) {
 			isUniqueNickname = false;
 		}else {
 			isUniqueNickname = true;
@@ -94,20 +107,18 @@ public class MemberController {
 	}
 	
 	@PostMapping("/welcome")
-	public ModelAndView welcome(MemberDTO dto) {
-		System.out.println(dto.getAddress());
-		System.out.println(dto.getEmail());
-		System.out.println(dto.getMember_id());
-		System.out.println(dto.getMember_name());
-		System.out.println(dto.getNickname());
-		System.out.println(dto.getPassword());
-		
-		ModelAndView mv = new ModelAndView();
-		mv.addObject("member_name", dto.getMember_name());
-		mv.setViewName("member/welcome");
-		return mv;
+	public String welcome(MemberDTO dto, Model m){
+		int result = memberService.signUp(dto);
+		if(result == 1) {
+			m.addAttribute("result", "true");
+			m.addAttribute("member_name", dto.getMember_name());
+			return "member/welcome";
+		}else {
+			m.addAttribute("result", "false");
+			return "member/welcome";
+		}
 	}
-	
+
 	@GetMapping("/findid")
 	public String findId() {
 		return "member/find_id";
