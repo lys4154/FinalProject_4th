@@ -23,7 +23,6 @@ public class MemberService {
 		return	memberDao.getMyproject(memberSeq); 
 	}
 
-
 	public List<MemberDTO> MyFollowerList(List<Integer> getMyFollower) {
 		return memberDao.MyFollowerList(getMyFollower);
 	}
@@ -34,6 +33,27 @@ public class MemberService {
 
 	public MemberDTO getNicknameById(int member_seq) {
 		return memberDao.getNicknameById(member_seq);
+	}
+
+	public MemberDTO loginProcess(String id, String pw) {
+		return memberDao.loginProcess(id, pw);
+	}
+
+	public MemberDTO idDupCheck(String id) {
+		return memberDao.selectMemberById(id);
+	}
+
+	public MemberDTO nicknameDupCheck(String nickname) {
+		return  memberDao.selectMemberByNickName(nickname);
+	}
+
+	public MemberDTO emailDupCheck(String email) {
+		return memberDao.selectMemberByEmail(email);
+		
+	}
+
+	public int signUp(MemberDTO dto) {
+		return memberDao.insertMember(dto);
 	}
 
 

@@ -22,7 +22,8 @@ if(login_user_level != "2"){
 $(document).ready(function(){
 	//수정인지 확인 및 값 채워넣기
 	if("${dto.notice_seq}" != ""){
-		$("#notice_form").attr("action","/notice/modify");
+		$("#notice_form").attr("action","/notice/modify")
+			.append("<input type='hidden' id='notice_seq' name='notice_seq'>");
 		$("#notice_seq").val("${dto.notice_seq}");
 		$("#title").val("${dto.title}");
 		$("#summernote").val('${dto.content}');
@@ -79,18 +80,16 @@ $(document).ready(function(){
 	}
 	
 	$("#notice_category").on("change", function(){
-		console.log($("#category").val());
-		console.log("테스트");
 		if($("#notice_category").val() == "event"){
 			$("#event_priod").css("display","inline-block");
 		}else{
 			$("#event_priod").css("display","none");
 		}
 	});
-
+	
 	$("#event_start_date").on("change", eventStartCheck);
 	function eventStartCheck(){
-		if(new Date($("#event_start_date").val()) - Date.now() <= 0 ||$("#event_start_date").val() == ""){
+		if(new Date($("#event_start_date").val()) - Date.now() <= 0 || $("#event_start_date").val() == ""){
 			alert("시작날짜를 다시 설정해주세요");
 			return false;
 		}else{
@@ -118,9 +117,9 @@ $(document).ready(function(){
 		}else if($("#summernote").val() == null || $("#summernote").val() == ""){
 			alert("내용을 입력해주세요");
 			e.preventDefault();
-		}else if($("#category").val() == "event" && !eventStartCheck()){
+		}else if($("#notice_category").val() == "event" && !eventStartCheck()){
 			e.preventDefault();
-		}else if($("#category").val() == "event" && !eventEndCheck()){
+		}else if($("#notice_category").val() == "event" && !eventEndCheck()){
 			e.preventDefault();
 		}
 	});
@@ -131,7 +130,6 @@ $(document).ready(function(){
 <h1>공지사항 작성</h1>
 
 <form id="notice_form" method="post" action="/notices/detail">
-	<input type="hidden" id="notice_seq" name="notice_seq">
 	<input type="text" id="title" name="title" placeholder="제목을 입력해주세요">
 	<select id="notice_category" name="category">
 		<option value="notice">공지사항</option>

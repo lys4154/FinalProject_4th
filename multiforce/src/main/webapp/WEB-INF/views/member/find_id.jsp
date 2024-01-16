@@ -38,10 +38,12 @@ $(document).ready(function(){
 			dataType: 'json',
 			success: function(response){
 				$("#sending_msg").css("display","none");
-				if(response.result == "true"){
+				if(response.result == "전송 완료"){
 					alert("메일을 발송했습니다. 메일을 확인해주세요.");
-				}else{
-					alert("알 수 없는 오류로 메일이 발송되지 않았습니다.<br>잠시 후 다시 시도해주세요.");	
+				}else if(response.result == "메일 전송 오류"){
+					alert("오류로 메일이 발송되지 않았습니다. 잠시 후 다시 시도해주세요.");	
+				}else if(response.result == "결과 없음"){
+					alert("가입되지 않은 이메일입니다");
 				}
 			},
 			error: function(request, e){
@@ -53,6 +55,7 @@ $(document).ready(function(){
 });
 </script>
 <body>
+<h1>아이디 찾기</h1>
 회원가입 시 사용했던 이메일을 입력해주세요<br>
 <input type="text" class="text" id="user_email" placeholder="이메일을 입력해주세요" >
 @

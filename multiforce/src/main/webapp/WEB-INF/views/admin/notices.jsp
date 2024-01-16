@@ -41,7 +41,7 @@ $(document).ready(function(){
 	int totalPage = (int)request.getAttribute("totalPage");
 	int nowPage = (int)request.getAttribute("nowPage");
 	String query = "";
-	if(!request.getAttribute("query").equals("")){
+	if(request.getAttribute("query") != null && !request.getAttribute("query").equals("")){
 		query = "&query=" + request.getAttribute("query");
 	}
 	

@@ -14,12 +14,16 @@ public class MemberDTO {
 	String nickname;
 	String profile_img;
 	String email;
-	String address;
 	String description;
 	int level;
 	boolean gender;
 	boolean resign;
 	LocalDateTime resign_date;
+	int postcode;
+	String road_address;
+	String jibun_address;
+	String extra_address;
+	String detail_address;
 	
 	
 	public MemberDTO() {
@@ -28,8 +32,9 @@ public class MemberDTO {
 	
 	
 	public MemberDTO(int member_seq, String member_id, String password, String member_name, String nickname,
-			String profile_img, String email, String address, String description, int level, boolean gender,
-			boolean resign, LocalDateTime resign_date) {
+			String profile_img, String email, String description, int level, boolean gender, boolean resign,
+			LocalDateTime resign_date, int postcode, String road_address, String jibun_address, String extra_address,
+			String detail_address) {
 		super();
 		this.member_seq = member_seq;
 		this.member_id = member_id;
@@ -38,15 +43,48 @@ public class MemberDTO {
 		this.nickname = nickname;
 		this.profile_img = profile_img;
 		this.email = email;
-		this.address = address;
 		this.description = description;
 		this.level = level;
 		this.gender = gender;
 		this.resign = resign;
 		this.resign_date = resign_date;
+		this.postcode = postcode;
+		this.road_address = road_address;
+		this.jibun_address = jibun_address;
+		this.extra_address = extra_address;
+		this.detail_address = detail_address;
 	}
 
-
+	public int getPostcode() {
+		return postcode;
+	}
+	public void setPostcode(int postcode) {
+		this.postcode = postcode;
+	}
+	public String getRoad_address() {
+		return road_address;
+	}
+	public void setRoad_address(String road_address) {
+		this.road_address = road_address;
+	}
+	public String getJibun_address() {
+		return jibun_address;
+	}
+	public void setJibun_address(String jibun_address) {
+		this.jibun_address = jibun_address;
+	}
+	public String getExtra_address() {
+		return extra_address;
+	}
+	public void setExtra_address(String extra_address) {
+		this.extra_address = extra_address;
+	}
+	public String getDetail_address() {
+		return detail_address;
+	}
+	public void setDetail_address(String detail_address) {
+		this.detail_address = detail_address;
+	}
 	public int getMember_seq() {
 		return member_seq;
 	}
@@ -89,12 +127,6 @@ public class MemberDTO {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String getAddress() {
-		return address;
-	}
-	public void setAddress(String address) {
-		this.address = address;
-	}
 	public String getDescription() {
 		return description;
 	}
@@ -131,12 +163,11 @@ public class MemberDTO {
 	public String toString() {
 		return "MemberDTO [member_seq=" + member_seq + ", member_id=" + member_id + ", password=" + password
 				+ ", member_name=" + member_name + ", nickname=" + nickname + ", profile_img=" + profile_img
-				+ ", email=" + email + ", address=" + address + ", description=" + description + ", level=" + level
-				+ ", gender=" + gender + ", resign=" + resign + ", resign_date=" + resign_date + "]";
+				+ ", email=" + email + ", description=" + description + ", level=" + level + ", gender=" + gender
+				+ ", resign=" + resign + ", resign_date=" + resign_date + ", postcode=" + postcode + ", road_address="
+				+ road_address + ", jibun_address=" + jibun_address + ", extra_address=" + extra_address
+				+ ", detail_address=" + detail_address + "]";
 	}
 
-
-	
-	
 			
 }
