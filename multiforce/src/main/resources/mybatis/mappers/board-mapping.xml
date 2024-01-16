@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="board.dao.BoardDAO">
     <insert id="insertBoard" parameterType="board.dto.BoardDTO">
         INSERT INTO help_ask (title, content, member_seq)
         VALUES (#{title}, #{content}, #{member_seq})
     </insert>
-    <insert id="insertUpdateBoard" parameterType="board.dto.updateBoardDTO">
-        INSERT INTO update_board (project_seq, member_seq, content)
-        VALUES (#{projectSeq}, #{memberSeq}, #{content})
-    </insert>
+    
     <select id="getAllCsPosts" resultType="board.dto.BoardDTO">
 	    select * from help_ask
 	</select>
 	
-	<select id="getAllUpdatePost" resultType="board.dto.updateBoardDTO">
-	    select * from update_board where project_seq = #{project_seq}
-	</select>
+	
+
+
 	
 	<select id="getCsPostById" resultType="board.dto.BoardDTO">
 	    select * from help_ask where help_ask_seq = #{help_ask_seq}
