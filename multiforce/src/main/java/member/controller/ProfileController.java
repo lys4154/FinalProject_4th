@@ -1,8 +1,12 @@
 package member.controller;
 
+import java.io.Console;
+import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +15,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,8 +25,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import funding.dto.FundingDTO;
 import funding.service.FundingService;
+import jakarta.mail.Session;
 import jakarta.servlet.http.HttpSession;
 import member.dto.MemberDTO;
 import member.service.FollowService;
@@ -35,6 +47,7 @@ import project.service.BundleService;
 import project.service.FundingBundleCountService;
 import project.service.ItemOptionService;
 import project.service.ItemService;
+import project.service.ProjectDibsService;
 import project.service.ProjectService;
 
 @Controller
@@ -56,6 +69,8 @@ public class ProfileController {
 	private ItemOptionService itemoptionservice;
 	@Autowired
 	private FundingBundleCountService countservice;
+	@Autowired
+	private ProjectDibsService dibsservice;
 
 	
 	@GetMapping("/profile")
@@ -319,30 +334,71 @@ public class ProfileController {
 	
 	
 	
-	//후원 상세에서 취소로 ajax 받기
-    @PostMapping("/funded_cancel/{fundSeq}")
-    public ModelAndView funded_cancel(@PathVariable int fundSeq, @RequestBody Map<String, Object> bundleData) {
-        System.out.println(fundSeq);
-        System.out.println(bundleData);
-
+	//후원 취소 
+    @PostMapping("/funded_cancel")
+    public String funded_cancel(@RequestParam("fundSeqInput") int fundSeq,
+    							@RequestParam("priceInput") int price,
+					            @RequestParam("longTitleInput") String longTitle,
+					            @RequestParam("dueDateInput") String dueDate,
+					            @RequestParam("bundleDataInput") String bundleData,
+					            Model model ) throws JsonMappingException, JsonProcessingException {
+    	
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<Map<String, Object>> bundleDataList = objectMapper.readValue(bundleData, List.class);
         
+        fundingservice.delStatusChange(fundSeq);
 
-        ModelAndView mv = new ModelAndView();
-        mv.addObject("fundSeq", fundSeq);
-        mv.setViewName("member/funded_cancel"); 
-        
+        model.addAttribute("fundSeq", fundSeq);
+        model.addAttribute("price", price);
+        model.addAttribute("dueDate", dueDate);
+        model.addAttribute("longTitle", longTitle);
+        model.addAttribute("bundle", bundleDataList);
 
-        return mv;
+        return "member/funded_cancel";
     }
-
 
 	
 	
 	//찜한 프로젝트
 	@GetMapping("/mydibs")
-	public String mydibs() {		
-		return "member/mydibs";
+	public ModelAndView mydibs(HttpSession session) {
+        // 실제 로그인 시 수정할 부분
+        session.setAttribute("member_seq", 6);
+        
+        int memberSeq = (int) session.getAttribute("member_seq");
+        
+		List<Integer> dibsList = dibsservice.dibsList(memberSeq); //해당 회원의 관심목록
+		List<ProjectDTO> myDibsProject = projectservice.myDibsProject(dibsList); //해당 프로젝트 DTO
+		
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("myDibs", myDibsProject);
+		mv.setViewName("member/mydibs");
+
+		
+		return mv;
 	}
+	
+	
+	//찜한 프로젝트 - 진행중
+	@PostMapping("/getDibsOngoing")
+	@ResponseBody
+	List<ProjectDTO> getDibsOngoing(@RequestParam(value="arr[]") int projectSeqArray) {
+	    List<Integer> projectSeqList = Arrays.asList(projectSeqArray);
+	    List<ProjectDTO> DibsOngoing = projectservice.DibsOngoing(projectSeqList);
+
+	    System.out.println(DibsOngoing);
+	    return null;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

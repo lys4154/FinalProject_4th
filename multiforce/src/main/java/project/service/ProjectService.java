@@ -65,6 +65,21 @@ public class ProjectService {
 	public ProjectDTO getProjectDetail(int projectSeq) {
 		return projectDao.getProjectDetail(projectSeq);
 	}
+
+	//관심 프로젝트 - 전체
+	public List<ProjectDTO> myDibsProject(List<Integer> dibsList) {
+		return projectDao.myDibsProject(dibsList);
+	}
+
+	//관심 프로젝트 - 진행중
+	public List<ProjectDTO> DibsOngoing(List<Integer> projectSeqArray) {
+		System.out.println("서비스 실행");
+		return projectDao.DibsOngoing(projectSeqArray);
+	}
+
+
+
+	
 	
 	
 	

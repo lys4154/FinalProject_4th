@@ -6,18 +6,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import project.dao.ItemDAO;
+import project.dao.ProjectDibsDAO;
 import project.dto.ItemDTO;
 
 @Service
-public class ItemService {
+public class ProjectDibsService {
 	
 	@Autowired
-	private ItemDAO itemDao;
-	
-	//후원 상세 - 아이템
-	public List<ItemDTO> getItem(List<Integer> bundleList) {
-		return itemDao.getItem(bundleList);
+	private ProjectDibsDAO dibsDao;
+
+	//관심 목록
+	public List<Integer> dibsList(int memberSeq) {
+		return dibsDao.dibsList(memberSeq);
 	}
+	
 
 
 }

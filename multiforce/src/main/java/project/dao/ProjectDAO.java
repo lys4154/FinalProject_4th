@@ -44,5 +44,11 @@ public interface ProjectDAO {
 	
 	//승인 대기 프로젝트 개수
 	int unapprovedCount();
+	
+	//관심 프로젝트 - 전체
+	List<ProjectDTO> myDibsProject(List<Integer> dibsList);
+	
+	//관심 프로젝트 - 진행중
+	List<ProjectDTO> DibsOngoing(List<Integer> projectSeqArray);
 }
 
