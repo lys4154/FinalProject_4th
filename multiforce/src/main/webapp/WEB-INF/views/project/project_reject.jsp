@@ -10,6 +10,9 @@
 </head>
 <body>
 
+
+
+<form method="post" action="project_reject">
 <table border=1>
    <tr>
       <td>프로젝트 번호:</td><td>${project.project_seq}</td>
@@ -33,16 +36,18 @@
       <td>승인 버튼:</td><td>${project.approval_status}</td>
    </tr>
    <tr>
-      <td>반려 이유:</td><td><textarea style="height:300px;width:200px;"></textarea></td>
+      <td>반려 이유:</td><td><textarea name="content" style="height:300px;width:200px;"></textarea></td>
    </tr>
    <tr>
       <td colspan=2>                                                                                                                                                                                                                                                                                                                                                                                                                                                          
       <center> <input type="submit" name="submit" value="반려하기"></center>
       </td>
    </tr>
+   <input type="hidden" name="project_seq" id=""project_seq"" value="${project.project_seq}">
    
 
 </table>
+</form>
 
 </body>
 </html>

@@ -423,17 +423,14 @@ $(document).ready(function(){
 				goBack($("#detailAddress"), e, "");
 			}
 		}
-		
 	})
-	
-	
-	
+
 	
 });
 
 </script>
 <body>
-<form action="welcome" method="post">
+<form action="welcome" method="post" id="sign_up_form">
 	<table>
 		<tr>
 			<th>이름</th>
@@ -520,12 +517,12 @@ $(document).ready(function(){
 		<tr>
 			<th>주소</th>
 			<td>
-				<input type="text" id="postcode" placeholder="우편번호" readonly>
+				<input type="text" id="postcode" name="postcode" placeholder="우편번호" readonly>
 				<input type="button" id="find_address" value="우편번호 찾기"><br>
-				<input type="text" id="roadAddress" name="address" placeholder="도로명주소" readonly>
-				<input type="text" id="jibunAddress" placeholder="지번주소" readonly>
-				<input type="text" id="extraAddress" placeholder="참고항목" readonly><br>
-				<input type="text" id="detailAddress" placeholder="상세주소">
+				<input type="text" id="roadAddress" name="road_address" placeholder="도로명주소" readonly>
+				<input type="text" id="jibunAddress" name="jibun_address" placeholder="지번주소" readonly>
+				<input type="text" id="extraAddress" name="extra_address" placeholder="참고항목" readonly><br>
+				<input type="text" id="detailAddress" name="detail_address" placeholder="상세주소">
 			</td>
 		</tr>
 	</table>

@@ -42,10 +42,12 @@ public class BoardController {
 	//업데이트 글읽기
 	@GetMapping("update/view/{project_seq}")
 	public String UpdateShow(Model model, @PathVariable("project_seq") int project_seq) {
-		BoardDTO project_dto = (BoardDTO) boardService.getAllUpdatePost(project_seq);
+		
+		List<updateBoardDTO> project_dto = boardService.getAllUpdatePost(project_seq);
 		model.addAttribute("project", project_dto);
 		return "board/update_view";
 	}
+	
 	@PostMapping("update_write")
 	 public String updateWriteProcess(
              @RequestParam String contents,
@@ -58,15 +60,15 @@ public class BoardController {
 	updateBoardDTO dto = new updateBoardDTO();
 
 	dto.setContent(contents);
-	dto.setMemberSeq(tmpUser);
-	dto.setProjectSeq(tmpProjectSeq);
+	dto.setMember_seq(tmpUser);
+	dto.setProject_seq(tmpProjectSeq);
 	
 	
 	boardService.saveUpdateBoard(dto);
 	
 
 	
-	return "redirect:board/update_write";
+	return "redirect:update/view/"+dto.getProject_seq();
 	}
 
 

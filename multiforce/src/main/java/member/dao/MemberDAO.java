@@ -26,5 +26,15 @@ public interface MemberDAO {
 
 	MemberDTO getNicknameById(int member_seq);
 
+	MemberDTO loginProcess(String member_id, String password);
+
+	MemberDTO selectMemberById(String id);
+
+	MemberDTO selectMemberByNickName(String nickname);
+
+	MemberDTO selectMemberByEmail(String email);
+
+	int insertMember(MemberDTO dto);
+
 	
 }

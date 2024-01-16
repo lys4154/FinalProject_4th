@@ -106,6 +106,8 @@ public class ProjectController {
 		return "project/project_community";
 	}
 	
+	
+	
 	@PostMapping("community_post")
 	public String saveCommunityPost(@RequestParam String post_category, @RequestParam int post_id, 
 			@RequestParam String content) {
