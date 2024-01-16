@@ -42,6 +42,11 @@ public class FundingService {
 		return fundingDao.getFundedDetail(fundseq);
 	}
 
+	//후원 취소
+	public void delStatusChange(int fundSeq) {
+		fundingDao.delStatusChange(fundSeq);
+	}
+
 
 
 

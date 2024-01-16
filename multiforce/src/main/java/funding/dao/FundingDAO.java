@@ -1,13 +1,11 @@
 package funding.dao;
 
-
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 import funding.dto.FundingDTO;
-
 
 @Repository
 @Mapper
@@ -25,7 +23,10 @@ public interface FundingDAO {
 	//후원한 프로젝트 - 취소한 후원
 	List<FundingDTO> cancelFunded(int memberSeq);
 
-	////후원한 프로젝트 페이지 -> 후원 내역 상세
+	//후원한 프로젝트 페이지 -> 후원 내역 상세
 	FundingDTO getFundedDetail(int fundseq);
+
+	//후원 취소
+	void delStatusChange(int fundSeq);
 
 }
