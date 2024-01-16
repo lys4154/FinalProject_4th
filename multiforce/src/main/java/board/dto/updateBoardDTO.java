@@ -6,78 +6,64 @@ public class updateBoardDTO {
 
 
 
-	    private int updateSeq;
-	    private int projectSeq;
-	    private int memberSeq;
+	 	private int update_seq;
+	    private int project_seq;
+	    private int member_seq;
 	    private String content;
-	    private LocalDateTime updateDate;
-	    private Integer updateLikeCount;
-	    private boolean delStatus;
-	    private LocalDateTime delDate;
+	    private LocalDateTime update_date;
+	    private Integer update_like_cnt; 
+	    private int del_status;
+	    private LocalDateTime del_date;
+		public int getUpdate_seq() {
+			return update_seq;
+		}
+		public void setUpdate_seq(int update_seq) {
+			this.update_seq = update_seq;
+		}
+		public int getProject_seq() {
+			return project_seq;
+		}
+		public void setProject_seq(int project_seq) {
+			this.project_seq = project_seq;
+		}
+		public int getMember_seq() {
+			return member_seq;
+		}
+		public void setMember_seq(int member_seq) {
+			this.member_seq = member_seq;
+		}
+		public String getContent() {
+			return content;
+		}
+		public void setContent(String content) {
+			this.content = content;
+		}
+		public LocalDateTime getUpdate_date() {
+			return update_date;
+		}
+		public void setUpdate_date(LocalDateTime update_date) {
+			this.update_date = update_date;
+		}
+		public Integer getUpdate_like_cnt() {
+			return update_like_cnt;
+		}
+		public void setUpdate_like_cnt(Integer update_like_cnt) {
+			this.update_like_cnt = update_like_cnt;
+		}
+		public int getDel_status() {
+			return del_status;
+		}
+		public void setDel_status(int del_status) {
+			this.del_status = del_status;
+		}
+		public LocalDateTime getDel_date() {
+			return del_date;
+		}
+		public void setDel_date(LocalDateTime del_date) {
+			this.del_date = del_date;
+		}
 
-	    public int getUpdateSeq() {
-	        return updateSeq;
-	    }
-
-	    public void setUpdateSeq(int updateSeq) {
-	        this.updateSeq = updateSeq;
-	    }
-
-	    public int getProjectSeq() {
-	        return projectSeq;
-	    }
-
-	    public void setProjectSeq(int projectSeq) {
-	        this.projectSeq = projectSeq;
-	    }
-
-	    public int getMemberSeq() {
-	        return memberSeq;
-	    }
-
-	    public void setMemberSeq(int memberSeq) {
-	        this.memberSeq = memberSeq;
-	    }
-
-	    public String getContent() {
-	        return content;
-	    }
-
-	    public void setContent(String content) {
-	        this.content = content;
-	    }
-
-	    public LocalDateTime getUpdateDate() {
-	        return updateDate;
-	    }
-
-	    public void setUpdateDate(LocalDateTime updateDate) {
-	        this.updateDate = updateDate;
-	    }
-
-	    public Integer getUpdateLikeCount() {
-	        return updateLikeCount;
-	    }
-
-	    public void setUpdateLikeCount(Integer updateLikeCount) {
-	        this.updateLikeCount = updateLikeCount;
-	    }
-
-	    public boolean isDelStatus() {
-	        return delStatus;
-	    }
-
-	    public void setDelStatus(boolean delStatus) {
-	        this.delStatus = delStatus;
-	    }
-
-	    public LocalDateTime getDelDate() {
-	        return delDate;
-	    }
-
-	    public void setDelDate(LocalDateTime delDate) {
-	        this.delDate = delDate;
-	    }
+	    
 	
 
 }
