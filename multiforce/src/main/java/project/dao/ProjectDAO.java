@@ -50,5 +50,8 @@ public interface ProjectDAO {
 	
 	//관심 프로젝트 - 진행중
 	List<ProjectDTO> DibsOngoing(List<Integer> projectSeqArray);
+	
+	//승인된 프로젝트 + 시작날짜 기준 최신순으로 정렬해서 들고오기
+	List<ProjectDTO> getAllApprovedProjectsOrderByStartDate();
 }
 

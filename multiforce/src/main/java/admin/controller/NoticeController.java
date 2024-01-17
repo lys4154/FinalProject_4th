@@ -46,11 +46,12 @@ public class NoticeController {
 		@SuppressWarnings("unchecked")
 		List<NoticeDTO> list = (List<NoticeDTO>)resultMap.get("list");
 		Integer totalPage = (Integer)resultMap.get("totalPage");
+		Integer nowPage = (Integer)resultMap.get("nowPage");
 		
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("list", list);
 		mv.addObject("totalPage", totalPage);
-		mv.addObject("nowPage", parsedPage);
+		mv.addObject("nowPage", nowPage);
 		mv.addObject("category", category);
 		mv.addObject("query", query);
 		mv.setViewName("admin/notices");

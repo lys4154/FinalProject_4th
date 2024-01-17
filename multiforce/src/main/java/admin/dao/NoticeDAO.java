@@ -23,9 +23,8 @@ public interface NoticeDAO {
 	public List<NoticeDTO> selectPagingNotices(String category, int noticesStart, int numberPerPage);
 	public List<NoticeDTO> selectPagingNoticesWithQuery(String category, int noticesStart, int numberPerPage,
 			String query);
-	public List<NoticeDTO> selectPagingEvent(String category, int noticesStart, int numberPerPage);
-	public List<NoticeDTO> selectPagingEventWithQuery(String category, int noticesStart, int numberPerPage,
-			String query);
+	public List<NoticeDTO> selectAllEvent(String category);
+	public List<NoticeDTO> selectAllEventWithQuery(String category, String query);
 	
 	
 }

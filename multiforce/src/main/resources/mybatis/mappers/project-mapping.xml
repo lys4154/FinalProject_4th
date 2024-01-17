@@ -104,7 +104,9 @@
     AND due_date > CURRENT_DATE
 </select>
 
-
+<select id="getAllApprovedProjectsOrderByStartDate" resultType="projectdto">
+    select * from project where approval_status=true order by start_date desc
+</select>
 
 
 </mapper>

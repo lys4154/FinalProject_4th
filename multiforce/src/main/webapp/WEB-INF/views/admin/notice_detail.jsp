@@ -12,7 +12,6 @@
 <script src="/js/jquery-3.7.1.min.js"></script>
 <script>
 if("${result}" == "false"){
-	console.log("테스트");
 	alert("삭제된 게시물입니다")
 	location.href = "/notices"
 }	

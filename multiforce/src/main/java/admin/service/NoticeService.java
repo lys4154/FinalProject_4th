@@ -29,14 +29,16 @@ public class NoticeService {
 
 	public HashMap<String, Object> selectPagingNotices(String category, int page) {	
 		List<NoticeDTO> list = null;
-		Integer totalPage = 0;
 		int noticesCount = dao.noticesCount(category);
-		int noticesStart = (page - 1) * numberPerPage;
-		totalPage = noticesCount % numberPerPage == 0 ? noticesCount / numberPerPage 
+		Integer totalPage = noticesCount % numberPerPage == 0 ? noticesCount / numberPerPage 
 				: noticesCount / numberPerPage + 1;
+		if(page > totalPage) {
+			page = totalPage;
+		}
+		int noticesStart = (page - 1) * numberPerPage;
 		if(category.equals("event")) {
-			list = dao.selectPagingEvent(category, noticesStart, numberPerPage);
-			list = sortEvent(list);
+			List<NoticeDTO> tmp = dao.selectAllEvent(category);
+			list = sortingAndPagingEvent(tmp, noticesCount, page);
 		}else {
 			list = dao.selectPagingNotices(category, noticesStart, numberPerPage);
 		}
@@ -44,18 +46,22 @@ public class NoticeService {
 		HashMap<String, Object> resultMap = new HashMap<>();
 		resultMap.put("list", list);
 		resultMap.put("totalPage", totalPage);
+		resultMap.put("nowPage", page);
 		return resultMap;
 	}
+	
 	public HashMap<String, Object> selectPagingNoticesWithQuery(String category, int page, String query) {
 		List<NoticeDTO> list = null;
-		Integer totalPage = 0;
 		int noticesCount = dao.noticesCountWithQuery(category, query);
-		int noticesStart = (page - 1) * numberPerPage;
-		totalPage = noticesCount % numberPerPage == 0 ? noticesCount / numberPerPage 
+		Integer totalPage = noticesCount % numberPerPage == 0 ? noticesCount / numberPerPage 
 				: noticesCount / numberPerPage + 1;
+		if(page > totalPage) {
+			page = totalPage;
+		}
+		int noticesStart = (page - 1) * numberPerPage;
 		if(category.equals("event")) {
-			list = dao.selectPagingEventWithQuery(category, noticesStart, numberPerPage, query);
-			list = sortEvent(list);
+			List<NoticeDTO> tmp = dao.selectAllEventWithQuery(category, query);
+			list = sortingAndPagingEvent(tmp, noticesCount, page);
 		}else {
 			list = dao.selectPagingNoticesWithQuery(category, noticesStart, numberPerPage, query);
 		}
@@ -63,6 +69,7 @@ public class NoticeService {
 		HashMap<String, Object> resultMap = new HashMap<>();
 		resultMap.put("list", list);
 		resultMap.put("totalPage", totalPage);
+		resultMap.put("nowPage", page);
 		return resultMap;
 	}
 
@@ -78,7 +85,6 @@ public class NoticeService {
 			result = dao.updateNotice(dto);
 		}
 		return dao.selectNotice(dto.getNotice_seq());
-		
 	}
 
 	public int deleteNotice(int notice_seq) {
@@ -113,5 +119,16 @@ public class NoticeService {
 			ing.add(dto);
 		}
 		return ing;
+	}
+	
+	private List<NoticeDTO> sortingAndPagingEvent(List<NoticeDTO> list, int noticesCount, int page){
+		List<NoticeDTO> tmp = sortEvent(list);
+		int lastIdx = page * numberPerPage;
+		int firstIdx = (page - 1) * numberPerPage;
+		if(page * numberPerPage > noticesCount) {
+			lastIdx = noticesCount;
+		}
+		list = tmp.subList(firstIdx, lastIdx);
+		return list;
 	}
 }
