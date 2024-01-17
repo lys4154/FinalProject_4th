@@ -8,43 +8,116 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="http://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
 </head>
 
+<!-- 프로젝트 리스트를 렌더링할 Handlebars 템플릿 정의 -->
+<script id="project-template" type="text/x-handlebars-template">
+    {{#each projects}}
+        <div>
+            <div><img src="{{main_images_url}}" alt="Project Image"></div>
+            <div>{{category}}</div>
+            <div>{{long_title}}</div>
+            <div>{{sub_title}}</div>
+            <div>
+                <!-- 달성률 출력 -->
+                <span class="achievement-rate" data-achievement-rate="{{calculateAchievementRate goal_price collection_amount}}">
+                    {{calculateAchievementRateText goal_price collection_amount}}
+                </span>
+                <span>{{collection_amount}}</span>                
+                <!-- 날짜 차이 출력 -->
+                <span class="due-date-diff" data-due-date="{{due_date}}">
+                    {{calculateDueDateDiffText due_date}}
+                </span>
+            </div>
+        </div>
+        <hr>
+    {{/each}}
+</script>
+
+<!-- Handlebars.js 헬퍼 함수 정의 -->
 <script>
-$(document).ready(function() {
+    Handlebars.registerHelper('calculateAchievementRate', function(goalPrice, collectionAmount) {
+        return Math.floor((collectionAmount / goalPrice) * 100);
+    });
+
+    Handlebars.registerHelper('calculateAchievementRateText', function(goalPrice, collectionAmount) {
+        return Math.floor((collectionAmount / goalPrice) * 100) + "%";
+    });
+
+    Handlebars.registerHelper('calculateDueDateDiffText', function(dueDate) {
+        var dueDateObj = new Date(dueDate);
+        var currentDate = new Date();
+        var timeDiff = dueDateObj.getTime() - currentDate.getTime();
+        var daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+        return (daysDiff >= 0) ? "종료까지 " + daysDiff + "일 남음" : "펀딩 종료";
+    });
+</script>
+
+
+<script>
+$(document).ready(function() {	
 	
     $("#ongoing").click(function() {
-        var projectSeqArray = []; // 프로젝트 번호를 담을 배열
-
-        // 각 프로젝트의 번호를 배열에 추가
+        var projectSeqArray = [];	// 각 프로젝트의 번호를 배열에 추가
+        
         <c:forEach var="project" items="${myDibs}">
             projectSeqArray.push(${project.project_seq});
         </c:forEach>
 
-        // Ajax 요청 보내기
         $.ajax({
             type: "POST",
             url: "/getDibsOngoing",
-            contentType: "application/json"
-            data: {projectSeqArray: projectSeqArray},
+            contentType: "application/json",
+            data: JSON.stringify(projectSeqArray),
             success: function(response) {
-                console.log(response); // 받은 JSON 데이터 확인
-                $(".result").empty();
-                if (response.length == 0) {
-                    $(".result").append("<div> 진행중인 관심 프로젝트가 없습니다. </div>");
-                } else {
-                    for (var i = 0; i < response.length; i++) {
-                        $(".result").append("<div>" + response[i].long_title + "</div>");
-                    }
-                }
+                console.log(response);
+
+                var templateSource = $("#project-template").html();
+                var template = Handlebars.compile(templateSource);
+
+                var context = { projects: response };
+                var html = template(context);
+
+                $(".result").html(html);
             },
             error: function(error) {
                 console.log(error);
-                console.log(projectSeqArray);
             }
         });
     });//진행중
+    
+    
+    
+    $("#end").click(function() {
+        var projectSeqArray = [];	// 각 프로젝트의 번호를 배열에 추가
+        
+        <c:forEach var="project" items="${myDibs}">
+            projectSeqArray.push(${project.project_seq});
+        </c:forEach>
 
+        $.ajax({
+            type: "POST",
+            url: "/getDibsEnd",
+            contentType: "application/json",
+            data: JSON.stringify(projectSeqArray),
+            success: function(response) {
+                console.log(response);
+
+                var templateSource = $("#project-template").html();
+                var template = Handlebars.compile(templateSource);
+
+                var context = { projects: response };
+                var html = template(context);
+
+                $(".result").html(html);
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    });//종료된
 	
 
 })
@@ -57,7 +130,7 @@ $(document).ready(function() {
 
 <div>
 	<div>
-		<div id="all" style="cursor:pointer;">전체</div>
+		<div id="all" style="cursor:pointer;"><a href="/mydibs" >전체</a></div>
 		<div id="ongoing" style="cursor:pointer;">진행중</div>
 		<div id="end" style="cursor:pointer;">종료된</div>	
 	</div>
@@ -65,14 +138,14 @@ $(document).ready(function() {
 	<p>
 		
 	<div>
-		<div id="add" style="cursor:pointer;">추가순</div>
+		<div id="add" style="cursor:pointer;">추가순 -> 프로젝트에 찜 추가 날짜 없음</div>
 		<div id="deadline" style="cursor:pointer;">마감 임박순</div>
 	</div>
 	
 	<p>
 	
 	<div>
-		<div id="result">
+		<div class="result">
 		
             <c:forEach var="project" items="${myDibs}">
                 <div>
