@@ -12,7 +12,7 @@
 
 
 
-<form method="post" action="project_reject">
+<form action="/post_project_reject" method="post">
 <table border=1>
    <tr>
       <td>프로젝트 번호:</td><td>${project.project_seq}</td>

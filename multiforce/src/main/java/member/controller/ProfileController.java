@@ -361,7 +361,7 @@ public class ProfileController {
 	
 	//찜한 프로젝트
 	@GetMapping("/mydibs")
-	public ModelAndView mydibs(HttpSession session) {
+	public ModelAndView mydibs(HttpSession session)  {
         // 실제 로그인 시 수정할 부분
         session.setAttribute("member_seq", 6);
         
@@ -371,10 +371,8 @@ public class ProfileController {
 		List<ProjectDTO> myDibsProject = projectservice.myDibsProject(dibsList); //해당 프로젝트 DTO
 		
 		ModelAndView mv = new ModelAndView();
-		mv.addObject("myDibs", myDibsProject);
-		mv.setViewName("member/mydibs");
-
-		
+		mv.addObject("myDibs",myDibsProject);
+		mv.setViewName("member/mydibs");		
 		return mv;
 	}
 	
@@ -382,12 +380,25 @@ public class ProfileController {
 	//찜한 프로젝트 - 진행중
 	@PostMapping("/getDibsOngoing")
 	@ResponseBody
-	List<ProjectDTO> getDibsOngoing(@RequestParam(value="arr[]") int projectSeqArray) {
-	    List<Integer> projectSeqList = Arrays.asList(projectSeqArray);
-	    List<ProjectDTO> DibsOngoing = projectservice.DibsOngoing(projectSeqList);
+	List<ProjectDTO> getDibsOngoing(@RequestBody List<Integer> projectSeqArray) {
+	    List<ProjectDTO> dibsOngoing = projectservice.dibsOngoing(projectSeqArray);
 
-	    System.out.println(DibsOngoing);
-	    return null;
+	    ModelAndView mv = new ModelAndView();
+	    mv.addObject("DibsOngoing", dibsOngoing);
+	    mv.setViewName("member/mydibs");
+	    return dibsOngoing;
+	}
+	
+	//찜한 프로젝트 - 종료된
+	@PostMapping("/getDibsEnd")
+	@ResponseBody
+	List<ProjectDTO> getDibsEnd(@RequestBody List<Integer> projectSeqArray) {
+	    List<ProjectDTO> dibsEnd = projectservice.dibsEnd(projectSeqArray);
+
+	    ModelAndView mv = new ModelAndView();
+	    mv.addObject("dibsEnd", dibsEnd);
+	    mv.setViewName("member/mydibs");
+	    return dibsEnd;
 	}
 	
 	

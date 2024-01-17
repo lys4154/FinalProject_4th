@@ -72,10 +72,15 @@ public class ProjectService {
 	}
 
 	//관심 프로젝트 - 진행중
-	public List<ProjectDTO> DibsOngoing(List<Integer> projectSeqArray) {
-		System.out.println("서비스 실행");
-		return projectDao.DibsOngoing(projectSeqArray);
+	public List<ProjectDTO> dibsOngoing(List<Integer> projectSeqArray) {
+		return projectDao.dibsOngoing(projectSeqArray);
 	}
+
+	//찜한 프로젝트 - 종료된
+	public List<ProjectDTO> dibsEnd(List<Integer> projectSeqArray) {
+		return projectDao.dibsEnd(projectSeqArray);
+	}
+
 
 
 
