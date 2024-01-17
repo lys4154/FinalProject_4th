@@ -19,6 +19,8 @@ import org.springframework.context.annotation.ComponentScan;
 @MapperScan(basePackages="member")
 @MapperScan(basePackages="project")
 @MapperScan(basePackages="admin")
+@ComponentScan(basePackages="approvalRequest")
+@MapperScan(basePackages="approvalRequest")
 @SpringBootApplication
 @ComponentScan
 public class MultiforceApplication{
