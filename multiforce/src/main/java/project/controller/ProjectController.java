@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import board.dto.BoardDTO;
 import board.dto.CommunityDTO;
@@ -127,6 +128,21 @@ public class ProjectController {
 	@RequestMapping("/tab_info")
 	public String tabInfo() {
 		return "project/tab_info";
+	}
+	
+	@PostMapping("/saveProject")
+	@ResponseBody
+	public String saveProject(@RequestParam String category, @RequestParam String long_title,
+							  @RequestParam String short_title, @RequestParam String sub_title,
+							  @RequestParam String main_images_url) {
+		ProjectDTO projectDTO= new ProjectDTO();
+		projectDTO.setCategory(category);
+		projectDTO.setLong_title(long_title);
+		projectDTO.setShort_title(short_title);
+		projectDTO.setSub_title(sub_title);
+		projectDTO.setMain_images_url(main_images_url);
+		
+		return "Success";
 	}
 	
 	@PostMapping("/projectInfo")
