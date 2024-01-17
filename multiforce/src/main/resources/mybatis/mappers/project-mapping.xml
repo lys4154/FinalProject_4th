@@ -114,6 +114,11 @@
 </select>
 
 
+<select id="getAllApprovedProjectsOrderByStartDate" resultType="projectdto">
+    select * from project where approval_status=true order by start_date desc
+</select>
+
+
 <!-- 관심 프로젝트 종료된 -->
 <select id="dibsEnd" parameterType="java.util.List" resultType="projectdto">
     SELECT * FROM project

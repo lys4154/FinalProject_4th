@@ -37,16 +37,16 @@
 		select * from notices where category = #{category} and del_status = false
 		order by notice_seq desc limit #{noticesStart}, #{numberPerPage}
 	</select>
-	<select id="selectPagingEvent">
+	<select id="selectAllEvent">
 		select * from notices where category = #{category} and del_status = false
-		order by event_start_date desc limit #{noticesStart}, #{numberPerPage}
+		order by event_start_date desc
 	</select>
 	<select id="selectPagingNoticesWithQuery">
 		select * from notices where category = #{category} and title like concat("%",#{query}, "%") and del_status = false
 		order by notice_seq desc limit #{noticesStart}, #{numberPerPage}
 	</select>
-	<select id="selectPagingEventWithQuery">
+	<select id="selectAllEventWithQuery">
 		select * from notices where category = #{category} and del_status = false and title like concat("%",#{query}, "%")
-		order by event_start_date desc limit #{noticesStart}, #{numberPerPage}
+		order by event_start_date desc
 	</select>
 </mapper>

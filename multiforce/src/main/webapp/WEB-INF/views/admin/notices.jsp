@@ -27,14 +27,13 @@ $(document).ready(function(){
 <h1>공지사항</h1>
 <a href="/notices?category=notice&page=1">공지사항</a>
 <a href="/notices?category=event&page=1">이벤트</a>
-<div>
-	<form action="/notices/discover">
+	<form action="/notices/discover" style="display:inline-block">
 		<input type="text" name="query">
 		<input type="hidden" id="discover_category" name="category">
 		<input type="submit" value="검색">
 	</form>
-</div>
-<div id="write_btn_wrap"></div>
+<div style="display:inline-block" id="write_btn_wrap"></div>
+<hr>
 <%	List<NoticeDTO> list = (List<NoticeDTO>)request.getAttribute("list");%>
 
 <% 	
@@ -70,6 +69,7 @@ $(document).ready(function(){
 		</div>
 <%	}
 %>
+<hr>
 <div>
 <%	int pageListLength = 5;
 	int tmp = nowPage/(pageListLength + 1);
