@@ -49,6 +49,11 @@ public interface ProjectDAO {
 	List<ProjectDTO> myDibsProject(List<Integer> dibsList);
 	
 	//관심 프로젝트 - 진행중
-	List<ProjectDTO> DibsOngoing(List<Integer> projectSeqArray);
+	List<ProjectDTO> dibsOngoing(List<Integer> projectSeqArray);
+	
+	//찜한 프로젝트 - 종료된
+	List<ProjectDTO> dibsEnd(List<Integer> projectSeqArray);
+
+	
 }
 
