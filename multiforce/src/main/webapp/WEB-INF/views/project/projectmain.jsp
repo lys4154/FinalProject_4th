@@ -11,9 +11,11 @@
 <h1>프로젝트 메인페이지</h1>
 
 <div id="projectInfo">
-
-
-
+<p>Category: ${project.category}</p>
+<p>Long Title: ${project.long_title}</p>
+<p>Short Title: ${project.short_title}</p>
+<p>Sub Title: ${project.sub_title}</p>
+<p>Main Images URL: ${project.main_images_url}</p>
 </div>
 
 

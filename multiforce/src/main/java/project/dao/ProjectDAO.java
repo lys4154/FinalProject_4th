@@ -57,6 +57,10 @@ public interface ProjectDAO {
 	//찜한 프로젝트 - 종료된
 	List<ProjectDTO> dibsEnd(List<Integer> projectSeqArray);
 
+
+	void saveProject(ProjectDTO projectDTO);
+	ProjectDTO getProject(int projectId);
+	
 	
 
 }
