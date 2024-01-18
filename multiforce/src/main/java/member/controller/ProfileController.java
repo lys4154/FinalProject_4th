@@ -1,17 +1,13 @@
 package member.controller;
 
-import java.io.Console;
-import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Arrays;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Controller;
@@ -20,20 +16,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import funding.dto.FundingDTO;
 import funding.service.FundingService;
-import jakarta.mail.Session;
 import jakarta.servlet.http.HttpSession;
 import member.dto.MemberDTO;
 import member.service.FollowService;
@@ -127,7 +119,7 @@ public class ProfileController {
 			ongoingProjectSeq.add(projectSeq.getProject_seq());
 		}
 		List<ProjectDTO> ongoingProject = projectservice.ongoingProject(ongoingProjectSeq);
-		//후원 진행중 ProjectDTO	
+			
 		
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("ongoingProject", ongoingProject);
@@ -389,6 +381,8 @@ public class ProfileController {
 	    return dibsOngoing;
 	}
 	
+	
+	
 	//찜한 프로젝트 - 종료된
 	@PostMapping("/getDibsEnd")
 	@ResponseBody
@@ -403,10 +397,19 @@ public class ProfileController {
 	
 	
 	
+	//회원 정보 - 이메일
+	@PostMapping("/changeEmail")
+	@ResponseBody
+	public String changeEmail() {		
+		return null;	
+	}
 	
-	
-	
-	
+	//회원 정보 - 비밀번호
+	@PostMapping("/changePw")
+	@ResponseBody
+	public String changePw() {		
+		return null;	
+	}
 	
 	
 	
