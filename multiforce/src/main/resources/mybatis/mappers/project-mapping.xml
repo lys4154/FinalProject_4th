@@ -81,7 +81,7 @@
 
 <!-- tab_info저장 -->
 <insert id="insertProject" parameterType="project.dto.ProjectDTO">
- INSERT INTO project_table (long_title, short_title, sub_title, main_images_url, url, category)
+ INSERT INTO project (long_title, short_title, sub_title, main_images_url, url, category)
  VALUES (#{long_title}, #{short_title}, #{sub_title}, #{main_images_url}, #{url}, #{category})
 </insert>
 
