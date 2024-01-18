@@ -17,8 +17,8 @@ public class ApprovalRequestController {
 	
 	@PostMapping("post_project_reject")
 	public String InsertProjectReject(@RequestParam String content, 
-			@RequestParam String project_seq) {
-		System.out.println("APPROVAL");
+			@RequestParam int project_seq) {
+
 		int tmpUser = 1;
 		int tmpManager = 2;
 		String tmpManagerAccount = "23423423";
@@ -33,9 +33,10 @@ public class ApprovalRequestController {
 		approvalDTO.setManager_account(tmpManagerAccount);
 		approvalDTO.setCommission(tmpCommission);
 		approvalDTO.setApproval_req_date(tmpDate);
+		approvalDTO.setProject_seq(project_seq);
 		
 		
-		System.out.println("APPROVAL");
+		System.out.println(approvalDTO.getProject_seq());
 		approvalService.insertApprovalReject(approvalDTO);
 		
 		

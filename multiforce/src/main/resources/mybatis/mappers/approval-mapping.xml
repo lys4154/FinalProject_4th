@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="approvalRequest.dao.ApprovalRequestDAO">
+	 <insert id="insertApprovalReject" parameterType="approvalRequest.dto.ApprovalRequestDTO">
+        INSERT INTO approval_request (manager_seq, member_seq, project_seq, 
+            approval_status, approval_reason, manager_account, 
+            commission, approval_req_date) 
+        VALUES (
+            #{manager_seq},#{member_seq},#{project_seq},
+            #{approval_status},#{approval_reason},#{manager_account},
+            #{commission},#{approval_req_date}
+        )
+    </insert>
+</mapper>
