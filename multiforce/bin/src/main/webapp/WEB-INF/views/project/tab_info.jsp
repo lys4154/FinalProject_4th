@@ -4,7 +4,39 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>기본정보</title>
+<script src="/js/jquery-3.7.1.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $("#submitBtn").click(function() {
+            
+            var category = $("#category").val();
+            var longTitle = $("#long_title").val();
+            var shortTitle = $("#short_title").val();
+            var subTitle = $("#sub_title").val();
+            var mainImageUrl = $("#main_images_url").val();
+
+            // AJAX를 통해 서버에 데이터 전송
+            $.ajax({
+                type: "POST",
+                url: "/saveProject",
+                data: {
+                    category: category,
+                    longTitle: longTitle,
+                    shortTitle: shortTitle,
+                    subTitle: subTitle,
+                    mainImageUrl: mainImageUrl
+                },
+                success: function(response) {
+                    console.log(response);
+                },
+                error: function(error) {
+                    console.error(error);
+                }
+            });
+        });
+    });
+</script>
 <style>
     li {
       list-style: none;
@@ -38,6 +70,7 @@
 <h1>프로젝트 정보</h1>
 <!-- header -->
 <hr>
+<form action="/projectInfo" method="post">
 <div class="contents">
 	<div class="planContents">
 		<div class="projectItem_itemDesign">
@@ -112,6 +145,8 @@
 	</div>
 	<hr>
 </div>
+<button type="submit" id="submitBtn">저장</button>
+</form>
 <!-- footer -->
 
 <script> // 이미지 관련 스크립트

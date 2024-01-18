@@ -27,6 +27,23 @@
 	select nickname from member_info where member_seq=#{member_seq}
 </select>
 
-
+<select id="loginProcess" resultType="memberdto">
+	select * from member_info where member_id = #{member_id} and password = #{password}
+</select>
+<select id="selectMemberById">
+	select * from member_info where member_id = #{id}
+</select>
+<select id="selectMemberByNickName">
+	select * from member_info where nickname = #{nickname}
+</select>
+<select id="selectMemberByEmail">
+	select * from member_info where email = #{email}
+</select>
+<insert id="insertMember">
+	insert into member_info(member_id, password, member_name, nickname, email, gender,
+	 postcode, road_address, jibun_address, extra_address, detail_address)
+	 values (#{member_id}, #{password}, #{member_name}, #{nickname}, #{email}, #{gender},
+	 #{postcode}, #{road_address}, #{jibun_address}, #{extra_address}, #{detail_address});
+</insert>
 
 </mapper>

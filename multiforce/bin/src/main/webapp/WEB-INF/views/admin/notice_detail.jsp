@@ -11,12 +11,34 @@
 </head>
 <script src="/js/jquery-3.7.1.min.js"></script>
 <script>
-<%NoticeDTO dto = (NoticeDTO)request.getAttribute("dto"); %>
+if("${result}" == "false"){
+	alert("삭제된 게시물입니다")
+	location.href = "/notices"
+}	
 $(document).ready(function(){
 	let login_user_level = "${login_user_level}";
 	if(login_user_level == "2"){
-		$("#modify_btn_wrap").html("<a href='/notices/write?seq=" + <%=dto.getNotice_seq()%> + "'>수정</a>");
-		$("#modify_btn_wrap").html("<a href='/notices/delete?seq=" + <%=dto.getNotice_seq()%> + "'>삭제</a>");
+		$("#modify_btn_wrap")
+		.html("<a href='/notices/write?seq=" + ${dto.notice_seq} + "'>수정</a>"
+			+ "<button id='delete_btn'>삭제</button>");
+		$("#delete_btn").on("click", function(){
+			if(confirm("삭제 하시겠습니까?")){
+				$.ajax({
+					data : {"notice_seq": '${dto.notice_seq}'},
+					type : "POST",
+					url : "/deletenotice",
+					dataType: 'json',
+					success : function(r) {
+						if(r.result == "true"){
+							alert("삭제되었습니다");
+							location.href = "/notices";
+						}else{
+							alert("오류가 발생했습니다");
+						}
+					}
+				});
+			}
+		});
 	}
 	function getParameterByName(name) {
 		name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
@@ -24,26 +46,27 @@ $(document).ready(function(){
 	    results = regex.exec(location.search);
 	    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 	}
-	if(getParameterByName("category") != "" || getParameterByName("page") != ""){
-		$("#notice_list_btn").attr("href", "/notices?category=" + getParameterByName("category") 
-				+ "&page=" + getParameterByName("page"));
-	}else{
-		$("#notice_list_btn").attr("href", "/notices");
-	}
 	
+	let result = "/notices";
+	if(getParameterByName("category") != "" || getParameterByName("page") != ""){
+		result += "?category=" + getParameterByName("category") + "&page=" + getParameterByName("page");
+	}
+	if(getParameterByName("query") != ""){
+		result += ("&query=" + getParameterByName("query"));
+	}
+	$("#notice_list_btn").attr("href", result);
 });
 
 </script>
 <body>
-<div>게시물 번호: <%=dto.getNotice_seq() %></div>
-<div>제목: <%=dto.getTitle() %></div>
-<div>내용: <%=dto.getContent() %></div>
-<div>분류: <%=dto.getCategory() %></div>
-<div>작성 날짜: <%=dto.getWrite_date() %></div>
-<%if(dto.getCategory().equals("event")){%>
-	<div>이벤트 기간 <%=dto.getEvent_start_date() %>~<%=dto.getEvent_end_date() %></div>
-<%}
-%>
+<div>게시물 번호: ${dto.notice_seq}</div>
+<div>제목: ${dto.title}</div>
+<div>분류: ${dto.category}</div>
+<div>작성 날짜: ${dto.write_date}</div>
+<c:if test="${dto.category eq 'event'}">
+	<div>이벤트 시작 ${dto.event_start_date } ~ 종료 ${dto.event_end_date }</div>
+</c:if>
+<div>내용: ${dto.content}</div>
 <div id="modify_btn_wrap"></div>
 <a id="notice_list_btn" href="/notices" id="notices_list">목록</a>
 

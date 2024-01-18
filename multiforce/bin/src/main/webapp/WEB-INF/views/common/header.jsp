@@ -98,8 +98,9 @@ $(document).ready(function(){
 		}
 	})
 	// ==========헤더의 로그인 버튼 클릭시 파라미터로 원래 있던 페이지에 대한 정보 넘겨주면서 로그인 페이지로====================
-	let fromPath = window.location.pathname.substring(1) == "" ? "mainpage" : window.location.pathname.substring(1);
-	$("#login_btn").attr("href", "login?from=" + fromPath)
+	let fromPath = window.location.pathname.substring(1) == "" ?
+			"mainpage" : location.pathname.substring(1) + location.search;
+	$("#login_btn").attr("href", "/login?from=" + fromPath)
 });
 
 </script>
