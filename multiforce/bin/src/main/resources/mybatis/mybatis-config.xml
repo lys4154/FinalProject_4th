@@ -13,5 +13,7 @@
 		<typeAlias type="project.dto.ItemOptionDTO" alias="itemoptiondto"/>	
 		<typeAlias type="project.dto.FundingBundleCountDTO" alias="countdto"/>
 		<typeAlias type="admin.dto.NoticeDTO" alias="noticedto"/>
+		<typeAlias type="project.dto.ProjectDTO" alias="projectdto"/>
+		<typeAlias type="approvalRequest.dto.ApprovalRequestDTO" alias="approvalDTO"/>
 	</typeAliases>
 </configuration>

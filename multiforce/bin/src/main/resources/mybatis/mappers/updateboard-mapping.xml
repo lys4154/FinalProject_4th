@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="board.dao.UpdateBoardDAO">
+	<select id="getAllUpdatePost" resultType="board.dto.updateBoardDTO">
+	    SELECT * FROM update_board WHERE project_seq = #{project_seq}
+	</select>
+	<insert id="insertUpdateBoard" parameterType="board.dto.updateBoardDTO">
+        INSERT INTO update_board (project_seq, member_seq, content)
+        VALUES (#{project_seq}, #{member_seq}, #{content})
+    </insert>
+</mapper>

@@ -16,6 +16,7 @@ import project.dto.ProjectDTO;
 @Mapper
 public interface MemberDAO {
 
+
 	MemberDTO loginMember(String email);
 
 	List<ProjectDTO> getMyproject(int memberSeq);
@@ -33,8 +34,14 @@ public interface MemberDAO {
 	MemberDTO selectMemberByNickName(String nickname);
 
 	MemberDTO selectMemberByEmail(String email);
+	
+	MemberDTO selectMemberByIdEmail(String email, String id);
 
 	int insertMember(MemberDTO dto);
+
+	int updateMemberPw(String email, String id, String tempPw);
+
+	
 
 	
 }

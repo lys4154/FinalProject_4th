@@ -9,16 +9,44 @@
 		values (#{title},#{content},#{category}, #{event_start_date}, #{event_end_date})
 	</insert>
 	<select id="noticesCount">
-		select count(*) from notices where category = #{category}	
+		select count(*) from notices where category = #{category} and del_status = false
 	</select>
-	<select id="selectPagingNotices">
-		select * from notices where category = #{category} 
-		order by notice_seq desc limit #{noticesStart}, #{numberPerPage}
-	</select>
-	<select id="selectNotice">
-		select * from notices where notice_seq = #{seq} 
+	<select id="selectNotice" parameterType="int">
+		select * from notices where notice_seq = #{notice_seq} and del_status = false
 	</select>
 	<select id="selectNoticewithDTO" parameterType="noticedto">
 		select * from notices where title = #{title} and content = #{content} and category = #{category} 
+	</select>
+	<update id="updateNotice" parameterType="noticedto">
+		update notices set title = #{title}, content =#{content} , category = #{category} 
+		where notice_seq = #{notice_seq}
+	</update>
+	<update id="updateEvent" parameterType="noticedto">
+		update notices set title = #{title}, content = #{content}, category = #{category} ,
+		 event_start_date = #{event_start_date}, event_end_date = #{event_end_date}
+		 where notice_seq = #{notice_seq}
+	</update>
+	<update id="updateDelStatus">
+		update notices set del_status = true, del_date = now() where notice_seq = #{notice_seq}
+	</update>
+	<select id="noticesCountWithQuery">
+		select count(*) from notices where category = #{category} 
+		and title like concat("%",#{query}, "%") and del_status = false
+	</select>
+	<select id="selectPagingNotices">
+		select * from notices where category = #{category} and del_status = false
+		order by notice_seq desc limit #{noticesStart}, #{numberPerPage}
+	</select>
+	<select id="selectAllEvent">
+		select * from notices where category = #{category} and del_status = false
+		order by event_start_date desc
+	</select>
+	<select id="selectPagingNoticesWithQuery">
+		select * from notices where category = #{category} and title like concat("%",#{query}, "%") and del_status = false
+		order by notice_seq desc limit #{noticesStart}, #{numberPerPage}
+	</select>
+	<select id="selectAllEventWithQuery">
+		select * from notices where category = #{category} and del_status = false and title like concat("%",#{query}, "%")
+		order by event_start_date desc
 	</select>
 </mapper>

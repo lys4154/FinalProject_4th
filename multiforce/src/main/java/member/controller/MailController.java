@@ -28,7 +28,7 @@ public class MailController {
 			String authCode = mailService.sendAuthEmail(email);
 			return "{"
 			+ "\"authCode\": \"" + authCode + "\","
-			+ "\"isUniqueEmail\": \"" + true + "\""
+			+ "\"isUniqueEmail\": \"" + isUniqueEmail + "\""
 			+ "}";
 		//중복된 이메일이 있다
 		}else {
@@ -44,6 +44,11 @@ public class MailController {
 		return "{\"result\": \"" + result + "\"}";
 	}
 	
-	
+	@PostMapping(value="/resetpw", produces = {"application/json;charset=utf-8"})
+	@ResponseBody
+	public String resetPwProcess(String email, String id) {
+		String result = mailService.sendTempPwEmail(email, id);
+		return "{\"result\": \"" + result + "\"}";
+	}
 	
 }
