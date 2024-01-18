@@ -10,24 +10,66 @@
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-<style>
-
-
-</style>
-
 </head>
 
 <script>
+
+var bundleData;
+
 $(document).ready(function() {	
 
-	if (${dDay} < 0) {
-		$("#pro_status").html("펀딩 종료")
-		$("#d_day").html("펀딩 종료")
+	if ("${dDay}" < 0) {
+	    $("#pro_status").html("펀딩 종료")
+	    $("#d_day").html("펀딩 종료")
 	}
+
+	if ("${trackNum}" == 0) {
+	    $("#track_num").html("등록된 운송장이 없습니다.")
+	}
+		
 	
-	if (${trackNum } == 0) {
-		$("#track_num").html("등록된 운송장이 없습니다.")
-	}
+	//넘길 꾸러미 정보 
+	bundleData = [
+	   <c:forEach var="bundleEntry" items="${bundleItem}" varStatus="status">
+	     {
+	       name: "${bundleEntry.key}",
+	       count: ${bundleCount[bundleEntry.key]},
+	       items: [
+	         <c:forEach var="itemEntry" items="${bundleEntry.value}" varStatus="innerStatus">
+	           {
+	             itemName: "${itemEntry}",
+	             options: [
+	               <c:forEach var="optionEntry" items="${itemOption[itemEntry]}" varStatus="optionStatus">
+	                 "${optionEntry}"<c:if test="${!optionStatus.last}">, </c:if>
+	               </c:forEach>
+	             ]
+	           }<c:if test="${!innerStatus.last}">, </c:if>
+	         </c:forEach>
+	       ]
+	     }<c:if test="${!status.last}">, </c:if>
+	   </c:forEach>
+	 ];	
+	
+	document.getElementById("bundleDataInput").value = JSON.stringify(bundleData);
+	
+	
+
+    $("#cancel").click(function() {
+        let fundSeq = ${fundedDetail.fund_seq};
+        let longTitle = "${projectDetail.long_title}";
+        let dueDate = "${projectDetail.due_date.toLocalDate()}";
+        let price = ${fundedDetail.price };
+
+        // 폼에 값을 설정
+        $("#priceInput").val(price);
+        $("#fundSeqInput").val(fundSeq);
+        $("#longTitleInput").val(longTitle);
+        $("#dueDateInput").val(dueDate);
+        $("#bundleDataInput").val(JSON.stringify(bundleData));;
+
+        // 폼을 제출
+        $("#cancelForm").submit();
+    });	
 	
 })
 
@@ -113,27 +155,32 @@ $(document).ready(function() {
 		
 		<!-- Modal -->
 		<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		  <div class="modal-dialog">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <h1 class="modal-title fs-5" id="exampleModalLabel">이 프로젝트에는 후원자님이 필요해요</h1>
-		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			      </div>
+			<div class="modal-dialog">
+		    	<div class="modal-content">
+		      		<div class="modal-header">
+		        		<h1 class="modal-title fs-5" id="exampleModalLabel">이 프로젝트에는 후원자님이 필요해요</h1>
+		        		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			      	</div>
 					<div class="modal-body">
 						<h2>후원 취소를 원하시나요?</h2>
 						<h5>혹시 선물 변경을 원하시나요?</h5>
 						후원을 취소하지 않고 원하는 선물로 변경할 수 있어요.<br>
-					  <p><a href="#" data-bs-toggle="tooltip" title="Tooltip">여기</a> 를 눌러 선물을 변경해보세요!</p>
+					  	<p><a href="#" data-bs-toggle="tooltip" title="Tooltip">여기</a> 를 눌러 선물을 변경해보세요!</p>
 					</div>
-			      <div class="modal-footer">
-		        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">후원 유지</button>
-		        <button type="button" class="btn btn-secondary">그래도 취소</button>
-		      </div>
-		    </div>
-		  </div>
-		</div>
-	
-	
+				    <div class="modal-footer">
+						<button type="button" class="btn btn-primary" data-bs-dismiss="modal">후원 유지</button>
+			        	<form id="cancelForm" action="/funded_cancel" method="post">
+						    <input type="hidden" id="fundSeqInput" name="fundSeqInput" value="">
+						    <input type="hidden" id="longTitleInput" name="longTitleInput" value="">		        
+					        <input type="hidden" id="bundleDataInput" name="bundleDataInput" value="">
+					        <input type="hidden" id="dueDateInput" name="dueDateInput" value="">
+					        <input type="hidden" id="priceInput" name="priceInput" value="">
+							<button type="button" class="btn btn-secondary" id="cancel">그래도 취소</button>
+						</form>
+			      	</div>
+		   		</div>
+			</div>
+		</div>	
 
 </div>
 

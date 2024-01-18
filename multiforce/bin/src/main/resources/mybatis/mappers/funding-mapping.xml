@@ -46,7 +46,10 @@
 </select>
 
 
-
+<!-- 후원 취소 -->
+<update id="delStatusChange" parameterType="int" >
+	update FUNDING set del_status=true, del_date=NOW() where fund_seq=${fundSeq};
+</update>
 
 
 

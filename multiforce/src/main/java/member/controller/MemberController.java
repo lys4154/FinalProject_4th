@@ -124,5 +124,10 @@ public class MemberController {
 		return "member/find_id";
 	}
 	
+	@GetMapping("/resetpw")
+	public String resetPw() {
+		return "member/reset_pw";
+	}
+	
 	
 }

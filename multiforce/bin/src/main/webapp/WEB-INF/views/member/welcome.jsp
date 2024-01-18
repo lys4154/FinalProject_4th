@@ -10,7 +10,10 @@
 </head>
 <script src="/js/jquery-3.7.1.min.js"></script>
 <script>
-
+if("${result}" == "false"){
+	alert("회원가입 중 오류가 발생했습니다.<br> 잠시후 다시 시도해주세요");
+	href.location = "/";
+}
 </script>
 <body>
 <h1>${member_name }님 멀티포스 펀딩의 회원이 되신걸 환영합니다</h1>

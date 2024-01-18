@@ -29,6 +29,7 @@ $('.purpose').summernote({
 	    ['fontsize', ['fontsize']],
 	    ['color', ['color']],
 	    ['para', ['ul', 'ol', 'paragraph']],
+	    ['insert',['picture','link','video']],
 	    ['height', ['height']]
 	  ],
 	height:500,  
@@ -51,6 +52,7 @@ $('.planning').summernote({
 	    ['fontsize', ['fontsize']],
 	    ['color', ['color']],
 	    ['para', ['ul', 'ol', 'paragraph']],
+	    ['insert',['picture','link','video']],
 	    ['height', ['height']]
 	  ],
 	height:500,  
@@ -73,6 +75,7 @@ $('.budget').summernote({
 	    ['fontsize', ['fontsize']],
 	    ['color', ['color']],
 	    ['para', ['ul', 'ol', 'paragraph']],
+	    ['insert',['picture','link','video']],
 	    ['height', ['height']]
 	  ],
 	height:500,  
@@ -95,6 +98,7 @@ $('.introduce').summernote({
 	    ['fontsize', ['fontsize']],
 	    ['color', ['color']],
 	    ['para', ['ul', 'ol', 'paragraph']],
+	    ['insert',['picture','link','video']],
 	    ['height', ['height']]
 	  ],
 	height:500,  
@@ -117,6 +121,7 @@ $('.item').summernote({
 	    ['fontsize', ['fontsize']],
 	    ['color', ['color']],
 	    ['para', ['ul', 'ol', 'paragraph']],
+	    ['insert',['picture','link','video']],
 	    ['height', ['height']]
 	  ],
 	height:500,  
