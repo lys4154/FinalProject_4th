@@ -29,21 +29,28 @@ $(document).ready(function(){
 		}
 	});
 	
-	$("#find_id_btn").on("click", function(){
+	$("#reset_pw_btn").on("click", function(){
 		$("#sending_msg").css("display","inline-block");
 		$.ajax({
-			url: "findid",
-			data:{'email': $("#email").val()},
+			url: "resetpw",
+			data:{
+				'email': $("#email").val(),
+				'id' : $("#id").val()
+				},
 			type: 'post',
 			dataType: 'json',
 			success: function(response){
 				$("#sending_msg").css("display","none");
 				if(response.result == "전송 완료"){
 					alert("메일을 발송했습니다. 메일을 확인해주세요.");
+					console.log("전송완료");
 				}else if(response.result == "메일 전송 오류"){
-					alert("오류로 메일이 발송되지 않았습니다. 잠시 후 다시 시도해주세요.");	
+					alert("오류로 인해 메일이 발송되지 않았습니다. 잠시 후 다시 시도해주세요.");	
 				}else if(response.result == "결과 없음"){
 					alert("메일을 발송했습니다. 메일을 확인해주세요.");
+					console.log("결과없음");
+				}else if(response.result == "임시 비밀번호 설정 오류"){
+					alert("오류로 인해 메일이 발송되지 않았습니다. 잠시 후 다시 시도해주세요.");
 				}
 			},
 			error: function(request, e){
@@ -55,8 +62,8 @@ $(document).ready(function(){
 });
 </script>
 <body>
-<h1>아이디 찾기</h1>
-회원가입 시 사용했던 이메일을 입력해주세요<br>
+<h1>비밀번호 재설정</h1>
+<input type="text" class="text" id="id" placeholder="아이디를 입력해주세요"><br>
 <input type="text" class="text" id="user_email" placeholder="이메일을 입력해주세요" >
 @
 <select id="email_select">
@@ -67,10 +74,10 @@ $(document).ready(function(){
 </select>
 <input type="text" class="text" id="user_email_dir" placeholder="도메인을 입력해주세요" style="display:none" >
 <input type="hidden" id="email" name="email">
-<input type="submit" id="find_id_btn" value="아이디 찾기">
+<input type="submit" id="reset_pw_btn" value="비밀번호 재설정">
 <span id="sending_msg" style="display: none">발송 중</span><br>
 <a href="login">로그인</a>
-<a href="pwreset">비밀번호 재설정</a>
+<a href="findid">아이디 찾기</a>
 
 </body>
 </html>

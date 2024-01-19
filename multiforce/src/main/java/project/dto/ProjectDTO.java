@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Component;
 
+import project.code.ProjectProcess;
+
 @Component
 public class ProjectDTO {
 
@@ -19,16 +21,14 @@ public class ProjectDTO {
 	String sub_title;
 	String url;
 	String category;
-	boolean approval_status;
 	boolean gift_status;
 	boolean gift_delivery;
-	boolean goal_achieve;
 	int dibs_count;
 	int share_count;
 	String account;
 	String main_images_url;
 	LocalDateTime delivery_date;
-	
+	ProjectProcess project_process;
 	
 	public int getProject_seq() {
 		return project_seq;
@@ -102,12 +102,7 @@ public class ProjectDTO {
 	public void setCategory(String category) {
 		this.category = category;
 	}
-	public boolean isApproval_status() {
-		return approval_status;
-	}
-	public void setApproval_status(boolean approval_status) {
-		this.approval_status = approval_status;
-	}
+
 	public boolean isGift_status() {
 		return gift_status;
 	}
@@ -120,12 +115,7 @@ public class ProjectDTO {
 	public void setGift_delivery(boolean gift_delivery) {
 		this.gift_delivery = gift_delivery;
 	}
-	public boolean isGoal_achieve() {
-		return goal_achieve;
-	}
-	public void setGoal_achieve(boolean goal_achieve) {
-		this.goal_achieve = goal_achieve;
-	}
+
 	public int getDibs_count() {
 		return dibs_count;
 	}
@@ -157,16 +147,25 @@ public class ProjectDTO {
 	public void setDelivery_date(LocalDateTime delivery_date) {
 		this.delivery_date = delivery_date;
 	}
-	
+	public int getProject_process() {
+		return project_process.getCode();
+	}
+	public void setProject_process(int idx) {
+		this.project_process = ProjectProcess.values()[idx];
+	}
+	public String getProject_process_name() {
+		return project_process.getName();
+	}
 	@Override
 	public String toString() {
 		return "ProjectDTO [project_seq=" + project_seq + ", member_seq=" + member_seq + ", content=" + content
 				+ ", goal_price=" + goal_price + ", collection_amount=" + collection_amount + ", start_date="
 				+ start_date + ", due_date=" + due_date + ", long_title=" + long_title + ", short_title=" + short_title
-				+ ", sub_title=" + sub_title + ", url=" + url + ", category=" + category + ", approval_status="
-				+ approval_status + ", gift_status=" + gift_status + ", gift_delivery=" + gift_delivery
-				+ ", goal_achieve=" + goal_achieve + ", dibs_count=" + dibs_count + ", share_count=" + share_count
-				+ ", account=" + account + ", main_images_url=" + main_images_url + ", delivery_date=" + delivery_date
-				+ "]";
+				+ ", sub_title=" + sub_title + ", url=" + url + ", category=" + category + ", gift_status="
+				+ gift_status + ", gift_delivery=" + gift_delivery + ", dibs_count=" + dibs_count + ", share_count="
+				+ share_count + ", account=" + account + ", main_images_url=" + main_images_url + ", delivery_date="
+				+ delivery_date + ", project_process=" + project_process + "]";
 	}
+	
+	
 }
