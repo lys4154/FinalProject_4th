@@ -14,4 +14,7 @@
 </select>
 
 
+<select id="getCountByFollowingSeq" resultType="int">
+	SELECT COUNT(*) FROM FOLLOW WHERE following_seq = #{followingSeq}
+</select>
 </mapper>	

@@ -62,8 +62,8 @@ public interface ProjectDAO {
 	ProjectDTO getProject(int projectId);
 
 
-	
-	
+	//마이프로필 - 팔로워의 올린프로젝트 찾기
+	int getProjectCount(Integer followerSeq);
 
 }
 
