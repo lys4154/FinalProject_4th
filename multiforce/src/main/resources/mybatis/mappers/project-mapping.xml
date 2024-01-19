@@ -121,4 +121,16 @@
     AND CURRENT_DATE > due_date
 </select>
 
+
+
+	<!-- 마이프로필 - 팔로워의 올린프로젝트 찾기 -->
+<select id="getProjectCount" resultType="int">
+	SELECT COUNT(*) FROM project WHERE member_seq = #{followerSeq}
+</select>
+
+
+
+
+
+
 </mapper>

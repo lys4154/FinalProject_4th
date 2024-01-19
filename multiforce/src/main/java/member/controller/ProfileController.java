@@ -96,7 +96,7 @@ public class ProfileController {
 
 		int memberSeq = (int)session.getAttribute("member_seq");
 		List<ProjectDTO> myprojectList = projectservice.getProjectsByMemberSeq(memberSeq);
-		System.out.println(myprojectList);
+//		System.out.println(myprojectList);
 		
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("myprojectList", myprojectList);	
@@ -113,13 +113,19 @@ public class ProfileController {
 		 session.setAttribute("member_seq", 6);
 
 		int memberSeq = (int)session.getAttribute("member_seq");
-		List<FundingDTO> ongoingFunded = fundingservice.ongoingFunded(memberSeq); //후원 진행중
-		List<Integer> ongoingProjectSeq = new ArrayList<>();
-		for (FundingDTO projectSeq : ongoingFunded) {
+		List<FundingDTO> ongoingFunded = fundingservice.ongoingFunded(memberSeq);	//후원 진행중
+		List<Integer> fundSeqList = new ArrayList<>(); 								
+		for (FundingDTO fundingDTO : ongoingFunded) {
+		    int fundSeq = fundingDTO.getFund_seq();
+		    fundSeqList.add(fundSeq);												// fund_seq 리스트
+		}
+			
+		List<Integer> ongoingProjectSeq = new ArrayList<>();						
+		for (FundingDTO projectSeq : ongoingFunded) {								//poject_seq 리스트
 			ongoingProjectSeq.add(projectSeq.getProject_seq());
 		}
-		List<ProjectDTO> ongoingProject = projectservice.ongoingProject(ongoingProjectSeq);
-			
+		List<ProjectDTO> ongoingProject = projectservice.ongoingProject(ongoingProjectSeq); 	//후원중 + 현재 진행중인 프로젝트의 정보들		
+		
 		
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("ongoingProject", ongoingProject);
@@ -132,23 +138,46 @@ public class ProfileController {
     //마이 프로필 - 팔로워
     @GetMapping("/getFollower")
     @ResponseBody
-    List<MemberDTO> getFollower(HttpSession session) { 
-		//실제 로그인 시 수정할 부분
-		session.setAttribute("member_seq", 4);										
+    Map<String, Object> getFollower(HttpSession session) {
+        // 실제 로그인 시 수정할 부분
+        session.setAttribute("member_seq", 4);
 
-		int memberSeq = (int)session.getAttribute("member_seq");
-		
-		List<Integer> getMyFollower = new ArrayList<>();
-		getMyFollower = followservice.getMyFollower(memberSeq); //4
-		
-	    List<MemberDTO> myFollower = new ArrayList<>();
-	    myFollower = memberservice.MyFollowerList(getMyFollower);
-	    System.out.println(myFollower); //1, 5
-	    
-		ModelAndView mv = new ModelAndView();
-		mv.addObject("myFollower", myFollower);
-		
-		return myFollower;    	
+        int memberSeq = (int) session.getAttribute("member_seq");
+
+        List<Integer> getMyFollower = followservice.getMyFollower(memberSeq);		// 현재 회원의 팔로워들의 memberSeq 리스트
+        List<MemberDTO> myFollower = memberservice.MyFollowerList(getMyFollower);	// 위 회원들의 정보 1번5번 -> 1번5번의 팔로워, 올린 프로젝트찾기
+        
+        List<Integer> followersSeq = new ArrayList<>();								// 팔로워들의 seq
+        for (MemberDTO follower : myFollower) {
+        	followersSeq.add(follower.getMember_seq());
+        }
+
+        Map<Integer, Integer> followerCounts = new HashMap<>();						// 팔로워들의 팔로워 찾기
+        for (Integer followerSeq : followersSeq) {
+        	Integer count = followservice.getCountByFollowingSeq(followerSeq); 
+            if (count == null) {
+                count = 0; 	//팔로워가 없을 경우 0 출력
+            }
+            followerCounts.put(followerSeq, count);
+        }
+
+        
+        Map<Integer, Integer> followerProject = new HashMap<>();					// 팔로워들의 올린프로젝트 찾기
+        for (Integer followerSeq : followersSeq) {
+            Integer projectCount = projectservice.getProjectCount(followerSeq);
+            if (projectCount == null) {
+            	projectCount = 0; 	//프로젝트 없을 경우 0 출력
+            }
+            followerProject.put(followerSeq, projectCount);
+        }        
+        
+        Map<String, Object> myFollowers = new HashMap<>();
+        myFollowers.put("myFollower", myFollower);
+        myFollowers.put("followerCounts", followerCounts);
+        myFollowers.put("followerProject", followerProject);
+
+
+        return myFollowers; 	
     }
     
     
@@ -308,6 +337,7 @@ public class ProfileController {
         String trackNum = (getFundedDetail.getTrack_num());   							//운송장번호.
         if (getFundedDetail.getTrack_num() == null) {
             trackNum = "0";
+            
         }
 
         ModelAndView mv = new ModelAndView();

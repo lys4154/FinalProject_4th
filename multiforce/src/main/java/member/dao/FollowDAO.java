@@ -15,8 +15,9 @@ public interface FollowDAO {
 
 	List<Integer> getMyFollower(int memberSeq);
 
-	List<Integer> getMyFollowing(int memberSeq); 
+	List<Integer> getMyFollowing(int memberSeq);
 
-	
-	
+	Integer getCountByFollowingSeq(Integer followerSeq);
+
+
 }

@@ -22,6 +22,9 @@ public class FollowService {
 		return followDao.getMyFollowing(memberSeq); 
 	}
 
+	public Integer getCountByFollowingSeq(Integer followerSeq) {
+		return followDao.getCountByFollowingSeq(followerSeq); 
+	}
 
 
 

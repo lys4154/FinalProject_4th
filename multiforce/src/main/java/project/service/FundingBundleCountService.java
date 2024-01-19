@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import funding.dto.FundingDTO;
 import project.dao.BundleDAO;
 import project.dao.FundingBundleCountDAO;
 import project.dto.BundleDTO;
@@ -19,6 +21,7 @@ public class FundingBundleCountService {
 	public List<FundingBundleCountDTO> getCount(int fundseq) {
 		return countDao.getCount(fundseq);
 	}
+
 
 
 }
