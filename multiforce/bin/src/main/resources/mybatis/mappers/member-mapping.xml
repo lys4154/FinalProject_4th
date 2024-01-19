@@ -39,11 +39,17 @@
 <select id="selectMemberByEmail">
 	select * from member_info where email = #{email}
 </select>
+<select id="selectMemberByIdEmail">
+	select * from member_info where email = #{email} and member_id = #{id}
+</select>
 <insert id="insertMember">
 	insert into member_info(member_id, password, member_name, nickname, email, gender,
 	 postcode, road_address, jibun_address, extra_address, detail_address)
 	 values (#{member_id}, #{password}, #{member_name}, #{nickname}, #{email}, #{gender},
 	 #{postcode}, #{road_address}, #{jibun_address}, #{extra_address}, #{detail_address});
 </insert>
+<update id="updateMemberPw">
+	update member_info set password = #{tempPw} where member_id = #{id} and email = #{email}
+</update>
 
 </mapper>

@@ -6,14 +6,6 @@
 <mapper namespace="project.dao.ProjectDAO">
 
 
-<insert id="insertApprovalReject">
-	insert into approval_request (manager_seq, member_seq, project_seq, 
-	approval_status, approval_reason, manager_account, 
-	commission, approval_req_date) 
-	VALUES(#{manager_seq},#{member_seq},#{project_seq},#{approval_status},
-	#{approval_reason},#{manager_account},#{commission},#{approval_req_date})
-	
-</insert>
 
 <select id="getProjectsByMemberSeq" parameterType="int" resultType="projectdto">
 	select * from project where member_seq=#{memberSeq}
@@ -89,7 +81,7 @@
 
 <!-- tab_info저장 -->
 <insert id="insertProject" parameterType="project.dto.ProjectDTO">
- INSERT INTO project_table (long_title, short_title, sub_title, main_images_url, url, category)
+ INSERT INTO project (long_title, short_title, sub_title, main_images_url, url, category)
  VALUES (#{long_title}, #{short_title}, #{sub_title}, #{main_images_url}, #{url}, #{category})
 </insert>
 

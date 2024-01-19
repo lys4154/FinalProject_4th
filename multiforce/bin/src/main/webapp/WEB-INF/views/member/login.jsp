@@ -32,6 +32,6 @@ $(document).ready(function(){
 </form>
 <a href="">회원 가입</a>
 <a href="findid">아이디 찾기</a>
-<a href="">비밀번호 재설정</a>
+<a href="resetpw">비밀번호 재설정</a>
 </body>
 </html>
