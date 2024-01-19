@@ -162,7 +162,7 @@ $(document).ready(function() {
 	    
 	    
 	    
-	 // 팔로워에서 팔로잉 클릭
+	 // 팔로워에서 팔로잉추가 클릭
 	    $(".result").on("click", ".following_btn", function() {
 	        var memberSeq = $(this).data("member_seq");
 
