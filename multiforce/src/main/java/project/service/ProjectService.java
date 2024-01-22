@@ -86,7 +86,10 @@ public class ProjectService {
 		return projectDao.getProjectCount(followerSeq);
 	}
 
-
+	// 프로젝트 생성
+	public void createProject(ProjectDTO project) {
+        projectDao.insertProject(project);
+    }
 
 
 	
