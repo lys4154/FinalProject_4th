@@ -86,6 +86,15 @@ public class ProjectService {
 		return projectDao.getProjectCount(followerSeq);
 	}
 
+	//관심 프로젝트 - 관심 취소
+	public int dibsDelete(int projectSeq) {
+		return projectDao.dibsDelete(projectSeq);
+	}
+
+
+		
+
+
 
 
 
