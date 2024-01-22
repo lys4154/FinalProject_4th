@@ -16,19 +16,19 @@
 </select>
 
 <select id="getAllApprovedProjects" resultType="projectdto">
-    select * from project where approval_status=true
+    select * from project where project_process=3
 </select>
 
 <select id="getAllUnapprovedProjects" resultType="projectdto">
-    select * from project where approval_status=false
+    select * from project where project_process=1
 </select>
 
 <select id="approvedCount" resultType="int">
-    select count(*) from project where approval_status=true
+    select count(*) from project where project_process=3
 </select>
 
 <select id="unapprovedCount" resultType="int">
-    select count(*) from project where approval_status=false
+    select count(*) from project where project_process=1
 </select>
 
 
@@ -123,13 +123,18 @@
 
 
 
-	<!-- 마이프로필 - 팔로워의 올린프로젝트 찾기 -->
+<!-- 마이프로필 - 팔로워의 올린프로젝트 찾기 -->
 <select id="getProjectCount" resultType="int">
 	SELECT COUNT(*) FROM project WHERE member_seq = #{followerSeq}
 </select>
 
 
-
+<!-- 관심 프로젝트 - 관심 취소 -->
+<update id="dibsDelete" parameterType="int">
+	UPDATE project
+	SET dibs_count = dibs_count - 1
+	WHERE project_seq = #{projectSeq}
+</update>
 
 
 

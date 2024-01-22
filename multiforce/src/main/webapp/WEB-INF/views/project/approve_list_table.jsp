@@ -28,7 +28,7 @@
                 <td>${project.goal_price}</td>
                 <td>${project.short_title}</td>
                 <td>${project.category}</td>
-                <td>${project.approval_status}</td>
+                <td>${project.project_process}</td>
                 <td>
                 <a href="#">승인</a>
                 <a href="project_reject/${project.project_seq}">반려</a>

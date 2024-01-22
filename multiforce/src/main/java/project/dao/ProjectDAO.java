@@ -65,5 +65,8 @@ public interface ProjectDAO {
 	//마이프로필 - 팔로워의 올린프로젝트 찾기
 	int getProjectCount(Integer followerSeq);
 
+	//관심 프로젝트 - 관심 취소
+	int dibsDelete(int projectSeq);
+
 }
 
