@@ -86,6 +86,12 @@ public class ProjectService {
 		return projectDao.getProjectCount(followerSeq);
 	}
 
+
+	// 프로젝트 생성
+	public void createProject(ProjectDTO project) {
+        projectDao.insertProject(project);
+    }
+
 	//관심 프로젝트 - 관심 취소
 	public int dibsDelete(int projectSeq) {
 		return projectDao.dibsDelete(projectSeq);
@@ -93,6 +99,7 @@ public class ProjectService {
 
 
 		
+
 
 
 

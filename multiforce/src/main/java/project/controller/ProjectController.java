@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -134,19 +135,17 @@ public class ProjectController {
 	}
 	
 	@PostMapping("/saveProject")
-	@ResponseBody
-	public String saveProject(@RequestParam String category, @RequestParam String long_title,
-							  @RequestParam String short_title, @RequestParam String sub_title,
-							  @RequestParam String main_images_url) {
-		ProjectDTO projectDTO= new ProjectDTO();
-		projectDTO.setCategory(category);
-		projectDTO.setLong_title(long_title);
-		projectDTO.setShort_title(short_title);
-		projectDTO.setSub_title(sub_title);
-		projectDTO.setMain_images_url(main_images_url);
-		
-		return "Success";
-	}
+    @ResponseBody
+    public String saveProject(@RequestBody ProjectDTO projectDTO) {
+        try {
+            // 프로젝트 생성 서비스 호출
+            projectService.createProject(projectDTO);
+            return "Success";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Error";
+        }
+    }
 	
 	@PostMapping("/projectInfo")
 	public String projectInfo(ProjectDTO dto, Model model) {

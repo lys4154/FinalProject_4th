@@ -58,8 +58,8 @@ public interface ProjectDAO {
 	List<ProjectDTO> dibsEnd(List<Integer> projectSeqArray);
 
 
-	void saveProject(ProjectDTO projectDTO);
-	ProjectDTO getProject(int projectId);
+	void insertProject(ProjectDTO project);
+	
 
 
 	//마이프로필 - 팔로워의 올린프로젝트 찾기

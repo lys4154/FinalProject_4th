@@ -8,34 +8,31 @@
 <script src="/js/jquery-3.7.1.min.js"></script>
 <script>
     $(document).ready(function() {
-        $("#submitBtn").click(function() {
-            
-            var category = $("#category").val();
-            var longTitle = $("#long_title").val();
-            var shortTitle = $("#short_title").val();
-            var subTitle = $("#sub_title").val();
-            var mainImageUrl = $("#main_images_url").val();
+    $("#submitBtn").click(function() {
+        var data = {
+            category: $("#category").val(),
+            long_title: $("#long_title").val(),
+            short_title: $("#short_title").val(),
+            sub_title: $("#sub_title").val(),
+            main_images_url: $("#main_images_url").val(),
+            url : $("#url").val()
+        };
 
-            // AJAX를 통해 서버에 데이터 전송
-            $.ajax({
-                type: "POST",
-                url: "/saveProject",
-                data: {
-                    category: category,
-                    longTitle: longTitle,
-                    shortTitle: shortTitle,
-                    subTitle: subTitle,
-                    mainImageUrl: mainImageUrl
-                },
-                success: function(response) {
-                    console.log(response);
-                },
-                error: function(error) {
-                    console.error(error);
-                }
-            });
+        // AJAX를 통해 서버에 JSON 형태의 데이터 전송
+        $.ajax({
+            type: "POST",
+            url: "/saveProject",
+            contentType: "application/json",  // JSON 형태로 데이터 전송
+            data: JSON.stringify(data),  // 데이터를 JSON 문자열로 변환
+            success: function(response) {
+                console.log(response);
+            },
+            error: function(error) {
+                console.error(error);
+            }
         });
     });
+});
 </script>
 <style>
     li {
@@ -70,7 +67,7 @@
 <h1>프로젝트 정보</h1>
 <!-- header -->
 <hr>
-<form action="/projectInfo" method="post">
+<form action="/saveProject" method="post">
 <div class="contents">
 	<div class="planContents">
 		<div class="projectItem_itemDesign">
@@ -145,7 +142,7 @@
 	</div>
 	<hr>
 </div>
-<button type="submit" id="submitBtn">저장</button>
+<button type="button" id="submitBtn">저장</button>
 </form>
 <!-- footer -->
 
@@ -193,6 +190,9 @@
 
     realUpload.addEventListener('change', getImageFiles);
   </script>
+
+
+
 
 </body>
 </html>
