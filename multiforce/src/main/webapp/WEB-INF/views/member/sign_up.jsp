@@ -86,7 +86,7 @@ $(document).ready(function(){
 		//아이디 입력 변경있으면 중복체크 false로 
 		$("#user_id_pass_msg").css("display", "none");
 		$("#user_id_dup_errmsg").css("display", "none");
-		isIdnameDupCheckPassed = false;
+		isIdDupCheckPassed = false;
 	});
 	
 	$("#user_id_dup_check_btn").on("click", function(e){
@@ -107,7 +107,7 @@ $(document).ready(function(){
 					}else{
 						$("#user_id_pass_msg").css("display", "none");
 						$("#user_id_dup_errmsg").css("display", "block");
-						isNicknameDupCheckPassed = false;
+						isIdDupCheckPassed = false;
 					}
 				},
 				error: function(request, e){
@@ -404,6 +404,7 @@ $(document).ready(function(){
 			goBack($("#user_id"), e);
 		}else if(!isIdDupCheckPassed){
 			goBack($("#user_id"), e, "아이디 중복확인이 필요합니다");
+			console.log("isIdDupCheckPassed: "+isIdDupCheckPassed)
 		}else if(!isNicknameTestPassed){
 			goBack($("#user_nickname"), e);
 		}else if(!isNicknameDupCheckPassed){
