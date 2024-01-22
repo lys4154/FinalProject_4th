@@ -19,6 +19,11 @@ public class ProjectDibsService {
 	public List<Integer> dibsList(int memberSeq) {
 		return dibsDao.dibsList(memberSeq);
 	}
+
+	//관심 프로젝트 - 취소
+	public int dibsCancel(int projectSeq, int memberSeq) {
+		return dibsDao.dibsCancel(projectSeq, memberSeq);
+	}
 	
 
 

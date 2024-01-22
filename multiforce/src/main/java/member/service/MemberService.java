@@ -19,16 +19,14 @@ public class MemberService {
 		return memberDao.loginMember(email);
 	}
 
-	public List<ProjectDTO> getMyproject(int memberSeq) { 
-		return	memberDao.getMyproject(memberSeq); 
+	//마이프로필 - 팔로워
+	public List<MemberDTO> myFollowerList(List<Integer> getMyFollower) {
+		return memberDao.myFollowerList(getMyFollower);
 	}
 
-	public List<MemberDTO> MyFollowerList(List<Integer> getMyFollower) {
-		return memberDao.MyFollowerList(getMyFollower);
-	}
-
-	public List<MemberDTO> MyFollowingList(List<Integer> getMyFollower) {
-		return memberDao.MyFollowingList(getMyFollower);
+	//마이프로필 - 팔로잉
+	public List<MemberDTO> myFollowingList(List<Integer> getMyFollower) {
+		return memberDao.myFollowerList(getMyFollower);
 	}
 
 	public MemberDTO getNicknameById(int member_seq) {
@@ -55,7 +53,6 @@ public class MemberService {
 	public int signUp(MemberDTO dto) {
 		return memberDao.insertMember(dto);
 	}
-
 
 
 }

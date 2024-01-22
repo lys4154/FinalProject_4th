@@ -21,9 +21,9 @@ public interface MemberDAO {
 
 	List<ProjectDTO> getMyproject(int memberSeq);
 
-	List<MemberDTO> MyFollowerList(List<Integer> getMyFollower);
+	List<MemberDTO> myFollowerList(List<Integer> getMyFollower);
 
-	List<MemberDTO> MyFollowingList(List<Integer> getMyFollower);
+	List<MemberDTO> myFollowingList(List<Integer> getMyFollower);
 
 	MemberDTO getNicknameById(int member_seq);
 
@@ -41,7 +41,7 @@ public interface MemberDAO {
 
 	int updateMemberPw(String email, String id, String tempPw);
 
-	
+
 
 	
 }

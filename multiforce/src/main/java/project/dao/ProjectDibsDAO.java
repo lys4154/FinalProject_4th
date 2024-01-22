@@ -14,7 +14,8 @@ public interface ProjectDibsDAO {
 	//관심 목록
 	List<Integer> dibsList(int memberSeq);
 
-
+	//	//관심 프로젝트 - 취소
+	int dibsCancel(int param1, int param2);
 
 	
 }

@@ -5,16 +5,39 @@
 
 <mapper namespace="member.dao.FollowDAO">
 
+<!-- 마이프로필 - 팔로워 -->
 <select id="getMyFollower" resultType="String">
 	select follower_seq from follow where following_seq=#{memberSeq}
 </select>
 
+<!-- 마이프로필 - 팔로잉 -->
 <select id="getMyFollowing" resultType="String">
 	select following_seq from follow where follower_seq=#{memberSeq}
 </select>
 
-
+<!-- 마이프로필 - 팔로워의 팔로워 -->
 <select id="getCountByFollowingSeq" resultType="int">
 	SELECT COUNT(*) FROM FOLLOW WHERE following_seq = #{followingSeq}
 </select>
+
+
+<!-- 마이프로필 - 팔로워 팔로우하기 -->
+<insert id="followerAdd" parameterType="hashMap">
+    INSERT INTO follow (follower_seq, following_seq)
+    SELECT #{param1}, #{param2}
+    WHERE NOT EXISTS (
+    	SELECT * FROM follow
+    	WHERE follower_seq =#{param1}  AND following_seq = #{param2}
+		);
+</insert>
+
+
+<!-- 마이프로필 - 팔로워 팔로우하기 -->
+<delete id="unfollow" parameterType="hashMap">
+	DELETE FROM follow
+	WHERE follower_seq = #{param1} AND following_seq = #{param2};
+</delete>
+
+
+
 </mapper>	
