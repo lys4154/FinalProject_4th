@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import jakarta.mail.internet.MimeMessage;
 import member.dao.MemberDAO;
 import member.dto.MemberDTO;
+import project.dto.ProjectMemberDTO;
 
 @Service
 public class MailService{
@@ -72,6 +73,30 @@ public class MailService{
 		}
 	}
 	
+	public String sendToCollectorFundFailMail(ProjectMemberDTO dto) {
+		String subject = "[MultiForce Funding] ";
+		String contents = createCollectorFundFailMailContents(dto.getShort_title(), dto.getNickname());
+		MimeMessage message = createMail(dto.getEmail(), subject, contents);
+		try {
+			mailSender.send(message);
+		}catch (MailException e) {
+			return "메일 전송 오류";
+		}
+		return "전송 완료";
+		
+	}
+	
+	private String createCollectorFundFailMailContents(String short_title, String nickname) {
+		String body = "";
+		body += "<h1>" + "안녕하세요. " + nickname + "님</h1>";
+		body += "<h1>" + "MultiForce Funding 입니다." + "</h1>";
+		body += "<h3>" + "등록하신 프로젝트" + "</h3>";
+		body += "<h2>" + short_title + "</h2>";
+		body += "<h3>" + "의 모금액이 목표치에 도달하지 못했습니다" + "</h3>";
+		body += "<h3>" + "감사합니다." + "</h3>";
+		return body;
+	}
+
 	private MimeMessage createMail(String mail, String subject, String contents) {
 		
 		MimeMessage message = mailSender.createMimeMessage();
@@ -132,7 +157,7 @@ public class MailService{
 	private String createTempPw() {
 		StringBuilder builder = new StringBuilder();
 		ArrayList<Integer> charCodeArr = new ArrayList<>();
-		int pwLength = (int)((Math.random() + 3) * 4);
+		int pwLength = (int)((Math.random() + 3) * 4); //12 ~ 16자리
 		int zeroCode = 48;
 		int zCode = 122;
 		//숫자 : 0~9 아스키코드값 : 48~57
@@ -160,6 +185,8 @@ public class MailService{
 		}
 		return builder.toString();
 	}
+
+	
 
 	
 	

@@ -7,6 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.scheduling.annotation.EnableScheduling;
 @ComponentScan(basePackages="board")
 @ComponentScan(basePackages="funding")
 @ComponentScan(basePackages="member")
@@ -21,6 +22,7 @@ import org.springframework.context.annotation.ComponentScan;
 @MapperScan(basePackages="project")
 @MapperScan(basePackages="admin")
 @MapperScan(basePackages="approvalRequest")
+@EnableScheduling
 @SpringBootApplication
 @ComponentScan
 public class MultiforceApplication{

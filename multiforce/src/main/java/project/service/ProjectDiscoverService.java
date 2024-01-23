@@ -2,6 +2,7 @@ package project.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +21,10 @@ public class ProjectDiscoverService {
 	@Autowired
 	ProjectDiscoverDAO discoverDao;
 
-	public List<ProjectDiscoverDTO> discoverProjects(String category, String query, 
+	public HashMap<String, Object> discoverProjects(String category, String query, 
 			String column, int process, int start, int projectNumber, int step) {
 		List<ProjectDiscoverDTO> list = null;
+		HashMap<String, Object> resultMap = new HashMap<>();
 		String ascOrDesc = "";
 		if(column.equals("due_date")) {
 			ascOrDesc = "asc";
@@ -38,21 +40,26 @@ public class ProjectDiscoverService {
 			//카테고리 있냐 없냐, process 있냐 없냐
 			if(process == 0) {
 				//쿼리에 4넣고 땡겨오고 size()<불러올 갯수가 되면 3에서 땡겨오고 6에서 땡겨오고
-				list = sortByprocess(query, column, start, projectNumber, ascOrDesc, step, null);
-				
+				resultMap = sortByprocess(query, column, start, projectNumber, ascOrDesc, step, null);
 			}else {
 				list = discoverDao.dicoverAllProjects(query, column, ascOrDesc, projectNumber, start, process);
+				resultMap.put("list", list);
+				resultMap.put("start", list.size());
+				resultMap.put("step", 0);
 			}
 		}else {
 			if(process == 0) {
-				list = sortByprocess(query, column, start, projectNumber, ascOrDesc, step, category);
+				resultMap = sortByprocess(query, column, start, projectNumber, ascOrDesc, step, category);
 			}else {
 				list = discoverDao.discoverProjectsWithCategory(query, column, ascOrDesc, projectNumber, start, process, category);
+				resultMap.put("list", list);
+				resultMap.put("start", list.size());
+				resultMap.put("step", 0);
 			}
 			
 		}
 		
-		return list;
+		return resultMap;
 	}
 
 	public int countProjects(String category, String query, int process) {
@@ -74,13 +81,15 @@ public class ProjectDiscoverService {
 		return count;
 	}
 	
-	private List<ProjectDiscoverDTO> sortByprocess(String query, String column, int start, int projectNumber, String ascOrDesc, int step,
+	private HashMap<String, Object> sortByprocess(String query, String column, int start, int projectNumber, String ascOrDesc, int step,
 			String category){
+		System.out.println(step);
 		List<ProjectDiscoverDTO> list = null;
 		int idx = 0;
 		Integer[] stepArr = {4,3,6,7,5};
 		List<Integer> stepList = Arrays.asList(stepArr);
 		idx = stepList.indexOf(step);
+		boolean flg = false;
 		while(true){
 			if(category == null) {
 				list = discoverDao.dicoverAllProjects(query, column, ascOrDesc, projectNumber, start, step);
@@ -90,22 +99,28 @@ public class ProjectDiscoverService {
 			
 			if(list == null) {
 				idx++;
-				start = 0;
 				if(stepArr.length == idx) {
+					flg = true;
 					break;
 				}
-				step = stepArr[idx];	
-			}else {
 				start = 0;
+				step = stepArr[idx];	
+			}else if(list.size() < projectNumber){
 				idx++;
 				if(stepArr.length == idx) {
+					flg = true;
 					break;
 				}
 				step = stepArr[idx];
+				start = 0;
+				break;
+			}else {
+				start += list.size();
 				break;
 			}
 		}
-		if(list != null && list.size() < projectNumber) {
+		
+		if(list != null && list.size() < projectNumber && !flg) {
 			while(true) {
 				List<ProjectDiscoverDTO> tmplist = null;
 				if(category == null) {
@@ -115,20 +130,27 @@ public class ProjectDiscoverService {
 				}
 				for (int i = 0; i < tmplist.size(); i++) {
 					list.add(tmplist.get(i));
-					start++;
 				}
+				start = tmplist.size();
+				System.out.println(start);
 				if(list.size() == projectNumber) {
 					break;
 				}else {
 					idx++;
 					if(stepArr.length == idx) {
+						flg = true;
 						break;
 					}
 					step = stepArr[idx];
+					start = 0;
 				}
 			}
 		}
-		return list;
+		HashMap<String, Object> resultMap = new HashMap<>();
+		resultMap.put("list", list);
+		resultMap.put("start", start);
+		resultMap.put("step", step);
+		return resultMap;
 	}
 	
 	
