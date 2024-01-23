@@ -136,6 +136,13 @@
 	WHERE project_seq = #{projectSeq}
 </update>
 
+<!-- 프로젝트 가져오기 -->
+<select id="getProject" resultType="project.dto.ProjectDTO">
+    SELECT long_title, short_title, sub_title, main_images_url, url, content
+    FROM project
+    WHERE member_seq = #{member_seq}; <!-- 후에 #{projectSeq}로 교체할것!! -->
+</select>
+
 
 
 </mapper>

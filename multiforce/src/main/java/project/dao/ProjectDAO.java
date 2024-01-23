@@ -57,10 +57,11 @@ public interface ProjectDAO {
 	//찜한 프로젝트 - 종료된
 	List<ProjectDTO> dibsEnd(List<Integer> projectSeqArray);
 
-
+	// 프로젝트 작성
 	void insertProject(ProjectDTO project);
 	
-
+	// 프로젝트 불러오기
+	List<ProjectDTO> getProject(int memberSeq);
 
 	//마이프로필 - 팔로워의 올린프로젝트 찾기
 	int getProjectCount(Integer followerSeq);

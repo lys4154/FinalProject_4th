@@ -1,39 +1,26 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<script src="/js/jquery-3.7.1.min.js"></script>
-<title>ProjectMain</title>
+    <meta charset="UTF-8">
+    <title>Member Projects</title>
+    <script src="/js/jquery-3.7.1.min.js"></script>
 </head>
 <body>
-<h1>프로젝트 메인페이지</h1>
-
+<h1>프로젝트 메인</h1>
+<h5>여기에 category 출력</h5>
+<h2>여기에 long_title 출력</h2>
+<h3>여기에 main_images_url출력</h3>
+<hr>
+프로젝트 계획 업데이트 커뮤니티 추천 //누르면 해당 메뉴로 이동
+<hr>
+<!-- 프로젝트 정보를 표시할 곳 -->
 <div id="projectInfo">
-<p>Category: ${project.category}</p>
-<p>Long Title: ${project.long_title}</p>
-<p>Short Title: ${project.short_title}</p>
-<p>Sub Title: ${project.sub_title}</p>
-<p>Main Images URL: ${project.main_images_url}</p>
+여기에 프로젝트 내용 출력
+
 </div>
 
 
-<script>
-        $(document).ready(function() {
-            // 페이지 로드 시 서버에서 프로젝트 정보를 가져와서 표시
-            $.ajax({
-                type: "GET",
-                url: "/getProjectInfo",  // 실제로는 해당 URL을 서버에서 제공해야 함
-                success: function(response) {
-                    // 서버에서 받은 데이터를 동적으로 화면에 표시
-                    $("#projectInfo").html(response);
-                },
-                error: function(error) {
-                    console.error(error);
-                }
-            });
-        });
-    </script>    
+
 </body>
 </html>

@@ -147,6 +147,29 @@ public class ProjectController {
         }
     }
 	
+	@GetMapping("/getProject")
+    public String getProject(@RequestParam int memberSeq, Model model) {
+        // memberSeq에 해당하는 프로젝트 정보 가져오기
+        List<ProjectDTO> getProject = projectService.getProject(memberSeq);
+
+        // 모델에 데이터 추가
+        model.addAttribute("getProject", getProject);
+
+        // memberProjects.jsp로 이동
+        return "getProject";
+    }
+	
+//    @GetMapping("/getProject")
+//    @ResponseBody
+//    public List<ProjectDTO> getProjectsForMember() {
+//        int memberSeq = getCurrentMemberSeq();
+//        return projectService.getProjectsByMemberSeq(memberSeq);
+//    }
+//
+//    private int getCurrentMemberSeq() {
+//        return 1; // 
+//    }
+	
 	@PostMapping("/projectInfo")
 	public String projectInfo(ProjectDTO dto, Model model) {
 		model.addAttribute("dto", dto);
