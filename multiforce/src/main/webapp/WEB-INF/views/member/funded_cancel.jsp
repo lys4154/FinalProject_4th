@@ -10,25 +10,16 @@
 <script src="http://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 
-
-
-
-
 <script>
-
-
 
 $(document).ready(function() {
 	
 })
 	
 
-
 </script>
 
 <body>
-
-
 
 <h1>후원이 취소되었습니다.</h1>
 <div>
@@ -56,9 +47,10 @@ $(document).ready(function() {
 			</c:forEach>
 		</div>			
 	</div>
-	<div> 후원 금액 <span> ${price }원</span> </div>
-	<p>
+	<div> 후원 금액 <span> ${price }원</span> </div>	
 </div>
+
+<p>
 	
 <input type="button" onclick="location='/funded'" value="후원한 프로젝트 목록">
 

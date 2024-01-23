@@ -27,6 +27,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import funding.dto.FundingDTO;
 import funding.service.FundingService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import member.dto.MemberDTO;
 import member.service.FollowService;
@@ -362,21 +363,22 @@ public class ProfileController {
 
 		int memberSeq = (int)session.getAttribute("member_seq");
 
-		List<ProjectDTO> searchFunded = projectservice.searchFunded(keyword, memberSeq); //프로젝트 긴제목 또는 짧은제목 + 회원번호 일치 조건
+		List<ProjectDTO> searchFunded = projectservice.searchFunded(keyword, memberSeq); //프로젝트 긴제목 + 회원번호 일치 조건
 																						 //선물 이름으로도 검색 가능하게.
 																						 //지금 클릭이벤트인데 체인지로 변경, 검색창이 null일때는 전체 나오게 
-
-
+		System.out.println(searchFunded);
+		
 		return searchFunded;    	
     }
 
 	
 	
     //후원한 프로젝트 - 상세페이지
-    @GetMapping("/funded_detail/{fund_seq}")
-    ModelAndView fundedDetail(@PathVariable int fund_seq) {
+    @GetMapping(value = {"/ongoing_detail/{fund_seq}", "/cancel_detail/{fund_seq}", "/success_detail/{fund_seq}"})
+    ModelAndView fundedDetail(@PathVariable int fund_seq, HttpServletRequest request) {
         int fundseq = fund_seq;  //후원번호
         FundingDTO getFundedDetail = fundingservice.getFundedDetail(fundseq);	 		//후원정보
+        System.out.println(getFundedDetail);
 
         int projectSeq = getFundedDetail.getProject_seq();								//프로젝트번호
         ProjectDTO getProjectDetail = projectservice.getProjectDetail(projectSeq); 		//프로젝트정보
@@ -450,8 +452,16 @@ public class ProfileController {
         mv.addObject("bundleCount", bundleCount); //꾸러미개수
         mv.addObject("bundleItem", bundleItem); //번들-아이템
         mv.addObject("itemOption", itemOption); //아이템-옵션
-
-        mv.setViewName("member/funded_detail");
+        
+        // URL에 따라서 다른 JSP 페이지로 보내도록 설정
+        if (request.getRequestURI().contains("/ongoing_detail/")) {
+            mv.setViewName("member/ongoing_detail");
+        } else if (request.getRequestURI().contains("/cancel_detail/")) {
+            mv.setViewName("member/cancel_detail");
+        } else  {
+            mv.setViewName("member/success_detail");
+        } 
+        
         return mv;
     }
 	
@@ -481,7 +491,6 @@ public class ProfileController {
     }
 
 	
-    
 	
 	//찜한 프로젝트
 	@GetMapping("/mydibs")
@@ -527,11 +536,8 @@ public class ProfileController {
     public int dibsCancel(int projectSeq, int memberSeq) {
  
     	int dibsCancel = dibsservice.dibsCancel(projectSeq, memberSeq); // -> 1 나와야 삭제.
-    	System.out.println(projectSeq);
-    	System.out.println(memberSeq);
     	
-    	int dibsDelete = projectservice.dibsDelete(projectSeq);	//해당프로젝트 dibs_count -1하기.
-    	System.out.println(dibsDelete);    	
+    	int dibsDelete = projectservice.dibsDelete(projectSeq);	//해당프로젝트 dibs_count -1하기.   	
     	
     	return dibsCancel;	
     }
@@ -569,11 +575,107 @@ public class ProfileController {
 	}
 	
 
-	//내가 올린 프로젝트
-	@GetMapping("/myproject")
-	public String myproject() {		
-		return "member/myproject";
-	}
-	
-	
+	//내가 올린 프로젝트 - 전체
+    @GetMapping("/myproject")
+    public ModelAndView myproject(HttpSession session) {
+        // 실제 로그인 시 수정할 부분
+        session.setAttribute("member_seq", 6);
+
+        int memberSeq = (int) session.getAttribute("member_seq");
+        List<ProjectDTO> myprojectList = projectservice.getProjectsByMemberSeq(memberSeq);
+
+        ModelAndView mv = new ModelAndView("member/myproject");
+        mv.addObject("myprojectList", myprojectList);		//모든프로젝트
+        
+        return mv;
+    }
+    
+    //내가 올린 프로젝트 - 작성중
+    @GetMapping("/write_incomplete")
+    @ResponseBody
+    public List<ProjectDTO> writeIncomplete(int memberSeq) {
+    	
+    	List<ProjectDTO> writeIncomplete = projectservice.writeIncomplete(memberSeq);
+    	return writeIncomplete;    	
+    }
+   
+    
+    //내가 올린 프로젝트 - 심사중
+    @GetMapping("/request_approval")
+    @ResponseBody
+    public List<ProjectDTO> requestApproval(int memberSeq) {
+    	
+    	List<ProjectDTO> requestApproval = projectservice.requestApproval(memberSeq);
+    	return requestApproval;    
+    }
+
+    
+    //내가 올린 프로젝트 - 반려
+    @GetMapping("/request_reject")
+    @ResponseBody
+    public List<ProjectDTO> requestReject(int memberSeq) {
+    	
+    	List<ProjectDTO> requestReject = projectservice.requestReject(memberSeq);    	
+    	return requestReject;    	
+    
+    }
+    
+    
+    //내가 올린 프로젝트 - 승인
+    @GetMapping("/request_admit")
+    @ResponseBody
+    public List<ProjectDTO> requestAdmit(int memberSeq) {
+    	
+    	List<ProjectDTO> requestAdmit = projectservice.requestAdmit(memberSeq);
+    	System.out.println(requestAdmit);
+    	return requestAdmit;    	
+    
+    }
+    
+
+    
+    //내가 올린 프로젝트 - 진행중
+    @GetMapping("/funding_start")
+    @ResponseBody
+    public List<ProjectDTO> fundingStart(int memberSeq) {
+    	
+    	List<ProjectDTO> fundingStart = projectservice.fundingStart(memberSeq);
+    	System.out.println(fundingStart);
+    	return fundingStart;    	
+    
+    }
+    
+    
+    //내가 올린 프로젝트 - 펀딩 실패
+    @GetMapping("/funding_failed")
+    @ResponseBody
+    public List<ProjectDTO> fundingFailed(int memberSeq) {
+    	
+    	List<ProjectDTO> fundingFailed = projectservice.fundingFailed(memberSeq);
+    	return fundingFailed;       
+    }
+    
+    
+
+    //내가 올린 프로젝트 - 펀딩 성공
+    @GetMapping("/funding_success")
+    @ResponseBody
+    public List<ProjectDTO> fundingSuccess(int memberSeq) {
+    	
+    	List<ProjectDTO> fundingSuccess = projectservice.fundingSuccess(memberSeq);
+    	return fundingSuccess;    
+    } 
+
+    
+    
+    //내가 올린 프로젝트 - 종료
+    @GetMapping("/funding_complete")
+    @ResponseBody
+    public List<ProjectDTO> fundingComplete(int memberSeq) {
+    	
+    	List<ProjectDTO> fundingComplete = projectservice.fundingComplete(memberSeq);
+    	return fundingComplete;    
+    } 
+    
+    
 }
