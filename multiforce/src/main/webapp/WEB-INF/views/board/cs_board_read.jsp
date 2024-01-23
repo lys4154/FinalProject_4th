@@ -48,12 +48,12 @@
 <div>
 <c:forEach var="comment" items="${comments}">
     <div>
-        <p><b>Comment ID:</b>
+        <p><b>날짜:</b>
         <fmt:parseDate var="parsedDate" value="${comment.date}" pattern="yyyy-MM-dd'T'HH:mm:ss" />
 			<fmt:formatDate value="${parsedDate}" pattern="yyyy-MM-dd" />
         </p>
-        <p><b>Author:</b> ${comment.nickname}</p>
-        <p><b>Content:</b> ${comment.content}</p>
+        <p><b>작성자:</b> ${comment.nickname}</p>
+        <p><b>내용:</b> ${comment.content}</p>
         <!-- 추가 필요한 속성들에 대해 필요한대로 출력 -->
     </div>
 </c:forEach>
