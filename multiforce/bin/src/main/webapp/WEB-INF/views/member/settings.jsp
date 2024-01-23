@@ -44,32 +44,40 @@ $(document).ready(function() {
 	
 	
 	
-	//비밀번호 변경 
+	//비번 변경 버튼값
     $("#pw_btn").click(function() {
         if ($("#pw_btn").val() == "변경") {
             $("#pw_btn").val("취소");
             $("#pw_text").show();
-        } else if($("#pw_save").click) {        	
-        	var newPw = $("#pw_new").val();
-            $.ajax({
-                type: "POST",
-                url: "/changePw",
-                data: { newPw: newPw },
-                success: function(response) {                    
-                    $("#pw_btn").val("변경");
-                    $("#pw_text").hide();
-                },
-                error: function(error) {
-                    console.error(error);
-                }
-            });//ajax
-        	
-        	
         } else {
         	 $("#pw_btn").val("변경");
         	 $("#pw_text").hide();
-        }//else if
-        })//비번변경btn
+        }
+	})
+	
+	
+	//비번 변경 ajax
+	$("#pw_save").click(function() {
+		var newPw = $("#pw_new").val();
+		
+        $.ajax({
+            type: "POST",
+            url: "/changePw",
+            data: { newPw: newPw },
+            success: function(response) {                
+
+                $("#pw_btn").val("변경");
+                $("#pw_text").hide();
+            },
+            error: function(error) {
+                console.error(error);
+            }
+        });
+		
+		
+		
+	})//비번 ajax
+	
 	
 });
 </script>

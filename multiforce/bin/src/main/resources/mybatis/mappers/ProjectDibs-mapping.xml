@@ -10,6 +10,11 @@
 	select project_seq from project_dibs where member_seq=${memberSeq}
 </select>
 
+<delete id="dibsCancel" parameterType="hashMap" >
+	delete from project_dibs where project_seq=${param1} and member_seq=${param2}
+</delete>
+
+
 </mapper>	
 
 
