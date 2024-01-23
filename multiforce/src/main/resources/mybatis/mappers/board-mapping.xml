@@ -31,5 +31,9 @@
         INSERT INTO community_board (project_seq, member_seq, category, content)
         VALUES (#{project_seq}, #{member_seq}, #{category}, #{content})
     </insert>
+    <select id="getAllCommPost" resultType="board.dto.CommunityDTO">
+	    select * from community_board where project_seq = #{project_seq}
+	</select>
+    
 </mapper>
 

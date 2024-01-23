@@ -9,14 +9,14 @@
 	select * from member_info where email=#{email}
 </select>
 
-<select id="MyFollowerList" parameterType="java.util.List" resultType="memberdto">
+<select id="myFollowerList" parameterType="java.util.List" resultType="memberdto">
 	select * from member_info where member_seq in
 	<foreach collection="list" item="item" index="index" open="(" separator="," close=")">
 		#{item}
 	</foreach>
 </select>
 
-<select id="MyFollowingList" parameterType="java.util.List" resultType="memberdto">
+<select id="myFollowingList" parameterType="java.util.List" resultType="memberdto">
 	select * from member_info where member_seq in
 	<foreach collection="list" item="item" index="index" open="(" separator="," close=")">
 		#{item}
@@ -51,5 +51,12 @@
 <update id="updateMemberPw">
 	update member_info set password = #{tempPw} where member_id = #{id} and email = #{email}
 </update>
+
+
+
+
+
+
+
 
 </mapper>

@@ -30,10 +30,10 @@
       <td>카테고리:</td><td>${project.category}</td>
       </tr>
    <tr>
-      <td>승인 여부:</td><td>${project.approval_status}</td>
+      <td>승인 여부:</td><td>${project.project_process}</td>
       </tr>
    <tr>
-      <td>승인 버튼:</td><td>${project.approval_status}</td>
+      <td>승인 버튼:</td><td>${project.project_process}</td>
    </tr>
    <tr>
       <td>반려 이유:</td><td><textarea name="content" style="height:300px;width:200px;"></textarea></td>

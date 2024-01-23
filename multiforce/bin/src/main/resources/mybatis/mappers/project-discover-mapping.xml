@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="project.dao.ProjectDiscoverDAO">
+<select id="dicoverAllProjects" resultType="discoverdto">
+	select * from project where long_title like concat("%", #{query}, "%") and project_process = #{process}
+	order by ${column} ${ascOrDesc} limit #{start}, #{projectNumber}
+</select>
+<select id="discoverProjectsWithCategory" resultType="discoverdto">
+	select * from project where long_title like concat("%", #{query}, "%") and project_process = #{process} and category = #{category}
+	order by ${column} ${ascOrDesc} limit #{start}, #{projectNumber}
+</select>
+<insert id="insertDummyProject">
+insert into project(member_seq, content, goal_price, start_date, due_date, long_title, short_title, url, category, gift_status, main_images_url, sub_title, account, project_process)
+values(2, "테스트", 1000000, #{startDate}, #{dueDate}, #{title}, "테스트용 짧은 제목", #{url}, #{category}, false, "/noticesimages/b8f2e422-c81a-4c13-a395-4d0ce768f06f.png", "테스트 서브타이틀", "1234", #{process});
+</insert>
+<select id="countAllProjects">
+select count(*) from project where long_title like concat("%", #{query}, "%") and project_process >= 3
+</select>
+<select id="countProjectsWithProcess">
+select count(*) from project where long_title like concat("%", #{query}, "%") and project_process = #{process}
+</select>
+<select id="countAllProjectsWithCategory">
+select count(*) from project where long_title like concat("%", #{query}, "%") 
+and project_process >= 3 and category=#{category}
+</select>
+<select id="countProjectsWithCategoryProcess">
+select count(*) from project where long_title like concat("%", #{query}, "%") 
+and project_process = #{process} and category=#{category}
+</select>
+</mapper>
+

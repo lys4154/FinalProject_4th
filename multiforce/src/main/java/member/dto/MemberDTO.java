@@ -19,46 +19,21 @@ public class MemberDTO {
 	boolean gender;
 	boolean resign;
 	LocalDateTime resign_date;
-	int postcode;
+	String postcode;
 	String road_address;
 	String jibun_address;
 	String extra_address;
 	String detail_address;
 	
-	
+
 	public MemberDTO() {
 		
 	} 
 	
-	
-	public MemberDTO(int member_seq, String member_id, String password, String member_name, String nickname,
-			String profile_img, String email, String description, int level, boolean gender, boolean resign,
-			LocalDateTime resign_date, int postcode, String road_address, String jibun_address, String extra_address,
-			String detail_address) {
-		super();
-		this.member_seq = member_seq;
-		this.member_id = member_id;
-		this.password = password;
-		this.member_name = member_name;
-		this.nickname = nickname;
-		this.profile_img = profile_img;
-		this.email = email;
-		this.description = description;
-		this.level = level;
-		this.gender = gender;
-		this.resign = resign;
-		this.resign_date = resign_date;
-		this.postcode = postcode;
-		this.road_address = road_address;
-		this.jibun_address = jibun_address;
-		this.extra_address = extra_address;
-		this.detail_address = detail_address;
-	}
-
-	public int getPostcode() {
+	public String getPostcode() {
 		return postcode;
 	}
-	public void setPostcode(int postcode) {
+	public void setPostcode(String postcode) {
 		this.postcode = postcode;
 	}
 	public String getRoad_address() {

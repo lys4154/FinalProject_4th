@@ -99,6 +99,11 @@ public class ProjectService {
 	public int dibsDelete(int projectSeq) {
 		return projectDao.dibsDelete(projectSeq);
 	}
+	
+	// 프로젝트 불러오기
+	public List<ProjectDTO> getProject(int memberSeq) {
+        return projectDao.getProject(memberSeq);
+    }
 
 	//내가 올린 프로젝트 - 작성중
 	public List<ProjectDTO> writeIncomplete(int memberSeq) {

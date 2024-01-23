@@ -10,5 +10,7 @@
 <select id="getCount" parameterType="int" resultType="countdto">
 	select * from funding_bundle_count where fund_seq=#{fundseq}
 </select>
-	
+
+
+
 </mapper>	

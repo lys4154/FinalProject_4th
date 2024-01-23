@@ -106,6 +106,9 @@ public class ProjectController {
 			Model model) {
 		
 		ProjectDTO project_info = projectService.getProjectDetail(project_seq);
+		List<CommunityDTO> com_post = boardService.getAllCommPost(project_seq);
+		System.out.println(project_info);
+		model.addAttribute("community_posts", com_post);
 		model.addAttribute("projects", project_info);
 		
 		return "project/project_community";
@@ -146,6 +149,29 @@ public class ProjectController {
             return "Error";
         }
     }
+	
+	@GetMapping("/getProject")
+    public String getProject(@RequestParam int memberSeq, Model model) {
+        // memberSeq에 해당하는 프로젝트 정보 가져오기
+        List<ProjectDTO> getProject = projectService.getProject(memberSeq);
+
+        // 모델에 데이터 추가
+        model.addAttribute("getProject", getProject);
+
+        // memberProjects.jsp로 이동
+        return "getProject";
+    }
+	
+//    @GetMapping("/getProject")
+//    @ResponseBody
+//    public List<ProjectDTO> getProjectsForMember() {
+//        int memberSeq = getCurrentMemberSeq();
+//        return projectService.getProjectsByMemberSeq(memberSeq);
+//    }
+//
+//    private int getCurrentMemberSeq() {
+//        return 1; // 
+//    }
 	
 	@PostMapping("/projectInfo")
 	public String projectInfo(ProjectDTO dto, Model model) {

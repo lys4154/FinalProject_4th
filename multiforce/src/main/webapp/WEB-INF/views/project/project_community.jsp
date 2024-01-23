@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+    
 <!DOCTYPE html>
 <html>
 <head>
@@ -45,7 +47,12 @@
     <span id="character_count">1000</span>자 남음<br><br>
     <input type="submit" value="등록">
   </form>
-
+	<c:forEach var="community" items="${community_posts}">
+		<p>작성자: ${community.member_seq}</p>
+		<p>날짜: ${community.date}</p>
+	    <p>내용: ${community.content}</p>
+			<hr>
+	</c:forEach>
 </section>
 </body>
 </html>
