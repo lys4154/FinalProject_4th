@@ -5,9 +5,9 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
-
-
+import member.dto.MemberDTO;
 import project.dto.ProjectDTO;
+import project.dto.ProjectMemberDTO;
 
 @Repository
 @Mapper
@@ -68,6 +68,15 @@ public interface ProjectDAO {
 
 	//관심 프로젝트 - 관심 취소
 	int dibsDelete(int projectSeq);
+	
+	//프로젝트 실패 업데이트
+	int projectFailUpdate();
+	// 성공업데이트
+	int projectSuccessUpdate();
+	//시작 업데이트
+	int projectStartUpdate();
+
+	List<ProjectMemberDTO> selectCollectorFundFail();
 
 }
 

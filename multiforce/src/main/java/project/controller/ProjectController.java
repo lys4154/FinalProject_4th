@@ -106,6 +106,9 @@ public class ProjectController {
 			Model model) {
 		
 		ProjectDTO project_info = projectService.getProjectDetail(project_seq);
+		List<CommunityDTO> com_post = boardService.getAllCommPost(project_seq);
+		System.out.println(project_info);
+		model.addAttribute("community_posts", com_post);
 		model.addAttribute("projects", project_info);
 		
 		return "project/project_community";

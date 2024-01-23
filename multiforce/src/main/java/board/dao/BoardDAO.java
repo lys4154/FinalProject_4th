@@ -28,6 +28,8 @@ public interface BoardDAO {
 	List<BoardDTO> getCsCommentsById(int help_ask_seq);
 
 	void saveCommunityPost(CommunityDTO com_post);
+
+	List<CommunityDTO> getAllCommPost(int project_seq);
 	
 
 }

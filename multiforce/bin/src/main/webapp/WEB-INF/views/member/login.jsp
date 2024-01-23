@@ -30,7 +30,7 @@ $(document).ready(function(){
 	<br><br><br>테스트용 일반 회원 아이디 test 비번 1234
 	<br>테스트용 관리자 아이디 admin 비번 1234
 </form>
-<a href="">회원 가입</a>
+<a href="signup">회원 가입</a>
 <a href="findid">아이디 찾기</a>
 <a href="resetpw">비밀번호 재설정</a>
 </body>

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,19 +60,22 @@ public class ProjectDiscoverController {
 			process = "0";
 		}
 		int parsedProcess = Integer.parseInt(process);
-		List<ProjectDiscoverDTO> list 
-			= discoverService.discoverProjects(category, query, column, parsedProcess, start, projectNumber, 4);
+		int step = 4;
+		HashMap<String, Object> resultMap 
+			= discoverService.discoverProjects(category, query, column, parsedProcess, start, projectNumber, step);
 		
 		int count = discoverService.countProjects(category, query, parsedProcess);
 		
 		ModelAndView mv = new ModelAndView();
-		mv.addObject("list", list);
+		mv.addObject("list", resultMap.get("list"));
 		mv.addObject("category", category);
 		mv.addObject("query", query);
 		mv.addObject("sort", sort);
 		mv.addObject("process", process);
 		mv.addObject("projectNumber", projectNumber);
 		mv.addObject("count", count);
+		mv.addObject("step", resultMap.get("step"));
+		mv.addObject("start", resultMap.get("start"));
 		mv.setViewName("project/project_discover");
 		
 		return mv;
@@ -89,9 +93,10 @@ public class ProjectDiscoverController {
 		if(sort.equals("end")) {
 			column = "due_date";
 		}
-		List<ProjectDiscoverDTO> list 
+		HashMap<String, Object> resultMap
 			= discoverService.discoverProjects(category, query, column, process, start, projectNumber, step);
-		return list;
+		
+		return (List<ProjectDiscoverDTO>) resultMap.get("list");
 	}
 	
 	@GetMapping("/projectdummy")

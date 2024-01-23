@@ -58,6 +58,9 @@ public class boardService {
 		boardDAO.saveCommunityPost(com_post);
 		
 	}
+	public List<CommunityDTO> getAllCommPost(int project_seq){
+		return boardDAO.getAllCommPost(project_seq);	
+	}
 
 
 	

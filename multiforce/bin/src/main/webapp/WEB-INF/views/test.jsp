@@ -21,4 +21,9 @@
 		<a href="">로그인</a>
 	</div>
 </header>
+<body>
+	${dto.project_seq }
+	${dto.project_process }
+	${dto.project_process_name }
+</body>
 </html>
