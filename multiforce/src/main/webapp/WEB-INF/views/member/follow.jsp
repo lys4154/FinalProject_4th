@@ -62,39 +62,43 @@ $(document).ready(function() {
     $("#funded_detail").click(fundedDetailClick);
 	  
     
-	   
+	//팔로잉 찾기   
+    function getFollowing(){
+       $.ajax({
+           type: "get",
+           url: "/getFollowing",
+           success: function(response) {
+           	console.log(response); 
+           	$(".result").empty();
+           	if (Object.keys(response).length === 0) {
+           		$(".result").append("<div> 팔로잉한 사용자가 없습니다. </div>");
+               } else {
+                   for (var i = 0; i < response.myFollowing.length; i++) {
+                       var memberSeq = response.myFollowing[i].member_seq;
+                       var followerCount = response.followerCounts[memberSeq];
+                       var projectCount = response.followerProject[memberSeq];
+
+                       $(".result").append(
+                           "<div>" + response.myFollowing[i].profile_img + " </div>" +
+                           "<div>" + response.myFollowing[i].nickname + " </div>" +
+                           "<div>" + response.myFollowing[i].description + " </div>" +
+                           "<div> 팔로워 : " + followerCount + " </div>" +
+                           "<div> 올린 프로젝트 : " + projectCount + " </div>" +
+                           "<button class='following_btn' data-member_seq='" + memberSeq + "'> 팔로잉 - 클릭시 취소</button> <hr>"
+                       );
+                   }
+               }
+
+           },
+           error: function(error) {
+               console.log(error);
+           }
+       });
+    }
+    
 	//팔로잉 클릭 
 	$("#following_detail").click(function() {
-	       $.ajax({
-	           type: "get",
-	           url: "/getFollowing",
-	           success: function(response) {
-	           	console.log(response); 
-	           	$(".result").empty();
-	           	if (Object.keys(response).length === 0) {
-	           		$(".result").append("<div> 팔로잉한 사용자가 없습니다. </div>");
-	               } else {
-	                   for (var i = 0; i < response.myFollowing.length; i++) {
-	                       var memberSeq = response.myFollowing[i].member_seq;
-	                       var followerCount = response.followerCounts[memberSeq];
-	                       var projectCount = response.followerProject[memberSeq];
-	
-	                       $(".result").append(
-	                           "<div>" + response.myFollowing[i].profile_img + " </div>" +
-	                           "<div>" + response.myFollowing[i].nickname + " </div>" +
-	                           "<div>" + response.myFollowing[i].description + " </div>" +
-	                           "<div> 팔로워 : " + followerCount + " </div>" +
-	                           "<div> 올린 프로젝트 : " + projectCount + " </div>" +
-	                           "<button class='following_btn' data-member_seq='" + memberSeq + "'> 팔로잉 - 클릭시 취소</button> <hr>"
-	                       );
-	                   }
-	               }
-	
-	           },
-	           error: function(error) {
-	               console.log(error);
-	           }
-	       });	        
+		getFollowing();
 	});
 	
 	
@@ -112,6 +116,8 @@ $(document).ready(function() {
 			            console.log(response);
 			            if(response == 1) {
 			            	alert("팔로우가 취소되었습니다.");
+			            	getFollowing();
+			            	
 			            }         	                
 			        },
 				error : function(request, e) {
@@ -124,41 +130,47 @@ $(document).ready(function() {
 	
 	
 	    
+	
+	
+	//팔로워 찾기
+	function getFollower() {
+       $.ajax({
+           type: "get",
+           url: "/getFollower",
+           success: function(response) {
+           	console.log(response); 
+           	$(".result").empty();
+           	if (Object.keys(response).length === 0) {
+           		$(".result").append("<div> 팔로워가 없습니다. </div>");
+               } else {
+                   for (var i = 0; i < response.myFollower.length; i++) {
+                       var memberSeq = response.myFollower[i].member_seq;
+                       var followerCount = response.followerCounts[memberSeq];
+                       var projectCount = response.followerProject[memberSeq];
+
+                       $(".result").append(
+                           "<div>" + response.myFollower[i].profile_img + " </div>" +
+                           "<div>" + response.myFollower[i].nickname + " </div>" +
+                           "<div>" + response.myFollower[i].description + " </div>" +
+                           "<div> 팔로워 : " + followerCount + " </div>" +
+                           "<div> 올린 프로젝트 : " + projectCount + " </div>" +
+                           '<div class="modal-dialog modal-dialog-centered">' +                                
+                           "<button class='follower_btn' data-member_seq='" + memberSeq + "'> 팔로우</button> </div> <hr>"  
+                       );
+                   }
+               }
+
+           },
+           error: function(error) {
+               console.log(error);
+           }
+       }); 
+	}
 	    
 	//팔로워 클릭
 	$("#follower_detail").click(function() {
-	       $.ajax({
-	           type: "get",
-	           url: "/getFollower",
-	           success: function(response) {
-	           	console.log(response); 
-	           	$(".result").empty();
-	           	if (Object.keys(response).length === 0) {
-	           		$(".result").append("<div> 팔로워가 없습니다. </div>");
-	               } else {
-	                   for (var i = 0; i < response.myFollower.length; i++) {
-	                       var memberSeq = response.myFollower[i].member_seq;
-	                       var followerCount = response.followerCounts[memberSeq];
-	                       var projectCount = response.followerProject[memberSeq];
-	
-	                       $(".result").append(
-	                           "<div>" + response.myFollower[i].profile_img + " </div>" +
-	                           "<div>" + response.myFollower[i].nickname + " </div>" +
-	                           "<div>" + response.myFollower[i].description + " </div>" +
-	                           "<div> 팔로워 : " + followerCount + " </div>" +
-	                           "<div> 올린 프로젝트 : " + projectCount + " </div>" +
-	                           '<div class="modal-dialog modal-dialog-centered">' +                                
-	                           "<button class='follower_btn' data-member_seq='" + memberSeq + "'> 팔로우</button> </div> <hr>"  
-	                       );
-	                   }
-	               }
-	
-	           },
-	           error: function(error) {
-	               console.log(error);
-	           }
-	       }); 
-		}); 
+		getFollower();
+	}); 
  
 	
 	// 팔로워에서 팔로우추가 클릭
@@ -172,6 +184,7 @@ $(document).ready(function() {
 	            console.log(response);
 	            if(response == 1) {
 	            	alert("성공적으로 팔로우 했습니다.");
+	            	getFollower();
 	            } else {
 	            	alert("이미 팔로우 되어있습니다.");
 	            }             	                

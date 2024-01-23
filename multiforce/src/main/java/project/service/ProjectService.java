@@ -4,6 +4,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.oracle.wls.shaded.org.apache.regexp.recompile;
+
 import project.dao.ProjectDAO;
 import project.dto.ProjectDTO;
 
@@ -91,8 +94,48 @@ public class ProjectService {
 		return projectDao.dibsDelete(projectSeq);
 	}
 
+	//내가 올린 프로젝트 - 작성중
+	public List<ProjectDTO> writeIncomplete(int memberSeq) {
+		return projectDao.writeIncomplete(memberSeq);
+	}
 
-		
+	//내가 올린 프로젝트 - 심사중
+	public List<ProjectDTO> requestApproval(int memberSeq) {
+		return projectDao.requestApproval(memberSeq);
+	}
+
+
+	//내가 올린 프로젝트 - 반려
+	public List<ProjectDTO> requestReject(int memberSeq) {
+		return projectDao.requestReject(memberSeq);
+	}
+
+	//내가 올린 프로젝트 - 승인완료
+	public List<ProjectDTO> requestAdmit(int memberSeq) {
+		return projectDao.requestAdmit(memberSeq);
+	}
+
+
+	//내가 올린 프로젝트 - 진행중
+	public List<ProjectDTO> fundingStart(int memberSeq) {
+		return projectDao.fundingStart(memberSeq);
+	}
+
+	//내가 올린 프로젝트 - 펀딩 실패
+	public List<ProjectDTO> fundingFailed(int memberSeq) {
+		return projectDao.fundingFailed(memberSeq);
+	}
+
+
+	//내가 올린 프로젝트 - 펀딩 성공
+	public List<ProjectDTO> fundingSuccess(int memberSeq) {
+		return projectDao.fundingSuccess(memberSeq);
+	}
+
+	//내가 올린 프로젝트 - 종료
+	public List<ProjectDTO> fundingComplete(int memberSeq) {
+		return projectDao.fundingComplete(memberSeq);
+	}
 
 
 

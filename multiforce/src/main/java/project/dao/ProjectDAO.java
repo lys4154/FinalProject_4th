@@ -68,5 +68,30 @@ public interface ProjectDAO {
 	//관심 프로젝트 - 관심 취소
 	int dibsDelete(int projectSeq);
 
+	//내가 올린 프로젝트 - 작성중
+	List<ProjectDTO> writeIncomplete(int memberSeq);
+
+	//내가 올린 프로젝트 - 심사중
+	List<ProjectDTO> requestApproval(int memberSeq);
+
+	//내가 올린 프로젝트 - 반려
+	List<ProjectDTO> requestReject(int memberSeq);
+
+	//내가 올린 프로젝트 - 승인완료
+	List<ProjectDTO> requestAdmit(int memberSeq);
+
+	//내가 올린 프로젝트 - 진행중
+	List<ProjectDTO> fundingStart(int memberSeq);
+
+	//내가 올린 프로젝트 - 펀딩 실패
+	List<ProjectDTO> fundingFailed(int memberSeq);
+
+	//내가 올린 프로젝트 - 펀딩 성공
+	List<ProjectDTO> fundingSuccess(int memberSeq);
+
+	//내가 올린 프로젝트 - 종료
+	List<ProjectDTO> fundingComplete(int memberSeq);
+
+
 }
 
