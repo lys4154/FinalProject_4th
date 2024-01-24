@@ -1,5 +1,7 @@
 package member.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -8,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -30,6 +33,7 @@ import funding.service.FundingService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import member.dto.MemberDTO;
+import member.dto.MemberProfileImgDTO;
 import member.service.FollowService;
 import member.service.MemberService;
 import project.dto.BundleDTO;
@@ -43,6 +47,7 @@ import project.service.ItemOptionService;
 import project.service.ItemService;
 import project.service.ProjectDibsService;
 import project.service.ProjectService;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 public class ProfileController {
@@ -366,7 +371,6 @@ public class ProfileController {
 		List<ProjectDTO> searchFunded = projectservice.searchFunded(keyword, memberSeq); //프로젝트 긴제목 + 회원번호 일치 조건
 																						 //선물 이름으로도 검색 가능하게.
 																						 //지금 클릭이벤트인데 체인지로 변경, 검색창이 null일때는 전체 나오게 
-		System.out.println(searchFunded);
 		
 		return searchFunded;    	
     }
@@ -543,23 +547,6 @@ public class ProfileController {
     }
 	
 	
-	//회원 정보 - 이메일
-	@PostMapping("/changeEmail")
-	@ResponseBody
-	public String changeEmail() {		
-		return null;	
-	}
-	
-	
-	//회원 정보 - 비밀번호
-	@PostMapping("/changePw")
-	@ResponseBody
-	public String changePw() {		
-		return null;	
-	}
-	
-	
-	
 	//팔로우
 	@GetMapping("/follow")
 	public String follow() {		
@@ -570,9 +557,47 @@ public class ProfileController {
 
 	//회원정보수정
 	@GetMapping("/settings")
-	public String settings() {		
-		return "member/settings";
+	public ModelAndView settings(HttpSession session) {
+        // 실제 로그인 시 수정할 부분
+		session.setAttribute("email", "test@test.com");	  
+	    
+		String email = (String) session.getAttribute("email");	
+		MemberDTO loginMember = memberservice.loginMember(email);
+		
+		ModelAndView mv = new ModelAndView();		
+		mv.addObject("loginMember",loginMember);		
+		mv.setViewName("member/settings");
+		return mv;		
 	}
+	
+	
+	@PostMapping("/profileimg_upload")
+	@ResponseBody
+	public String profileimgUpload(MemberProfileImgDTO dto, int memberSeq) throws IllegalStateException, IOException {
+		
+		String savePath = "c:/fullstack/workspace_springboot/images/members/";
+		String fileName = null ;
+		String newFileName = null;
+		dto.setMember_seq(memberSeq);
+		
+		MultipartFile file = dto.getFile();
+		if(!file.isEmpty()) {
+			fileName = file.getOriginalFilename();
+			String before = fileName.substring(0, fileName.indexOf("."));	//파일명
+			String ext = fileName.substring(fileName.indexOf("."));			//확장자
+			newFileName = before+"("+UUID.randomUUID().toString()+")"+ext;	//새이름
+			
+			File saveFile = new File(savePath + newFileName);
+			file.transferTo(saveFile);										//파일로 변경
+		}
+		
+		
+		return "성공";
+	}
+	
+	
+	
+	
 	
 
 	//내가 올린 프로젝트 - 전체
@@ -676,6 +701,25 @@ public class ProfileController {
     	List<ProjectDTO> fundingComplete = projectservice.fundingComplete(memberSeq);
     	return fundingComplete;    
     } 
+    
+    
+    
+    
+    
+    //내가 올린 프로젝트 - 삭제
+    @PostMapping("/project_delete")
+    @ResponseBody
+    public String projectDelete (int projectSeq) {
+    	int projectDelete = projectservice.projectDelete(projectSeq);
+        if (projectDelete == 1) {
+            return "삭제 완료";
+        } else {
+            return "삭제 오류";
+        }
+    }
+    
+    
+    
     
     
 }

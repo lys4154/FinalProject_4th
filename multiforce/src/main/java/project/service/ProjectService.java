@@ -148,6 +148,12 @@ public class ProjectService {
 		return projectDao.fundingComplete(memberSeq);
 	}
 
+	//내가 올린 프로젝트 - 삭제
+	public int projectDelete(int projectSeq) {
+		System.out.println("프로젝트 삭제 서비스 ");
+		return projectDao.projectDelete(projectSeq);
+	}
+
 
 
 

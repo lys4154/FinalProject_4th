@@ -288,7 +288,6 @@ $(document).ready(function() {
 	<div id="funded_detail" style="cursor:pointer;"> 후원한 프로젝트 </div>
 	<div id="follower_detail" style="cursor:pointer;"> 팔로워 </div>
 	<div id="following_detail" style="cursor:pointer;"> 팔로잉 </div>
-
 </div>
 <p>
 
