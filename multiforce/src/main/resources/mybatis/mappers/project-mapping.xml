@@ -78,8 +78,8 @@
 
 
 <!-- 후원한 프로젝트 페이지 - 검색 -->
-<select id="searchFunded" parameterType="java.util.Map" resultType="projectdto">
-    SELECT project.*, funding.member_seq AS funding_member_seq
+<select id="searchFunded" parameterType="java.util.Map"  resultType="java.util.Map">
+    SELECT project.*, funding.*
     FROM project
     INNER JOIN funding ON project.project_seq = funding.project_seq
     WHERE (project.long_title LIKE concat("%", #{searchKeyword, jdbcType=VARCHAR}, "%"))
@@ -269,6 +269,20 @@ collection_amount, start_date, due_date, long_title, short_title, sub_title, cat
 from member_info m join project p using (member_seq) 
 where due_date = date(now() - interval 1 day) and project_process = 5;
 </select>
+
+
+<!-- 내가 올린 프로젝트 - 삭제 -->
+<delete id="projectDelete" parameterType="int">
+	delete from project
+	where project_seq=#{projectSeq}
+</delete>
+
+
+
+
+
+
+
 
 
 </mapper>

@@ -102,6 +102,9 @@ public interface ProjectDAO {
 	//내가 올린 프로젝트 - 종료
 	List<ProjectDTO> fundingComplete(int memberSeq);
 
+	//내가 올린 프로젝트 - 삭제
+	int projectDelete(int projectSeq);
+
 
 }
 

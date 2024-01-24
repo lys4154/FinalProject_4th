@@ -58,7 +58,8 @@ $(document).ready(function() {
 	
 	
 	//후원한 프로젝트 클릭
-	fundedDetailClick();	
+	fundedDetailClick();
+	
     $("#funded_detail").click(fundedDetailClick);
 	  
     
