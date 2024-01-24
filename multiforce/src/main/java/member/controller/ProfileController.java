@@ -3,6 +3,7 @@ package member.controller;
 import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -387,8 +388,8 @@ public class ProfileController {
         int projectSeq = getFundedDetail.getProject_seq();								//프로젝트번호
         ProjectDTO getProjectDetail = projectservice.getProjectDetail(projectSeq); 		//프로젝트정보
 
-        LocalDateTime dueDate = getProjectDetail.getDue_date();							// 남은기한
-        LocalDateTime currentTime = LocalDateTime.now();
+        LocalDate dueDate = getProjectDetail.getDue_date();							// 남은기한
+        LocalDate currentTime = LocalDate.now();
         int dDay = (int) ChronoUnit.DAYS.between(currentTime, dueDate);
 
         List<FundingBundleCountDTO> getCount = countservice.getCount(fundseq); 			//후원번호로 꾸러미개수 찾기

@@ -25,7 +25,7 @@
 <script>
     $(document).ready(function () {
 
-        $("#updateLink").click(function (e) {
+    	$("#communityLink").click(function (e) {
             e.preventDefault();
             var pid = $(this).data("project-id");
             var baseUrl = window.location.origin;
@@ -33,7 +33,7 @@
         });
 
 
-        $("#communityLink").click(function (e) {
+        $("#updateLink").click(function (e) {
             e.preventDefault();
             var pid = $(this).data("project-id");
             var baseUrl = window.location.origin;

@@ -61,6 +61,7 @@ $(document).ready(function(){
 		}
 		$("#search_result").html(result);
 	})
+	
 //		===============================로그인 상태에 따라 change_part부분 다르게====================================
 	//url 경로 무조건 절대 경로로 주기
 	let loginUserId = '${login_user_id}';
@@ -107,21 +108,22 @@ $(document).ready(function(){
 <header>
 	<div>
 		<h1><a href="/">멀티포스 펀딩</a></h1>
-		<form>
-			<input id="search" type="text">
-			<input type="button" value="검색">
+		<form action="/discover" method="get" id="search_form">
+			<input id="search" type="text" name="query">
+			<input type="submit" value="검색">
 		</form>
 		<div id="search_result"></div>
 	</div>
 	<div id="navigator">
 		<a class="category" id="category">카테고리</a>
-		<a href="">신규</a>
-		<a href="">인기</a>
-		<a href="">마감임박</a>
+		<a href="/discover?sort=new">신규</a>
+		<a href="/discover?sort=popular">인기</a>
+		<a href="/discover?sort=end">마감임박</a>
 		<button><a href="">프로젝트 등록</a></button>
 		<div id = "change_part"></div>
 		<%
 		HashMap<String, String> categoryNameMap = new HashMap<>();
+		categoryNameMap.put("전체", "all");
 		categoryNameMap.put("보드게임", "board_game");
 		categoryNameMap.put("디지털 게임", "digital_game");
 		categoryNameMap.put("웹툰·만화", "webtoon_and_comics");

@@ -6,6 +6,7 @@ import java.time.temporal.ChronoUnit;
 
 import org.springframework.stereotype.Component;
 
+import project.code.ProjectCategory;
 import project.code.ProjectProcess;
 
 @Component
@@ -15,13 +16,13 @@ public class ProjectDiscoverDTO {
 	String content;
 	int goal_price;
 	int collection_amount;
-	LocalDateTime start_date;
-	LocalDateTime due_date;
+	LocalDate start_date;
+	LocalDate due_date;
 	String long_title;
 	String short_title;
 	String sub_title;
 	String url;
-	String category;
+	ProjectCategory category;
 	boolean gift_status;
 	boolean gift_delivery;
 	int dibs_count;
@@ -32,6 +33,15 @@ public class ProjectDiscoverDTO {
 	ProjectProcess project_process;
 	long term;
 	
+	public String getCategory() {
+		return category.getEngName();
+	}
+	public void setCategory(String category) {
+		this.category = ProjectCategory.valueOf(category.toUpperCase());
+	}
+	public String getCategory_kor() {
+		return category.getKorName();
+	}
 	public long getTerm() {
 		return term;
 	}
@@ -68,16 +78,16 @@ public class ProjectDiscoverDTO {
 	public void setCollection_amount(int collection_amount) {
 		this.collection_amount = collection_amount;
 	}
-	public LocalDateTime getStart_date() {
+	public LocalDate getStart_date() {
 		return start_date;
 	}
-	public void setStart_date(LocalDateTime start_date) {
+	public void setStart_date(LocalDate start_date) {
 		this.start_date = start_date;
 	}
-	public LocalDateTime getDue_date() {
+	public LocalDate getDue_date() {
 		return due_date;
 	}
-	public void setDue_date(LocalDateTime due_date) {
+	public void setDue_date(LocalDate due_date) {
 		this.due_date = due_date;
 		setTerm();
 	}
@@ -104,12 +114,6 @@ public class ProjectDiscoverDTO {
 	}
 	public void setUrl(String url) {
 		this.url = url;
-	}
-	public String getCategory() {
-		return category;
-	}
-	public void setCategory(String category) {
-		this.category = category;
 	}
 
 	public boolean isGift_status() {

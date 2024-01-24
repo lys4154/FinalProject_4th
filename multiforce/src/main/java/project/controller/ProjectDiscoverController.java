@@ -135,4 +135,12 @@ public class ProjectDiscoverController {
 		System.out.println(result);
 		return "common/mainpage";
 	}
+	
+	@PostMapping(value="/realtimesearch", produces = {"application/json;charset=utf-8"})
+	@ResponseBody
+	public List<ProjectDiscoverDTO> realTimeSearch(){
+		List<ProjectDiscoverDTO> list = discoverService.selectAllOngoingProject();
+		return list;
+	}
+	
 }

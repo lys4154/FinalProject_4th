@@ -129,7 +129,38 @@ $(document).ready(function(){
 		forCount += 1;
 	
 	}
-
+//====================찜기능==========================
+	$(".project_dibs_btn").on("click", function(e){
+		console.log(e.target.getAttribute("id"));
+		if("${login_user_seq}" == ""){
+			if(confirm("로그인 후에 이용하실 수 있는 서비스입니다. 로그인 하시겠습니까?")){
+				
+			}else{
+				
+			}
+		}else{
+			$.ajax({
+				data : {
+					"project_seq": e.target.getAttribute("id"),
+					"member_seq": '${login_user_seq}'
+						},
+				type : "POST",
+				url : "/addprojectdibs",
+				dataType: 'json',
+				success : function(r){
+					console.log(r.result);
+					if(r.result == "성공"){
+						e.target.value = "찜 취소";
+						e.target.setAttribute("class", "dib_cancel_btn");
+					}else{
+						alert("알 수 없는 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+					}
+				}
+			});
+		}
+		
+		
+	});
 	
 	
 	
@@ -170,27 +201,30 @@ img {
 </div>
 <div id="project_list">
  	<c:forEach var="item" items="${list}" varStatus="status">
- 		${status.count}
- 		<img src="${item.main_images_url}">
- 		${item.long_title}/
- 		카테고리: ${item.category }/
- 		<c:choose>
- 			<c:when test="${item.project_process == 4 }">
- 				<c:choose>
- 					<c:when test="${item.term == 0 }">
- 						오늘 마감/
- 					</c:when>
- 					<c:otherwise>
- 						${item.term }일 남음/
- 					</c:otherwise>
- 				</c:choose>
- 			</c:when>
- 			<c:otherwise>
- 				${item.project_process_name}/
- 			</c:otherwise>
- 		</c:choose>
- 		시작일: ${item.start_date }/
- 		마감일: ${item.due_date }
+ 		<div>
+	 		${status.count}
+	 		<img src="${item.main_images_url}">
+	 		${item.long_title}/
+	 		카테고리: ${item.category }/
+	 		<c:choose>
+	 			<c:when test="${item.project_process == 4 }">
+	 				<c:choose>
+	 					<c:when test="${item.term == 0 }">
+	 						오늘 마감/
+	 					</c:when>
+	 					<c:otherwise>
+	 						${item.term }일 남음/
+	 					</c:otherwise>
+	 				</c:choose>
+	 			</c:when>
+	 			<c:otherwise>
+	 				${item.project_process_name}/
+	 			</c:otherwise>
+	 		</c:choose>
+	 		시작일: ${item.start_date }/
+	 		마감일: ${item.due_date }
+	 		<input type="button" id="${item.project_seq}" value="찜하기" class="project_dibs_btn">
+ 		</div>
  		<hr>
  	</c:forEach>
 </div>

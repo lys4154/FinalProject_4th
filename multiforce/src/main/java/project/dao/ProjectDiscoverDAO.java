@@ -22,6 +22,8 @@ public interface ProjectDiscoverDAO {
 
 	int countProjectsWithCategoryProcess(String query, int process, String category);
 
+	List<ProjectDiscoverDTO> selectAllOngoingProject();
+
 	
 
 }

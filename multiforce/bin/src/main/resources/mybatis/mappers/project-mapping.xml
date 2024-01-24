@@ -33,43 +33,57 @@
 
 
 
-
 <!-- 후원한 프로젝트 페이지 - 후원 진행중 -->
 <select id="ongoingProject" parameterType="java.util.List" resultType="projectdto">
     SELECT * FROM project
-    WHERE project_seq IN
-    <foreach collection="list" item="item" open="(" separator="," close=")">
-        #{item}
-    </foreach>
+    <where>
+        <if test="list != null and list.size() > 0">
+            AND project_seq IN
+            <foreach collection="list" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </where>
 </select>
 
 
 <!-- 후원한 프로젝트 페이지 - 후원 성공 -->
 <select id="successProject" parameterType="java.util.List" resultType="projectdto">
     SELECT * FROM project
-    WHERE project_seq IN
-    <foreach collection="list" item="item" open="(" separator="," close=")">
-        #{item}
-    </foreach>
+    <where>
+        <if test="list != null and list.size() > 0">
+            AND project_seq IN
+            <foreach collection="list" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </where>
 </select>
 
 
 <!-- 후원한 프로젝트 페이지 - 후원 취소 -->
 <select id="cancelProject" parameterType="java.util.List" resultType="projectdto">
     SELECT * FROM project
-    WHERE project_seq IN
-    <foreach collection="list" item="item" open="(" separator="," close=")">
-        #{item}
-    </foreach>
+    <where>
+        <if test="list != null and list.size() > 0">
+            AND project_seq IN
+            <foreach collection="list" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </where>
 </select>
+
+
 
 
 <!-- 후원한 프로젝트 페이지 - 검색 -->
 <select id="searchFunded" parameterType="java.util.Map" resultType="projectdto">
-	SELECT * FROM project
-	WHERE (long_title LIKE concat("%", #{searchKeyword, jdbcType=VARCHAR}, "%")
-	OR short_title LIKE concat("%", #{searchKeyword, jdbcType=VARCHAR}, "%"))
-	AND  member_seq=#{memberSeq, jdbcType=INTEGER}	
+    SELECT project.*, funding.member_seq AS funding_member_seq
+    FROM project
+    INNER JOIN funding ON project.project_seq = funding.project_seq
+    WHERE (project.long_title LIKE concat("%", #{searchKeyword, jdbcType=VARCHAR}, "%"))
+        AND  project.member_seq=#{memberSeq, jdbcType=INTEGER}
 </select>
 
 
@@ -136,6 +150,125 @@
 	WHERE project_seq = #{projectSeq}
 </update>
 
+
+<!-- 내가 올린 프로젝트 - 작성중 -->
+<select id="writeIncomplete" resultType="projectdto">
+	SELECT * FROM project 
+	WHERE member_seq = #{memberSeq}
+	AND project_process = 0
+</select>
+
+
+<!-- 내가 올린 프로젝트 - 심사중 -->
+<select id="requestApproval" resultType="java.util.Map">
+	SELECT 
+	    project.*,
+	    approval_request.approval_req_date
+	FROM 
+	    project
+	JOIN 
+	    approval_request ON project.project_seq = approval_request.project_seq
+	WHERE 
+	    project.member_seq = #{memberSeq}
+	    AND project.project_process = 1;
+</select>
+
+
+
+<!-- 내가 올린 프로젝트 - 반려 -->
+<select id="requestReject" resultType="java.util.Map">
+	SELECT 
+	    project.*,
+	    approval_request.approval_reason,
+	    approval_request.evaluation_date
+	FROM 
+	    project
+	JOIN 
+	    approval_request ON project.project_seq = approval_request.project_seq
+	WHERE 
+	    project.member_seq = #{memberSeq}
+	    AND project.project_process = 2;
+</select>
+
+
+<!-- 내가 올린 프로젝트 - 승인완료 -->
+<select id="requestAdmit" resultType="java.util.Map">
+	SELECT 
+	    project.*,
+	    approval_request.evaluation_date
+	FROM 
+	    project
+	JOIN 
+	    approval_request ON project.project_seq = approval_request.project_seq
+	WHERE 
+	    project.member_seq = #{memberSeq}
+	    AND project.project_process = 3;
+</select>
+
+
+<!-- 내가 올린 프로젝트 - 진행중 -->
+<select id="fundingStart" resultType="projectdto">
+	SELECT * FROM project 
+	WHERE member_seq = #{memberSeq}
+	AND project_process = 4
+</select>
+
+
+<!-- 내가 올린 프로젝트 - 펀딩실패 -->
+<select id="fundingFailed" resultType="projectdto">
+	SELECT * FROM project 
+	WHERE member_seq = #{memberSeq}
+	AND project_process = 5
+</select>
+
+
+<!-- 내가 올린 프로젝트 - 펀딩성공 -->
+<select id="fundingSuccess" resultType="projectdto">
+	SELECT * FROM project 
+	WHERE member_seq = #{memberSeq}
+	AND project_process = 6
+</select>
+
+
+
+<!-- 내가 올린 프로젝트 - 종료 -->
+<select id="fundingComplete" resultType="projectdto">
+	SELECT * FROM project 
+	WHERE member_seq = #{memberSeq}
+	AND project_process = 7
+</select>
+
+
+<!-- 프로젝트 가져오기 -->
+<select id="getProject" resultType="project.dto.ProjectDTO">
+    SELECT long_title, short_title, sub_title, main_images_url, url, content
+    FROM project
+    WHERE member_seq = #{member_seq}; <!-- 후에 #{projectSeq}로 교체할것!! -->
+</select>
+
+
+<!-- 프로젝트 성공 실패 시작 업데이트 -->
+<update id="projectFailUpdate">
+	update project set project_process = 5 where due_date = date(now() - interval 1 day)
+	and project_process = 4 and goal_price > collection_amount
+</update>
+<update id="projectSuccessUpdate">
+	update project set project_process = 6 where due_date = date(now() - interval 1 day) 
+	and project_process = 4 and collection_amount >= goal_price
+</update>
+<update id="projectStartUpdate">
+	update project set project_process = 4 where start_date = date(now() - interval 1 day) 
+	and project_process = 3
+</update>
+  
+  
+<!-- 업데이트 후 메일 보내줄 사람 리스트 -->
+<select id="selectCollectorFundFail" resultType="projectmemberdto">
+select member_seq, member_id, nickname, email, project_seq, goal_price,
+collection_amount, start_date, due_date, long_title, short_title, sub_title, category, project_process 
+from member_info m join project p using (member_seq) 
+where due_date = date(now() - interval 1 day) and project_process = 5;
+</select>
 
 
 </mapper>

@@ -152,6 +152,10 @@ public class ProjectDiscoverService {
 		resultMap.put("step", step);
 		return resultMap;
 	}
+
+	public List<ProjectDiscoverDTO> selectAllOngoingProject() {
+		return discoverDao.selectAllOngoingProject();
+	}
 	
 	
 	/*		if(step == 4) {
