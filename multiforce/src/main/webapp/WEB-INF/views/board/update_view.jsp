@@ -22,7 +22,7 @@
     프로젝트 번호: ${update.project_seq}</br>
     글번호: ${update.update_seq}</br>
     글: ${update.content }
-    <div><i class="fa fa-heart-o" aria-hidden="true"></i></div>
+    <div><i class="fa fa-heart-o" aria-hidden="true" onclick="likePost(${update.update_seq})"></i></div>
     </div>
     
     </hr>
