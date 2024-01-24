@@ -1,9 +1,12 @@
 package project.dto;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 import org.springframework.stereotype.Component;
 
+import project.code.ProjectCategory;
 import project.code.ProjectProcess;
 
 @Component
@@ -14,13 +17,13 @@ public class ProjectDTO {
 	String content;
 	int goal_price;
 	int collection_amount;
-	LocalDateTime start_date;
-	LocalDateTime due_date;
+	LocalDate start_date;
+	LocalDate due_date;
 	String long_title;
 	String short_title;
 	String sub_title;
 	String url;
-	String category;
+	ProjectCategory category;
 	boolean gift_status;
 	boolean gift_delivery;
 	int dibs_count;
@@ -29,7 +32,23 @@ public class ProjectDTO {
 	String main_images_url;
 	LocalDateTime delivery_date;
 	ProjectProcess project_process;
+	long term;
 	
+	public long getTerm() {
+		return term;
+	}
+	public void setTerm() {
+		this.term = ChronoUnit.DAYS.between(LocalDate.now(), due_date);
+	}
+	public String getCategory() {
+		return category.getEngName();
+	}
+	public void setCategory(String category) {
+		this.category = ProjectCategory.valueOf(category.toUpperCase());
+	}
+	public String getCategory_kor() {
+		return category.getKorName();
+	}
 	public int getProject_seq() {
 		return project_seq;
 	}
@@ -60,17 +79,18 @@ public class ProjectDTO {
 	public void setCollection_amount(int collection_amount) {
 		this.collection_amount = collection_amount;
 	}
-	public LocalDateTime getStart_date() {
+	public LocalDate getStart_date() {
 		return start_date;
 	}
-	public void setStart_date(LocalDateTime start_date) {
+	public void setStart_date(LocalDate start_date) {
 		this.start_date = start_date;
 	}
-	public LocalDateTime getDue_date() {
+	public LocalDate getDue_date() {
 		return due_date;
 	}
-	public void setDue_date(LocalDateTime due_date) {
+	public void setDue_date(LocalDate due_date) {
 		this.due_date = due_date;
+		setTerm();
 	}
 	public String getLong_title() {
 		return long_title;
@@ -95,12 +115,6 @@ public class ProjectDTO {
 	}
 	public void setUrl(String url) {
 		this.url = url;
-	}
-	public String getCategory() {
-		return category;
-	}
-	public void setCategory(String category) {
-		this.category = category;
 	}
 
 	public boolean isGift_status() {
@@ -164,8 +178,9 @@ public class ProjectDTO {
 				+ ", sub_title=" + sub_title + ", url=" + url + ", category=" + category + ", gift_status="
 				+ gift_status + ", gift_delivery=" + gift_delivery + ", dibs_count=" + dibs_count + ", share_count="
 				+ share_count + ", account=" + account + ", main_images_url=" + main_images_url + ", delivery_date="
-				+ delivery_date + ", project_process=" + project_process + "]";
+				+ delivery_date + ", project_process=" + project_process + ", term=" + term + "]";
 	}
+	
 	
 	
 }

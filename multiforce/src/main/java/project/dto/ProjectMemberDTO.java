@@ -1,9 +1,11 @@
 package project.dto;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Component;
 
+import project.code.ProjectCategory;
 import project.code.ProjectProcess;
 
 @Component
@@ -13,13 +15,13 @@ public class ProjectMemberDTO {
 	String content;
 	int goal_price;
 	int collection_amount;
-	LocalDateTime start_date;
-	LocalDateTime due_date;
+	LocalDate start_date;
+	LocalDate due_date;
 	String long_title;
 	String short_title;
 	String sub_title;
 	String url;
-	String category;
+	ProjectCategory category;
 	boolean gift_status;
 	boolean gift_delivery;
 	int dibs_count;
@@ -45,6 +47,15 @@ public class ProjectMemberDTO {
 	String extra_address;
 	String detail_address;
 	
+	public String getCategory() {
+		return category.getEngName();
+	}
+	public void setCategory(String category) {
+		this.category = ProjectCategory.valueOf(category.toUpperCase());
+	}
+	public String getCategory_kor() {
+		return category.getKorName();
+	}
 	public int getProject_seq() {
 		return project_seq;
 	}
@@ -75,16 +86,16 @@ public class ProjectMemberDTO {
 	public void setCollection_amount(int collection_amount) {
 		this.collection_amount = collection_amount;
 	}
-	public LocalDateTime getStart_date() {
+	public LocalDate getStart_date() {
 		return start_date;
 	}
-	public void setStart_date(LocalDateTime start_date) {
+	public void setStart_date(LocalDate start_date) {
 		this.start_date = start_date;
 	}
-	public LocalDateTime getDue_date() {
+	public LocalDate getDue_date() {
 		return due_date;
 	}
-	public void setDue_date(LocalDateTime due_date) {
+	public void setDue_date(LocalDate due_date) {
 		this.due_date = due_date;
 	}
 	public String getLong_title() {
@@ -111,12 +122,7 @@ public class ProjectMemberDTO {
 	public void setUrl(String url) {
 		this.url = url;
 	}
-	public String getCategory() {
-		return category;
-	}
-	public void setCategory(String category) {
-		this.category = category;
-	}
+
 	public boolean isGift_status() {
 		return gift_status;
 	}

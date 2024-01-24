@@ -24,6 +24,16 @@ public class ProjectDibsService {
 	public int dibsCancel(int projectSeq, int memberSeq) {
 		return dibsDao.dibsCancel(projectSeq, memberSeq);
 	}
+
+	public String addDibs(int member_seq, int project_seq) {
+//		int result = dibsDao.insertProjectDibs(member_seq, project_seq);
+//		if(result == 0) {
+//			return "실패";
+//		}else {
+//			return "성공";
+//		}
+		return "성공";
+	}
 	
 
 

@@ -21,7 +21,7 @@ $(document).ready(function() {
     $("#total_funded").html(totalCount); 
   
 
-	//프로젝트 긴제목, 짧은제목 검색
+	//프로젝트 긴제목 검색
  	$("#search_btn").click(function() {
  		let keyword = $("#search_keyword").val();
 	       $.ajax({
@@ -35,7 +35,6 @@ $(document).ready(function() {
 	          	if(response.length == 0) {
 	          		$(".all_funded").append("<div> 검색어와 일치하는 내역이 없습니다. </div>");
 	          	} else {
-	          		$(".all_funded").empty();
 	          		$("#total_funded").html(response.length);
 	  	            for (var i = 0; i < response.length; i++) {
 	  	                $(".all_funded").append("<div style=\"color: blue\">" + response[i].long_title + "</div>");
@@ -89,9 +88,9 @@ $(document).ready(function() {
 	            <div>
 	            <c:forEach var="project" items="${ongoingProject}" varStatus="inner">
 	            	<c:if test="${out.index eq inner.index}">
-		            	<div><a href="/funded_detail/${fund.fund_seq }"><img src="${project.main_images_url}" alt="프로젝트 이미지"></a></div>
+		            	<div><a href="/ongoing_detail/${fund.fund_seq }"><img src="${project.main_images_url}" alt="프로젝트 이미지"></a></div>
 		            	<div><span> 후원일 ${fund.fund_date.toLocalDate()}</span> | <span> 후원번호 ${fund.fund_seq}</span></div>
-		            	<div><a href="/funded_detail/${fund.fund_seq }"> ${project.long_title }</a></div>
+		            	<div><a href="/ongoing_detail/${fund.fund_seq }"> ${project.long_title }</a></div>
 		            	<div> ${fund.fund_option}</div>
 		            	<div> 결제 예정일 ${fund.fund_duedate.toLocalDate().plusDays(1)}</div>
 		            	<div style="color: purple;"> ${fund.price}원 결제 예정</div>		            	
@@ -110,9 +109,9 @@ $(document).ready(function() {
         		<div>
         		<c:forEach var="project" items="${successProject}" varStatus="inner">
         			<c:if test="${out.index eq inner.index}">	
-		            	<div><a href="/funded_detail/${fund.fund_seq }"><img src="${project.main_images_url}" alt="프로젝트 이미지"></a></div>
+		            	<div><a href="/success_detail/${fund.fund_seq }"><img src="${project.main_images_url}" alt="프로젝트 이미지"></a></div>
 		            	<div><span> 후원일 ${fund.fund_date.toLocalDate()}</span> | <span> 후원번호 ${fund.fund_seq}</span></div>
-		            	<div><a href="/funded_detail/${fund.fund_seq }"> ${project.long_title }</a></div>
+		            	<div><a href="/success_detail/${fund.fund_seq }"> ${project.long_title }</a></div>
 		            	<div> ${fund.fund_option}</div>
 		            	<div> 결제 완료일 ${fund.fund_duedate.toLocalDate().plusDays(1)}</div>
 		            	<div style="color: purple;"> ${fund.price}원 결제 완료</div>
@@ -131,9 +130,9 @@ $(document).ready(function() {
         		<div>
         		<c:forEach var="project" items="${cancelProject}" varStatus="inner">
         			<c:if test="${out.index eq inner.index}">
-		            	<div><a href="/funded_detail/${fund.fund_seq }"><img src="${project.main_images_url}" alt="프로젝트 이미지"></a></div>
+		            	<div><a href="/cancel_detail/${fund.fund_seq }"><img src="${project.main_images_url}" alt="프로젝트 이미지"></a></div>
 		            	<div><span> 후원일 ${fund.fund_date.toLocalDate()}</span> | <span> 후원번호 ${fund.fund_seq}</span></div>
-		            	<div> <a href="/funded_detail/${fund.fund_seq }">${project.long_title }</a></div>
+		            	<div> <a href="/cancel_detail/${fund.fund_seq }">${project.long_title }</a></div>
 		            	<div> ${fund.fund_option}</div>
 		            	<div> 결제 예약 취소일 ${fund.del_date.toLocalDate()}</div>
 		            	<div style="color: purple;"> ${fund.price}원 결제 예약 취소</div>
