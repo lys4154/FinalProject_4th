@@ -368,11 +368,7 @@ public class ProfileController {
 		session.setAttribute("member_seq", 6);
 
 		int memberSeq = (int)session.getAttribute("member_seq");
-
-		List<ProjectDTO> searchFunded = projectservice.searchFunded(keyword, memberSeq); //프로젝트 긴제목 + 회원번호 일치 조건
-																						 //선물 이름으로도 검색 가능하게.
-																						 //지금 클릭이벤트인데 체인지로 변경, 검색창이 null일때는 전체 나오게 
-		
+		List<ProjectDTO> searchFunded = projectservice.searchFunded(keyword, memberSeq); //프로젝트 긴제목		
 		return searchFunded;    	
     }
 
@@ -540,8 +536,7 @@ public class ProfileController {
     @ResponseBody
     public int dibsCancel(int projectSeq, int memberSeq) {
  
-    	int dibsCancel = dibsservice.dibsCancel(projectSeq, memberSeq); // -> 1 나와야 삭제.
-    	
+    	int dibsCancel = dibsservice.dibsCancel(projectSeq, memberSeq); // -> 1 나와야 삭제.    	
     	int dibsDelete = projectservice.dibsDelete(projectSeq);	//해당프로젝트 dibs_count -1하기.   	
     	
     	return dibsCancel;	
@@ -560,28 +555,30 @@ public class ProfileController {
 	@GetMapping("/settings")
 	public ModelAndView settings(HttpSession session) {
         // 실제 로그인 시 수정할 부분
-		session.setAttribute("email", "test@test.com");	  
+		session.setAttribute("member_seq", 2);	  
 	    
-		String email = (String) session.getAttribute("email");	
-		MemberDTO loginMember = memberservice.loginMember(email);
+		int memberSeq = (int) session.getAttribute("member_seq");	
+		MemberDTO loginMemberSeq = memberservice.loginMemberSeq(memberSeq);
+		List<FundingDTO> getFundedProject = fundingservice.getFundedProject(memberSeq);	
 		
 		ModelAndView mv = new ModelAndView();		
-		mv.addObject("loginMember",loginMember);		
+		mv.addObject("loginMember",loginMemberSeq);		
+		mv.addObject("funded",getFundedProject);		
 		mv.setViewName("member/settings");
 		return mv;		
 	}
 	
 	
+	//회원정보수정 - 프로필사진 변경
 	@PostMapping("/profileimg_upload")
 	@ResponseBody
-	public String profileimgUpload(MemberProfileImgDTO dto, int memberSeq) throws IllegalStateException, IOException {
+	public Map<String, Object> profileimgUpload(MemberProfileImgDTO dto) throws IllegalStateException, IOException  {
 		
 		String savePath = "c:/fullstack/workspace_springboot/images/members/";
 		String fileName = null ;
 		String newFileName = null;
-		dto.setMember_seq(memberSeq);
 		
-		MultipartFile file = dto.getFile();
+		MultipartFile file = dto.getProfileImg();
 		if(!file.isEmpty()) {
 			fileName = file.getOriginalFilename();
 			String before = fileName.substring(0, fileName.indexOf("."));	//파일명
@@ -590,17 +587,84 @@ public class ProfileController {
 			
 			File saveFile = new File(savePath + newFileName);
 			file.transferTo(saveFile);										//파일로 변경
-		}
+		}	
 		
+		int memberSeq = dto.getMember_seq();
+		String filePath = "/memberimages/" + newFileName;
+
+		int updateProfileImg = memberservice.updateProfileImg(filePath, memberSeq);	//프로필 url 변경
 		
-		return "성공";
+		Map<String, Object> response = new HashMap<>();
+        response.put("filePath", filePath);	
+        
+		return response;		
+	}
+	
+
+	
+	//회원정보수정 - 프로필사진 삭제
+	@PostMapping("/profileimg_delete")
+	@ResponseBody
+	public int profileimgDelete(int memberSeq) {
+		
+		int profileimgDelete = memberservice.profileimgDelete(memberSeq);	//기본 프로필 사진으로 변경		
+		return profileimgDelete;
+	}
+	
+
+	
+	//회원정보수정 - 닉네임 변경
+	@PostMapping("/nickname_change")
+	@ResponseBody
+	public int nicknameChange(int memberSeq, String nickname) {
+
+		int nicknameChange = memberservice.nicknameChange(memberSeq,nickname);	//닉네임 변경	
+		return nicknameChange;
+	}
+	
+
+	//회원정보수정 - 소개 변경
+	@PostMapping("/description_change")
+	@ResponseBody
+	public int descriptionChange(int memberSeq, String desc) {
+
+		int descriptionChange = memberservice.descriptionChange(memberSeq,desc);	//소개 변경
+		return descriptionChange;
+	}
+	
+
+	//회원정보수정 - 메일 변경
+	@PostMapping("/email_change")
+	@ResponseBody
+	public int emailChange(int memberSeq, String email) {
+
+		int emailChange = memberservice.emailChange(memberSeq,email);	//메일 변경
+		return emailChange;
+	}
+	
+	
+	//회원정보수정 - 비밀번호 변경
+	@PostMapping("/password_change")
+	@ResponseBody
+	public int passwordChange(int memberSeq, String newPw) {
+		
+		int passwordChange = memberservice.passwordChange(memberSeq,newPw);	//비번 변경
+		return passwordChange;
 	}
 	
 	
 	
+	//회원정보수정 - 배송지 추가
+	@PostMapping("/")
+	@ResponseBody
+	public int deliveryAdd() {
+		
+		
+		return 0;
+	}
 	
 	
-
+	
 	//내가 올린 프로젝트 - 전체
     @GetMapping("/myproject")
     public ModelAndView myproject(HttpSession session) {
@@ -615,6 +679,7 @@ public class ProfileController {
         
         return mv;
     }
+    
     
     //내가 올린 프로젝트 - 작성중
     @GetMapping("/write_incomplete")
@@ -703,9 +768,7 @@ public class ProfileController {
     	return fundingComplete;    
     } 
     
-    
-    
-    
+        
     
     //내가 올린 프로젝트 - 삭제
     @PostMapping("/project_delete")
@@ -718,6 +781,8 @@ public class ProfileController {
             return "삭제 오류";
         }
     }
+    
+    
     
     
     

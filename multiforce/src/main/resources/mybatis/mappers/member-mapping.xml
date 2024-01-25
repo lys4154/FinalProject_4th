@@ -9,6 +9,10 @@
 	select * from member_info where email=#{email}
 </select>
 
+<select id="loginMemberSeq" resultType="memberdto">
+	select * from member_info where member_seq=#{meeberSeq}
+</select>
+
 <select id="myFollowerList" parameterType="java.util.List" resultType="memberdto">
 	select * from member_info where member_seq in
 	<foreach collection="list" item="item" index="index" open="(" separator="," close=")">
@@ -52,6 +56,37 @@
 	update member_info set password = #{tempPw} where member_id = #{id} and email = #{email}
 </update>
 
+
+
+<!-- 회원정보수정 - 프로필사진 변경 -->
+<update id="updateProfileImg">
+	update member_info set profile_img = #{filePath} where member_seq = #{memberSeq}
+</update>
+
+<!-- 회원정보수정 - 프로필사진 삭제 -->
+<update id="profileimgDelete">
+	update member_info set profile_img="/memberimages/basic.png" where member_seq = #{memberSeq}
+</update>
+
+<!-- 회원정보수정 - 닉네임 변경 -->
+<update id="nicknameChange">
+	update member_info set nickname=#{nickname} where member_seq = #{memberSeq}
+</update>
+
+<!-- 회원정보수정 - 소개 변경 -->
+<update id="descriptionChange">
+	update member_info set description=#{desc} where member_seq = #{memberSeq}
+</update>
+
+<!-- 회원정보수정 - 메일 변경 -->
+<update id="emailChange">
+	update member_info set email=#{email} where member_seq = #{memberSeq}
+</update>
+
+<!-- 회원정보수정 - 비밀번호 변경 -->
+<update id="passwordChange">
+	update member_info set password=#{newPw} where member_seq = #{memberSeq}
+</update>
 
 
 

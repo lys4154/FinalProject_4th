@@ -5,6 +5,7 @@
 
 <mapper namespace="funding.dao.FundingDAO">
 
+<!-- 후원한 프로젝트 전체 -->
 <select id="getFundedProject" parameterType="int" resultType="fundingdto">
 	select * from funding where member_seq=#{memberSeq}
 </select>
