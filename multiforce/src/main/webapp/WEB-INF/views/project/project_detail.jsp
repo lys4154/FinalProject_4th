@@ -25,6 +25,8 @@
 <script>
     $(document).ready(function () {
 
+    	$("#updateLink").click();
+    	
     	$("#communityLink").click(function (e) {
             e.preventDefault();
             var pid = $(this).data("project-id");
@@ -39,7 +41,9 @@
             var baseUrl = window.location.origin;
             loadContent(baseUrl + "/update/view/"+pid); 
         });
-
+        
+        $("#updateLink").click();
+        
         function loadContent(url) {
         
             $.ajax({

@@ -37,7 +37,46 @@ $(document).ready(function() {
 	          	} else {
 	          		$("#total_funded").html(response.length);
 	  	            for (var i = 0; i < response.length; i++) {
-	  	                $(".all_funded").append("<div style=\"color: blue\">" + response[i].long_title + "</div>");
+	  	            	
+	  	            	//후원일
+	  	            	var fund_date = new Date(response[i].fund_date);
+	  	                var fundDate =  fund_date.getFullYear() + "년 " + (fund_date.getMonth() + 1) + "월 " + fund_date.getDate() + "일";             
+	  	                
+	                    //취소일이 있는 경우만 출력
+	                    var delDate = "";
+	                    if(response[i].del_date){
+	                    	var del_date = new Date(response[i].del_date);
+	                    	delDate = "<div> 취소 완료일: " + del_date.getFullYear() + "년 " + (del_date.getMonth() + 1) + "월 " + del_date.getDate() + "일</div>";	                    	
+	                    } 
+
+	                    //결제완료된 경우에만 출력
+	                    var payDate = "";
+	                    if (response[i].pay_date) {
+	                        var pay_date = new Date(response[i].pay_date);
+	                        payDate = "<div> 결제 완료일: " + pay_date.getFullYear() + "년 " + (pay_date.getMonth() + 1) + "월 " + pay_date.getDate() + "일</div>";
+	                    }
+	                    
+	                    //현재진행중인 경우에만 출력
+	                    var ongoing = "";
+	                    if (response[i].pay_status == false && response[i].del_status == false) {
+	                        var due_date = new Date(response[i].due_date);
+	                        ongoing = "<div> 결제 예정일: " + due_date.getFullYear() + "년 " + (due_date.getMonth() + 1) + "월 " + (due_date.getDate() +1) + "일</div>";
+	                    }
+	                    
+	                    
+
+	  	                
+	  	            	
+	  	                $(".all_funded").append(
+	  	                		"<div> <a href=\"" + response[i].url + "\"> <img src=\"" + response[i].main_images_url + "\" </a> </div>" +
+	  	                		"<div> <a href=\"" + response[i].url + "\"> " + response[i].long_title + "</a> </div>" +
+	  	                		"<div>" + response[i].sub_title + "</div>" +   	                		
+	  	                		"<div> 후원일 : " + fundDate + "</div> " +	                		
+	  	                		"<div> 후원번호 : " + response[i].fund_seq + "</div> " +
+	  	                		ongoing +
+	  	                		delDate +
+	  	                		payDate + "<hr>"
+	  	                	);
 	  	                }
 	  	            }
 	          },

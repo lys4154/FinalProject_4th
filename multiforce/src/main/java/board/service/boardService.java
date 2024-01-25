@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import board.dto.BoardDTO;
 import board.dto.CommunityDTO;
+import board.dto.UpdateReplyDTO;
 import board.dto.updateBoardDTO;
 import project.dao.ProjectDAO;
 import project.dto.ProjectDTO;
@@ -62,6 +63,13 @@ public class boardService {
 		return boardDAO.getAllCommPost(project_seq);	
 	}
 
-
+	public void insertUpdateReply(UpdateReplyDTO reply) {
+        boardDAO.insertUpdateReply(reply);
+    }
+	
+	public List<UpdateReplyDTO> getCommentsByUpdateSeq(int update_seq){
+		System.out.println("ID:"+update_seq);
+		return boardDAO.getCommentsByUpdateSeq(update_seq);
+	}
 	
 }

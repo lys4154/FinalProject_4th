@@ -20,6 +20,20 @@
       }
     }
   </script>
+  <script>
+    function validateForm() {
+        var commentText = document.getElementById("comment_text").value.trim();
+
+        if (commentText === "") {
+            alert("댓글을 입력해주세요.");
+            
+            return false;
+        }
+
+        return true;
+    }
+
+</script>
 </head>
 <body>
 <section class="community-section">
@@ -36,7 +50,7 @@
     <hr>
     
 
-     <form action="/community_post" method="POST">
+     <form action="/community_post" method="POST" onsubmit="return validateForm()">
     <div>
       <input type="radio" name="post_category" value="cheer" checked>응원글
       <input type="radio" name="post_category" value="feedback">의견
