@@ -32,6 +32,60 @@
 </div>
  
  <script>
+    document.getElementById('pay').addEventListener('click', function (ev) {
+        var payvalue = document.getElementById("payment").value;
+        var url;
+        if (payvalue == "card") {
+            url = "cardpay";
+        } else if (payvalue == "cash") {
+            url = "cashpay";
+        } else {
+            document.getElementById("result").innerHTML = "결제수단을 선택해주세요.";
+            ev.preventDefault();
+            // 이 경우에는 팝업창이 나오면 안 됨
+        }
+
+        // popup 함수에 callback 함수를 전달하여 자식 창이 닫힌 후 실행할 로직을 정의
+        popup(url, function () {
+            // 자식 창이 닫힌 후 실행할 로직
+            alert("결제가 완료되었습니다.");
+            // 여기에 추가적인 로직을 작성하거나 페이지 이동 등을 수행할 수 있습니다.
+            window.location.href = "payresult";
+        });
+    });
+
+    function popup(url, callback) {
+        var name = "pay";
+        var option = "width=500, height=500, top=100, left=200, location=no";
+        // window.open에서 새 창을 열 때, window객체를 반환하므로, 반환된 window객체에 이벤트 리스너를 추가할 수 있습니다.
+        var childWindow = window.open(url, name, option);
+        
+        // 자식 창이 닫힌 경우, 콜백 함수를 실행
+        if (callback) {
+            var interval = setInterval(function () {
+                if (childWindow.closed) {
+                    clearInterval(interval);
+                    callback();
+                }
+            }, 1000);
+        }
+    }
+</script>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+<!--  <script>
  	document.getElementById('pay').addEventListener('click', function(ev){
  		var payvalue = document.getElementById("payment").value;
  		var url;
@@ -52,6 +106,6 @@
 			window.open(url, name, option);	
 	}
  	 
- </script>
+ </script> -->
 </body>
 </html>

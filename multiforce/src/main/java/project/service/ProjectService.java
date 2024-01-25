@@ -1,6 +1,7 @@
 package project.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -154,6 +155,11 @@ public class ProjectService {
 		return projectDao.projectDelete(projectSeq);
 	}
 	
+	// 펀딩계획 저장
+	public void insertFundingPlan(ProjectDTO fundingPlan) {
+        projectDao.insertFundingPlan(fundingPlan);
+    }
+
 
 
 

@@ -43,12 +43,12 @@ function inputAccount(num) {
 <script>
 document.getElementById('pay').addEventListener('click', function(ev) {
 	alert("결제를 진행합니다.");
-	//window.close();
-	window.location.href = "payresult"
+	window.close();
+	//window.location.href = "payresult"
 });
 document.getElementById("cancel").addEventListener("click", function() {
 	  if (confirm("결제를 취소하시겠습니까?")) {
-	    window.close(); // 사용자가 확인을 누르면 현재 창을 닫음
+	    window.close();
 	  }
 	});
 </script>
