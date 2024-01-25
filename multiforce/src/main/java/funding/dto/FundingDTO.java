@@ -21,13 +21,16 @@ public class FundingDTO {
 	boolean pay_status;
 	LocalDateTime pay_date;
 	String name;
-	String postalcode;
-	String address;
-	String address_detail;
 	String phone;
 	String requeste;
 	String track_num;
-	String track_status;
+	String track_status;	
+	// 주소 수정	
+	String postcode;
+	String road_address;
+	String jibun_address;
+	String extra_address;
+	String detail_address;
 	
 	
 	
@@ -115,24 +118,6 @@ public class FundingDTO {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getPostalcode() {
-		return postalcode;
-	}
-	public void setPostalcode(String postalcode) {
-		this.postalcode = postalcode;
-	}
-	public String getAddress() {
-		return address;
-	}
-	public void setAddress(String address) {
-		this.address = address;
-	}
-	public String getAddress_detail() {
-		return address_detail;
-	}
-	public void setAddress_detail(String address_detail) {
-		this.address_detail = address_detail;
-	}
 	public String getPhone() {
 		return phone;
 	}
@@ -157,6 +142,36 @@ public class FundingDTO {
 	public void setTrack_status(String track_status) {
 		this.track_status = track_status;
 	}
+	public String getPostcode() {
+		return postcode;
+	}
+	public void setPostcode(String postcode) {
+		this.postcode = postcode;
+	}
+	public String getRoad_address() {
+		return road_address;
+	}
+	public void setRoad_address(String road_address) {
+		this.road_address = road_address;
+	}
+	public String getJibun_address() {
+		return jibun_address;
+	}
+	public void setJibun_address(String jibun_address) {
+		this.jibun_address = jibun_address;
+	}
+	public String getExtra_address() {
+		return extra_address;
+	}
+	public void setExtra_address(String extra_address) {
+		this.extra_address = extra_address;
+	}
+	public String getDetail_address() {
+		return detail_address;
+	}
+	public void setDetail_address(String detail_address) {
+		this.detail_address = detail_address;
+	}
 	
 	
 	@Override
@@ -165,13 +180,10 @@ public class FundingDTO {
 				+ ", price=" + price + ", fund_date=" + fund_date + ", fund_duedate=" + fund_duedate + ", fund_option="
 				+ fund_option + ", del_status=" + del_status + ", del_date=" + del_date + ", pay_option=" + pay_option
 				+ ", pay_number=" + pay_number + ", pay_status=" + pay_status + ", pay_date=" + pay_date + ", name="
-				+ name + ", postalcode=" + postalcode + ", address=" + address + ", address_detail=" + address_detail
-				+ ", phone=" + phone + ", requeste=" + requeste + ", track_num=" + track_num + ", track_status="
-				+ track_status + "]";
+				+ name + ", phone=" + phone + ", requeste=" + requeste + ", track_num=" + track_num + ", track_status="
+				+ track_status + ", postcode=" + postcode + ", road_address=" + road_address + ", jibun_address="
+				+ jibun_address + ", extra_address=" + extra_address + ", detail_address=" + detail_address + "]";
 	}
-	
-	
-
 	
 }
 
