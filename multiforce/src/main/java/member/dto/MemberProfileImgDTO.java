@@ -6,7 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Component
 public class MemberProfileImgDTO {
 	int member_seq;
-	MultipartFile file;
+	MultipartFile profileImg;
 	
 	
 	public int getMember_seq() {
@@ -15,18 +15,17 @@ public class MemberProfileImgDTO {
 	public void setMember_seq(int member_seq) {
 		this.member_seq = member_seq;
 	}
+	public MultipartFile getProfileImg() {
+		return profileImg;
+	}
+	public void setProfileImg(MultipartFile profileImg) {
+		this.profileImg = profileImg;
+	}
 	
 	
-	public MultipartFile getFile() {
-		return file;
-	}
-	public void setFile(MultipartFile file) {
-		this.file = file;
-	}
 	@Override
 	public String toString() {
-		return "MemberProfileImgDTO [member_seq=" + member_seq + ", file=" + file + "]";
+		return "MemberProfileImgDTO [member_seq=" + member_seq + ", profileImg=" + profileImg + "]";
 	}
-	
 	
 }

@@ -15,7 +15,7 @@ import project.dto.ProjectDTO;
 @Repository
 @Mapper
 public interface MemberDAO {
-
+	
 
 	MemberDTO loginMember(String email);
 
@@ -41,7 +41,28 @@ public interface MemberDAO {
 
 	int updateMemberPw(String email, String id, String tempPw);
 
+	//회원정보수정 - 프로필사진 변경
+	int updateProfileImg(String filePath, int memberSeq);
+
+	//회원정보수정 - 프로필사진 삭제
+	int profileimgDelete(int memberSeq);
+
+	//회원정보수정 - 닉네임 변경
+	int nicknameChange(int memberSeq, String nickname);
+
+	//회원정보수정 - 소개 변경
+	int descriptionChange(int memberSeq, String desc);
+
+	//회원정보수정 - 메일 변경
+	int emailChange(int memberSeq, String email);
+
+	//회원정보수정 - 비밀번호 변경
+	int passwordChange(int memberSeq, String newPw);
+
+	//member_seq로 회원 DTO 갖고오기
+	MemberDTO loginMemberSeq(int memberSeq);
+
 
 
 	
-}
+};

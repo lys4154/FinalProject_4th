@@ -159,8 +159,7 @@ public class ProjectService {
 	public void insertFundingPlan(ProjectDTO fundingPlan) {
         projectDao.insertFundingPlan(fundingPlan);
     }
-	
-	
+
 
 
 

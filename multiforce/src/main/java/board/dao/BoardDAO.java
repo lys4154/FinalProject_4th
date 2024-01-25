@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import board.dto.BoardDTO;
 import board.dto.CommunityDTO;
+import board.dto.UpdateReplyDTO;
 
 @Repository
 @Mapper
@@ -30,6 +31,10 @@ public interface BoardDAO {
 	void saveCommunityPost(CommunityDTO com_post);
 
 	List<CommunityDTO> getAllCommPost(int project_seq);
+
+	void insertUpdateReply(UpdateReplyDTO reply);
+
+	List<UpdateReplyDTO> getCommentsByUpdateSeq(int update_seq);
 	
 
 }

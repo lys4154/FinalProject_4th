@@ -72,7 +72,8 @@ $(document).ready(function(){
 	
 //		===============================로그인 상태에 따라 change_part부분 다르게====================================
 	//url 경로 무조건 절대 경로로 주기
-	let loginUserId = '${login_user_id}';
+	const loginUserId = '${login_user_id}';
+	const loginUserLevel = '${login_user_level}';
 	//로그인 상태 아닐때
 	if (loginUserId == 'null' || loginUserId == null || loginUserId == '') {
 		let html = `<div id = "logout_wrap">
@@ -82,21 +83,35 @@ $(document).ready(function(){
 		$("#change_part").html(html);
 	//로그인 상태일 때
 	} else {
-		let html = 
-			`<div id = "login_wrap">
-				프로필 사진, ${login_user_name}(클릭시 메뉴)<br>
-				<div id="my_menu_list" style="display:none">
-					<a href="">프로필</a>
-					<a href="">후원 프로젝트</a>
-					<a href="">관심 프로젝트</a>
-					<a href="">팔로우</a>
-					<a href="">메세지</a>
-					<a href="">내 프로젝트</a>
-					<a href="">회원정보 수정</a>
-					<a href="/logout">로그아웃</a>
+		let html = "";
+		if(loginUserLevel == "1"){
+			html = 
+				`<div id = "login_wrap">
+					프로필 사진, ${login_user_name}(클릭시 메뉴)<br>
+					<div id="my_menu_list" style="display:none">
+						<a href="">프로필</a>
+						<a href="">후원 프로젝트</a>
+						<a href="">관심 프로젝트</a>
+						<a href="">팔로우</a>
+						<a href="">메세지</a>
+						<a href="">내 프로젝트</a>
+						<a href="">회원정보 수정</a>
+						<a href="/logout">로그아웃</a>
+					</div>
 				</div>
-			</div>
-			`;
+				`;
+		}else{
+			$("#project_design_btn").text("프로젝트 심사").attr("href", "프로젝트 승인 페이지 url");
+			html =
+				`<div id = "login_wrap">
+					프로필 사진, ${login_user_name}(클릭시 메뉴)<br>
+					<div id="my_menu_list" style="display:none">
+						<a href="">프로필</a>
+						<a href="/logout">로그아웃</a>
+					</div>
+				</div>`
+		}
+			
 		$("#change_part").html(html);
 	}
 	//나의 메뉴 리스트 버튼 클릭 이벤트 처리
@@ -128,7 +143,7 @@ $(document).ready(function(){
 		<a href="/discover?sort=new">신규</a>
 		<a href="/discover?sort=popular">인기</a>
 		<a href="/discover?sort=end">마감임박</a>
-		<button><a href="">프로젝트 등록</a></button>
+		<a id="project_design_btn" href="">프로젝트 등록</a>
 		<div id = "change_part"></div>
 		<div class="category" id="category_list" style="display:none">
 <%		for(ProjectCategory item : ProjectCategory.values()){ %>

@@ -3,6 +3,7 @@ package project.controller;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -14,9 +15,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import project.code.ProjectCategory;
 import project.dao.ProjectDiscoverDAO;
 import project.dto.ProjectDTO;
 import project.dto.ProjectDiscoverDTO;
+import project.service.ProjectDibsService;
 import project.service.ProjectDiscoverService;
 import project.service.ProjectService;
 
@@ -29,15 +35,49 @@ public class ProjectDiscoverController {
 	ProjectDiscoverService discoverService;
 	@Autowired
 	ProjectDiscoverDAO discoverDao;
+	@Autowired
+	ProjectDibsService dibsService;
 	int projectNumber = 16;
 	
 	@GetMapping("/discover")
-	public ModelAndView projectDiscover(String category, String query, String sort, String process) {
+	public ModelAndView projectDiscover(String category, String query, String process) {
 		//분류기준 카테고리, 검색어, 정렬 순서(인기순, 등록순, 마감일자순), 
 		//기본 카테고리: 전체 / 쿼리: "" / 정렬: 인기 / 진행상황: 4(진행중), 3(예정), 6(성공)
-		String column = "";
-		int start = 0;
+
+		if(query == null) {
+			query = "";
+		}
+		if(category == null || category.equals("")) {
+			category = "all";
+		}
+		if(process == null || process.equals("")) {
+			process = "0";
+		}
+		int parsedProcess = Integer.parseInt(process);
+		int count = discoverService.countProjects(category, query, parsedProcess);
 		
+		ModelAndView mv = new ModelAndView();
+//		mv.addObject("list", resultMap.get("list"));
+//		mv.addObject("category", category);
+//		mv.addObject("query", query);
+//		mv.addObject("sort", sort);
+//		mv.addObject("process", process);
+//		mv.addObject("step", resultMap.get("step"));
+//		mv.addObject("start", resultMap.get("start"));
+		mv.addObject("projectNumber", projectNumber);
+		mv.addObject("count", count);
+		mv.addObject("category_kor", ProjectCategory.valueOf(category.toUpperCase()).getKorName());
+		mv.setViewName("project/project_discover");
+		
+		return mv;
+	}
+	
+	@PostMapping(value="/projectdiscoverlist", produces = {"application/json;charset=utf-8"})
+	@ResponseBody
+	public JsonNode projectDiscoverList(String category, String query,
+			String sort, String process, int start, int step, String member_seq){
+		ObjectMapper mapper = new ObjectMapper();
+		String column = "";
 		if(sort == null || sort.equals("")) {
 			sort = "popular";
 		}
@@ -60,30 +100,42 @@ public class ProjectDiscoverController {
 			process = "0";
 		}
 		int parsedProcess = Integer.parseInt(process);
-		int step = 4;
+		List<Integer> dibsList = new ArrayList<>();
+		dibsList.add(0);
 		HashMap<String, Object> resultMap 
-			= discoverService.discoverProjects(category, query, column, parsedProcess, start, projectNumber, step);
+		= discoverService.discoverProjects(category, query, column, parsedProcess, start, projectNumber, step);
+		if(member_seq.equals("")) {
+			
+		}else {
+			List<Integer> dibsList2 = dibsService.dibsList(Integer.parseInt(member_seq));
+			if(dibsList2.size() != 0) {
+				dibsList = dibsList2;
+			}
+		}
+		System.out.println(dibsList.get(0));
+//		mv.addObject("list", resultMap.get("list"));
+		resultMap.put("category", category);
+		resultMap.put("query", query);
+		resultMap.put("sort", sort);
+		resultMap.put("process", process);
+		resultMap.put("dibsList", dibsList);
+//		mv.addObject("step", resultMap.get("step"));
+//		mv.addObject("start", resultMap.get("start"));
+		JsonNode resultJsonNode = mapper.convertValue(resultMap, JsonNode.class);
 		
-		int count = discoverService.countProjects(category, query, parsedProcess);
+		return resultJsonNode;
 		
-		ModelAndView mv = new ModelAndView();
-		mv.addObject("list", resultMap.get("list"));
-		mv.addObject("category", category);
-		mv.addObject("query", query);
-		mv.addObject("sort", sort);
-		mv.addObject("process", process);
-		mv.addObject("projectNumber", projectNumber);
-		mv.addObject("count", count);
-		mv.addObject("step", resultMap.get("step"));
-		mv.addObject("start", resultMap.get("start"));
-		mv.setViewName("project/project_discover");
-		
-		return mv;
 	}
+	
+	
+	
 	@PostMapping(value="/moreproject", produces = {"application/json;charset=utf-8"})
 	@ResponseBody
-	public List<ProjectDiscoverDTO> moreProject(String category, String query, String sort, int process, int start, int step){
+	public List<ProjectDiscoverDTO> moreProject(String category, String query, String sort, String process, int start, int step){
 		String column = "";
+		if(sort == null || sort.equals("")) {
+			sort = "popular";
+		}
 		if(sort.equals("popular")) {
 			column = "view_count";
 		}
@@ -93,8 +145,18 @@ public class ProjectDiscoverController {
 		if(sort.equals("end")) {
 			column = "due_date";
 		}
+		if(query == null) {
+			query = "";
+		}
+		if(category == null || category.equals("")) {
+			category = "all";
+		}
+		if(process == null || process.equals("")) {
+			process = "0";
+		}
+		int parsedProcess = Integer.parseInt(process);
 		HashMap<String, Object> resultMap
-			= discoverService.discoverProjects(category, query, column, process, start, projectNumber, step);
+			= discoverService.discoverProjects(category, query, column, parsedProcess, start, projectNumber, step);
 		
 		return (List<ProjectDiscoverDTO>) resultMap.get("list");
 	}

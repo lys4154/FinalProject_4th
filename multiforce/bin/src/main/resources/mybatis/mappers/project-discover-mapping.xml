@@ -28,5 +28,8 @@ and project_process >= 3 and category=#{category}
 select count(*) from project where long_title like concat("%", #{query}, "%") 
 and project_process = #{process} and category=#{category}
 </select>
+<select id="selectAllOngoingProject">
+select * from project where project_process >= 4
+</select>
 </mapper>
 

@@ -33,7 +33,7 @@ $(document).ready(function() {
 			            		 			"<div>" + response[i].long_title + "</div>" +
 			            		 			"<div>" + response[i].sub_title + "</div>" +
 			            		 			"<div><input type=\"button\" data-porject_seq=\"" + response[i].project_seq + "\" value=\"관리\"></div>" + 
-			            		 			"<div><input type=\"button\" class=\"delete_btn\" data-porject_seq=\"" + response[i].project_seq + "\" value=\"삭제\"> <hr>" 
+			            		 			"<div><input type=\"button\" class=\"delete_btn\" data-project_seq=\"" + response[i].project_seq + "\" value=\"삭제\"> <hr>" 
 			            		 		);
 			           	  }
 			         }
@@ -265,35 +265,26 @@ $(document).ready(function() {
 	
 	
 	//삭제 버튼
-	$(".delete_btn").click(function() {
+	$(document).on('click', '.delete_btn', function() {
 		var projectSeq = $(this).data("project_seq");
 		
-		confirm("해당 프로젝트를 삭제하시겠습니까?" +
-				"이 작업은 되돌릴 수 없습니다.")
-		
-       $.ajax({
-	          type: "POST",
-	          url: "/myproject_delete",
-	          data: {"projectSeq" : projectSeq },
-	          success: function(response) {
-			    	$(".result").empty();
-			    	if(response.length == 0) {
-			    		$(".result").append("<div> 종료된 프로젝트가 없습니다. </div>");
-			    	} else {
-			         for (var i = 0; i < response.length; i++) {			        	 
-			             $(".result").html("<div> <img src=\"" + response[i].main_images_url + "\" </div>" +
-			            		 			"<div>" + response[i].long_title + "</div>" +
-			            		 			"<div>" + response[i].sub_title + "</div> <hr>" + 
-			            		 			"<div> 목표 금액 : " + response[i].goal_price + "</div> <hr>" + 
-			            		 			"<div> 최종 금액 : " + response[i].collection_amount + "</div> <hr>"			            		 			
-			            		 		);
-			           	  }
-			         }
-				},
-			   error: function(error) {
-			       console.log(error);
-				}
-	     });
+		if (confirm("해당 프로젝트를 삭제하시겠습니까?" +
+					"이 작업은 되돌릴 수 없습니다.")) {
+		       $.ajax({
+			        type: "POST",
+			        url: "/project_delete",
+			        data: {"projectSeq" : projectSeq },
+			        success: function(response) {
+				    	if(response == "삭제 완료") {
+				    		alert("해당 프로젝트가 삭제되었습니다.");
+				    		window.location.href ="/myproject"
+							}
+			        },
+					error: function(error) {
+					       console.log(error);
+						}
+			     });
+			}
 	});
 		
 		
@@ -343,7 +334,7 @@ $(document).ready(function() {
 	        <c:choose>
 	            <c:when test="${project.project_process eq 0}">
 	                <input type="button" data-porject_seq="${project.project_seq }" value="관리">
-	                <input type="button" class="delete_btn" data-porject_seq="${project.project_seq }" value="삭제">
+	                <input type="button" class="delete_btn" data-project_seq="${project.project_seq }" value="삭제">
 	            </c:when>
         	</c:choose>
 	        <hr>

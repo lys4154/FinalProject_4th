@@ -1,6 +1,7 @@
 package project.controller;
 
-import java.util.HashMap;
+
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import board.dto.BoardDTO;
 import board.dto.CommunityDTO;
+import board.dto.UpdateReplyDTO;
 import board.service.boardService;
 import project.dto.ProjectDTO;
 import project.service.ProjectService;
@@ -98,9 +100,31 @@ public class ProjectController {
 	public String ShowProjectDetail(Model model,@PathVariable("project_seq") int project_seq) {
 		ProjectDTO projects = projectService.getProjectDetail(project_seq);
 		model.addAttribute("project", projects);
-		
+//		List<UpdateReplyDTO> update_comments = boardService.getCommentsByUpdateSeq(1);
+//		for (UpdateReplyDTO comment : update_comments) {
+//		    System.out.println(comment.getContent());
+//		}
 		return "project/project_detail";
 	}
+	
+	//업데이트 댓글 달기 POST
+	@PostMapping("update_comment")
+	public String InsertUpdateComment(@RequestParam String comment, 
+	        @RequestParam int updateSeq) {
+	    
+	    int tmpUser = 1;
+	    UpdateReplyDTO reply = new UpdateReplyDTO();
+	    reply.setMemberSeq(tmpUser);
+	    reply.setUpdateSeq(updateSeq);
+	    reply.setContent(comment);
+	    reply.setTime(new Date()); 
+	    
+	    boardService.insertUpdateReply(reply); 
+
+	    return "redirect:project_detail/"+updateSeq;
+	}
+
+	
 	
 	//프로젝트 상세 내 커뮤니티
 	@GetMapping("project_detail/community/{project_seq}")
