@@ -1,6 +1,8 @@
 package project.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -154,11 +156,7 @@ public class ProjectController {
     public String getProject(@RequestParam int memberSeq, Model model) {
         // memberSeq에 해당하는 프로젝트 정보 가져오기
         List<ProjectDTO> getProject = projectService.getProject(memberSeq);
-
-        // 모델에 데이터 추가
-        model.addAttribute("getProject", getProject);
-
-        // memberProjects.jsp로 이동
+        model.addAttribute("getProject", getProject); 
         return "getProject";
     }
 	
@@ -183,6 +181,21 @@ public class ProjectController {
 	public String tabFundingPlan() {
 		return "project/tab_fundingPlan";
 	}
+	
+	//펀딩계획저장
+	@RequestMapping("/submitFundingPlan")
+    public String insertFundingPlan(@RequestBody ProjectDTO fundingPlanDTO, Model model) {
+        try {
+            // FundingService를 통해 펀딩 계획 데이터를 DB에 저장
+            projectService.insertFundingPlan(fundingPlanDTO);
+            model.addAttribute("message", "펀딩 계획이 성공적으로 제출되었습니다.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.addAttribute("error", "펀딩 계획 제출 중 오류가 발생했습니다.");
+        }
+
+        return "forward:/funding/tab_fundingPlan.jsp";
+    }
 	
 	@RequestMapping("/tab_gift")
 	public String tabGift() {

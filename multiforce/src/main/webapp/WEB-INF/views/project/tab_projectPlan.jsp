@@ -128,7 +128,7 @@ $('.item').summernote({
 	lang:"ko-KR"
 });
 </script>
-
-
+<br>
+<input type="button" id="saveProjectPlan" value="저장하기">
 </body>
 </html>

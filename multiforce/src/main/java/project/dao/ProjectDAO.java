@@ -2,6 +2,8 @@ package project.dao;
 
 
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -104,6 +106,9 @@ public interface ProjectDAO {
 
 	//내가 올린 프로젝트 - 삭제
 	int projectDelete(int projectSeq);
+	
+	//펀딩계획
+	void insertFundingPlan(ProjectDTO fundingPlan);
 
 
 }
