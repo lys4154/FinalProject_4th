@@ -26,13 +26,21 @@ public class ProjectDibsService {
 	}
 
 	public String addDibs(int member_seq, int project_seq) {
-//		int result = dibsDao.insertProjectDibs(member_seq, project_seq);
-//		if(result == 0) {
-//			return "실패";
-//		}else {
-//			return "성공";
-//		}
-		return "성공";
+		int result2 = dibsDao.selectdibs(member_seq, project_seq);
+		if(result2 >= 1) {
+			int result = dibsDao.dibsCancel(project_seq, member_seq);
+			if(result == 0) {
+				return "오류";
+			}else {
+				return "취소";
+			}
+		}
+		int result = dibsDao.insertProjectDibs(member_seq, project_seq);
+		if(result == 0) {
+			return "오류";
+		}else {
+			return "성공";
+		}
 	}
 	
 

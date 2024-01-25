@@ -78,14 +78,14 @@ public class ProjectDiscoverDTO {
 	public void setCollection_amount(int collection_amount) {
 		this.collection_amount = collection_amount;
 	}
-	public LocalDate getStart_date() {
-		return start_date;
+	public String getStart_date() {
+		return start_date.toString();
 	}
 	public void setStart_date(LocalDate start_date) {
 		this.start_date = start_date;
 	}
-	public LocalDate getDue_date() {
-		return due_date;
+	public String getDue_date() {
+		return due_date.toString();
 	}
 	public void setDue_date(LocalDate due_date) {
 		this.due_date = due_date;
