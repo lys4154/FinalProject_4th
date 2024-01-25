@@ -7,11 +7,20 @@
         VALUES (#{title}, #{content}, #{member_seq})
     </insert>
     
+
+    <insert id="insertUpdateReply" parameterType="board.dto.UpdateReplyDTO">
+	    INSERT INTO update_reply (update_seq, member_seq, content, time)
+	    VALUES (#{updateSeq}, #{memberSeq}, #{content}, #{time});
+	</insert>
+    
+    
     <select id="getAllCsPosts" resultType="board.dto.BoardDTO">
 	    select * from help_ask
 	</select>
 	
-	
+	<select id="getCommentsByUpdateSeq" resultType="board.dto.UpdateReplyDTO">
+	    select * from update_reply where update_seq = #{update_seq}
+	</select>
 
 
 	

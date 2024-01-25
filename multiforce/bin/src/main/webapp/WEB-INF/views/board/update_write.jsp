@@ -14,7 +14,20 @@
     <title>업데이트 글쓰기</title>
 
 
+<script>
+    function validateForm() {
+        var commentText = document.getElementById("contents").value.trim();
 
+        if (commentText === "") {
+            alert("글을 입력해주세요.");
+            
+            return false;
+        }
+
+        return true;
+    }
+
+</script>
 </head>
 <body>
     <div class="cs-container">
@@ -23,7 +36,7 @@
             
         </div>
      
-        <form id="write_form" action="/update_write" method="POST" >
+        <form id="write_form" action="/update_write" method="POST" onsubmit="return validateForm()">
            
 
             <div class="write-content">

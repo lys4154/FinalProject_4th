@@ -12,71 +12,43 @@
 
 <script>
 $(document).ready(function() {
-	
-	//이메일 변경 
-    $("#email_btn").click(function() {
-        if ($("#email_btn").val() == "변경") {
 
-            $("#email_btn").val("수정");
-            $("#email_origin").hide();
-            $("#email_text").show();
-        } else {
-            // 수정 버튼을 누르면 Ajax로 전송.
-            var newEmail = $("#email_new").val();
+    let memberSeq = ${loginMember.member_seq};
 
-            $.ajax({
-                type: "POST",
-                url: "/changeEmail",
-                data: { newEmail: newEmail },
-                success: function(response) {
-                    
-                    $("#email_origin").text(newEmail);
-                    $("#email_btn").val("변경");
-                    $("#email_origin").show();
-                    $("#email_text").hide();
-                },
-                error: function(error) {
-                    console.error(error);
-                }
-            });
-        }
-    });
-	
-	
-	
-	//비번 변경 버튼값
-    $("#pw_btn").click(function() {
-        if ($("#pw_btn").val() == "변경") {
-            $("#pw_btn").val("취소");
-            $("#pw_text").show();
-        } else {
-        	 $("#pw_btn").val("변경");
-        	 $("#pw_text").hide();
-        }
-	})
-	
-	
-	//비번 변경 ajax
-	$("#pw_save").click(function() {
-		var newPw = $("#pw_new").val();
-		
-        $.ajax({
-            type: "POST",
-            url: "/changePw",
-            data: { newPw: newPw },
-            success: function(response) {                
+	//프로필이미지 변경 클릭
+	$("#img_change").click(function() {
+		if ($("#img_change").val() === "변경") {
+			$("#img_change").val("취소");
+			$(".img_container").show();
+		} else {
+			$(".img_container").hide();
+			$("#img_change").val("변경");			
+		}		
+	});
 
-                $("#pw_btn").val("변경");
-                $("#pw_text").hide();
-            },
-            error: function(error) {
-                console.error(error);
-            }
-        });
-		
-		
-		
-	})//비번 ajax
+	//이미지 저장 클릭
+	$("#img_save").click(function() {		
+		var file = $("#img_upload")[0].files[0];
+		var let formData
+       $.ajax({
+	        type: "POST",
+	        enctype: 'multipart/form-data',
+	        url: "/profileimg_upload",
+	        contentType: false,
+	        processData: false,
+	        data: {"projectSeq" : projectSeq },
+	        success: function(response) {
+		    	if(response == "삭제 완료") {
+		    		alert("해당 프로젝트가 삭제되었습니다.");
+		    		window.location.href ="/myproject"
+					}
+	        },
+			error: function(error) {
+			       console.log(error);
+				}
+	     });
+			
+	});
 	
 	
 });
@@ -85,38 +57,58 @@ $(document).ready(function() {
 
 
 <body>
-<div>
-	<div>프로필</div>
-	<div>계정</div>
-	<div>결제수단</div>
-	<div>배송지</div>
-</div>
-<p>
-<hr>
 
-<div><!-- 계정 -->
+<h1>설정</h1>
+
+<div>
+	<div id="profile_detail" style="cursor:pointer;">프로필</div>
+	<div id="account_detail" style="cursor:pointer;">계정</div>
+	<div id="payment_detail" style="cursor:pointer;">결제수단</div>
+	<div id="delivery_detail" style="cursor:pointer;">배송지</div>
+</div>
+<hr>
+<p>
+
+<div class="result">
 	<div>
-		<div>이메일</div>
-		<div id="email_origin">aaa@naver.com</div>
-		<div style="display: none;" id="email_text"><input type="text" id="email_new"></div>
-		<input type="button" id="email_btn" value="변경">
-		<hr>
+		<div>프로필 사진</div>
+		<div><img src="${loginMember.profile_img }"></div>
+		<div><input type="button" value="변경" id="img_change"></div>
+<!-- 		<form action="profileimg_upload" method="post" enctype="multipart/form-data"> -->
+			<div style="display: none;" class="img_container">
+				<div><input type="file" value="이미지업로드"  id="img_upload"></div>
+				<div><input type="button" value="저장" id="img_save" ></div>
+ 				<input type="hidden" value="${loginMember.member_seq }">
+			</div>
+<!-- 		</form>	 -->	
 	</div>
+	<hr>
+	<div>
+		<div>이름</div>
+		<div>${loginMember.nickname }</div>
+		<div><input type="button" value="변경"></div>
+	</div>
+	<hr>
+	<div>
+		<div>사용자 이름(URL)</div>
+		<div>DB에 없는 상태, 팔로우 팔로잉에서 방문하려면 필요</div>
+		<div><input type="button" value="변경"></div>
+	</div>
+	<hr>
+	<div>
+		<div>자기소개</div>
+        <c:if test="${not empty loginMember.description}">
+            ${loginMember.description}
+        </c:if>
+        <c:if test="${empty loginMember.description}">
+            변경 버튼을 눌러 자기 소개를 작성해주세요.
+        </c:if>
+        <div><input type="button" value="변경"></div>
+	</div>
+	<hr>
 	
-	<div>
-		<div>비밀번호</div>
-		<div style="display: none;" id="pw_text">
-			<div>현재 비밀번호</div>
-			<div><input type="text" id="" placeholder="현재 비밀번호"></div>
-			<p>
-			<div>변경할 비밀번호</div>
-			<div><input type="text" id="pw_new" placeholder="변경할 비밀번호"></div>
-			<div><input type="text" id="pw_new_check" placeholder="변경할 비밀번호 확인"></div>
-			<div><input type="button" id="pw_save" value="저장"></div>			
-		</div>
-		<input type="button" id="pw_btn" value="변경">
-		<hr>
-	</div>
+	
+	
 </div>
 
 </body>
