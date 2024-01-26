@@ -89,6 +89,11 @@ public class MemberService {
 		return memberDao.loginMemberSeq(memberSeq);
 	}
 
+	//해당 회원 프로필로 이동
+	public MemberDTO userProfile(String member_url) {
+		return memberDao.userProfile(member_url);
+	}
+
 
 
 }

@@ -51,7 +51,7 @@ $(document).ready(function() {
     $("#cancel").click(function() {
         let fundSeq = ${fundedDetail.fund_seq};
         let longTitle = "${projectDetail.long_title}";
-        let dueDate = "${projectDetail.due_date.toLocalDate()}";
+        let dueDate = "${projectDetail.due_date}";
         let price = ${fundedDetail.price };
 
         // 폼에 값을 설정
@@ -91,8 +91,8 @@ $(document).ready(function() {
 			<div>후원 정보</div>
 			<div>펀딩 상태 </div> <div>펀딩 성공</div>
 			<div>후원 번호 </div> <div>${fundedDetail.fund_seq }</div>
-			<div>후원 날짜 </div> <div>${fundedDetail.fund_date.toLocalDate() }</div>
-			<div>펀딩 마감일 </div> <div>${projectDetail.due_date.toLocalDate()}</div>
+			<div>후원 날짜 </div> <div>${fundedDetail.fund_date.toLocalDate }</div>
+			<div>펀딩 마감일 </div> <div>${projectDetail.due_date}</div>
 		</div>
 	
 		<div style="border: 2px solid; ">
@@ -114,7 +114,7 @@ $(document).ready(function() {
 			    </c:forEach>
 			</div>
 				
-			<div>배송 완료일 </div> <div>${projectDetail.delivery_date.toLocalDate().plusDays(5)}</div> 
+			<div>배송 완료일 </div> <div>${projectDetail.delivery_date.plusDays(5)}</div> 
 			<!-- 배송완료일 임의로 5일뒤로 설정함 -->
 			<div>후원 금액 </div> <div>${fundedDetail.price }</div>
 		</div>
@@ -124,7 +124,7 @@ $(document).ready(function() {
 			<div>결제 정보</div> 
 			<div>결제 수단 </div> <div> ${fundedDetail.pay_option }</div>
 			<div>결제 금액 </div> <div> ${fundedDetail.price }</div>
-			<div>결제 상태 </div> <div> ${fundedDetail.fund_duedate.toLocalDate().plusDays(1)} 결제 완료</div>
+			<div>결제 상태 </div> <div> ${fundedDetail.fund_duedate.toLocalDate.plusDays(1)} 결제 완료</div>
 		</div>
 	
 	
@@ -132,8 +132,11 @@ $(document).ready(function() {
 			<div>배송 정보</div>
 			<div>받는 사람 </div> <div> ${fundedDetail.name}</div>
 			<div>연락처 </div> <div> ${fundedDetail.phone }</div><br>
-			<div>주소 </div> <div>(${fundedDetail.postalcode })</div> <div> ${fundedDetail.address }</div>
-			<div> ${fundedDetail.address_detail }</div>
+			<div>주소 </div> <div>(${fundedDetail.postcode })</div>			
+			<div> ${fundedDetail.road_address }</div>
+			<div> ${fundedDetail.jibun_address }</div>
+			<div> ${fundedDetail.extra_address }</div>
+			<div> ${fundedDetail.detail_address }</div>
 			<div>운송장 번호 </div> <div id="track_num"> ${trackNum }</div>
 			<p>
 		</div>

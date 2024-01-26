@@ -37,7 +37,7 @@ $(document).ready(function() {
 	                       var projectCount = response.followerProject[memberSeq];
 	
 	                       $(".result").append(
-	                           "<div>" + response.fundedMember[i].profile_img + " </div>" +
+	                           "<div> <img src=\"" + response.fundedMember[i].profile_img + "\"> </div>" +
 	                           "<div>" + response.fundedMember[i].nickname + " </div>" +
 	                           "<div>" + response.fundedMember[i].description + " </div>" +
 	                           "<div> 팔로워 : " + followerCount + " </div>" +
@@ -80,7 +80,7 @@ $(document).ready(function() {
                        var projectCount = response.followerProject[memberSeq];
 
                        $(".result").append(
-                           "<div>" + response.myFollowing[i].profile_img + " </div>" +
+                   		   "<div> <img src=\"" + response.myFollowing[i].profile_img + "\"> </div>" +
                            "<div>" + response.myFollowing[i].nickname + " </div>" +
                            "<div>" + response.myFollowing[i].description + " </div>" +
                            "<div> 팔로워 : " + followerCount + " </div>" +
@@ -117,8 +117,7 @@ $(document).ready(function() {
 			            console.log(response);
 			            if(response == 1) {
 			            	alert("팔로우가 취소되었습니다.");
-			            	getFollowing();
-			            	
+			            	getFollowing();			            	
 			            }         	                
 			        },
 				error : function(request, e) {
@@ -150,7 +149,7 @@ $(document).ready(function() {
                        var projectCount = response.followerProject[memberSeq];
 
                        $(".result").append(
-                           "<div>" + response.myFollower[i].profile_img + " </div>" +
+                   		   "<div> <img src=\"" + response.myFollower[i].profile_img + "\"> </div>" +
                            "<div>" + response.myFollower[i].nickname + " </div>" +
                            "<div>" + response.myFollower[i].description + " </div>" +
                            "<div> 팔로워 : " + followerCount + " </div>" +
@@ -185,7 +184,6 @@ $(document).ready(function() {
 	            console.log(response);
 	            if(response == 1) {
 	            	alert("성공적으로 팔로우 했습니다.");
-	            	getFollower();
 	            } else {
 	            	alert("이미 팔로우 되어있습니다.");
 	            }             	                

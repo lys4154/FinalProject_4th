@@ -62,6 +62,9 @@ public interface MemberDAO {
 	//member_seq로 회원 DTO 갖고오기
 	MemberDTO loginMemberSeq(int memberSeq);
 
+	//해당 회원 프로필로 이동
+	MemberDTO userProfile(String member_url);
+
 
 
 	
