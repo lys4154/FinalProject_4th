@@ -49,4 +49,9 @@
 		select * from notices where category = #{category} and del_status = false and title like concat("%",#{query}, "%")
 		order by event_start_date desc
 	</select>
+	<select id="selectAllOnGoingEvent">
+		select * from notices where category = "event" and 
+		timestampdiff(second,event_start_date, now()) >= 0 and 
+		timestampdiff(second,now(),event_end_date) >= 0
+	</select>
 </mapper>

@@ -25,6 +25,7 @@ public interface NoticeDAO {
 			String query);
 	public List<NoticeDTO> selectAllEvent(String category);
 	public List<NoticeDTO> selectAllEventWithQuery(String category, String query);
+	public List<NoticeDTO> selectAllOnGoingEvent();
 	
 	
 }
