@@ -9,6 +9,9 @@ import board.dto.BoardDTO;
 import board.dto.CommunityDTO;
 import board.dto.UpdateReplyDTO;
 import board.dto.updateBoardDTO;
+import member.dao.MemberDAO;
+import member.dto.MemberDTO;
+import member.service.MemberService;
 import project.dao.ProjectDAO;
 import project.dto.ProjectDTO;
 import board.dao.BoardDAO;
@@ -23,9 +26,10 @@ public class boardService {
     @Autowired
     private UpdateBoardDAO updateBoardDAO;
     
+    @Autowired
+    private MemberService memberService;
     
-    
-
+    //MemberService memberService = new MemberService();
     
     public void saveBoard(BoardDTO dto) {
         boardDAO.insertBoard(dto);
@@ -67,9 +71,19 @@ public class boardService {
         boardDAO.insertUpdateReply(reply);
     }
 	
-	public List<UpdateReplyDTO> getCommentsByUpdateSeq(int update_seq){
-		System.out.println("ID:"+update_seq);
-		return boardDAO.getCommentsByUpdateSeq(update_seq);
+	public List<UpdateReplyDTO> getCommentsByUpdateSeq(int update_seq) {
+	
+	        List<UpdateReplyDTO> comments = boardDAO.getCommentsByUpdateSeq(update_seq);
+
+	        for (UpdateReplyDTO comment : comments) {
+	            MemberDTO member = memberService.getNicknameById(comment.getMember_seq());
+	            comment.setMember(member);
+	        }
+
+	        return comments;
+
 	}
+
+
 	
 }
