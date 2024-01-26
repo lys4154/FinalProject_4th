@@ -132,6 +132,7 @@ $(document).ready(function(){
 <header>
 	<div>
 		<h1><a href="/">멀티포스 펀딩</a></h1>
+		<a href="">알림</a>
 		<form action="/discover" method="get" id="search_form">
 			<input id="search" type="text" name="query">
 			<input type="submit" value="검색">

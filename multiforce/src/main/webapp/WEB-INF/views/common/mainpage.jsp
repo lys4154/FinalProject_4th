@@ -12,8 +12,21 @@
 <script>
 
 </script>
+<style>
+img{
+	width: 600px;
+}
+</style>
 <body>
 <h1>메인페이지</h1>
+<c:forEach items="${eventmap }" var="item">
+	<a href="${item.key}">${item.value } class = "temp"></a>
+</c:forEach>
+<!-- 
+넣을만한 컨텐츠
+인기순
+에디터 pick(관리자가 찜한거 리스트 보여주기?)
+-->
 </body>
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </html>

@@ -1,5 +1,7 @@
 package admin.dto;
 
+import java.time.LocalDateTime;
+
 import org.springframework.stereotype.Component;
 
 @Component
@@ -9,8 +11,8 @@ public class NoticeDTO {
 	String title;
 	String content;
 	String category;
-	String event_start_date;
-	String event_end_date;
+	LocalDateTime event_start_date;
+	LocalDateTime event_end_date;
 	String write_date;
 	boolean del_status;
 	String del_date;
@@ -41,16 +43,17 @@ public class NoticeDTO {
 	public void setCategory(String category) {
 		this.category = category;
 	}
-	public String getEvent_start_date() {
+	
+	public LocalDateTime getEvent_start_date() {
 		return event_start_date;
 	}
-	public void setEvent_start_date(String event_start_date) {
+	public void setEvent_start_date(LocalDateTime event_start_date) {
 		this.event_start_date = event_start_date;
 	}
-	public String getEvent_end_date() {
+	public LocalDateTime getEvent_end_date() {
 		return event_end_date;
 	}
-	public void setEvent_end_date(String event_end_date) {
+	public void setEvent_end_date(LocalDateTime event_end_date) {
 		this.event_end_date = event_end_date;
 	}
 	public String getWrite_date() {

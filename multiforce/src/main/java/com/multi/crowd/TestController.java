@@ -14,19 +14,11 @@ public class TestController {
 	@Autowired
 	ProjectDAO dao;
 	
-	@GetMapping("/")
-	public String mainpage() {
-		return "common/mainpage";
-	}
-	
 	@GetMapping("/testenum")
 	public ModelAndView testeEum(){
 
 		ModelAndView mv = new ModelAndView();
-		
 		mv.setViewName("test");
-		
-
 		return mv;
 	}
 	
