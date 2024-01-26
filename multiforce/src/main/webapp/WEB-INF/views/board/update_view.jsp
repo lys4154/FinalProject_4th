@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ page import="java.util.List" %>
+<%@ page import="board.dto.UpdateReplyDTO" %>
+
 
 
 <!DOCTYPE html>
@@ -14,6 +16,12 @@
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"
   />
+  
+  <style>
+  #com_box{
+  border:solid 1px black;
+  }
+  </style>
 </head>
 <body>
 
@@ -28,13 +36,10 @@
     <a href="#" onclick="toggleCommentForm(${update.update_seq})">댓글달기</a> 
 			
 			
-			<c:set var="comments" value="${boardService.getCommentsByUpdateSeq(1)}" />
-			<c:out value="Number of comments: ${fn:length(comments)}" />
-   		 <c:forEach var="comment" items="${boardService.getCommentsByUpdateSeq(1)}">
-            <div>댓글: ${comment.content}</div>
+<div id="comments_${update.update_seq}">
+    <!-- Comments will be displayed here using AJAX -->
+</div>
 
-
-        </c:forEach>
         
     
         <div id="commentForm_${update.update_seq}" style="display: none;">
@@ -82,9 +87,31 @@
         });
     }
 
+ 
+    function loadComments(updateSeq) {
+        $.ajax({
+            type: 'GET',
+            url: '/getComments',
+            data: { updateSeq: updateSeq },
+            success: function (comments) {
+                var commentsDiv = $('#comments_' + updateSeq);
+                commentsDiv.empty();
 
+                $.each(comments, function (index, comment) {
+                    commentsDiv.append('<div id="com_box">댓글: ' + comment.content + '</br>아이디:'+
+                    		comment.member.nickname
+                    		+'</br>날짜: '+comment.time+'</div>');
+                });
+            },
+            error: function (error) {
+                console.error('Error fetching comments:', error);
+            }
+        });
+    }
 
-
+    <c:forEach var="update" items="${project}">
+        loadComments(${update.update_seq});
+    </c:forEach>
 </script>
 
 </body>

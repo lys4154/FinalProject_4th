@@ -99,12 +99,17 @@ public class ProjectController {
 	@GetMapping("project_detail/{project_seq}")
 	public String ShowProjectDetail(Model model,@PathVariable("project_seq") int project_seq) {
 		ProjectDTO projects = projectService.getProjectDetail(project_seq);
+		
+		
 		model.addAttribute("project", projects);
-//		List<UpdateReplyDTO> update_comments = boardService.getCommentsByUpdateSeq(1);
-//		for (UpdateReplyDTO comment : update_comments) {
-//		    System.out.println(comment.getContent());
-//		}
+
 		return "project/project_detail";
+	}
+	//업데이트 댓글 가져오기
+	@GetMapping("/getComments")
+	@ResponseBody
+	public List<UpdateReplyDTO> getComments(@RequestParam("updateSeq") int updateSeq) {
+	    return boardService.getCommentsByUpdateSeq(updateSeq);
 	}
 	
 	//업데이트 댓글 달기 POST
@@ -114,8 +119,8 @@ public class ProjectController {
 	    
 	    int tmpUser = 1;
 	    UpdateReplyDTO reply = new UpdateReplyDTO();
-	    reply.setMemberSeq(tmpUser);
-	    reply.setUpdateSeq(updateSeq);
+	    reply.setMember_seq(tmpUser);
+	    reply.setUpdate_seq(updateSeq);
 	    reply.setContent(comment);
 	    reply.setTime(new Date()); 
 	    

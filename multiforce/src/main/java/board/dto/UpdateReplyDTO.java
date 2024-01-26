@@ -3,71 +3,74 @@ package board.dto;
 import java.util.Date;
 
 import org.springframework.stereotype.Component;
+
+import member.dto.MemberDTO;
+
+
+
 @Component
 public class UpdateReplyDTO {
-	 	private int updateReplySeq;
-	    private int updateSeq;
-	    private int memberSeq;
+		private int update_reply_seq;
+	    private int update_seq;
+	    private int member_seq;
 	    private String content;
 	    private Date time;
-	    private int delStatus;
-	    private Date delDate;
+	    private int del_status;
+	    private Date del_date;
+	    private MemberDTO member;
 
+	    
+		public int getUpdate_reply_seq() {
+			return update_reply_seq;
+		}
+		public void setUpdate_reply_seq(int update_reply_seq) {
+			this.update_reply_seq = update_reply_seq;
+		}
+		public int getUpdate_seq() {
+			return update_seq;
+		}
+		public void setUpdate_seq(int update_seq) {
+			this.update_seq = update_seq;
+		}
+		public int getMember_seq() {
+			return member_seq;
+		}
+		public void setMember_seq(int member_seq) {
+			this.member_seq = member_seq;
+		}
+		public String getContent() {
+			return content;
+		}
+		public void setContent(String content) {
+			this.content = content;
+		}
+		public Date getTime() {
+			return time;
+		}
+		public void setTime(Date time) {
+			this.time = time;
+		}
+		public int getDel_status() {
+			return del_status;
+		}
+		public void setDel_status(int del_status) {
+			this.del_status = del_status;
+		}
+		public Date getDel_date() {
+			return del_date;
+		}
+		public void setDel_date(Date del_date) {
+			this.del_date = del_date;
+		}
 
-
-	    public int getUpdateReplySeq() {
-	        return updateReplySeq;
+	
+		public MemberDTO getMember() {
+	        return member;
 	    }
 
-	    public void setUpdateReplySeq(int updateReplySeq) {
-	        this.updateReplySeq = updateReplySeq;
+	    public void setMember(MemberDTO member) {
+	        this.member = member;
 	    }
 
-	    public int getUpdateSeq() {
-	        return updateSeq;
-	    }
-
-	    public void setUpdateSeq(int updateSeq) {
-	        this.updateSeq = updateSeq;
-	    }
-
-	    public int getMemberSeq() {
-	        return memberSeq;
-	    }
-
-	    public void setMemberSeq(int memberSeq) {
-	        this.memberSeq = memberSeq;
-	    }
-
-	    public String getContent() {
-	        return content;
-	    }
-
-	    public void setContent(String content) {
-	        this.content = content;
-	    }
-
-	    public Date getTime() {
-	        return time;
-	    }
-
-	    public void setTime(Date time) {
-	        this.time = time;
-	    }
-
-	    public int getDelStatus() {
-	        return delStatus;
-	    }
-
-	    public void setDelStatus(int delStatus) {
-	        this.delStatus = delStatus;
-	    }
-
-	    public Date getDelDate() {
-	        return delDate;
-	    }
-
-	    public void setDelDate(Date delDate) {
-	        this.delDate = delDate;
-	    }
+	   
 }
