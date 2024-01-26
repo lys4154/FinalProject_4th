@@ -101,7 +101,7 @@
 
 <!-- tab_fundingPlan 저장 -->
 <insert id="insertFundingPlan" parameterType="java.util.Map">
-    INSERT INTO funding_plan (start_date, due_date, goal_price)
+    INSERT INTO funding (start_date, due_date, goal_price)
     VALUES (#{start_date}, #{due_date}, #{goal_price})
 </insert>
 
