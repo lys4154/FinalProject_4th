@@ -13,12 +13,10 @@
 
 <!-- 후원한 프로젝트 페이지 - 후원 진행중 -->
 <select id="ongoingFunded" parameterType="int" resultType="fundingdto">
-<![CDATA[
 	SELECT * FROM FUNDING
 	WHERE member_seq =#{memberSeq}
 	AND fund_duedate > now()
 	AND del_status = false
-]]>
 </select>
 
 <!-- 후원한 프로젝트 페이지 - 후원 성공 -->

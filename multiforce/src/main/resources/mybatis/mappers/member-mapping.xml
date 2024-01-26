@@ -89,9 +89,9 @@
 </update>
 
 
-
-
-
-
+<!-- 해당 회원 프로필로 이동 -->
+<select id="userProfile">
+	select * from member_info where member_url=#{member_url}
+</select>
 
 </mapper>

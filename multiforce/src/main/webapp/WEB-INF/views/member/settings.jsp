@@ -14,32 +14,28 @@
 <script>
 $(document).ready(function() {
 	
-	$("#profile_detail").click(function() { //프로필 클릭시
+	//프로필 클릭
+	$("#profile_detail").click(function() { 
 		$(".profile").show();
 		$(".account").hide();		
 		$(".delevery").hide();		
 	});
 	
-	$("#account_detail").click(function() { //계정 클릭시
+	//계정 클릭
+	$("#account_detail").click(function() { 
 		$(".account").show();
 		$(".profile").hide();		
 		$(".delevery").hide();		
 	});
-	
-	$("#delivery_detail").click(function() { //배송지 클릭시
+
+	//배송지 클릭
+	$("#delivery_detail").click(function() {
 		$(".delevery").show();
 		$(".profile").hide();		
-		$(".account").hide();		
+		$(".account").hide();
 	});
 	
 
-	
-	
-	
-	
-	
-	
-	
 	
 
     let memberSeq = ${loginMember.member_seq};
@@ -108,7 +104,7 @@ $(document).ready(function() {
 	
 	
 	
-	//이름 변경 클릭
+	//닉네임 변경 클릭
 	$("#nick_change").click(function() {
 		if ($("#nick_change").val() === "변경") {
 			$("#nick_change").val("취소");
@@ -119,7 +115,7 @@ $(document).ready(function() {
 		}		
 	});
 		
-	//이름 저장 클릭
+	//닉네임 저장 클릭
 	$("#nick_save").click(function() {
         if (blockSaveEvent) {
             event.preventDefault();
@@ -148,7 +144,7 @@ $(document).ready(function() {
         }
 	});	
 	
-	//이름 입력시 안내
+	//닉네임 입력시 안내
 	$("#nick_upload").keyup(function() {
 		var nickname = $("#nick_upload").val();
 		
@@ -194,6 +190,42 @@ $(document).ready(function() {
 					}
 		     });		
 	})
+	
+	
+	
+	//url 변경 클릭
+	$("#url_change").click(function() {
+		if ($("#url_change").val() === "변경") {
+			$("#url_change").val("취소");
+			$(".url_container").show();
+		} else {
+			$(".url_container").hide();
+			$("#url_change").val("변경");			
+		}		
+	});
+	
+	//url 저장 클릭
+	$("#url_save").click(function() {
+		
+	});
+	
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	//메일 변경 클릭시
@@ -347,14 +379,16 @@ $(document).ready(function() {
 	$("#address_add").click(function() {
 		if ($("#address_add").val() === "+ 추가") {
 			$("#address_add").val("취소");
+			$(".address_added").hide();
 			$(".address_container").show();
 		} else {
 			$(".address_container").hide();
-			$("#address_add").val("변경");			
+			$(".address_added").show();
+			$("#address_add").val("+ 추가");			
 		}		
 	})
 	
-	
+	//카카오 주소입력
 	let isAddressPassed = false;
 	$("#find_postcode").on("click", execDaumPostcode);
 	function execDaumPostcode() {
@@ -397,11 +431,146 @@ $(document).ready(function() {
     }
 	
 	
+	//연락처 입력
+	$("#phone").keyup(function() {
+		$(this).val( 
+			$(this).val()
+			.replace(/[^0-9]/g, "") //숫자제외입력불가
+			.replace(/([0-9]{3})+([0-9]{4})+([0-9]{4})$/,"$1-$2-$3"));
+	})	
+
+
+	//주소 저장 클릭
+	$("#address_save").click(function(e) {
+		if($("#name").val() === "") {
+			$("#name_result").html("수령자를 입력해주세요.");
+			$("#name").keyup(function() {
+				$("#name_result").html("");
+			});			
+		} else if ($("#phone").val().length < 13) {
+			$("#phone_result").html("연락처를 확인해주세요.");
+			$("#phone").keyup(function() {
+				$("#phone_result").html("");
+			})					
+		} else if ($("#postcode").val() === "") {
+			alert("우편번호 찾기 버튼을 눌러 주소를 입력해주세요.")
+		} else if($("#detail_address").val() === "") {
+			alert("상세 주소를 입력해주세요.")
+		} else {	
+			
+        	var name = $("#name").val();
+        	var phone = $("#phone").val();
+        	var postcode = $("#postcode").val(); 
+        	var road = $("#road_address").val(); 
+        	var jibun = $("#jibun_address").val(); 
+        	var extra = $("#extra_address").val(); 
+        	var detail = $("#detail_address").val(); 
+        	var defaultAddress = $("#default_address").prop("checked");
+        	var requeste = $("#requeste").val();
+			
+			$.ajax({
+		        type: "POST",
+		        url: "/address_add",
+		        data: {
+		        	"memberSeq" : memberSeq,
+		        	"name" : name, 
+		        	"phone" : phone,
+		        	"postcode" : postcode, 
+		        	"road" : road, 
+		        	"jibun" : jibun, 
+		        	"extra" : extra, 
+		        	"detail" : detail, 
+		        	"defaultAddress" : defaultAddress,
+		        	"requeste" : requeste		        	
+		        },
+		        success: function(response) { 
+		    		console.log(response);
+		    		$(".address_container").hide();
+		    		$(".address_added").show();
+		    		$("#address_add").val("+ 추가");		    		
+
+		    	    var newAddressHtml = "<div class=\"addaddress\">";
+		    	    newAddressHtml += "<div>" + name + "</div>";
+		    	    newAddressHtml += "<div>" + phone + "</div>";
+		    	    newAddressHtml += "<div>[" + postcode + "]</div>";
+		    	    newAddressHtml += "<div>" + road + extra + "</div>";
+		    	    newAddressHtml += "<div>" + detail + "</div>";
+		    	    newAddressHtml += "<div> <input type=\"button\" value=\"삭제\" class=\"delete_address\" </div>";
+		    	    newAddressHtml += "<hr></div>";
+
+		    	    $(".address_added > div:eq(1)").append(newAddressHtml);
+		    	    
+		    	    $(".address_added > div:eq(1)").on("click", ".delete_address", function() {
+		    	    	var deleteButton = $(this); // 클릭된 삭제 버튼
+		    	    	if (confirm("해당 배송지를 삭제하시겠습니까?")){
+		    	    		console.log("ajax 속 ajax 출발")
+			    			$.ajax({
+						        type: "POST",
+						        url: "/address_add_delete",
+						        data: {
+						        	"memberSeq" : memberSeq,
+						        	"name" : name, 
+						        	"phone" : phone,
+						        	"postcode" : postcode, 
+						        	"road" : road, 
+						        	"jibun" : jibun, 
+						        	"extra" : extra, 
+						        	"detail" : detail, 
+						        },
+						        success: function(response) { 
+						    		console.log(response);
+						    		alert("삭제되었습니다.")
+						    		$(".addaddress").empty();
+						    	},
+								error: function(error) {
+								       console.log(error);
+								}
+						     });//안ajax
+		    	    	}//if confirm
+		    	    })
+		    	},//밖ajax의 success
+				error: function(error) {
+				       console.log(error);
+				}
+		     });//밖ajax			
+		}//주소저장버튼의 else		
+	})
+	
+	
+	//주소 삭제
+	$(".address_del").click(function() {
+	    var name = $(this).data("name");
+	    var phone = $(this).data("phone");
+	    var postcode = $(this).data("postcode");
+	    var road = $(this).data("road");
+	    var detail = $(this).data("detail");
+	    var count = $(this).data("for_delete");
+	    
+	    if (confirm("해당 주소를 삭제하시겠습니까?")) {
+			$.ajax({
+		        type: "POST",
+		        url: "/address_delete",
+		        data: {
+		        	"memberSeq" : memberSeq,
+		        	"name" : name, 
+		        	"phone" : phone,
+		        	"postcode" : postcode, 
+		        	"road" : road, 
+		        	"detail" : detail, 
+		        },
+		        success: function(response) { 
+		    		alert("삭제되었습니다.")
+		    		$(".for_delete" + count).remove();
+		    	},
+				error: function(error) {
+				       console.log(error);
+				}
+		     });
+	    }
+	});
 	
 });
 </script>
-
-
 
 <body>
 
@@ -410,7 +579,6 @@ $(document).ready(function() {
 <div>
 	<div id="profile_detail" style="cursor:pointer;">프로필</div>
 	<div id="account_detail" style="cursor:pointer;">계정</div>
-	<div id="payment_detail" style="cursor:pointer;">결제수단</div>
 	<div id="delivery_detail" style="cursor:pointer;">배송지</div>
 </div>
 <hr>
@@ -441,12 +609,7 @@ $(document).ready(function() {
 			</div>
 		</div>
 		<hr>
-		<div>
-			<div>사용자 이름(URL)</div>
-			<div>DB에 없는 상태, 팔로우 팔로잉에서 방문하려면 필요</div>
-			<div><input type="button" value="변경"></div>
-		</div>
-		<hr>
+		
 		<div>
 			<div>자기소개</div>
 	        <c:if test="${not empty loginMember.description}">
@@ -462,6 +625,24 @@ $(document).ready(function() {
 			</div>
 		</div>
 		<hr>
+		
+		<div>
+			<div>사용자 이름(URL)</div>
+				<c:if test="${not empty loginMember.member_url}">
+					<div>
+						<span>${pageContext.request.scheme}://${pageContext.request.serverName}:${pageContext.request.serverPort}/user_profile/</span><span>${loginMember.member_url}</span>
+					</div>
+				</c:if>
+			<div><input type="button" value="변경" id="url_change"></div>
+			<div style="display: none;" class="url_container">
+				<div><input type="text" value="${loginMember.member_url }"  placeholder="6자리 이상의 영문으로 작성해주세요." id="url_upload"></div>
+				<div>사용자 이름은 회원님의 프로필 주소로 활용됩니다. 예) multiforce/user_profile/사용자이름</div>
+				<div id="url_warning"></div>
+				<div><input type="button" value="저장" id="url_save" ></div>
+			</div>			
+		</div>		
+		<hr>
+
 	</div>
 	
 	
@@ -497,54 +678,59 @@ $(document).ready(function() {
 				<div><input type="button" value="저장" id="pw_save" ></div>
 			</div>
 			<hr>
-		</div>
-		
-		<div>
-			<div>연락처</div>
-			<div id="phone_final">연락처 DB 없음</div>
-		</div>
-	
+		</div>	
 	</div>
-	
-	
-	
+
+
 	<div class="delevery" style="display: none;">
-		<div>
-			<div>등록된 배송지</div>
-			<div><input type="button" value="+ 추가" id="address_add"></div>
+		<div class="address_added">
+		    <div>등록된 배송지</div>
+		    <div>
+		        <c:choose>
+		            <c:when test="${not empty delivery}">
+		                <c:forEach var="delivery" items="${delivery}" varStatus="vs">
+		                    <div class="for_delete${vs.count}" >
+		                        <div>${delivery.name}</div>
+								<c:if test="${delivery.default_address}">
+								    <div style="color: red;">기본배송지</div>
+								</c:if>
+		                        <div>${delivery.phone}</div>
+		                        <div>[${delivery.postcode}] ${delivery.road_address} ${delivery.extra_address}</div>
+		                        <div>${delivery.detail_address}</div>
+		                        <input type="button" value="삭제" class="address_del"
+	                                   data-name="${delivery.name}"
+						               data-phone="${delivery.phone}"
+						               data-postcode="${delivery.postcode}"
+						               data-road="${delivery.road_address}"
+						               data-detail="${delivery.detail_address}"
+						               data-for_delete="${vs.count }">
+		                        <hr>                
+		                    </div>
+		                </c:forEach>
+		            </c:when>
+		            <c:otherwise>
+		                <div>배송지를 등록해주세요.</div>
+		            </c:otherwise>
+		        </c:choose>       
+		    </div>
 		</div>
-		<div>
-		<c:choose>
-			<c:when test="${not empty funded}">
-				<c:forEach var="funded" items="${funded}">
-		            <div>
-		                <div>이름: ${funded.name}</div>
-		                <div>전화번호: ${funded.phone}</div>
-		                <div>우편번호: ${funded.postcode}</div>
-		                <div>도로주소: ${funded.road_address}</div>
-		                <div>지번주소: ${funded.jibun_address}</div>
-		                <div>참고주소: ${funded.extra_address}</div>
-		                <c:if test="${not empty funded.detail_address}">
-		                    <div>상세주소: ${funded.detail_address}</div>
-		                </c:if>
-		                <hr>                
-		            </div>
-		        </c:forEach>
-	      	</c:when>
-		    <c:otherwise>
-		        <div>배송지를 등록해주세요.</div>
-		    </c:otherwise>
-	    </c:choose>       
-		</div>
-		<div style="display: none;" class="address_container">		
+		<div><input type="button" value="+ 추가" id="address_add"></div>		
+		
+		<div style="display: none;" class="address_container">
+			<div>새로운 배송지 입력</div>
 			<div>수령자 : <input type="text" id="name"></div>
-			<div>연락처 : <input type="tel" id="phone"></div>
+			<div id="name_result"></div>
+			<div>연락처 : <input type="text" id="phone" maxlength="13" placeholder="숫자만 입력해주세요."></div>
+			<div id="phone_result"></div>
 			<div><input type="button" id="find_postcode" value="우편번호 찾기"></div>
 			<div><input type="text" id="postcode" readonly placeholder="우편번호 찾기 클릭"></div>
 			<div><input type="text" id="road_address" readonly placeholder="우편번호 찾기 클릭"></div>
 			<div><input type="text" id="jibun_address" readonly placeholder="우편번호 찾기 클릭"></div>
 			<div><input type="text" id="extra_address" readonly placeholder="우편번호 찾기 클릭"></div>
 			<div><input type="text" id="detail_address"></div>
+			<div>배송 요청사항 : <input type="text" id="requeste"></div>
+			<div><input type="checkbox" id="default_address" checked>기본주소로 저장</div>
+			<div><input type="button" id="address_save" value="저장"></div>
 		</div>
 				
 	</div>
