@@ -15,6 +15,31 @@ function inputPrice(num) {
 	}
 }
 </script>
+<script>
+    $(document).ready(function() {
+    $("#submitBtn").click(function() {
+        var data = {
+            start_date: $("#start_date").val(),
+            due_date: $("#due_date").val(),
+            goal_price: $("#goal_price").val()
+        };
+
+        // AJAX를 통해 서버에 JSON 형태의 데이터 전송
+        $.ajax({
+            type: "POST",
+            url: "/submitFundingPlan",
+            contentType: "application/json",  // JSON 형태로 데이터 전송
+            data: JSON.stringify(data),  // 데이터를 JSON 문자열로 변환
+            success: function(response) {
+                console.log(response);
+            },
+            error: function(error) {
+                console.error(error);
+            }
+        });
+    });
+});
+</script>
 </head>
 <body>
  <h1>펀딩 계획</h1>
@@ -28,30 +53,8 @@ function inputPrice(num) {
   <label for="goal_price">목표 금액:</label>
   <input type="text" id="goal_price" name="goal_price" onKeyup="inputPrice(this);"><br><br>
   
-  <input type="button" id="submitPlan" value="계획 제출">
+  <button type="button" id="submitBtn">저장</button>
 </form>
-  <script>
-  $(document).ready(function () {
-    $("#submitPlan").click(function () {
-      submitPlan();
-    });
-  });
 
-  function submitPlan() {
-    var formData = $("#fundingForm").serialize();
-
-    $.ajax({
-      type: "POST",
-      url: "submitFundingPlan",
-      data: JSON.stringify(formData),
-      success: function (response) {
-        console.log(response);
-      },
-      error: function (error) {
-        console.error(error);
-      }
-    });
-  }
-</script>
 </body>
 </html>
