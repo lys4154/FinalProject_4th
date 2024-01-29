@@ -24,6 +24,7 @@ public class MemberDTO {
 	String jibun_address;
 	String extra_address;
 	String detail_address;
+	String member_url;
 	
 
 	public MemberDTO() {
@@ -133,6 +134,13 @@ public class MemberDTO {
 		this.resign_date = resign_date;
 	}
 
+	public String getMember_url() {
+		return member_url;
+	}
+
+	public void setMember_url(String member_url) {
+		this.member_url = member_url;
+	}
 
 	@Override
 	public String toString() {
@@ -141,8 +149,10 @@ public class MemberDTO {
 				+ ", email=" + email + ", description=" + description + ", level=" + level + ", gender=" + gender
 				+ ", resign=" + resign + ", resign_date=" + resign_date + ", postcode=" + postcode + ", road_address="
 				+ road_address + ", jibun_address=" + jibun_address + ", extra_address=" + extra_address
-				+ ", detail_address=" + detail_address + "]";
+				+ ", detail_address=" + detail_address + ", member_url=" + member_url + "]";
 	}
 
+
+	
 			
 }

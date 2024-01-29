@@ -33,8 +33,10 @@ import funding.dto.FundingDTO;
 import funding.service.FundingService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import member.dto.DeliveryDTO;
 import member.dto.MemberDTO;
 import member.dto.MemberProfileImgDTO;
+import member.service.DeliveryService;
 import member.service.FollowService;
 import member.service.MemberService;
 import project.dto.BundleDTO;
@@ -71,6 +73,8 @@ public class ProfileController {
 	private FundingBundleCountService countservice;
 	@Autowired
 	private ProjectDibsService dibsservice;
+	@Autowired
+	private DeliveryService deliveryservice;
 
 	
 	@GetMapping("/profile")
@@ -93,6 +97,39 @@ public class ProfileController {
 		mv.setViewName("member/myprofile");
 		return mv;		
 	}
+	
+	
+	
+	
+	
+	//해당 회원 프로필로 이동
+	@GetMapping("/user_profile/{member_url}")
+	public String userProfile(@PathVariable String member_url, Model model) {
+
+        // username에 해당하는 사용자 정보를 가져와서 모델에 추가
+        MemberDTO userProfile = memberservice.userProfile(member_url);
+        System.out.println(userProfile);
+        if (userProfile != null) {
+            model.addAttribute("user", userProfile);
+            return "member/user_profile"; // user_profile.jsp로 이동
+        } else {
+            return "redirect:/"; // 사용자가 없으면 홈 페이지로 리다이렉트 또는 에러 페이지로 이동
+        }		
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 		
 	
 	//마이 프로필 - 올린 프로젝트
@@ -118,12 +155,15 @@ public class ProfileController {
 		 session.setAttribute("member_seq", 6);
 
 		int memberSeq = (int)session.getAttribute("member_seq");
+
 		List<FundingDTO> ongoingFunded = fundingservice.ongoingFunded(memberSeq);	//후원 진행중
+		System.out.println(ongoingFunded);
 		List<Integer> fundSeqList = new ArrayList<>(); 								
 		for (FundingDTO fundingDTO : ongoingFunded) {
 		    int fundSeq = fundingDTO.getFund_seq();
 		    fundSeqList.add(fundSeq);												// fund_seq 리스트
 		}
+		System.out.println("그중에 fund_seq만 뽑음 = " + fundSeqList);
 		
 			
 		List<Integer> ongoingProjectSeq = new ArrayList<>();						
@@ -142,7 +182,7 @@ public class ProfileController {
     @ResponseBody
     Map<String, Object> getFollower(HttpSession session) {
         // 실제 로그인 시 수정할 부분
-        session.setAttribute("member_seq", 4);
+        session.setAttribute("member_seq", 6);
 
         int memberSeq = (int) session.getAttribute("member_seq");
 
@@ -199,7 +239,7 @@ public class ProfileController {
     @ResponseBody
     Map<String, Object> getFollowing(HttpSession session) { 
 		//실제 로그인 시 수정할 부분
-		session.setAttribute("member_seq", 4);										
+		session.setAttribute("member_seq", 6);										
 
 		int memberSeq = (int)session.getAttribute("member_seq");
 		
@@ -267,9 +307,7 @@ public class ProfileController {
 		for (FundingDTO fundingDTO : ongoingFunded) {
 		    int fundSeq = fundingDTO.getFund_seq();
 		    fundSeqList.add(fundSeq);												// fund_seq 리스트
-		}
-		System.out.println(fundSeqList); //1112 
-		
+		}		
 			
 		//프로젝트 테이블에서 poject_seq로 member seq 찾아서 리스트 만들기		
 		List<Integer> ongoingProjectSeq = new ArrayList<>();						
@@ -285,8 +323,7 @@ public class ProfileController {
 		}
 		
 		List<MemberDTO> fundedMember= memberservice.myFollowerList(memberSeqList);	//마이프로필 - 팔로워 와 같음
-		
-		
+			
         Map<Integer, Integer> followerCounts = new HashMap<>();						// 팔로워들의 팔로워 찾기
         Map<Integer, Integer> followerProject = new HashMap<>();					// 팔로워들의 올린프로젝트 찾기
 
@@ -301,18 +338,12 @@ public class ProfileController {
             followerProject.put(followerSeq, projectCount);
         }
         
-        System.out.println(fundedMember);
-        System.out.println(followerCounts);
-        System.out.println(followerProject);
-        
         Map<String, Object> fundedMembersInfo = new HashMap<>();
         fundedMembersInfo.put("fundedMember", fundedMember);
         fundedMembersInfo.put("followerCounts", followerCounts);
         fundedMembersInfo.put("followerProject", followerProject);
-
-
-        return fundedMembersInfo;
-	   	
+        
+        return fundedMembersInfo;	   	
     }
        
     
@@ -559,11 +590,11 @@ public class ProfileController {
 	    
 		int memberSeq = (int) session.getAttribute("member_seq");	
 		MemberDTO loginMemberSeq = memberservice.loginMemberSeq(memberSeq);
-		List<FundingDTO> getFundedProject = fundingservice.getFundedProject(memberSeq);	
+		List<DeliveryDTO> getDelivery = deliveryservice.getDelivery(memberSeq);	
 		
 		ModelAndView mv = new ModelAndView();		
 		mv.addObject("loginMember",loginMemberSeq);		
-		mv.addObject("funded",getFundedProject);		
+		mv.addObject("delivery",getDelivery);		
 		mv.setViewName("member/settings");
 		return mv;		
 	}
@@ -655,12 +686,40 @@ public class ProfileController {
 	
 	
 	//회원정보수정 - 배송지 추가
-	@PostMapping("/")
+	@PostMapping("/address_add")
 	@ResponseBody
-	public int deliveryAdd() {
+	public int addressAdd(int memberSeq, String name, String phone, String postcode, String road, String jibun, 
+							String extra, String detail, String requeste,  boolean defaultAddress) {		 
 		
+		int addressAdd = deliveryservice.addressAdd(memberSeq, name, phone, postcode, road, jibun, extra, detail, requeste, defaultAddress );
 		
-		return 0;
+		List<DeliveryDTO> getDelivery = deliveryservice.getDelivery(memberSeq);
+		ModelAndView mv = new ModelAndView();		
+		mv.addObject("delivery",getDelivery);		
+		mv.setViewName("member/settings");
+		
+		return addressAdd;
+	}
+	
+	
+	//회원정보수정 - 추가한 배송지 삭제
+	@PostMapping("/address_add_delete")
+	@ResponseBody
+	public int addressAddDelete(int memberSeq, String name, String phone, String postcode, String road, String jibun, 
+							String extra, String detail) {	
+		
+		int addressAddDelete = deliveryservice.addressAddDelete(memberSeq, name, phone, postcode, road, jibun, extra, detail);		
+		return addressAddDelete;
+	}
+	
+	
+	//회원정보수정 - 기존 배송지 삭제
+	@PostMapping("/address_delete")
+	@ResponseBody
+	public int addressDelete(int memberSeq, String name, String phone, String postcode, String road, String detail) {	
+		
+		int addressDelete = deliveryservice.addressDelete(memberSeq, name, phone, postcode, road, detail);		
+		return addressDelete;
 	}
 	
 	

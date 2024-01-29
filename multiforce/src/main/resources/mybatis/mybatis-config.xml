@@ -17,5 +17,6 @@
 		<typeAlias type="project.dto.ProjectDiscoverDTO" alias="discoverdto"/>
 		<typeAlias type="approvalRequest.dto.ApprovalRequestDTO" alias="approvalDTO"/>
 		<typeAlias type="project.dto.ProjectMemberDTO" alias="projectmemberdto"/>
+		<typeAlias type="member.dto.DeliveryDTO" alias="deliverydto"/>
 	</typeAliases>
 </configuration>

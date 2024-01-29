@@ -26,11 +26,12 @@ public class FundingDTO {
 	String track_num;
 	String track_status;	
 	// 주소 수정	
-	String postcode;
+	
 	String road_address;
 	String jibun_address;
 	String extra_address;
 	String detail_address;
+	String postcode;
 	
 	
 	
