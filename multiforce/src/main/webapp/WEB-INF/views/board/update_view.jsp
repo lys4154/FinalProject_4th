@@ -102,6 +102,7 @@ function deleteUpdate(updateSeq) {
             success: function(response) {
                 console.log('삭제 성공:', response);
                 location.reload();
+                
             },
             error: function(error) {
                 console.error('삭제 실패:', error);
