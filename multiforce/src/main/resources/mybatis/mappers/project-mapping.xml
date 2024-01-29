@@ -100,10 +100,14 @@
 	select * from project where project_seq=#{projectSeq}
 </select>	
 
+<select id="getMember_seq" parameterType="String" resultType="int">
+	select member_seq from member_info where member_id=#{member_id};
+</select> 
+
 <!-- tab_info저장 -->
 <insert id="insertProject" parameterType="project.dto.ProjectDTO">
- INSERT INTO project (long_title, short_title, sub_title, main_images_url, url, category)
- VALUES (#{long_title}, #{short_title}, #{sub_title}, #{main_images_url}, #{url}, #{category})
+ INSERT INTO project (member_seq, long_title, short_title, sub_title, main_images_url, url, category)
+ VALUES (#{member_seq}, #{long_title}, #{short_title}, #{sub_title}, #{main_images_url}, #{url}, #{category})
 </insert>
 
 <!-- tab_fundingPlan 저장 -->

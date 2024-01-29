@@ -62,6 +62,9 @@ public interface ProjectDAO {
 	// 프로젝트 작성
 	void insertProject(ProjectDTO project);
 	
+	//member_seq불러오기
+	int getMember_seq(String member_id);
+	
 	// 프로젝트 불러오기
 	List<ProjectDTO> getProject(int memberSeq);
 

@@ -50,6 +50,10 @@
 	update FUNDING set del_status=true, del_date=NOW() where fund_seq=${fundSeq};
 </update>
 
-
+<!-- 결제정보 -->
+<insert id="insertPayment" parameterType="fundingdto">
+	insert into funding (fund_date, pay_option, price, paydate, pay_status)
+	values (now(), #{pay_option}, #{price}, #{paydate}, 0)
+</insert>
 
 </mapper>

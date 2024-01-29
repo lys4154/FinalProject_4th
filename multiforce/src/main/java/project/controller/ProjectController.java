@@ -20,6 +20,7 @@ import board.dto.BoardDTO;
 import board.dto.CommunityDTO;
 import board.dto.UpdateReplyDTO;
 import board.service.boardService;
+import jakarta.servlet.http.HttpSession;
 import project.dto.ProjectDTO;
 import project.service.ProjectService;
 
@@ -170,10 +171,10 @@ public class ProjectController {
 	
 	@PostMapping("/saveProject")
     @ResponseBody
-    public String saveProject(@RequestBody ProjectDTO projectDTO) {
+    public String saveProject(@RequestBody ProjectDTO projectDTO, HttpSession session) {
         try {
             // 프로젝트 생성 서비스 호출
-            projectService.createProject(projectDTO);
+            projectService.createProject(projectDTO, session);
             return "Success";
         } catch (Exception e) {
             e.printStackTrace();
