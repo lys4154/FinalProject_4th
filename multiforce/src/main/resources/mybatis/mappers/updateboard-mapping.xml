@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="board.dao.UpdateBoardDAO">
 	<select id="getAllUpdatePost" resultType="board.dto.updateBoardDTO">
-	    SELECT * FROM update_board WHERE project_seq = #{project_seq}
+	    SELECT * FROM update_board WHERE project_seq = #{project_seq} and del_status=false
 	</select>
 	<insert id="insertUpdateBoard" parameterType="board.dto.updateBoardDTO">
         INSERT INTO update_board (project_seq, member_seq, content)

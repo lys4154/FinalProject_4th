@@ -14,6 +14,14 @@ public class updateBoardDTO {
 	    private Integer update_like_cnt; 
 	    private int del_status;
 	    private LocalDateTime del_date;
+	    boolean LikedByCurrentUser;
+	    
+		public boolean isLikedByCurrentUser() {
+			return LikedByCurrentUser;
+		}
+		public void setLikedByCurrentUser(boolean likedByCurrentUser) {
+			LikedByCurrentUser = likedByCurrentUser;
+		}
 		public int getUpdate_seq() {
 			return update_seq;
 		}

@@ -1,5 +1,6 @@
 package board.dao;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -35,6 +36,28 @@ public interface BoardDAO {
 	void insertUpdateReply(UpdateReplyDTO reply);
 
 	List<UpdateReplyDTO> getCommentsByUpdateSeq(int update_seq);
+
+	void insertCommunityReply(CommunityDTO reply);
+
+	List<CommunityDTO> getCommCommentsByBoardSeq(int board_seq);
+
+	boolean checkIfUpdateLikedByUser(int updateSeq, int loggedInUserId);
+
+	void insertUpdateLike(int updateSeq, int loggedInUserId);
+
+	int getUpdatedLikeCount(int updateSeq);
+
+	int getUpdateSeqByProjectSeq(int project_seq);
+
+	boolean isUpdateLikedByUser(int update_seq, int currentUser);
+
+	void deleteUpdateLike(int updateSeq, int loggedInUserId);
+
+	UpdateReplyDTO getUpdatePostByUpdateSeq(int update_seq);
+
+	void deleteUpdatePost(int update_seq, LocalDateTime del_date);
+
+
 	
 
 }

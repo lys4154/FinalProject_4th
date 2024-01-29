@@ -1,8 +1,11 @@
 package board.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import board.dto.BoardDTO;
@@ -71,6 +74,10 @@ public class boardService {
         boardDAO.insertUpdateReply(reply);
     }
 	
+	public void insertCommunityReply(CommunityDTO reply) {
+        boardDAO.insertCommunityReply(reply);
+    }
+	
 	public List<UpdateReplyDTO> getCommentsByUpdateSeq(int update_seq) {
 	
 	        List<UpdateReplyDTO> comments = boardDAO.getCommentsByUpdateSeq(update_seq);
@@ -82,6 +89,75 @@ public class boardService {
 
 	        return comments;
 
+	}
+
+	public List<CommunityDTO> getCommCommentsByBoardSeq(int board_seq) {
+			List<CommunityDTO> comments = boardDAO.getCommCommentsByBoardSeq(board_seq);
+	
+	        for (CommunityDTO comment : comments) {
+	            MemberDTO member = memberService.getNicknameById(comment.getMember_seq());
+	            comment.setMember(member);
+	        }
+	
+	        return comments;
+	}
+
+	public ResponseEntity<String> toggleUpdateLike(int updateSeq, int loggedInUserId) {
+	    try {
+	        boolean isLiked = checkIfUpdateLiked(updateSeq, loggedInUserId);
+
+	        if (isLiked) {
+
+	            performUnlikeAction(updateSeq, loggedInUserId);
+	            return ResponseEntity.ok("게시물 좋아요 취소 성공");
+	        } else {
+
+	            performLikeAction(updateSeq, loggedInUserId);
+	            return ResponseEntity.ok("게시물 좋아요 성공");
+	        }
+
+	    } catch (Exception e) {
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("게시물 좋아요 실패");
+	    }
+	}
+	private void performUnlikeAction(int updateSeq, int loggedInUserId) {
+			boardDAO.deleteUpdateLike(updateSeq, loggedInUserId);
+		
+	}
+
+	public void performLikeAction(int updateSeq, int loggedInUserId) {
+	  
+	   
+	        boardDAO.insertUpdateLike(updateSeq, loggedInUserId);
+	    
+	}
+
+	public boolean checkIfUpdateLiked(int updateSeq, int loggedInUserId) {
+	    
+	    boolean isLiked = boardDAO.checkIfUpdateLikedByUser(updateSeq, loggedInUserId);
+
+	    return isLiked;
+	}
+
+	public int getUpdatedLikeCount(int updateSeq) {
+		return boardDAO.getUpdatedLikeCount(updateSeq);
+	}
+
+	public int getUpdateSeqByProjectSeq(int project_seq) {
+		return boardDAO.getUpdateSeqByProjectSeq(project_seq);
+	}
+
+	public boolean isUpdateLikedByUser(int update_seq, int currentUser) {
+		return boardDAO.isUpdateLikedByUser(update_seq, currentUser);
+	}
+
+	public UpdateReplyDTO getUpdatePostByUpdateSeq(int update_seq) {
+		return boardDAO.getUpdatePostByUpdateSeq(update_seq);
+	}
+
+	public void deleteUpdatePost(int update_seq, LocalDateTime del_date) {
+		boardDAO.deleteUpdatePost(update_seq, del_date);
+		
 	}
 
 
