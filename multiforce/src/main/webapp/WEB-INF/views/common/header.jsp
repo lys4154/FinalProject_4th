@@ -144,7 +144,7 @@ $(document).ready(function(){
 		<a href="/discover?sort=new">신규</a>
 		<a href="/discover?sort=popular">인기</a>
 		<a href="/discover?sort=end">마감임박</a>
-		<a id="project_design_btn" href="">프로젝트 등록</a>
+		<a id="project_design_btn" href="projectdesign">프로젝트 등록</a>
 		<div id = "change_part"></div>
 		<div class="category" id="category_list" style="display:none">
 <%		for(ProjectCategory item : ProjectCategory.values()){ %>
