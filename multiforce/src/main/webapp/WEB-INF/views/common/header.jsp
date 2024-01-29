@@ -89,13 +89,13 @@ $(document).ready(function(){
 				`<div id = "login_wrap">
 					프로필 사진, ${login_user_name}(클릭시 메뉴)<br>
 					<div id="my_menu_list" style="display:none">
-						<a href="">프로필</a>
-						<a href="">후원 프로젝트</a>
-						<a href="">관심 프로젝트</a>
-						<a href="">팔로우</a>
+						<a href="/myprofile">프로필</a>
+						<a href="/funded">후원 프로젝트</a>
+						<a href="/mydibs">관심 프로젝트</a>
+						<a href="/follow">팔로우</a>
 						<a href="">메세지</a>
-						<a href="">내 프로젝트</a>
-						<a href="">회원정보 수정</a>
+						<a href="/myproject">내 프로젝트</a>
+						<a href="/settings">회원정보 수정</a>
 						<a href="/logout">로그아웃</a>
 					</div>
 				</div>

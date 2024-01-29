@@ -85,63 +85,28 @@ public class ProfileController {
 	
 	//마이 프로필 - 로그인 회원 정보
 	@GetMapping("/myprofile")
-	public ModelAndView memberInfo (HttpSession session){		
-		//실제 로그인 시 수정할 부분
-		session.setAttribute("email", "test@test.com");	  
-	    
-		String email = (String) session.getAttribute("email");	
-		MemberDTO loginMember = memberservice.loginMember(email);	
+	public ModelAndView memberInfo (HttpSession session){		 
+	    	
+		int memberSeq = (int) session.getAttribute("login_user_seq");
+		MemberDTO loginMemberSeq = memberservice.loginMemberSeq(memberSeq);
 		
-		ModelAndView mv = new ModelAndView();		
-		mv.addObject("loginMember",loginMember);		
-		mv.setViewName("member/myprofile");
-		return mv;		
+		ModelAndView mv = new ModelAndView("member/myprofile");		
+		mv.addObject("loginMember",loginMemberSeq);
+		return mv;
 	}
 	
 	
-	
-	
-	
-	//해당 회원 프로필로 이동
-	@GetMapping("/user_profile/{member_url}")
-	public String userProfile(@PathVariable String member_url, Model model) {
 
-        // username에 해당하는 사용자 정보를 가져와서 모델에 추가
-        MemberDTO userProfile = memberservice.userProfile(member_url);
-        System.out.println(userProfile);
-        if (userProfile != null) {
-            model.addAttribute("user", userProfile);
-            return "member/user_profile"; // user_profile.jsp로 이동
-        } else {
-            return "redirect:/"; // 사용자가 없으면 홈 페이지로 리다이렉트 또는 에러 페이지로 이동
-        }		
-		
-	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-		
+
 	
 	//마이 프로필 - 올린 프로젝트
     @GetMapping("/getMyproject")
     @ResponseBody
-    List<ProjectDTO> getMyproject(HttpSession session) { 
-		//실제 로그인 시 수정할 부분
-		session.setAttribute("member_seq", 2);
+    List<ProjectDTO> getMyproject(HttpSession session) {
+		int memberSeq = (int)session.getAttribute("login_user_seq");
 
-		int memberSeq = (int)session.getAttribute("member_seq");
-		List<ProjectDTO> myprojectList = projectservice.getProjectsByMemberSeq(memberSeq);
-			
+		List<ProjectDTO> myprojectList = projectservice.getProjectsByMemberSeq(memberSeq);			
 		return myprojectList;    	
     }
     
@@ -151,30 +116,26 @@ public class ProfileController {
     @GetMapping("/getFunded")
     @ResponseBody
     List<ProjectDTO> getFunded(HttpSession session) { 
-		//실제 로그인 시 수정할 부분
-		 session.setAttribute("member_seq", 6);
-
-		int memberSeq = (int)session.getAttribute("member_seq");
+		int memberSeq = (int)session.getAttribute("login_user_seq");
 
 		List<FundingDTO> ongoingFunded = fundingservice.ongoingFunded(memberSeq);	//후원 진행중
-		System.out.println(ongoingFunded);
 		List<Integer> fundSeqList = new ArrayList<>(); 								
 		for (FundingDTO fundingDTO : ongoingFunded) {
 		    int fundSeq = fundingDTO.getFund_seq();
 		    fundSeqList.add(fundSeq);												// fund_seq 리스트
 		}
-		System.out.println("그중에 fund_seq만 뽑음 = " + fundSeqList);
-		
 			
 		List<Integer> ongoingProjectSeq = new ArrayList<>();						
-		for (FundingDTO projectSeq : ongoingFunded) {								//poject_seq 리스트
-			ongoingProjectSeq.add(projectSeq.getProject_seq());
+		for (FundingDTO fundingDTO : ongoingFunded) {								//poject_seq 리스트
+			ongoingProjectSeq.add(fundingDTO.getProject_seq());
 		}
+		
 		List<ProjectDTO> ongoingProject = projectservice.ongoingProject(ongoingProjectSeq); 	//후원중 + 현재 진행중인 프로젝트의 정보들		
-	
+		
 		return ongoingProject;    	
     }
 	
+    
 
     
     //마이 프로필 - 팔로워
@@ -182,40 +143,40 @@ public class ProfileController {
     @ResponseBody
     Map<String, Object> getFollower(HttpSession session) {
         // 실제 로그인 시 수정할 부분
-        session.setAttribute("member_seq", 6);
-
-        int memberSeq = (int) session.getAttribute("member_seq");
+    	int memberSeq = (int)session.getAttribute("login_user_seq");
 
         List<Integer> getMyFollower = followservice.getMyFollower(memberSeq);		// 현재 회원의 팔로워들의 memberSeq 리스트
-        List<MemberDTO> myFollower = memberservice.myFollowerList(getMyFollower);	// 위 회원들의 정보 
         
-        List<Integer> followersSeq = new ArrayList<>();								// 팔로워들의 seq
-        for (MemberDTO follower : myFollower) {
-        	followersSeq.add(follower.getMember_seq());
-        }
-
-        Map<Integer, Integer> followerCounts = new HashMap<>();						// 팔로워들의 팔로워 찾기
-        Map<Integer, Integer> followerProject = new HashMap<>();					// 팔로워들의 올린프로젝트 찾기
-
-        for (Integer followerSeq : followersSeq) {
-            Integer count = followservice.getCountByFollowingSeq(followerSeq);
-            if (count == null) {
-                count = 0;
+        if (getMyFollower.size() != 0) {
+            List<MemberDTO> myFollower = memberservice.myFollowerList(getMyFollower);	// 위 회원들의 정보
+            
+            List<Integer> followersSeq = new ArrayList<>();								// 팔로워들의 seq
+            for (MemberDTO follower : myFollower) {
+            	followersSeq.add(follower.getMember_seq());
             }
-            followerCounts.put(followerSeq, count);
 
-            Integer projectCount = projectservice.getProjectCount(followerSeq);
-            followerProject.put(followerSeq, projectCount);
+            Map<Integer, Integer> followerCounts = new HashMap<>();						// 팔로워들의 팔로워 찾기
+            Map<Integer, Integer> followerProject = new HashMap<>();					// 팔로워들의 올린프로젝트 찾기
+
+            for (Integer followerSeq : followersSeq) {
+                Integer count = followservice.getCountByFollowingSeq(followerSeq);
+                if (count == null) {
+                    count = 0;
+                }
+                followerCounts.put(followerSeq, count);
+                
+                Integer projectCount = projectservice.getProjectCount(followerSeq);
+                followerProject.put(followerSeq, projectCount);
+            }
+            
+            Map<String, Object> myFollowers = new HashMap<>();
+            myFollowers.put("myFollower", myFollower);
+            myFollowers.put("followerCounts", followerCounts);
+            myFollowers.put("followerProject", followerProject);
+            
+            return myFollowers;
         }
-
-        
-        Map<String, Object> myFollowers = new HashMap<>();
-        myFollowers.put("myFollower", myFollower);
-        myFollowers.put("followerCounts", followerCounts);
-        myFollowers.put("followerProject", followerProject);
-
-
-        return myFollowers; 	
+        return null;	        	
     }
     
   
@@ -224,56 +185,89 @@ public class ProfileController {
     @PostMapping("/follower_btn")
     @ResponseBody
     public int followerAdd(int memberSeq, HttpSession session) {
-    	int followingMemberSeq = (int) session.getAttribute("member_seq"); //로그인본인seq
+    	int followingMemberSeq = (int) session.getAttribute("login_user_seq"); //로그인본인seq
     	int followerMemberSeq = memberSeq;	//팔로워의seq
     	
     	int followerAdd = followservice.followerAdd(followingMemberSeq,followerMemberSeq); // 1-> insert됨,  0-> 이미 팔로우
-    	System.out.println(followerAdd);
+    	
+       	if (followerAdd == 0) {
+    		return 3;
+    		//이미 팔로우 되어있을때.
+    	}
+
 		return followerAdd;
 	}
+    
+
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     
     //마이 프로필 - 팔로잉
     @GetMapping("/getFollowing")
     @ResponseBody
-    Map<String, Object> getFollowing(HttpSession session) { 
-		//실제 로그인 시 수정할 부분
-		session.setAttribute("member_seq", 6);										
+    Map<String, Object> getFollowing(HttpSession session) { 									
 
-		int memberSeq = (int)session.getAttribute("member_seq");
+		int memberSeq = (int)session.getAttribute("login_user_seq");
 		
 		List<Integer> getMyFollowing = followservice.getMyFollowing(memberSeq); 		//현재 회원의 팔로잉들의 memberSeq 리스트
-		List<MemberDTO> myFollowing = memberservice.myFollowingList(getMyFollowing);	//위 회원들의 정보
-		
-        List<Integer> followersSeq = new ArrayList<>();								// 팔로잉들의 seq
-        for (MemberDTO following : myFollowing) {
-        	followersSeq.add(following.getMember_seq());
-        }
-        
-        Map<Integer, Integer> followerCounts = new HashMap<>();						// 팔로워들의 팔로워 찾기
-        Map<Integer, Integer> followerProject = new HashMap<>();					// 팔로워들의 올린프로젝트 찾기
+		if (getMyFollowing.size() != 0) {
+			List<MemberDTO> myFollowing = memberservice.myFollowingList(getMyFollowing);	//위 회원들의 정보
+			
+	        List<Integer> followersSeq = new ArrayList<>();								// 팔로잉들의 seq
+	        for (MemberDTO following : myFollowing) {
+	        	followersSeq.add(following.getMember_seq());
+	        }
+	        
+	        Map<Integer, Integer> followerCounts = new HashMap<>();						// 팔로워들의 팔로워 찾기
+	        Map<Integer, Integer> followerProject = new HashMap<>();					// 팔로워들의 올린프로젝트 찾기
 
-        for (Integer followerSeq : followersSeq) {
-            Integer count = followservice.getCountByFollowingSeq(followerSeq);
-            if (count == null) {
-                count = 0;
-            }
-            followerCounts.put(followerSeq, count);
+	        for (Integer followerSeq : followersSeq) {
+	            Integer count = followservice.getCountByFollowingSeq(followerSeq);
+	            if (count == null) {
+	                count = 0;
+	            }
+	            followerCounts.put(followerSeq, count);
 
-            Integer projectCount = projectservice.getProjectCount(followerSeq);
-            followerProject.put(followerSeq, projectCount);
-        }
+	            Integer projectCount = projectservice.getProjectCount(followerSeq);
+	            followerProject.put(followerSeq, projectCount);
+	        }
+	        
+	        Map<String, Object> myFollowings = new HashMap<>();
+	        myFollowings.put("myFollowing", myFollowing);
+	        myFollowings.put("followerCounts", followerCounts);
+	        myFollowings.put("followerProject", followerProject);
 
-        
-        Map<String, Object> myFollowings = new HashMap<>();
-        myFollowings.put("myFollowing", myFollowing);
-        myFollowings.put("followerCounts", followerCounts);
-        myFollowings.put("followerProject", followerProject);
-        
-//        System.out.println(myFollowings);
-
-		return myFollowings;    	
+			return myFollowings; 
+		}
+		return null;
     }
  
 	
@@ -283,12 +277,10 @@ public class ProfileController {
     @ResponseBody
     public int unfollow(int memberSeq, HttpSession session) {
 			
-		  int followingMemberSeq = (int) session.getAttribute("member_seq"); //로그인본인seq
+		  int followingMemberSeq = (int) session.getAttribute("login_user_seq"); //로그인본인seq
 		  int followerMemberSeq = memberSeq; //팔로워의seq
 		  
-		  int unfollow = followservice.unfollow(followingMemberSeq,followerMemberSeq); // 1-> delete됨 
-		  System.out.println(unfollow);
-			 
+		  int unfollow = followservice.unfollow(followingMemberSeq,followerMemberSeq); // 1-> delete됨 		 
 		return unfollow;
 	}
     
@@ -298,59 +290,63 @@ public class ProfileController {
     @PostMapping("/follow_getFunded")
     @ResponseBody
     Map<String, Object> fundedMembersInfo(HttpSession session) { 
-		//실제 로그인 시 수정할 부분
-		 session.setAttribute("member_seq", 6);
-
-		int memberSeq = (int)session.getAttribute("member_seq");
+    	
+		int memberSeq = (int)session.getAttribute("login_user_seq");
+		System.out.println(memberSeq);
+		
 		List<FundingDTO> ongoingFunded = fundingservice.ongoingFunded(memberSeq);	//후원 진행중
-		List<Integer> fundSeqList = new ArrayList<>(); 								
-		for (FundingDTO fundingDTO : ongoingFunded) {
-		    int fundSeq = fundingDTO.getFund_seq();
-		    fundSeqList.add(fundSeq);												// fund_seq 리스트
-		}		
+		if(ongoingFunded.size() != 0 ) {
+			List<Integer> fundSeqList = new ArrayList<>(); 								
+			for (FundingDTO fundingDTO : ongoingFunded) {
+			    int fundSeq = fundingDTO.getFund_seq();
+			    fundSeqList.add(fundSeq);												// fund_seq 리스트
+			}		
+				
+			//프로젝트 테이블에서 poject_seq로 member seq 찾아서 리스트 만들기		
+			List<Integer> ongoingProjectSeq = new ArrayList<>();						
+			for (FundingDTO projectSeq : ongoingFunded) {								//poject_seq 리스트
+				ongoingProjectSeq.add(projectSeq.getProject_seq());
+			}
+			List<ProjectDTO> ongoingProject = projectservice.ongoingProject(ongoingProjectSeq); 
 			
-		//프로젝트 테이블에서 poject_seq로 member seq 찾아서 리스트 만들기		
-		List<Integer> ongoingProjectSeq = new ArrayList<>();						
-		for (FundingDTO projectSeq : ongoingFunded) {								//poject_seq 리스트
-			ongoingProjectSeq.add(projectSeq.getProject_seq());
-		}
-		List<ProjectDTO> ongoingProject = projectservice.ongoingProject(ongoingProjectSeq); 
-		
-		
-		List<Integer> memberSeqList = new ArrayList<>();							//member_seq 리스트
-		for (ProjectDTO projectDTO : ongoingProject) {
-		    memberSeqList.add(projectDTO.getMember_seq());
-		}
-		
-		List<MemberDTO> fundedMember= memberservice.myFollowerList(memberSeqList);	//마이프로필 - 팔로워 와 같음
 			
-        Map<Integer, Integer> followerCounts = new HashMap<>();						// 팔로워들의 팔로워 찾기
-        Map<Integer, Integer> followerProject = new HashMap<>();					// 팔로워들의 올린프로젝트 찾기
+			List<Integer> memberSeqList = new ArrayList<>();							//member_seq 리스트
+			for (ProjectDTO projectDTO : ongoingProject) {
+			    memberSeqList.add(projectDTO.getMember_seq());
+			}
+			
+			List<MemberDTO> fundedMember= memberservice.myFollowerList(memberSeqList);	//마이프로필 - 팔로워 와 같음
+				
+	        Map<Integer, Integer> followerCounts = new HashMap<>();						// 팔로워들의 팔로워 찾기
+	        Map<Integer, Integer> followerProject = new HashMap<>();					// 팔로워들의 올린프로젝트 찾기
 
-        for (Integer followerSeq : memberSeqList) {
-            Integer count = followservice.getCountByFollowingSeq(followerSeq);
-            if (count == null) {
-                count = 0;
-            }
-            followerCounts.put(followerSeq, count);
+	        for (Integer followerSeq : memberSeqList) {
+	            Integer count = followservice.getCountByFollowingSeq(followerSeq);
+	            if (count == null) {
+	                count = 0;
+	            }
+	            followerCounts.put(followerSeq, count);
 
-            Integer projectCount = projectservice.getProjectCount(followerSeq);
-            followerProject.put(followerSeq, projectCount);
-        }
-        
-        Map<String, Object> fundedMembersInfo = new HashMap<>();
-        fundedMembersInfo.put("fundedMember", fundedMember);
-        fundedMembersInfo.put("followerCounts", followerCounts);
-        fundedMembersInfo.put("followerProject", followerProject);
-        
-        return fundedMembersInfo;	   	
+	            Integer projectCount = projectservice.getProjectCount(followerSeq);
+	            followerProject.put(followerSeq, projectCount);
+	        }
+	        
+	        Map<String, Object> fundedMembersInfo = new HashMap<>();
+	        fundedMembersInfo.put("fundedMember", fundedMember);
+	        fundedMembersInfo.put("followerCounts", followerCounts);
+	        fundedMembersInfo.put("followerProject", followerProject);
+	        
+	        return fundedMembersInfo;
+		}
+		
+	   	return null;
     }
        
     
     
     //후원한 프로젝트용
     private List<ProjectDTO> getFundedProjects(HttpSession session, List<FundingDTO> fundedList) { 
-        int memberSeq = (int) session.getAttribute("member_seq");
+        int memberSeq = (int) session.getAttribute("login_user_seq");
 
         List<Integer> projectSeqList = new ArrayList<>();
         for (FundingDTO funded : fundedList) {
@@ -363,10 +359,8 @@ public class ProfileController {
     // 후원한 프로젝트 페이지
     @GetMapping("/funded")
     ModelAndView fundedProject(HttpSession session) {
-        // 실제 로그인 시 수정할 부분
-        session.setAttribute("member_seq", 6);
 
-        int memberSeq = (int) session.getAttribute("member_seq");
+        int memberSeq = (int) session.getAttribute("login_user_seq");
 
         List<FundingDTO> ongoingFunded = fundingservice.ongoingFunded(memberSeq); // 후원 진행중
         List<FundingDTO> successFunded = fundingservice.successFunded(memberSeq); // 후원 성공
@@ -394,11 +388,9 @@ public class ProfileController {
 	//후원한 프로젝트 페이지 - 검색 --- 추가필요(선물이름, 창작자도 가능하게) 
     @GetMapping("/funded_search")
     @ResponseBody
-    List<ProjectDTO> fundedSearch(@RequestParam(required = false) String keyword, HttpSession session) { 
-		//실제 로그인 시 수정할 부분
-		session.setAttribute("member_seq", 6);
+    List<ProjectDTO> fundedSearch(@RequestParam(required = false) String keyword, HttpSession session) {
 
-		int memberSeq = (int)session.getAttribute("member_seq");
+		int memberSeq = (int)session.getAttribute("login_user_seq");
 		List<ProjectDTO> searchFunded = projectservice.searchFunded(keyword, memberSeq); //프로젝트 긴제목		
 		return searchFunded;    	
     }
@@ -527,18 +519,21 @@ public class ProfileController {
 	//찜한 프로젝트
 	@GetMapping("/mydibs")
 	public ModelAndView mydibs(HttpSession session)  {
-        // 실제 로그인 시 수정할 부분
-        session.setAttribute("member_seq", 6);
+        int memberSeq = (int) session.getAttribute("login_user_seq");
         
-        int memberSeq = (int) session.getAttribute("member_seq");
+        ModelAndView mv = new ModelAndView("member/mydibs");
+        mv.addObject("memberSeq",memberSeq);
         
 		List<Integer> dibsList = dibsservice.dibsList(memberSeq); //해당 회원의 관심목록
-		List<ProjectDTO> myDibsProject = projectservice.myDibsProject(dibsList); //해당 프로젝트 DTO
+		if (dibsList.size() != 0) {
+			System.out.println(dibsList);
+			List<ProjectDTO> myDibsProject = projectservice.myDibsProject(dibsList); //해당 프로젝트 DTO
+			System.out.println(myDibsProject);
+			
+			mv.addObject("myDibs",myDibsProject);		
+			return mv;
+		}
 		
-		ModelAndView mv = new ModelAndView();
-		mv.addObject("myDibs",myDibsProject);
-		mv.addObject("memberSeq",memberSeq);
-		mv.setViewName("member/mydibs");		
 		return mv;
 	}
 	
@@ -547,8 +542,12 @@ public class ProfileController {
 	@PostMapping("/getDibsOngoing")
 	@ResponseBody
 	List<ProjectDTO> getDibsOngoing(@RequestBody List<Integer> projectSeqArray) {
-	    List<ProjectDTO> dibsOngoing = projectservice.dibsOngoing(projectSeqArray);
-	    return dibsOngoing;
+		
+		if (projectSeqArray != null) {
+		    List<ProjectDTO> dibsOngoing = projectservice.dibsOngoing(projectSeqArray);
+		    return dibsOngoing;
+		}		
+		return null;
 	}
 	
 	
@@ -557,8 +556,12 @@ public class ProfileController {
 	@PostMapping("/getDibsEnd")
 	@ResponseBody
 	List<ProjectDTO> getDibsEnd(@RequestBody List<Integer> projectSeqArray) {
-	    List<ProjectDTO> dibsEnd = projectservice.dibsEnd(projectSeqArray);
-	    return dibsEnd;
+		
+		if (projectSeqArray != null) {
+		    List<ProjectDTO> dibsEnd = projectservice.dibsEnd(projectSeqArray);
+		    return dibsEnd;
+		}		
+		return null;
 	}
 	
 	
@@ -584,18 +587,15 @@ public class ProfileController {
 
 	//회원정보수정
 	@GetMapping("/settings")
-	public ModelAndView settings(HttpSession session) {
-        // 실제 로그인 시 수정할 부분
-		session.setAttribute("member_seq", 2);	  
+	public ModelAndView settings(HttpSession session) {  
 	    
-		int memberSeq = (int) session.getAttribute("member_seq");	
+		int memberSeq = (int) session.getAttribute("login_user_seq");	
 		MemberDTO loginMemberSeq = memberservice.loginMemberSeq(memberSeq);
 		List<DeliveryDTO> getDelivery = deliveryservice.getDelivery(memberSeq);	
 		
-		ModelAndView mv = new ModelAndView();		
+		ModelAndView mv = new ModelAndView("member/settings");		
 		mv.addObject("loginMember",loginMemberSeq);		
-		mv.addObject("delivery",getDelivery);		
-		mv.setViewName("member/settings");
+		mv.addObject("delivery",getDelivery);
 		return mv;		
 	}
 	
@@ -648,12 +648,38 @@ public class ProfileController {
 	@PostMapping("/nickname_change")
 	@ResponseBody
 	public int nicknameChange(int memberSeq, String nickname) {
-
-		int nicknameChange = memberservice.nicknameChange(memberSeq,nickname);	//닉네임 변경	
-		return nicknameChange;
+		
+		List<String> allMemberNick = memberservice.allMemberNick();
+				
+		// 중복 체크
+		if (allMemberNick.stream().anyMatch(dupNick -> dupNick.equals(nickname))) {		    
+		    return 2;	//중복
+		} else {			
+			int nicknameChange = memberservice.nicknameChange(memberSeq, nickname);
+		    return nicknameChange; //update 성공 (1)
+		}
 	}
 	
 
+	//회원정보수정 - url 변경
+	@PostMapping("/url_change")
+	@ResponseBody
+	public int urlChange(int memberSeq, String newUrl) {
+
+		String newUrlPath = "/user_profile/" + newUrl;
+		List<String> allMemberurl = memberservice.allMemberurl();
+		
+		// 중복 체크
+		if (allMemberurl.stream().anyMatch(dupUrl -> dupUrl.equals(newUrlPath))) {		    
+		    return 2;	//중복
+		} else {			
+			int urlChange = memberservice.urlChange(memberSeq, newUrlPath);
+		    return urlChange; //update 성공 (1)
+		}
+		
+	}
+	
+	
 	//회원정보수정 - 소개 변경
 	@PostMapping("/description_change")
 	@ResponseBody
@@ -662,6 +688,8 @@ public class ProfileController {
 		int descriptionChange = memberservice.descriptionChange(memberSeq,desc);	//소개 변경
 		return descriptionChange;
 	}
+	
+	
 	
 
 	//회원정보수정 - 메일 변경
@@ -727,10 +755,8 @@ public class ProfileController {
 	//내가 올린 프로젝트 - 전체
     @GetMapping("/myproject")
     public ModelAndView myproject(HttpSession session) {
-        // 실제 로그인 시 수정할 부분
-        session.setAttribute("member_seq", 6);
 
-        int memberSeq = (int) session.getAttribute("member_seq");
+        int memberSeq = (int) session.getAttribute("login_user_seq");
         List<ProjectDTO> myprojectList = projectservice.getProjectsByMemberSeq(memberSeq);
 
         ModelAndView mv = new ModelAndView("member/myproject");
@@ -766,8 +792,7 @@ public class ProfileController {
     public List<ProjectDTO> requestReject(int memberSeq) {
     	
     	List<ProjectDTO> requestReject = projectservice.requestReject(memberSeq);    	
-    	return requestReject;    	
-    
+    	return requestReject;    
     }
     
     
@@ -777,9 +802,7 @@ public class ProfileController {
     public List<ProjectDTO> requestAdmit(int memberSeq) {
     	
     	List<ProjectDTO> requestAdmit = projectservice.requestAdmit(memberSeq);
-    	System.out.println(requestAdmit);
-    	return requestAdmit;    	
-    
+    	return requestAdmit;    
     }
     
 
@@ -790,7 +813,6 @@ public class ProfileController {
     public List<ProjectDTO> fundingStart(int memberSeq) {
     	
     	List<ProjectDTO> fundingStart = projectservice.fundingStart(memberSeq);
-    	System.out.println(fundingStart);
     	return fundingStart;    	
     
     }
@@ -840,8 +862,6 @@ public class ProfileController {
             return "삭제 오류";
         }
     }
-    
-    
     
     
     

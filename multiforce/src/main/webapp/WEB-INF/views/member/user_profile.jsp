@@ -13,13 +13,16 @@
 <script>
 $(document).ready(function() {	
 	
+	let memberSeq = ${user.member_seq};
+	let followerSeq;
+	
 	if ("${user.description}" == null) {
 		$(".result").html("등록된 자기소개가 없습니다.");
 	}else {
 		$(".result").html("${user.description}");
 	}	
-	
-	 
+		 
+
 	
 	//프로필 클릭
 	 $("#myprofile_detail").click(function() {
@@ -28,11 +31,11 @@ $(document).ready(function() {
 	 
 	 
 	//올린프로젝트 클릭
-	$("#myproject_detail").click(function() {		 
-	    
+	$("#myproject_detail").click(function() {	    
 	           $.ajax({
 	              type: "get",
-	              url: "/getMyproject",
+	              url: "/getUserproject",
+	              data: {memberSeq : memberSeq},
 	              success: function(response) {
 	              	console.log(response);
 	              	$(".result").empty();
@@ -79,10 +82,11 @@ $(document).ready(function() {
 
 	
 	 //팔로워 찾기
-	 function getFollower() {
+	 function getUserFollower() {
          $.ajax({
              type: "get",
-             url: "/getFollower",
+             url: "/getUserFollower",
+             data: {memberSeq : memberSeq},
              success: function(response) {
              	console.log(response); 
              	$(".result").empty();
@@ -91,17 +95,22 @@ $(document).ready(function() {
                  } else {
                      for (var i = 0; i < response.myFollower.length; i++) {
                          var memberSeq = response.myFollower[i].member_seq;
+                         var description = response.myFollower[i].description;
                          var followerCount = response.followerCounts[memberSeq];
                          var projectCount = response.followerProject[memberSeq];
+                         
+                         if (description === null) {
+                             description = "등록된 자기소개가 없습니다.";
+                         }
 
                          $(".result").append(
-                             "<div> <img src=\"" + response.myFollower[i].profile_img + "\"> </div>" +
-                             "<div>" + response.myFollower[i].nickname + " </div>" +
-                             "<div>" + response.myFollower[i].description + " </div>" +
+                             "<div> <a href=\"" + response.myFollower[i].member_url + "\"> <img src=\"" + response.myFollower[i].profile_img + "\"> </a> </div>" +
+                             "<div> <a href=\"" + response.myFollower[i].member_url + "\"> " + response.myFollower[i].nickname + " </a> </div>" +
+                             "<div>" + description + " </div>" +
                              "<div> 팔로워 : " + followerCount + " </div>" +
                              "<div> 올린 프로젝트 : " + projectCount + " </div>" +
                              '<div class="modal-dialog modal-dialog-centered">' +                                
-                             "<button class='follower_btn' data-member_seq='" + memberSeq + "'> 팔로우</button> </div> <hr>"  
+                             "<button class='userFollower_btn' data-follower_seq='" + response.myFollower[i].member_seq + "'> 팔로우</button> </div> <hr>"  
                          );
                      }
                  }
@@ -115,25 +124,45 @@ $(document).ready(function() {
 	 
 	 //팔로워 클릭
 	 $("#follower_detail").click(function() {	
-		 getFollower();
-	    }); 	
+		 getUserFollower();
+	 }); 	
 	    
     
-	    
+	 // memberSeq - 현재회원, follower_seq - 현재 회원의 팔로워의 seq
 	 // 팔로워에서 팔로우추가 클릭
-	    $(".result").on("click", ".follower_btn", function() {
-	        var memberSeq = $(this).data("member_seq");
+	    $(".result").on("click", ".userFollower_btn", function() {
+	        var follower_seq = $(this).data("follower_seq");
 	        $.ajax({
 	            type: "POST",
-	            url: "/follower_btn",
-	            data: { memberSeq: memberSeq },
+	            url: "/userFollower_btn",
+	            data: { followerSeq: follower_seq },
 	            success: function(response) {
 	                console.log(response);
 	                if(response == 1) {
 	                	alert("성공적으로 팔로우 했습니다.");
-	                	getFollower();
-	                } else {
-	                	alert("이미 팔로우 되어있습니다.");
+	                } else if(response == 2) {
+	                	alert("로그인 후 이용해주세요.")
+	                	
+	                }  else {
+	                	if (confirm("이미 팔로우 되어있습니다." +
+	                			"팔로우를 취소 하시겠습니까?")) {	                		
+	                        $.ajax({
+	                            type: "POST",
+	                            url: "/unFollow",
+	                            data: { followerSeq: follower_seq },
+	                            success: function(response) {
+	                            	console.log(response); 
+	            	                if(response == 1) {
+	            	                	alert("팔로우가 취소되었습니다.");
+	            	                }
+	                            },
+	                            error: function(error) {
+	                                console.log(error);
+	                                console.log(followerSeq);
+	                            }
+	                        });
+	                		
+	                	}
 	                }             	                
 	            },
 	            error: function(error) {	            	
@@ -145,10 +174,11 @@ $(document).ready(function() {
 	 
 	 
 	 //팔로잉 찾기
-	 function getFollowing() {
+	 function getUserFollowing() {
          $.ajax({
              type: "get",
-             url: "/getFollowing",
+             url: "/getUserFollowing",
+             data: {memberSeq : memberSeq},
              success: function(response) {
              	console.log(response); 
              	$(".result").empty();
@@ -159,14 +189,19 @@ $(document).ready(function() {
                          var memberSeq = response.myFollowing[i].member_seq;
                          var followerCount = response.followerCounts[memberSeq];
                          var projectCount = response.followerProject[memberSeq];
-
+                         var description = response.myFollowing[i].description;
+                         
+                         if (description === null) {
+                             description = "등록된 자기소개가 없습니다.";
+                         }                         
+                         
                          $(".result").append(
-                             "<div> <img src=\"" + response.myFollowing[i].profile_img + "\"> </div>" +
-                             "<div>" + response.myFollowing[i].nickname + " </div>" +
-                             "<div>" + response.myFollowing[i].description + " </div>" +
+                             "<div> <a href=\"" + response.myFollowing[i].member_url + "\">  <img src=\"" + response.myFollowing[i].profile_img + "\"> </a> </div>" +
+                             "<div> <a href=\"" + response.myFollowing[i].member_url + "\"> " + response.myFollowing[i].nickname + " </a> </div>" +
+                             "<div>" + description + " </div>" +
                              "<div> 팔로워 : " + followerCount + " </div>" +
                              "<div> 올린 프로젝트 : " + projectCount + " </div>" +
-                             "<button class='follower_btn' data-member_seq='" + memberSeq + "'> 팔로우</button> </div> <hr>"
+                             "<button class='userFollower_btn' data-follower_seq='" + response.myFollowing[i].member_seq + "'> 팔로우</button> </div> <hr>"
                          );
                      }
                  }
@@ -181,7 +216,7 @@ $(document).ready(function() {
 	 
 	 //팔로잉 클릭
 	 $("#following_detail").click(function() {	
-		 getFollowing();
+		 getUserFollowing();
 	    });
 	    
 
@@ -198,7 +233,6 @@ $(document).ready(function() {
 <div><!-- 상단 회원정보 고정 -->
 	<div><img alt="프로필 이미지" src="${user.profile_img}"></div>
 	<div>${user.member_name}</div>
-	<div><a href="/settings" ><img alt="회원정보 수정으로 가는 이모티콘" src=""></a></div>
 </div>
 <p>
 
@@ -214,6 +248,9 @@ $(document).ready(function() {
 <div>
 	<div class="result" style="color: green"></div>
 </div>
+
+
+<h1>${user.member_seq }</h1>
 
 
 </body>

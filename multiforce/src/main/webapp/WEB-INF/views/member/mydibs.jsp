@@ -70,8 +70,7 @@
 
 
 <script>
-$(document).ready(function() {	
-	
+$(document).ready(function() {		
 	
 	//진행중
     $("#ongoing").click(function() {
@@ -96,13 +95,14 @@ $(document).ready(function() {
                 var html = template(context);
 
                 $(".result").html(html);
+                $(".result").append("<button id='backToMain'> 프로젝트 둘러보기 </button>");
             },
             error: function(error) {
                 console.log(error);
             }
         });
     });
-    
+	
     
  	//종료된
     $("#end").click(function() {
@@ -127,6 +127,7 @@ $(document).ready(function() {
                 var html = template(context);
 
                 $(".result").html(html);
+                $(".result").append("<button id='backToMain'> 프로젝트 둘러보기 </button>");
             },
             error: function(error) {
                 console.log(error);
@@ -162,7 +163,10 @@ $(document).ready(function() {
     });
     
     
-    
+	$("#backToMain").click(function() {
+		location.href = '/';
+	});
+	
 	
 
 })
@@ -187,6 +191,7 @@ $(document).ready(function() {
 			<c:choose>
 	            <c:when test="${empty myDibs}">
 	                <div>관심 프로젝트가 없습니다.</div>
+	                <div><button id='backToMain'> 프로젝트 둘러보기 </button> </div>
 	            </c:when>
 	            <c:otherwise>
 		            <c:forEach var="project" items="${myDibs}">
