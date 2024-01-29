@@ -76,6 +76,8 @@ public interface MemberDAO {
 
 
 
+	List<MemberDTO> selectMemberByUrl(String randomUrl);
+
 
 
 	

@@ -77,9 +77,6 @@ public interface ProjectDAO {
 	int projectSuccessUpdate();
 	//시작 업데이트
 	int projectStartUpdate();
-
-	List<ProjectMemberDTO> selectCollectorFundFail();
-
 	//내가 올린 프로젝트 - 작성중
 	List<ProjectDTO> writeIncomplete(int memberSeq);
 
@@ -109,6 +106,20 @@ public interface ProjectDAO {
 	
 	//펀딩계획
 	void insertFundingPlan(ProjectDTO fundingPlan);
+
+	List<ProjectMemberDTO> selectSupporterFundFail(int project_seq);
+	List<Integer> selectDibsFundStart(int project_seq);
+	List<ProjectMemberDTO> selectCollectorFundFail();
+
+	List<ProjectMemberDTO> selectCollectorFundSuccess();
+
+	List<ProjectMemberDTO> selectCollectorFundstart();
+
+	List<Integer> selectFollowerFundStart(int member_seq);
+
+	List<ProjectMemberDTO> selectDidsFundEnd();
+
+	
 
 
 }

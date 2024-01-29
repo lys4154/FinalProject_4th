@@ -46,11 +46,14 @@
 <select id="selectMemberByIdEmail">
 	select * from member_info where email = #{email} and member_id = #{id}
 </select>
+<select id="selectMemberByUrl">
+	select * from member_info where member_url = #{randomUrl}
+</select>
 <insert id="insertMember">
 	insert into member_info(member_id, password, member_name, nickname, email, gender,
-	 postcode, road_address, jibun_address, extra_address, detail_address)
+	 postcode, road_address, jibun_address, extra_address, detail_address, member_url)
 	 values (#{member_id}, #{password}, #{member_name}, #{nickname}, #{email}, #{gender},
-	 #{postcode}, #{road_address}, #{jibun_address}, #{extra_address}, #{detail_address});
+	 #{postcode}, #{road_address}, #{jibun_address}, #{extra_address}, #{detail_address}, #{member_url})
 </insert>
 <update id="updateMemberPw">
 	update member_info set password = #{tempPw} where member_id = #{id} and email = #{email}

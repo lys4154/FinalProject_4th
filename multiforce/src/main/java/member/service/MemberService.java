@@ -1,5 +1,6 @@
 package member.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +52,28 @@ public class MemberService {
 	}
 
 	public int signUp(MemberDTO dto) {
-		return memberDao.insertMember(dto);
+		
+		ArrayList<Integer> charCodeArr = new ArrayList<>();
+		for (int i = 97; i <= 122; i++) {
+			charCodeArr.add(i);
+		}
+		while(true) {
+			StringBuilder randomUrl = new StringBuilder();
+			randomUrl.append("/user_profile/");
+			int urlLength = (int)((Math.random() + 3) * 4); //12 ~ 16자리
+			//소문자 아스키코드값 :  97~122
+			for(int i = 0; i < urlLength; i++) {
+				int randomIdx = (int)((Math.random()) * (charCodeArr.size() - 1));
+				 randomUrl.append((char)charCodeArr.get(randomIdx).intValue());
+			}
+			List<MemberDTO> list = memberDao.selectMemberByUrl(randomUrl.toString());
+			if(list.size() > 0) {
+				continue;
+			}else {
+				dto.setMember_url(randomUrl.toString());
+				return memberDao.insertMember(dto);
+			}
+		}
 	}
 
 	//회원정보수정 - 프로필사진 변경
