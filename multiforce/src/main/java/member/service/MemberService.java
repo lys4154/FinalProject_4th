@@ -63,6 +63,11 @@ public class MemberService {
 	public int profileimgDelete(int memberSeq) {
 		return memberDao.profileimgDelete(memberSeq);
 	}
+		
+	//회원정보수정 - 모든 회원 닉네임
+	public List<String> allMemberNick() {
+		return memberDao.allMemberNick();
+	}
 
 	//회원정보수정 - 닉네임 변경
 	public int nicknameChange(int memberSeq, String nickname) {
@@ -90,9 +95,21 @@ public class MemberService {
 	}
 
 	//해당 회원 프로필로 이동
-	public MemberDTO userProfile(String member_url) {
-		return memberDao.userProfile(member_url);
+	public MemberDTO userProfile(String userUrl) {
+		return memberDao.userProfile(userUrl);
 	}
+
+	//회원정보수정 - 모든 회원 url
+	public List<String> allMemberurl() {
+		return memberDao.allMemberurl();
+	}
+
+	//회원정보수정 - url 변경
+	public int urlChange(int memberSeq, String newUrlPath) {
+		return memberDao.urlChange(memberSeq, newUrlPath);
+	}
+
+
 
 
 

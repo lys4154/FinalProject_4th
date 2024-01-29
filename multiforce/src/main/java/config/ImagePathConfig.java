@@ -19,6 +19,10 @@ public class ImagePathConfig implements WebMvcConfigurer{
         registry.addResourceHandler("/memberimages/**")
                 .addResourceLocations("file:///c:/fullstack/workspace_springboot/images/members/");
 	
+        // settings 이미지
+        registry.addResourceHandler("/settings/**")
+                .addResourceLocations("file:///c:/fullstack/workspace_springboot/images/settings/");
+        
 	}
 	
 }

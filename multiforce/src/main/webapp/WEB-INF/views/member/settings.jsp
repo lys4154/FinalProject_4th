@@ -133,9 +133,17 @@ $(document).ready(function() {
 		        },
 		        success: function(response) { 
 		    		console.log(response);
-		    		$("#nick_final").html(nickname);
-		    		$(".nick_container").hide();
-		    		$("#nick_change").val("변경");
+		    		if (response == 1) {
+			    		$("#nick_final").html(nickname);
+			    		$(".nick_container").hide();
+			    		$("#nick_change").val("변경");		    			
+		    		} else if (response == 2) {
+		    			$("#nick_warning").html("이미 사용중인 닉네임입니다. 다른 닉네임을 입력해주세요.")
+		    			$("#nick_upload").keyup(function() {
+		    				$("#nick_warning").html("");
+						})
+		    		}
+
 		    		},
 				error: function(error) {
 				       console.log(error);
@@ -204,29 +212,45 @@ $(document).ready(function() {
 		}		
 	});
 	
+	
+    let currentUrl = "${loginMember.member_url }";
+    let memberUrl = currentUrl.replace(/.*\/user_profile\//, "");
+    $("#url_upload").val(memberUrl);
+
+    
 	//url 저장 클릭
 	$("#url_save").click(function() {
+		var newUrl = $("#url_upload").val();
+       $.ajax({
+	        type: "POST",
+	        url: "/url_change",
+	        data: {
+	        	"memberSeq" : memberSeq,
+	        	"newUrl" : newUrl
+	        },
+	        success: function(response) { 
+	    		console.log(response);
+	    		if (response == 1) {
+	    			$("#url_new").html("/user_profile/"+newUrl);
+	    			$(".url_container").hide();
+	    		} else if (response == 2) {
+	    			$("#url_warning").html("해당 url은 이미 사용중입니다. 다른 url을 입력해주세요.")
+	    			$("#url_upload").keyup(function() {
+	    				$("#url_warning").html("");
+	    			})
+	    		}
+
+	    		},
+			error: function(error) {
+			       console.log(error);
+				}
+	     });
+
 		
 	});
 	
 	
-	
-	
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	//메일 변경 클릭시
 	$("#mail_change").click(function() {
@@ -630,12 +654,12 @@ $(document).ready(function() {
 			<div>사용자 이름(URL)</div>
 				<c:if test="${not empty loginMember.member_url}">
 					<div>
-						<span>${pageContext.request.scheme}://${pageContext.request.serverName}:${pageContext.request.serverPort}/user_profile/</span><span>${loginMember.member_url}</span>
+						<span>${pageContext.request.scheme}://${pageContext.request.serverName}:${pageContext.request.serverPort}</span><span id="url_new">${loginMember.member_url}</span>
 					</div>
 				</c:if>
 			<div><input type="button" value="변경" id="url_change"></div>
 			<div style="display: none;" class="url_container">
-				<div><input type="text" value="${loginMember.member_url }"  placeholder="6자리 이상의 영문으로 작성해주세요." id="url_upload"></div>
+				<div><input type="text" placeholder="6자리 이상의 영문으로 작성해주세요." id="url_upload"></div>
 				<div>사용자 이름은 회원님의 프로필 주소로 활용됩니다. 예) multiforce/user_profile/사용자이름</div>
 				<div id="url_warning"></div>
 				<div><input type="button" value="저장" id="url_save" ></div>

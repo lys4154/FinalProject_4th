@@ -68,6 +68,12 @@
 	update member_info set profile_img="/memberimages/basic.png" where member_seq = #{memberSeq}
 </update>
 
+<!-- 회원정보수정 - 모든 회원 닉네임  -->
+<select id="allMemberNick">
+	select nickname from member_info
+</select>
+
+
 <!-- 회원정보수정 - 닉네임 변경 -->
 <update id="nicknameChange">
 	update member_info set nickname=#{nickname} where member_seq = #{memberSeq}
@@ -76,6 +82,16 @@
 <!-- 회원정보수정 - 소개 변경 -->
 <update id="descriptionChange">
 	update member_info set description=#{desc} where member_seq = #{memberSeq}
+</update>
+
+<!-- 회원정보수정 - 모든 회원 url -->
+<select id="allMemberurl">
+	select member_url from member_info
+</select>
+	
+<!-- 회원정보수정 - url 변경 -->
+<update id="urlChange">
+	update member_info set member_url=#{newUrlPath} where member_seq = #{memberSeq}
 </update>
 
 <!-- 회원정보수정 - 메일 변경 -->
@@ -91,7 +107,8 @@
 
 <!-- 해당 회원 프로필로 이동 -->
 <select id="userProfile">
-	select * from member_info where member_url=#{member_url}
+	select * from member_info where member_url=#{userUrl}
 </select>
+
 
 </mapper>

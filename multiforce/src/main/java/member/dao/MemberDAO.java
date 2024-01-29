@@ -46,6 +46,9 @@ public interface MemberDAO {
 
 	//회원정보수정 - 프로필사진 삭제
 	int profileimgDelete(int memberSeq);
+	
+	//회원정보수정 - 모든 회원 닉네임
+	List<String> allMemberNick();
 
 	//회원정보수정 - 닉네임 변경
 	int nicknameChange(int memberSeq, String nickname);
@@ -63,7 +66,15 @@ public interface MemberDAO {
 	MemberDTO loginMemberSeq(int memberSeq);
 
 	//해당 회원 프로필로 이동
-	MemberDTO userProfile(String member_url);
+	MemberDTO userProfile(String userUrl);
+
+	//회원정보수정 - 모든 회원 url 갖고오기
+	List<String> allMemberurl();
+
+	//회원정보수정 - url 변경
+	int urlChange(int memberSeq, String newUrlPath);
+
+
 
 
 
