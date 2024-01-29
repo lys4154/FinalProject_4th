@@ -112,7 +112,7 @@ public class MemberController {
 	}
 	
 	@PostMapping("/welcome")
-	public String welcome(MemberDTO dto, Model m){
+	public String enrollMember(MemberDTO dto, Model m){
 		int result = memberService.signUp(dto);
 		if(result == 1) {
 			m.addAttribute("result", "true");

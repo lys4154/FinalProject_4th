@@ -65,6 +65,8 @@ public interface MemberDAO {
 	//해당 회원 프로필로 이동
 	MemberDTO userProfile(String member_url);
 
+	List<MemberDTO> selectMemberByUrl(String randomUrl);
+
 
 
 	

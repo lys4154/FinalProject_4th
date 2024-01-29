@@ -16,12 +16,14 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @ComponentScan(basePackages="config")
 @ComponentScan(basePackages="summernote")
 @ComponentScan(basePackages="approvalRequest")
+@ComponentScan(basePackages="notification")
 @MapperScan(basePackages="board")
 @MapperScan(basePackages="funding")
 @MapperScan(basePackages="member")
 @MapperScan(basePackages="project")
 @MapperScan(basePackages="admin")
 @MapperScan(basePackages="approvalRequest")
+@MapperScan(basePackages="notification")
 @EnableScheduling
 @SpringBootApplication
 @ComponentScan

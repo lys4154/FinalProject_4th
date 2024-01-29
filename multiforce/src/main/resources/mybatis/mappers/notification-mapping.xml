@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="notification.dao.NotificationDAO">
+<insert id="insertNotification" parameterType="notification.dto.NotificationDTO">
+insert into notification_project(project_seq, member_seq, message) 
+values(#{project_seq}, #{member_seq}, #{message})
+</insert>
+<select id="selectAllNotification">
+select * from notification_project where member_seq = #{member_seq}
+</select>
+<delete id="deleteNotification">
+delete from notification_project where notification_seq = #{notification_seq}
+</delete>
+<update id="updateIsRead">
+update notification_project set is_read = true 
+where member_seq = #{member_seq} and #{last_notification_seq} >= notification_seq and is_read = false
+</update>
+</mapper>

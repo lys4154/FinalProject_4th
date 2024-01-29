@@ -263,19 +263,54 @@
 	and project_process = 4 and collection_amount >= goal_price
 </update>
 <update id="projectStartUpdate">
-	update project set project_process = 4 where start_date = date(now() - interval 1 day) 
+	update project set project_process = 4 where start_date = now() 
 	and project_process = 3
 </update>
   
   
-<!-- 업데이트 후 메일 보내줄 사람 리스트 -->
+<!-- 펀딩 실패 모금자 리스트 불러오기 -->
 <select id="selectCollectorFundFail" resultType="projectmemberdto">
 select member_seq, member_id, nickname, email, project_seq, goal_price,
 collection_amount, start_date, due_date, long_title, short_title, sub_title, category, project_process 
 from member_info m join project p using (member_seq) 
-where due_date = date(now() - interval 1 day) and project_process = 5;
+where due_date = date(now() - interval 1 day) and project_process = 5
 </select>
-
+<!-- 펀딩 실패 모금자 리스트 불러오기 -->
+<select id="selectSupporterFundFail" resultType="projectmemberdto">
+select f.member_seq, member_id, member_name, nickname, email, f.project_seq, p.short_title from funding f 
+join member_info m on f.member_seq = m.member_seq 
+join project p on f.project_seq = p.project_seq 
+where f.project_seq = #{project_seq}
+</select>
+<!-- 펀딩 성공 모금자 리스트 불러오기 -->
+<select id="selectCollectorFundSuccess" resultType="projectmemberdto">
+select member_seq, member_id, nickname, email, project_seq, goal_price,
+collection_amount, start_date, due_date, long_title, short_title, sub_title, category, project_process 
+from member_info m join project p using (member_seq) 
+where due_date = date(now() - interval 1 day) and project_process = 6
+</select>
+<!-- 펀딩 시작 모금자 리스트 불러오기 -->
+<select id="selectCollectorFundstart" resultType="projectmemberdto">
+select m.member_seq, member_id, nickname, email, project_seq, goal_price,
+collection_amount, start_date, due_date, long_title, short_title, sub_title, category, project_process 
+from project p join member_info m using (member_seq) 
+where start_date = now() and project_process = 4
+</select>
+<!-- 펀딩 시작 프로젝트 찜한 사람 리스트 불러오기 -->
+<select id="selectDibsFundStart">
+select member_seq from project_dibs where project_seq = #{project_seq}
+</select>
+<!-- 펀딩 시작 모금자를 팔로우하는 사람 리스트 불러오기 -->
+<select id="selectFollowerFundStart">
+select member_seq from follow where following_seq = #{member_seq}
+</select>
+<!-- 마감임박 프로젝트 찜한 사람 리스트 -->
+<select id="selectDidsFundEnd" resultType="projectmemberdto">
+select d.member_seq, member_id, member_name, nickname, email, d.project_seq, p.short_title from project_dibs d 
+join member_info m on d.member_seq = m.member_seq 
+join project p on d.project_seq = p.project_seq 
+where due_date = now() and project_process = 4
+</select>
 
 <!-- 내가 올린 프로젝트 - 삭제 -->
 <delete id="projectDelete" parameterType="int">
