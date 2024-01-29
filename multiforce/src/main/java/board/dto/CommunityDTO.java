@@ -2,6 +2,8 @@ package board.dto;
 
 import java.util.Date;
 
+import member.dto.MemberDTO;
+
 public class CommunityDTO {
 	private int pro_board_seq;
     private int project_seq;
@@ -12,7 +14,14 @@ public class CommunityDTO {
     private Integer parent_seq;
     private int del_status;
     private Date del_date;
+    private MemberDTO member;
     
+	public MemberDTO getMember() {
+		return member;
+	}
+	public void setMember(MemberDTO member) {
+		this.member = member;
+	}
 	public int getPro_board_seq() {
 		return pro_board_seq;
 	}

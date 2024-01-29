@@ -1,21 +1,28 @@
 package board.controller;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import board.dto.BoardDTO;
-
+import board.dto.CommunityDTO;
+import board.dto.UpdateReplyDTO;
 import board.dto.updateBoardDTO;
 import board.service.boardService;
 import jakarta.servlet.http.HttpSession;
@@ -41,9 +48,27 @@ public class BoardController {
 	
 	//업데이트 글읽기
 	@GetMapping("update/view/{project_seq}")
-	public String UpdateShow(Model model, @PathVariable("project_seq") int project_seq) {
+	public String UpdateShow(Model model, @PathVariable("project_seq") int project_seq, 
+			HttpSession session) {
+		
+		Object currentUserObj = session.getAttribute("login_user_seq");
+
 		
 		List<updateBoardDTO> project_dto = boardService.getAllUpdatePost(project_seq);
+
+		if (currentUserObj != null) {
+
+	        for (updateBoardDTO update : project_dto) {
+
+	        	String currentUserString = (String) session.getAttribute("login_user_seq");
+	        	int currentUser = Integer.parseInt(currentUserString);
+	            boolean likedByCurrentUser = boardService.isUpdateLikedByUser(update.getUpdate_seq(), currentUser);
+
+	            model.addAttribute("loggedin_user", currentUser);
+	            update.setLikedByCurrentUser(likedByCurrentUser);
+	        }
+	    }
+		
 		model.addAttribute("project", project_dto);
 		return "board/update_view";
 	}
@@ -69,6 +94,32 @@ public class BoardController {
 
 	
 	return "redirect:update/view/"+dto.getProject_seq();
+	}
+
+	//업데이트 댓글 삭제
+	@PostMapping("delete_update_post")
+	public ResponseEntity<String> deleteUpdatePost(@RequestParam int update_seq, HttpSession session) {
+		int current_user = 0;
+		LocalDateTime del_date = LocalDateTime.now();
+
+
+		
+		try {
+	        String loggedInUserId = (String) session.getAttribute("login_user_seq");
+	        current_user = Integer.parseInt(loggedInUserId);
+	        UpdateReplyDTO updatePost = boardService.getUpdatePostByUpdateSeq(update_seq);
+
+	        if (updatePost != null && current_user == updatePost.getMember_seq()) {
+//	        	System.out.println("같은사람 맞음");
+
+	        	boardService.deleteUpdatePost(update_seq, del_date);
+	            return new ResponseEntity<>("삭제 성공", HttpStatus.OK);
+	        } else {
+	            return new ResponseEntity<>("삭제 권한이 없습니다", HttpStatus.FORBIDDEN);
+	        }
+	    } catch (Exception e) {
+	        return new ResponseEntity<>("삭제 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
 	}
 
 
@@ -140,6 +191,34 @@ public class BoardController {
 		return "redirect:cs/read_post/" + post_id;
 		
 	}
+	
+		//커뮤니티 댓글 달기 POST
+		@PostMapping("communtiy_comment")
+		public String InsertCommunityComment(@RequestParam String comment, 
+		        @RequestParam int board_seq) {
+		    
+		    int tmpUser = 1;
+		    int tmpProject = 3;
+		    String tmpCategory = "cheer";
+		    CommunityDTO reply = new CommunityDTO();
+		    reply.setMember_seq(tmpUser);
+		    reply.setParent_seq(board_seq);
+		    reply.setProject_seq(tmpProject);
+		    reply.setCategory(tmpCategory);
+		    reply.setContent(comment);
+		    reply.setDate(new Date()); 
+		    boardService.insertCommunityReply(reply); 
+
+		    return "redirect:project_detail/"+board_seq;
+		}
+	
+	@GetMapping("/getCommComments")
+	@ResponseBody
+	public List<CommunityDTO> getComments(@RequestParam("board_seq") int board_seq) {
+		System.out.println("CommComments start");
+	    return boardService.getCommCommentsByBoardSeq(board_seq);
+	}
+	
 	
 	//1:1 게시물 등록 POST
 	@PostMapping("boardwrite")

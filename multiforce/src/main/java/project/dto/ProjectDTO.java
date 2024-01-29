@@ -33,7 +33,7 @@ public class ProjectDTO {
 	LocalDateTime delivery_date;
 	ProjectProcess project_process;
 	long term;
-	
+
 	public long getTerm() {
 		return term;
 	}

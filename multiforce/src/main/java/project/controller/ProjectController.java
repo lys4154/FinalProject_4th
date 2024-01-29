@@ -2,10 +2,13 @@ package project.controller;
 
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,13 +18,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import board.dto.BoardDTO;
 import board.dto.CommunityDTO;
 import board.dto.UpdateReplyDTO;
 import board.service.boardService;
+import jakarta.servlet.http.HttpSession;
 import project.dto.ProjectDTO;
 import project.service.ProjectService;
+
+
 
 @Controller
 public class ProjectController {
@@ -30,6 +37,7 @@ public class ProjectController {
 	
 	@Autowired
 	private boardService boardService;
+	
 	
 	@RequestMapping("/projectdesign")
 	public String projectDesign() {
@@ -95,6 +103,37 @@ public class ProjectController {
 		
 	}
 	
+	@GetMapping("test_account")
+	public String setTestAccount(HttpSession session) {
+		String id = "user123";
+		session.setAttribute("login_user_id", id);
+		session.setAttribute("login_user_level", 1);
+		session.setAttribute("login_user_name", "일반회원");
+		session.setAttribute("login_user_seq", "1");
+		return "board/test";
+	}
+	@GetMapping("test_account2")
+	public String setTestAccountTwo(HttpSession session) {
+		String id = "test";
+		session.setAttribute("login_user_id", id);
+		session.setAttribute("login_user_level", 1);
+		session.setAttribute("login_user_name", "일반회원");
+		session.setAttribute("login_user_seq", "2");
+		return "board/test";
+	}
+	
+	@GetMapping("current_user")
+	public String currentUser() {
+		return "board/test";
+	}
+	@GetMapping("test_logout")
+	@ResponseStatus(HttpStatus.OK)
+	public void simulateLogout(HttpSession session) {
+	    session.invalidate();
+	}
+
+	
+	
 	//프로젝트 상세
 	@GetMapping("project_detail/{project_seq}")
 	public String ShowProjectDetail(Model model,@PathVariable("project_seq") int project_seq) {
@@ -112,21 +151,56 @@ public class ProjectController {
 	    return boardService.getCommentsByUpdateSeq(updateSeq);
 	}
 	
+	@GetMapping("/getLikeCount")
+	@ResponseBody
+	public ResponseEntity<Integer> getLikeCount(@RequestParam("updateSeq") int updateSeq) {
+	    
+		int count = boardService.getUpdatedLikeCount(updateSeq);
+	
+	    return ResponseEntity.ok(count);
+	}
+	// 업데이트 좋아요 / 좋아요 취소
+	@PostMapping("/toggleUpdateLike")
+	public ResponseEntity<Map<String, Object>> toggleLikePost(@RequestParam("updateSeq") int updateSeq,
+			HttpSession session) {
+	   
+		//로그인된 유저 아이디 가져옴 
+		String user_id_str = (String) session.getAttribute("login_user_seq");
+		int user_id = Integer.parseInt(user_id_str);
+		
+	    ResponseEntity<String> responseEntity = boardService.toggleUpdateLike(updateSeq, user_id);
+
+	    Map<String, Object> responseMap = new HashMap<>();
+	    
+	    if (responseEntity.getStatusCode() == HttpStatus.OK) {
+	        responseMap.put("status", "success");
+	        responseMap.put("likedByCurrentUser", boardService.isUpdateLikedByUser(updateSeq, user_id));
+	        return ResponseEntity.ok(responseMap);
+	    } else {
+	        responseMap.put("status", "error");
+	        responseMap.put("message", "게시물 좋아요 실패");
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseMap);
+	    }
+	}
+
+
 	//업데이트 댓글 달기 POST
 	@PostMapping("update_comment")
 	public String InsertUpdateComment(@RequestParam String comment, 
-	        @RequestParam int updateSeq) {
+	        @RequestParam int update_seq) {
 	    
 	    int tmpUser = 1;
 	    UpdateReplyDTO reply = new UpdateReplyDTO();
 	    reply.setMember_seq(tmpUser);
-	    reply.setUpdate_seq(updateSeq);
+	    reply.setUpdate_seq(update_seq);
 	    reply.setContent(comment);
 	    reply.setTime(new Date()); 
 	    
+	
+	    
 	    boardService.insertUpdateReply(reply); 
 
-	    return "redirect:project_detail/"+updateSeq;
+	    return "redirect:project_detail/"+update_seq;
 	}
 
 	
@@ -138,7 +212,7 @@ public class ProjectController {
 		
 		ProjectDTO project_info = projectService.getProjectDetail(project_seq);
 		List<CommunityDTO> com_post = boardService.getAllCommPost(project_seq);
-		System.out.println(project_info);
+
 		model.addAttribute("community_posts", com_post);
 		model.addAttribute("projects", project_info);
 		
@@ -160,7 +234,7 @@ public class ProjectController {
 		
 		boardService.saveCommunityPost(com_post);
 		
-		return "redirect:project_detail/community/"+post_id;
+		return "redirect:project_detail/"+post_id;
 	}
 
 	@RequestMapping("/tab_info")
