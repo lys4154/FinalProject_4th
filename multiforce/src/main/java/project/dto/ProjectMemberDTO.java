@@ -27,6 +27,15 @@ public class ProjectMemberDTO extends ProjectDTO{
 	String jibun_address;
 	String extra_address;
 	String detail_address;
+	String member_url;
+	
+	
+	public String getMember_url() {
+		return member_url;
+	}
+	public void setMember_url(String member_url) {
+		this.member_url = member_url;
+	}
 	public String getMember_id() {
 		return member_id;
 	}

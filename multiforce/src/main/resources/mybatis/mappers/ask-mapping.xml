@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="member.dao.AskDAO">
+<select id="selectChatRoom" resultType="member.dto.AskDTO">
+select chatroom_seq, a.project_seq, collector_seq,asker_seq,chat,last_chat,collector_read,
+asker_read,long_title,nickname, profile_img, member_url
+from project_ask a 
+join project p on a.project_seq = p.project_seq 
+join member_info m on a.collector_seq = m.member_seq
+where a.project_seq = #{project_seq} 
+and collector_seq = #{collector_seq} and asker_seq = #{asker_seq}
+</select>
+<insert id="insertChat">
+insert into project_ask(project_seq, collector_seq, asker_seq, chat, last_chat, asker_read)
+values (#{project_seq}, #{collector_seq}, #{asker_seq}, #{my_chat}, #{my_chat}, 1)
+</insert>
+<update id="updateChat">
+update project_ask set chat = concat(chat, #{my_chat}), last_chat = #{my_chat},  
+<choose>
+<when test="who_am_i == 'asker'">asker_read = #{read_at}</when>
+<when test="who_am_i == 'collector'"> collector_read = #{read_at} </when>
+</choose>
+where chatroom_seq = #{chatroom_seq}; 
+</update>
+</mapper>
