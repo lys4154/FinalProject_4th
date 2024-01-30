@@ -1,15 +1,14 @@
 package funding.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import funding.dao.FundingDAO;
 import funding.dto.FundingDTO;
-import member.dao.MemberDAO;
-import member.dto.MemberDTO;
-import project.dto.ProjectDTO;
+
 
 @Service
 public class FundingService {
@@ -25,6 +24,11 @@ public class FundingService {
 	//후원한 프로젝트 페이지 - 진행중 후원
 	public List<FundingDTO> ongoingFunded(int memberSeq) {
 		return fundingDao.ongoingFunded(memberSeq);
+	}
+	
+	//후원한 프로젝트 페이지 - 진행중 후원 + 프로젝트정보
+	public List<Map<String, Object>> getFunded(int memberSeq) {
+		return fundingDao.getFunded(memberSeq);
 	}
 
 	//후원한 프로젝트 페이지 - 성공한 후원

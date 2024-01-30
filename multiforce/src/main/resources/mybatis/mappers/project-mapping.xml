@@ -8,7 +8,8 @@
 
 
 <select id="getProjectsByMemberSeq" parameterType="int" resultType="projectdto">
-	select * from project where member_seq=#{memberSeq}
+	select * from project where member_seq=#{memberSeq} and project_process=4
+	ORDER BY due_date DESC
 </select>
 
 <select id="getAllProjects" resultType="projectdto">
