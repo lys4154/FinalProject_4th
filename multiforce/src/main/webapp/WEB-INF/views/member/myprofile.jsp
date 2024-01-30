@@ -11,7 +11,8 @@
 <link rel="stylesheet" href="/css/member/myprofile.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@350&display=swap" rel="stylesheet">
+
 </head>
 
 <script>
@@ -23,14 +24,30 @@ $(document).ready(function() {
 	        "font-weight": fontWeight,
 	        "color": color
 	    });
-	}	
+	}
+	
+	//.result에 내용이 있을때만 테두리 만들기
+    function checkResultContent() {
+        if ($.trim($('.result').html()) !== '') {
+            $('.res_con').css({
+            	'border': '1px solid ',
+            	'border-color': '#cfcfcf',
+            	'border-radius': '5px'
+            });
+        }
+    };
+    
+    // 다른 메뉴 클릭시 border 지우기
+    $(".menu_con").not("#myproject_detail").click(function() {
+        $('.res_con').css('border', 'none');
+    });
 	
 	
 	//자기 소개
 	function myDescription() {
 		let description = "${loginMember.description}";
 		if (description == "") {
-			$(".result").html("등록된 자기소개가 없습니다.");
+			$(".result").html("등록된 소개가 없습니다.");
 		}else {
 			$(".result").html(description);
 		};
@@ -40,6 +57,7 @@ $(document).ready(function() {
 	//프로필 클릭
 	 $("#myprofile_detail").click(function() {
 		 myDescription();
+		 $(".result_count").html('');
 		 setMenuTab("#myprofile_detail", "600", "black");
 		 setMenuTab("#myproject_detail", "400", "grey");
 		 setMenuTab("#funded_detail", "400", "grey");
@@ -64,38 +82,41 @@ $(document).ready(function() {
 		       	$(".result").empty();
 		       	if(response.length == 0) {
 		       		$(".result").append("<div> 등록된 프로젝트가 없습니다. </div>");
-		       	} else {                		
-		               $(".result").append("<div> <span style='color: red;'> " + response.length + "</span> 개의 프로젝트가 있습니다.</div>")
-		            
-		       		for (var i = 0; i < response.length; i++) {                			
+		       	} else {  		       					       		
+		               $(".result_count").html("<div> <span style='color: red;'> " + response.length + "</span> 개의 프로젝트가 있습니다.</div>");
+								   
+		       			for (var i = 0; i < response.length; i++) {                			
 		       		    // 모금 달성률 계산
-		       		    var achievementRate = (response[i].collection_amount / response[i].goal_price) * 100;
+		       		    	var achievementRate = (response[i].collection_amount / response[i].goal_price) * 100;
 		       		    
 		                   // 날짜 포매팅
 		                   var startDate = new Date(response[i].start_date);
 		                   var dueDate = new Date(response[i].due_date);
-		                   var formattedStart = startDate.getFullYear() + "년 " + (startDate.getMonth() + 1) + "월 " + startDate.getDate() + "일";
-		                   var formattedDue = dueDate.getFullYear() + "년 " + (dueDate.getMonth() + 1) + "월 " + dueDate.getDate() + "일";
-		
-		                   // 프로젝트 종료일과 현재 날짜 차이 계산
-		                   var currentDate = new Date();
-		                   var timeDifference = dueDate - currentDate;
-		                   var daysRemaining = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));		
-		                   var statusMessage = (daysRemaining > 0) ? daysRemaining + "일 남음" : "펀딩 종료";          
-			
+		                   var formattedStart = startDate.getFullYear() + ". " + (startDate.getMonth() + 1) + ". " + startDate.getDate();
+		                   var formattedDue = dueDate.getFullYear() + ". " + (dueDate.getMonth() + 1) + ". " + dueDate.getDate();			
 		                   
 		                   $(".result").append(
-		                       "<div> 카테고리 : " + response[i].category + "</div>" +
-		                       "<div> <a href=\"" + response[i].url + "\"> <img src=" + response[i].main_images_url + "></a> </div>" +
-		                       "<div> <strong> [ <a href=\"" + response[i].url + "\">" + response[i].long_title + " ]</strong></a> </div>" +
-		                       "<div> 프로젝트 시작일 : " + formattedStart + "</div>" +
-		                       "<div> 프로젝트 종료일 : " + formattedDue + " (" + statusMessage + ")</div>" +
-		                       "<div> 목표금액 : " + response[i].goal_price.toLocaleString() + "원</div>" +
-		                       "<div> 현재모금액 : " + response[i].collection_amount.toLocaleString() + "원</div>" +
-		                       "<div> 현재달성률 : " + Math.round(achievementRate) + "%</div> <hr>"
+	                		    "<div class=\"pro_con\">" +
+	                		    	"<div class=\"pro_left\">" +			                	        
+			                	        "<div> <a href=\"" + response[i].url + "\"> <img src=\"" + response[i].main_images_url + "\" class=\"pro_img\"></a> </div>" +
+		                	        "</div>" +
+		                	        "<div class=\"pro_right\">" +
+			                	        "<div> <strong> [ <a href=\"" + response[i].url + "\">" + response[i].long_title + " ]</strong></a> </div>" +
+			                	        "<div id=\"pro_category\"> 카테고리 : " + response[i].category + "</div>" +
+			                	        "<div> 시작일 " + formattedStart + "</div>" +
+			                	        "<div> 종료일  " + formattedDue + "<span style='color: #ff4a55'> (D-" + response[i].term + ")</span></div>" +
+			                	        "<div> 목표금액  " + response[i].goal_price.toLocaleString() + "원</div>" +
+			                	        "<div> 현재모금액  " + response[i].collection_amount.toLocaleString() + "원" +
+			                	        "<span style='color: #ff4a55'> (" + Math.round(achievementRate) + "% 달성) </span></div>" +
+		                	        "</div>" +
+		                	    "</div>" 	                	    
 		                   );
-		       			}                		
-		       		}                   
+                           if (i < response.length - 1) {
+                               $(".result").append("<hr>");
+                           }
+		       			} 
+		       			checkResultContent();
+	       			}                   
 		       },
 	       		error: function(error) {
 					console.log(error);
@@ -121,35 +142,39 @@ $(document).ready(function() {
 	               	if(response.length == 0) {
 	               		$(".result").append("<div> 후원한 프로젝트가 없습니다. </div>");
 	               	} else {
-	                       $(".result").append("<div> <span style='color: red;'> " + response.length + "</span> 개의 프로젝트가 있습니다.</div>")
+	                       $(".result_count").html("<div> <span style='color: red;'> " + response.length + "</span> 개의 프로젝트가 있습니다.</div>")
 	                       
-	               		for (var i = 0; i < response.length; i++) {                			
-	               		    // 모금 달성률 계산
-	               		    var achievementRate = (response[i].collection_amount / response[i].goal_price) * 100;
-	               		    
+	               		for (var i = 0; i < response.length; i++) {	               		    
 	                           // 날짜 포매팅
-	                           var startDate = new Date(response[i].start_date);
+	                           var fundDate = new Date(response[i].fund_date);
 	                           var dueDate = new Date(response[i].due_date);
-	                           var formattedStart = startDate.getFullYear() + "년 " + (startDate.getMonth() + 1) + "월 " + startDate.getDate() + "일";
-	                           var formattedDue = dueDate.getFullYear() + "년 " + (dueDate.getMonth() + 1) + "월 " + dueDate.getDate() + "일";
-	
-	                           // 프로젝트 종료일과 현재 날짜 차이 계산
-	                           var currentDate = new Date();
-	                           var timeDifference = dueDate - currentDate;
-	                           var daysRemaining = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
-	
-	                           var statusMessage = (daysRemaining > 0) ? daysRemaining + "일 남음" : "펀딩 종료";
+	                           var deliDate = new Date(response[i].delivery_date);
+	                           
+	                           var formattedFund = fundDate.getFullYear() + ". " + (fundDate.getMonth() + 1) + ". " + fundDate.getDate();
+	                           var formattedPay = dueDate.getFullYear() + ". " + (dueDate.getMonth() + 1) + ". " + (dueDate.getDate() + 1);
+	                           var formattedDeli = deliDate.getFullYear() + ". " + (deliDate.getMonth() + 1) + ". " + deliDate.getDate();
 	
 	                           $(".result").append(
-	                               "<div> 카테고리 : " + response[i].category + "</div>" +
-	                               "<div> <a href=\"" + response[i].url + "\"> <img src=" + response[i].main_images_url + "></a> </div>" +
-	                               "<div> <strong> [ <a href=\"" + response[i].url + "\">" + response[i].long_title + " ]</strong></a> </div>" +
-	                               "<div> "+ response[i].sub_title + "</div>" +
-	                               "<div> 현재달성률 : " + Math.round(achievementRate) + "%</div>" +
-	                               "<div> 현재모금액 : " + response[i].collection_amount.toLocaleString() + "원</div>" +
-	                               "<div> 프로젝트 종료까지 " + statusMessage + "</div> <hr>"
+                        			"<div class=\"pro_con\">" +
+	                        			"<div class=\"pro_left\">" +			                	        
+	                        		        "<div> <a href=\"" + response[i].url + "\"> <img src=\"" + response[i].main_images_url + "\" class=\"pro_img\"></a> </div>" +
+	                        		    "</div>" +
+	                        		    "<div class=\"pro_right\">" +
+	                        	       		"<div class=\"fund_info\"> <span>후원일 " + formattedFund + "</span> | <span> 후원번호 " + response[i].fund_seq + "</span> </div>" +
+		                        	        "<div> <strong> [ <a href=\"" + response[i].url + "\">" + response[i].long_title + " ]</strong></a> </div>" +
+		                        	        "<div class=\"pay_info\">"+
+			                        	        "<div> " + response[i].fund_option + " </div>" +
+			                        	        "<div> <span class=\"fund_pay\"> 결제예정일 " + formattedPay + " | " + response[i].price.toLocaleString() + "원 결제 예정 </span> </div>" +
+			                        	        "<div> " + formattedDeli + " 배송 예정</div>" +
+		                        	        "</div>"+
+		                        	    "</div>" +
+		                        	"</div>"
 	                           );
-	               		}                		
+	                           if (i < response.length - 1) {
+	                               $(".result").append("<hr>");
+	                           }
+	               		}
+                       checkResultContent();
 	               	}                   
                },
                error: function(error) {
@@ -160,7 +185,8 @@ $(document).ready(function() {
 	    
 	
 	 //팔로워 찾기
-	 function getFollower() {		 
+	 function getFollower() {
+		 $(".result_count").html('');
          $.ajax({
              type: "get",
              url: "/getFollower",
@@ -177,19 +203,30 @@ $(document).ready(function() {
                          var description = response.myFollower[i].description;
                          
                          if (description === null) {
-                             description = "등록된 자기소개가 없습니다.";
+                             description = "등록된 소개가 없습니다.";
                          }                        
 
                          $(".result").append(
-                             "<div> <a href=\"" + response.myFollower[i].member_url + "\"> <img src=\"" + response.myFollower[i].profile_img + "\"> </a> </div>" +
-                             "<div> <a href=\"" + response.myFollower[i].member_url + "\">" + response.myFollower[i].nickname + " </a> </div>" +
-                             "<div>" + description + " </div>" +
-                             "<div> 팔로워 : " + followerCount + " </div>" +
-                             "<div> 올린 프로젝트 : " + projectCount + " </div>" +
-                             '<div class="modal-dialog modal-dialog-centered">' +                                
-                             "<button class='follower_btn' data-member_seq='" + memberSeq + "'> 팔로우</button> </div> <hr>"  
+                      		 "<div class=\"follo_con\">" +
+                      		 	"<div class=\"follo_left\">" +                       		 	
+	                            	"<div> <a href=\"" + response.myFollower[i].member_url + "\"> <img src=\"" + response.myFollower[i].profile_img + "\" class=\"follo_img\"> </a> </div>" +
+	                       		"</div>" +
+	                        	"<div class=\"follo_right\">" +
+		                            "<div class=\"follo_nick\"> <a href=\"" + response.myFollower[i].member_url + "\">" + response.myFollower[i].nickname + " </a> </div>" +
+		                            "<div class=\"follo_desc\">" + description + " </div>" +
+		                            "<div> 팔로워 " + followerCount + " | 올린 프로젝트 " + projectCount + " </div>" +
+	                            "</div>" +
+	                            "<div class=\"follo_btn\">" +
+		                            "<button class=\"follower_btn\" data-member_seq=" + memberSeq + ">" +
+		                          	  "<img src=\"for_css/follow_btn.png\" alt=\"팔로우\" id=\"follo_img_btn\"> </button> </div>" +
+	                            "</div>" +
+                           "</div>"
                          );
+                         if (i < response.myFollower.length - 1) {
+                             $(".result").append("<hr class=\"follo_hr\">");
+                         }
                      }
+                     checkResultContent();
                  }
 
              },
@@ -253,7 +290,8 @@ $(document).ready(function() {
 	 
 	 
 	//팔로잉 찾기
-	function getFollowing() {		
+	function getFollowing() {
+		$(".result_count").html('');
 	        $.ajax({
 	            type: "get",
 	            url: "/getFollowing",
@@ -270,9 +308,8 @@ $(document).ready(function() {
 	                        var description = response.myFollowing[i].description;
 	                        
 	                        if (description === null) {
-	                            description = "등록된 자기소개가 없습니다.";
-	                        }    
-	                        
+	                            description = "등록된 소개가 없습니다.";
+	                        }    	                        
 	
 	                        $(".result").append(
 	                            "<div> <a href=\"" + response.myFollowing[i].member_url + "\"> <img src=\"" + response.myFollowing[i].profile_img + "\"> </a> </div>" +
@@ -337,20 +374,20 @@ $(document).ready(function() {
 
 
 <body>
-<div class="big_con" style="border: solid blue;">
+<div class="big_con" >
 	<div class="top_con" ><!-- 상단 회원정보 고정 -->
 		<div><img alt="프로필 이미지" src="${loginMember.profile_img}"  id="profile_img"></div>
 		<div class="nick_con">
 			<div>
-				<span style="font-size: 20px;">${loginMember.nickname} </span>
-				<span> <a href="/settings" ><img alt="회원정보 수정으로 가는 이모티콘" src="/settings/settings.png" id="set_icon"></a></span>
+				<span id="my_nick">${loginMember.nickname} </span>
+				<span> <a href="/settings" ><img alt="회원정보 수정으로 가는 이모티콘" src="	/settings/settings.png" id="set_icon"></a></span>
 			</div>
 			<div class="url_con">
 				<span>${pageContext.request.scheme}://${pageContext.request.serverName}:${pageContext.request.serverPort}</span><span id="url_new">${loginMember.member_url}</span>
 			</div>			
 		</div>
 	</div>
-	<p>
+	
 	
 	<div class="menu_con"><!-- 상단 선택바 고정 -->
 		<div class="menu_item" id="myprofile_detail" style="cursor:pointer; color: black; font-weight:600;" > 프로필 </div>
@@ -362,8 +399,10 @@ $(document).ready(function() {
 	<hr class="menu_under_hr">
 	
 	
-	<div>
-		<div class="result" style="color: green"></div>
+	
+	<div class="result_count" ></div>
+	<div class="res_con" >
+		<div class="result" ></div>
 	</div>
 </div>
 
