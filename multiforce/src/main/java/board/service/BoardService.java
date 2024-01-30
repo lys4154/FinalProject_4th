@@ -151,6 +151,7 @@ public class BoardService {
 		return boardDAO.isUpdateLikedByUser(update_seq, currentUser);
 	}
 
+
 	public updateBoardDTO getUpdatePostByUpdateSeq(int update_seq) {
 		return boardDAO.getUpdatePostByUpdateSeq(update_seq);
 	}
@@ -172,7 +173,6 @@ public class BoardService {
 		boardDAO.deleteUpdateComment(update_reply_seq, del_date);
 		
 	}
-
 
 	
 }

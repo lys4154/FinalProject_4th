@@ -115,24 +115,12 @@ public class ProfileController {
     //마이 프로필 - 후원한 프로젝트
     @GetMapping("/getFunded")
     @ResponseBody
-    List<ProjectDTO> getFunded(HttpSession session) { 
+    List<Map<String, Object>> getFunded(HttpSession session) { 
 		int memberSeq = (int)session.getAttribute("login_user_seq");
 
-		List<FundingDTO> ongoingFunded = fundingservice.ongoingFunded(memberSeq);	//후원 진행중
-		List<Integer> fundSeqList = new ArrayList<>(); 								
-		for (FundingDTO fundingDTO : ongoingFunded) {
-		    int fundSeq = fundingDTO.getFund_seq();
-		    fundSeqList.add(fundSeq);												// fund_seq 리스트
-		}
-			
-		List<Integer> ongoingProjectSeq = new ArrayList<>();						
-		for (FundingDTO fundingDTO : ongoingFunded) {								//poject_seq 리스트
-			ongoingProjectSeq.add(fundingDTO.getProject_seq());
-		}
-		
-		List<ProjectDTO> ongoingProject = projectservice.ongoingProject(ongoingProjectSeq); 	//후원중 + 현재 진행중인 프로젝트의 정보들		
-		
-		return ongoingProject;    	
+		List<Map<String, Object>> ongoingFunded = fundingservice.getFunded(memberSeq);	//후원 진행중
+		System.out.println(ongoingFunded);
+		return ongoingFunded;    	
     }
 	
     
@@ -197,37 +185,6 @@ public class ProfileController {
 
 		return followerAdd;
 	}
-    
-
-
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
     //마이 프로필 - 팔로잉

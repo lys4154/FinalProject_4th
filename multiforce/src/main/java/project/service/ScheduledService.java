@@ -129,9 +129,18 @@ public class ScheduledService {
 	
 	}
 	
-	@Scheduled(cron = "0 0 7 * * *")
+	@Scheduled(cron = "0 7 0 * * *")
 	public void executePayment() {
+		System.out.println("check");
+		List<ProjectMemberDTO> startCollectorList = projectDao.selectCollectorFundstart();
+		for (ProjectMemberDTO dto : startCollectorList) {
 
+			List<Integer> startFollowerList = projectDao.selectFollowerFundStart(dto.getMember_seq());
+			for (int i = 0; i < startFollowerList.size(); i++) {
+//				(팔로우한 사람)
+				followerService.start(dto.getShort_title(), startFollowerList.get(i), dto.getProject_seq(), dto.getNickname());
+			}
+		}
 	}
 	
 }
