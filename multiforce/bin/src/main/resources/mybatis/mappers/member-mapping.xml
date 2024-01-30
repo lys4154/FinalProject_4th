@@ -9,6 +9,10 @@
 	select * from member_info where email=#{email}
 </select>
 
+<select id="loginMemberSeq" resultType="memberdto">
+	select * from member_info where member_seq=#{meeberSeq}
+</select>
+
 <select id="myFollowerList" parameterType="java.util.List" resultType="memberdto">
 	select * from member_info where member_seq in
 	<foreach collection="list" item="item" index="index" open="(" separator="," close=")">
@@ -42,11 +46,14 @@
 <select id="selectMemberByIdEmail">
 	select * from member_info where email = #{email} and member_id = #{id}
 </select>
+<select id="selectMemberByUrl">
+	select * from member_info where member_url = #{randomUrl}
+</select>
 <insert id="insertMember">
 	insert into member_info(member_id, password, member_name, nickname, email, gender,
-	 postcode, road_address, jibun_address, extra_address, detail_address)
+	 postcode, road_address, jibun_address, extra_address, detail_address, member_url)
 	 values (#{member_id}, #{password}, #{member_name}, #{nickname}, #{email}, #{gender},
-	 #{postcode}, #{road_address}, #{jibun_address}, #{extra_address}, #{detail_address});
+	 #{postcode}, #{road_address}, #{jibun_address}, #{extra_address}, #{detail_address}, #{member_url})
 </insert>
 <update id="updateMemberPw">
 	update member_info set password = #{tempPw} where member_id = #{id} and email = #{email}
@@ -54,9 +61,57 @@
 
 
 
+<!-- 회원정보수정 - 프로필사진 변경 -->
+<update id="updateProfileImg">
+	update member_info set profile_img = #{filePath} where member_seq = #{memberSeq}
+</update>
+
+<!-- 회원정보수정 - 프로필사진 삭제 -->
+<update id="profileimgDelete">
+	update member_info set profile_img="/memberimages/basic.png" where member_seq = #{memberSeq}
+</update>
+
+<!-- 회원정보수정 - 모든 회원 닉네임  -->
+<select id="allMemberNick">
+	select nickname from member_info
+</select>
 
 
+<!-- 회원정보수정 - 닉네임 변경 -->
+<update id="nicknameChange">
+	update member_info set nickname=#{nickname} where member_seq = #{memberSeq}
+</update>
 
+<!-- 회원정보수정 - 소개 변경 -->
+<update id="descriptionChange">
+	update member_info set description=#{desc} where member_seq = #{memberSeq}
+</update>
+
+<!-- 회원정보수정 - 모든 회원 url -->
+<select id="allMemberurl">
+	select member_url from member_info
+</select>
+	
+<!-- 회원정보수정 - url 변경 -->
+<update id="urlChange">
+	update member_info set member_url=#{newUrlPath} where member_seq = #{memberSeq}
+</update>
+
+<!-- 회원정보수정 - 메일 변경 -->
+<update id="emailChange">
+	update member_info set email=#{email} where member_seq = #{memberSeq}
+</update>
+
+<!-- 회원정보수정 - 비밀번호 변경 -->
+<update id="passwordChange">
+	update member_info set password=#{newPw} where member_seq = #{memberSeq}
+</update>
+
+
+<!-- 해당 회원 프로필로 이동 -->
+<select id="userProfile">
+	select * from member_info where member_url=#{userUrl}
+</select>
 
 
 </mapper>

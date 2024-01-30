@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import board.dto.BoardDTO;
 import board.dto.CommunityDTO;
 import board.dto.UpdateReplyDTO;
+import board.dto.updateBoardDTO;
 
 @Repository
 @Mapper
@@ -53,9 +54,15 @@ public interface BoardDAO {
 
 	void deleteUpdateLike(int updateSeq, int loggedInUserId);
 
-	UpdateReplyDTO getUpdatePostByUpdateSeq(int update_seq);
+	updateBoardDTO getUpdatePostByUpdateSeq(int update_seq);
 
 	void deleteUpdatePost(int update_seq, LocalDateTime del_date);
+
+	boolean isUserFunding(int member_seq, int project_seq);
+
+	UpdateReplyDTO getUpdateCommentByReplySeq(int update_reply_seq);
+
+	void deleteUpdateComment(int update_reply_seq, LocalDateTime del_date);
 
 
 	

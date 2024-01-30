@@ -14,8 +14,7 @@
 
 $(document).ready(function() {
 	
-	let memberSeq = <%= session.getAttribute("member_seq") %>;
-	
+	let memberSeq = <%= session.getAttribute("login_user_seq") %>;
 	
 	//작성중
 	$("#write_incomplete").click(function() {	

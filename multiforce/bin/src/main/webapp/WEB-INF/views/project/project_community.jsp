@@ -7,6 +7,12 @@
 <head>
 <meta charset="UTF-8">
 <title>Project Community</title>
+  <style>
+  #com_box{
+  border:solid 1px black;
+  }
+  </style>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
  <script>
     function updateCharacterCount() {
       var content = document.getElementById("comment_text").value;
@@ -65,8 +71,79 @@
 		<p>작성자: ${community.member_seq}</p>
 		<p>날짜: ${community.date}</p>
 	    <p>내용: ${community.content}</p>
+	    
+	    
+	    <a href="#" onclick="toggleCommentForm(event, ${community.pro_board_seq})">댓글달기</a>
+ 
+	    <div id="comments_${community.pro_board_seq}"></div>
+	    
+	    <div id="commentForm_${community.pro_board_seq}" style="display: none;">
+            <textarea id="commentText_${community.pro_board_seq}" rows="4" cols="50"></textarea> 
+            <button onclick="submitComment(${community.pro_board_seq})">댓글 등록</button>
+        </div>
+		
 			<hr>
 	</c:forEach>
 </section>
+
+<script>
+function toggleCommentForm(event, board_seq) {
+    event.preventDefault();
+
+    var commentForm = document.getElementById("commentForm_" + board_seq);
+    if (commentForm.style.display === "none") {
+        commentForm.style.display = "block";
+    } else {
+        commentForm.style.display = "none";
+    }
+}
+function submitComment(board_seq) {
+    var commentText = $('#commentText_' + board_seq).val();
+
+    var data = {
+        comment: commentText,
+        board_seq: board_seq
+    };
+
+    $.ajax({
+        type: 'POST',
+        url: '/communtiy_comment',
+        data: data,
+        success: function(response) {
+            console.log(response);
+            console.log('댓글이 성공적으로 전송되었습니다.');
+            location.reload();
+        },
+        error: function(error) {
+            console.error('댓글 전송 중 오류가 발생했습니다:', error);
+        }
+    });
+}
+function loadComments(board_seq) {
+    $.ajax({
+        type: 'GET',
+        url: '/getCommComments',
+        data: { board_seq: board_seq },
+        success: function (comments) {
+            var commentsDiv = $('#comments_' + board_seq);
+            commentsDiv.empty();
+
+            $.each(comments, function (index, comment) {
+                commentsDiv.append('<div id="com_box">댓글: ' + comment.content + '</br>아이디:'+
+                		comment.member.nickname
+                		+'</br>날짜: '+comment.time+'</div>');
+            });
+        },
+        error: function (error) {
+            console.error('Error fetching comments:', error);
+        }
+    });
+}
+
+<c:forEach var="community" items="${community_posts}">
+    loadComments(${community.pro_board_seq});
+</c:forEach>
+</script>
+
 </body>
 </html>

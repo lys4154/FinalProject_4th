@@ -14,7 +14,7 @@
 <script>
 $(document).ready(function() {	
 	
-	//후원한 프로젝트 초기
+	//후원한 프로젝트 초기화면
 	function fundedDetailClick() {
         $.ajax({
             type: "POST",
@@ -35,11 +35,16 @@ $(document).ready(function() {
 	                       var memberSeq = response.fundedMember[i].member_seq;
 	                       var followerCount = response.followerCounts[memberSeq];
 	                       var projectCount = response.followerProject[memberSeq];
+	                       var description = response.fundedMember[i].description;
+	                         
+	                       if (description === null) {
+	                             description = "등록된 자기소개가 없습니다.";
+	                       }    
 	
 	                       $(".result").append(
-	                           "<div>" + response.fundedMember[i].profile_img + " </div>" +
+	                           "<div> <img src=\"" + response.fundedMember[i].profile_img + "\"> </div>" +
 	                           "<div>" + response.fundedMember[i].nickname + " </div>" +
-	                           "<div>" + response.fundedMember[i].description + " </div>" +
+	                           "<div>" + description + " </div>" +
 	                           "<div> 팔로워 : " + followerCount + " </div>" +
 	                           "<div> 올린 프로젝트 : " + projectCount + " </div>" +
 	                           '<div class="modal-dialog modal-dialog-centered">' +                                
@@ -49,8 +54,8 @@ $(document).ready(function() {
 	               }
 	
 	           },
-            error: function(request, e) {
-				console.log("코드 : " + request.status + " 메시지 : " + request.responseText + " 오류" + e);
+            error: function(error) {
+				console.log(error);
             }
         });		
 	}
@@ -78,11 +83,15 @@ $(document).ready(function() {
                        var memberSeq = response.myFollowing[i].member_seq;
                        var followerCount = response.followerCounts[memberSeq];
                        var projectCount = response.followerProject[memberSeq];
-
+                       var description = response.myFollowing[i].description;
+                       
+                       if (description === null) {
+                           description = "등록된 자기소개가 없습니다.";
+                       } 
                        $(".result").append(
-                           "<div>" + response.myFollowing[i].profile_img + " </div>" +
-                           "<div>" + response.myFollowing[i].nickname + " </div>" +
-                           "<div>" + response.myFollowing[i].description + " </div>" +
+                   		   "<div> <a href=\"" + response.myFollowing[i].member_url + "\"> <img src=\"" + response.myFollowing[i].profile_img + "\"> </a> </div>" +
+                           "<div> <a href=\"" + response.myFollowing[i].member_url + "\">" + response.myFollowing[i].nickname + "</a> </div>" +
+                           "<div>" + description + " </div>" +
                            "<div> 팔로워 : " + followerCount + " </div>" +
                            "<div> 올린 프로젝트 : " + projectCount + " </div>" +
                            "<button class='following_btn' data-member_seq='" + memberSeq + "'> 팔로잉 - 클릭시 취소</button> <hr>"
@@ -117,8 +126,7 @@ $(document).ready(function() {
 			            console.log(response);
 			            if(response == 1) {
 			            	alert("팔로우가 취소되었습니다.");
-			            	getFollowing();
-			            	
+			            	getFollowing();			            	
 			            }         	                
 			        },
 				error : function(request, e) {
@@ -148,11 +156,16 @@ $(document).ready(function() {
                        var memberSeq = response.myFollower[i].member_seq;
                        var followerCount = response.followerCounts[memberSeq];
                        var projectCount = response.followerProject[memberSeq];
+                       var description = response.myFollower[i].description;
+                       
+                       if (description === null) {
+                           description = "등록된 자기소개가 없습니다.";
+                       }                      
 
                        $(".result").append(
-                           "<div>" + response.myFollower[i].profile_img + " </div>" +
+                   		   "<div> <a href=\"" + response.myFollower[i].member_url + "\"> <img src=\"" + response.myFollower[i].profile_img + "\"> </a> </div>" +
                            "<div>" + response.myFollower[i].nickname + " </div>" +
-                           "<div>" + response.myFollower[i].description + " </div>" +
+                           "<div>" + description + " </div>" +
                            "<div> 팔로워 : " + followerCount + " </div>" +
                            "<div> 올린 프로젝트 : " + projectCount + " </div>" +
                            '<div class="modal-dialog modal-dialog-centered">' +                                
@@ -184,19 +197,34 @@ $(document).ready(function() {
 	        success: function(response) {
 	            console.log(response);
 	            if(response == 1) {
-	            	alert("성공적으로 팔로우 했습니다.");
-	            	getFollower();
-	            } else {
-	            	alert("이미 팔로우 되어있습니다.");
-	            }             	                
-	        },
-	        error: function(error) {	            	
-	            console.log(error);
-	        }
-	    });
+	            	alert("성공적으로 팔로우 했습니다.");	            	
+	            } else if(response == 3) {
+                	if (confirm("이미 팔로우 되어있습니다." +
+        			"팔로우를 취소 하시겠습니까?")) {	                		
+		                $.ajax({
+		                    type: "POST",
+		                    url: "/following_btn",
+		                    data: { memberSeq: memberSeq },
+		                    success: function(response) {
+		                    	console.log(memberSeq); 
+		    	                if(response == 1) {
+		    	                	alert("팔로우가 취소되었습니다.");
+		    	                	getFollower();
+		    	                }
+		                    },
+		                    error: function(error) {
+		                        console.log(error);
+		                    }
+		                });
+		        		
+		        	}
+		        }             	                
+		    },
+		    error: function(error) {	            	
+		        console.log(error);
+		    }
+		});
 	});
-
- 
 	
 })//ready
 

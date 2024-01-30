@@ -43,7 +43,7 @@
 			<a class href="tab_projectPlan">기본정보</a>
 		</li>
 	</ul>
-	
+	<hr>
 	 <!-- 각 탭에 해당하는 컨텐츠 영역 -->
     <div id="tab_info" class="content">
         기본정보 내용

@@ -57,16 +57,16 @@
     
 
      <form action="/community_post" method="POST" onsubmit="return validateForm()">
-    <div>
-      <input type="radio" name="post_category" value="cheer" checked>응원글
-      <input type="radio" name="post_category" value="feedback">의견
-    </div>
-    <label for="comment_text">댓글:</label><br>
-    <input type="hidden" name="post_id" value="${projects.project_seq}">
-    <textarea id="comment_text" name="content" rows="4" cols="50" oninput="updateCharacterCount()"></textarea><br>
-    <span id="character_count">1000</span>자 남음<br><br>
-    <input type="submit" value="등록">
-  </form>
+	    <div>
+	      <input type="radio" name="post_category" value="cheer" checked>응원글
+	      <input type="radio" name="post_category" value="feedback">의견
+	    </div>
+	    <label for="comment_text">댓글:</label><br>
+	    <input type="hidden" name="post_id" value="${projects.project_seq}">
+	    <textarea id="comment_text" name="content" rows="4" cols="50" oninput="updateCharacterCount()"></textarea><br>
+	    <span id="character_count">1000</span>자 남음<br><br>
+	    <input type="submit" value="등록">
+	  </form>
 	<c:forEach var="community" items="${community_posts}">
 		<p>작성자: ${community.member_seq}</p>
 		<p>날짜: ${community.date}</p>

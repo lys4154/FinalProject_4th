@@ -32,7 +32,7 @@
 </insert>
 
 
-<!-- 마이프로필 - 팔로워 팔로우하기 -->
+<!-- 마이프로필 - 팔로잉 취소하기 -->
 <delete id="unfollow" parameterType="hashMap">
 	DELETE FROM follow
 	WHERE follower_seq = #{param1} AND following_seq = #{param2};

@@ -63,7 +63,9 @@ public class BoardController {
 	        	String currentUserString = (String) session.getAttribute("login_user_seq");
 	        	int currentUser = Integer.parseInt(currentUserString);
 	            boolean likedByCurrentUser = boardService.isUpdateLikedByUser(update.getUpdate_seq(), currentUser);
+	            boolean userIsFunding = boardService.isUserFunding(currentUser, project_seq);
 
+	            model.addAttribute("userIsFunding", userIsFunding);
 	            model.addAttribute("loggedin_user", currentUser);
 	            update.setLikedByCurrentUser(likedByCurrentUser);
 	        }
@@ -107,7 +109,7 @@ public class BoardController {
 		try {
 	        String loggedInUserId = (String) session.getAttribute("login_user_seq");
 	        current_user = Integer.parseInt(loggedInUserId);
-	        UpdateReplyDTO updatePost = boardService.getUpdatePostByUpdateSeq(update_seq);
+	        updateBoardDTO updatePost = boardService.getUpdatePostByUpdateSeq(update_seq);
 
 	        if (updatePost != null && current_user == updatePost.getMember_seq()) {
 //	        	System.out.println("같은사람 맞음");
@@ -121,7 +123,31 @@ public class BoardController {
 	        return new ResponseEntity<>("삭제 실패", HttpStatus.INTERNAL_SERVER_ERROR);
 	    }
 	}
+	@PostMapping("delete_update_reply")
+	public ResponseEntity<String> deleteUpdateComment(@RequestParam int update_reply_seq, HttpSession session) {
+		int current_user = 0;
+		LocalDateTime del_date = LocalDateTime.now();
+		
+		try {
+	        String loggedInUserId = (String) session.getAttribute("login_user_seq");
+	        
+	        current_user = Integer.parseInt(loggedInUserId);
+	        
+	        UpdateReplyDTO updateComment = boardService.getUpdateCommentByReplySeq(update_reply_seq);
 
+	        if (updateComment != null && current_user == updateComment.getMember_seq()) {
+	        	
+	        	boardService.deleteUpdateComment(update_reply_seq, del_date);
+
+	            return new ResponseEntity<>("삭제 성공", HttpStatus.OK);
+	        } else {
+	            return new ResponseEntity<>("삭제 권한이 없습니다", HttpStatus.FORBIDDEN);
+	        }
+	    } catch (Exception e) {
+//	    	e.printStackTrace();
+	        return new ResponseEntity<>("삭제 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
+	}
 
 	//1:1 고객센터 글쓰기
 	@GetMapping("cs/write-form")
@@ -215,7 +241,7 @@ public class BoardController {
 	@GetMapping("/getCommComments")
 	@ResponseBody
 	public List<CommunityDTO> getComments(@RequestParam("board_seq") int board_seq) {
-		System.out.println("CommComments start");
+
 	    return boardService.getCommCommentsByBoardSeq(board_seq);
 	}
 	

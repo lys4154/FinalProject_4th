@@ -7,11 +7,68 @@
         VALUES (#{title}, #{content}, #{member_seq})
     </insert>
     
+
+    <insert id="insertUpdateReply" parameterType="board.dto.UpdateReplyDTO">
+	    INSERT INTO update_reply (update_seq, member_seq, content, time)
+	    VALUES (#{update_seq}, #{member_seq}, #{content}, #{time});
+	</insert>
+	
+	<insert id="insertCommunityReply" parameterType="board.dto.CommunityDTO">
+	    INSERT INTO community_board (parent_seq, member_seq, content, date, project_seq, category)
+	    VALUES (#{parent_seq}, #{member_seq}, #{content}, #{date}, #{project_seq}, #{category});
+	</insert>
+
+
+     <select id="checkIfUpdateLikedByUser" resultType="boolean" parameterType="board.dto.UpdateLikeDTO">
+        SELECT COUNT(*) > 0 FROM update_like WHERE update_seq = #{updateSeq} 
+        AND member_seq = #{loggedInUserId}
+    </select>
+    
+    <select id="getUpdatePostByUpdateSeq" parameterType="board.dto.UpdateReplyDTO">
+        SELECT * from update_board where update_seq = #{update_seq}
+    </select>
+    
+    <insert id="insertUpdateLike" parameterType="board.dto.UpdateLikeDTO">
+	    INSERT INTO update_like (update_seq, member_seq)
+	    VALUES (#{updateSeq}, #{loggedInUserId})
+	</insert>
+	
+	<delete id="deleteUpdateLike" parameterType="board.dto.UpdateLikeDTO">
+        DELETE FROM update_like WHERE update_seq = #{updateSeq}
+          AND member_seq = #{loggedInUserId}
+    </delete>
+    
+    <update id="deleteUpdatePost" parameterType="board.dto.updateBoardDTO">
+        UPDATE update_board SET del_status=true, del_date = #{del_date} 
+        WHERE update_seq = #{update_seq}
+          
+    </update>
+    
+    <select id="getUpdatedLikeCount" resultType="int" parameterType="board.dto.UpdateLikeDTO">
+	    SELECT COUNT(*) FROM update_like WHERE update_seq = #{updateSeq}
+	</select>
+	
+	<select id="getUpdateSeqByProjectSeq" resultType="int" parameterType="board.dto.updateBoardDTO">
+	    SELECT update_seq FROM update_board WHERE project_seq = #{project_seq} AND del_status=false
+	</select>
+	
     <select id="getAllCsPosts" resultType="board.dto.BoardDTO">
 	    select * from help_ask
 	</select>
 	
+	<select id="isUpdateLikedByUser" resultType="boolean">
+	    SELECT COUNT(*) > 0 FROM update_like
+        WHERE update_seq = #{update_seq}
+        AND member_seq = #{currentUser}
+	</select>
 	
+	<select id="getCommentsByUpdateSeq" resultType="board.dto.UpdateReplyDTO">
+	    select * from update_reply where update_seq = #{update_seq}
+	</select>
+	
+	<select id="getCommCommentsByBoardSeq" resultType="board.dto.CommunityDTO">
+	    select * from community_board where parent_seq = #{board_seq}
+	</select>
 
 
 	
@@ -32,7 +89,7 @@
         VALUES (#{project_seq}, #{member_seq}, #{category}, #{content})
     </insert>
     <select id="getAllCommPost" resultType="board.dto.CommunityDTO">
-	    select * from community_board where project_seq = #{project_seq}
+	    select * from community_board where project_seq = #{project_seq} AND parent_seq IS NULL
 	</select>
     
 </mapper>
