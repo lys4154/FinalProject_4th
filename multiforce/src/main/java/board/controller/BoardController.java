@@ -24,7 +24,7 @@ import board.dto.BoardDTO;
 import board.dto.CommunityDTO;
 import board.dto.UpdateReplyDTO;
 import board.dto.updateBoardDTO;
-import board.service.boardService;
+import board.service.BoardService;
 import jakarta.servlet.http.HttpSession;
 import member.dto.MemberDTO;
 import member.service.MemberService;
@@ -34,7 +34,7 @@ import project.service.ProjectService;
 @Controller
 public class BoardController {
 	@Autowired
-	private boardService boardService;
+	private BoardService boardService;
 	@Autowired
 	private ProjectService projectService;
 	@Autowired

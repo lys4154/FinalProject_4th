@@ -122,6 +122,8 @@ public interface ProjectDAO {
 
 	List<ProjectMemberDTO> selectDidsFundEnd();
 
+	ProjectMemberDTO selectProjectMember(int project_seq);
+
 	
 
 

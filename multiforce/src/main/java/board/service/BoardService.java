@@ -22,7 +22,7 @@ import board.dao.BoardDAO;
 import board.dao.UpdateBoardDAO;
 
 @Service
-public class boardService {
+public class BoardService {
     @Autowired
     private BoardDAO boardDAO;
 

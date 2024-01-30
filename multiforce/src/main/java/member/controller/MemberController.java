@@ -58,6 +58,7 @@ public class MemberController {
 				session.setAttribute("login_user_level", result.getLevel());
 				session.setAttribute("login_user_name", result.getMember_name());
 				session.setAttribute("login_user_seq", result.getMember_seq());
+				session.setAttribute("login_user_nickname", result.getNickname());
 				if(from.equals("mainpage")) {
 					return "redirect:/";
 				}
