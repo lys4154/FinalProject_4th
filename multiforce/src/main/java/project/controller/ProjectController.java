@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import board.dto.BoardDTO;
 import board.dto.CommunityDTO;
 import board.dto.UpdateReplyDTO;
-import board.service.boardService;
+import board.service.BoardService;
 import jakarta.servlet.http.HttpSession;
 import project.dto.ProjectDTO;
 import project.service.ProjectService;
@@ -36,7 +36,7 @@ public class ProjectController {
 	private ProjectService projectService;
 	
 	@Autowired
-	private boardService boardService;
+	private BoardService boardService;
 	
 	
 	@RequestMapping("/projectdesign")
