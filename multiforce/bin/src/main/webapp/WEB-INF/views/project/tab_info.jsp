@@ -1,11 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@page import="project.code.ProjectCategory"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>기본정보</title>
 <script src="/js/jquery-3.7.1.min.js"></script>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <script>
     $(document).ready(function() {
     $("#submitBtn").click(function() {
@@ -80,10 +82,14 @@
 	<div class="projectForms">
 		<div class="projectForms_style">
 			<div class="projectForms_selectCategory">
+			<div class="category" id="category_list">
+
+		</div>
 				<select id="category">
-					<option value="book">책</option>
-					<option value="game">게임</option>
-					<option value="perfume">향수</option>
+					<%	for(ProjectCategory item : ProjectCategory.values()){ %>
+			<option value="<%=item.getEngName()%>"><%=item.getKorName()%></option>
+		<%		}
+		%>
 				</select>
 			</div>
 		</div>

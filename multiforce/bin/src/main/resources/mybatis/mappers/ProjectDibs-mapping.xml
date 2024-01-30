@@ -11,9 +11,14 @@
 </select>
 
 <delete id="dibsCancel" parameterType="hashMap" >
-	delete from project_dibs where project_seq=${param1} and member_seq=${param2}
+	delete from project_dibs where project_seq=${projectSeq} and member_seq=${memberSeq}
 </delete>
-
+<insert id="insertProjectDibs">
+insert into project_dibs(project_seq, member_seq) values(#{project_seq},#{member_seq})
+</insert>
+<select id="selectdibs">
+select count(*) from project_dibs where project_seq = #{project_seq} and member_seq = #{member_seq}
+</select>
 
 </mapper>	
 

@@ -51,12 +51,11 @@ $(document).ready(function() {
 	
 	document.getElementById("bundleDataInput").value = JSON.stringify(bundleData);
 	
-	
 
     $("#cancel").click(function() {
         let fundSeq = ${fundedDetail.fund_seq};
         let longTitle = "${projectDetail.long_title}";
-        let dueDate = "${projectDetail.due_date.toLocalDate()}";
+        let dueDate = "${projectDetail.due_date}";
         let price = ${fundedDetail.price };
 
         // 폼에 값을 설정
@@ -96,7 +95,7 @@ $(document).ready(function() {
 			<div>펀딩 상태 </div> <div id="pro_status">펀딩 진행중</div>
 			<div>후원 번호 </div> <div>${fundedDetail.fund_seq }</div>
 			<div>후원 날짜 </div> <div>${fundedDetail.fund_date.toLocalDate() }</div>
-			<div>펀딩 마감일 </div> <div>${projectDetail.due_date.toLocalDate()}</div>
+			<div>펀딩 마감일 </div> <div>${projectDetail.due_date}</div>
 		</div>
 	
 		<div style="border: 2px solid; ">

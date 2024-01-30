@@ -5,6 +5,7 @@
 
 <mapper namespace="funding.dao.FundingDAO">
 
+<!-- 후원한 프로젝트 전체 -->
 <select id="getFundedProject" parameterType="int" resultType="fundingdto">
 	select * from funding where member_seq=#{memberSeq}
 </select>
@@ -12,12 +13,10 @@
 
 <!-- 후원한 프로젝트 페이지 - 후원 진행중 -->
 <select id="ongoingFunded" parameterType="int" resultType="fundingdto">
-<![CDATA[
 	SELECT * FROM FUNDING
 	WHERE member_seq =#{memberSeq}
 	AND fund_duedate > now()
 	AND del_status = false
-]]>
 </select>
 
 <!-- 후원한 프로젝트 페이지 - 후원 성공 -->
@@ -51,6 +50,10 @@
 	update FUNDING set del_status=true, del_date=NOW() where fund_seq=${fundSeq};
 </update>
 
-
+<!-- 결제정보 -->
+<insert id="insertPayment" parameterType="fundingdto">
+	insert into funding (fund_date, pay_option, price, paydate, pay_status)
+	values (now(), #{pay_option}, #{price}, #{paydate}, 0)
+</insert>
 
 </mapper>

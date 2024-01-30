@@ -151,7 +151,8 @@ public class BoardService {
 		return boardDAO.isUpdateLikedByUser(update_seq, currentUser);
 	}
 
-	public UpdateReplyDTO getUpdatePostByUpdateSeq(int update_seq) {
+
+	public updateBoardDTO getUpdatePostByUpdateSeq(int update_seq) {
 		return boardDAO.getUpdatePostByUpdateSeq(update_seq);
 	}
 
@@ -160,6 +161,18 @@ public class BoardService {
 		
 	}
 
+	public boolean isUserFunding(int member_seq, int project_seq) {
+		return boardDAO.isUserFunding(member_seq, project_seq);
+	}
+
+	public UpdateReplyDTO getUpdateCommentByReplySeq(int update_reply_seq) {
+		return boardDAO.getUpdateCommentByReplySeq(update_reply_seq);
+	}
+
+	public void deleteUpdateComment(int update_reply_seq, LocalDateTime del_date) {
+		boardDAO.deleteUpdateComment(update_reply_seq, del_date);
+		
+	}
 
 	
 }

@@ -18,7 +18,15 @@ $(document).ready(function() {
     var successCount = ${successFunded.size()};
     var cancelCount = ${cancelFunded.size()};
     var totalCount = ongoingCount + successCount + cancelCount;
-    $("#total_funded").html(totalCount); 
+    $("#total_funded").html(totalCount);
+    
+    if (totalCount === 0) {
+    	$(".no_funded").html("<input type='button' value='프로젝트 둘러보기' id='backToMain'>");
+    }
+    
+    $("#backToMain").click(function() {
+    	location.href = '/';
+    });
   
 
 	//프로젝트 긴제목 검색
@@ -63,10 +71,7 @@ $(document).ready(function() {
 	                        ongoing = "<div> 결제 예정일: " + due_date.getFullYear() + "년 " + (due_date.getMonth() + 1) + "월 " + (due_date.getDate() +1) + "일</div>";
 	                    }
 	                    
-	                    
 
-	  	                
-	  	            	
 	  	                $(".all_funded").append(
 	  	                		"<div> <a href=\"" + response[i].url + "\"> <img src=\"" + response[i].main_images_url + "\" </a> </div>" +
 	  	                		"<div> <a href=\"" + response[i].url + "\"> " + response[i].long_title + "</a> </div>" +
@@ -85,13 +90,7 @@ $(document).ready(function() {
 	          }
 	     });        
 	 }); 
- 
- 
- 
- 
- 
- 
- 
+
     
 });
 
@@ -107,12 +106,11 @@ $(document).ready(function() {
 <p>
 <div>
 	<div>
+		<div> <span id="total_funded" style="color: red"></span> 건의 후원 내역이 있습니다. </div>
+		<div class="no_funded"></div>
 		<div>
-		<span id="total_funded" style="color: red"></span> 건의 후원 내역이 있습니다.
-		</div>
-		<div>
-		<input type="text" size="30" id="search_keyword" placeholder="프로젝트, 선물, 창작자를 검색하세요">
-		<input type="button" id="search_btn" value="검색">
+			<input type="text" size="30" id="search_keyword" placeholder="프로젝트, 선물, 창작자를 검색하세요">
+			<input type="button" id="search_btn" value="검색">
 		</div>		
 	</div>
 	<p>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+	<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="member.dao.DeliveryDAO">
+
+<!-- 회원정보수정 -->
+<select id="getDelivery" resultType="deliverydto">
+	select * from delivery where member_seq=#{memberSeq}
+</select>
+
+<!-- 회원정보수정 - 배송지추가 -->
+<insert id="addressAdd">
+	insert into delivery
+	(member_seq, name, phone, postcode, road_address, jibun_address, extra_address, detail_address, requeste, default_address) 
+	values
+	(#{memberSeq}, #{name}, #{phone}, #{postcode}, #{road}, #{jibun}, #{extra}, #{detail}, #{requeste}, #{defaultAddress})
+</insert>
+
+<!-- 회원정보수정 - 추가한 배송지 삭제 -->
+<delete id="addressAddDelete">
+	delete from delivery where 
+	member_seq=#{memberSeq} AND name=#{name} AND phone=#{phone} AND postcode=#{postcode} AND
+	road_address=#{road} AND jibun_address=#{jibun} AND extra_address=#{extra} AND detail_address=#{detail}
+</delete>
+
+<!-- 회원정보수정 - 기존 배송지 삭제 -->	
+<delete id="addressDelete">
+	delete from delivery where 
+	member_seq=#{memberSeq} AND name=#{name} AND phone=#{phone} AND postcode=#{postcode} AND
+	road_address=#{road} AND detail_address=#{detail}
+</delete>
+
+
+</mapper>	

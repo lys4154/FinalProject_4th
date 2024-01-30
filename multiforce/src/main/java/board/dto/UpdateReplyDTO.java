@@ -1,5 +1,6 @@
 package board.dto;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import org.springframework.stereotype.Component;
@@ -16,7 +17,7 @@ public class UpdateReplyDTO {
 	    private String content;
 	    private Date time;
 	    private int del_status;
-	    private Date del_date;
+	    private LocalDateTime del_date;
 	    private MemberDTO member;
 
 	    
@@ -56,10 +57,10 @@ public class UpdateReplyDTO {
 		public void setDel_status(int del_status) {
 			this.del_status = del_status;
 		}
-		public Date getDel_date() {
+		public LocalDateTime getDel_date() {
 			return del_date;
 		}
-		public void setDel_date(Date del_date) {
+		public void setDel_date(LocalDateTime del_date) {
 			this.del_date = del_date;
 		}
 
