@@ -46,7 +46,11 @@ public class AskService {
 	}
 	public int insertMyChat(String who_am_i, String my_chat, int chatroom_seq, int read_at) {
 		int result = askDao.updateChat(who_am_i, my_chat, chatroom_seq, read_at);
-		return 0;
+		return result;
+	}
+	public int updateMyRead(String who_am_i, int chatroom_seq, int read_at) {
+		int result = askDao.updateMyRead(who_am_i, chatroom_seq, read_at);
+		return result;
 	}
 
 

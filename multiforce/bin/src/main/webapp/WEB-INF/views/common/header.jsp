@@ -41,7 +41,7 @@ $(document).ready(function(){
 					if(r[i].is_read == false){
 						noReadCount++;
 					}
-					$("#notification_list").append(
+					$("#header_notification_list").append(
 							"<div id='notification_"+r[i].notification_seq+"' class='notifications'><a href='/projectdetail/"
 							+r[i].project_seq+"'>"+r[i].message + "</a><input type='button' value='삭제' class='notification_delete_btn' id='delete_"
 							+r[i].notification_seq+"'><span> 읽음 여부: "+r[i].is_read+"</span></div>");
@@ -60,7 +60,7 @@ $(document).ready(function(){
 	var lastNotificationSeq = 0;
 	$("#notification_btn").on("click", function(){
 		if("${login_user_seq}" != "" && notificationBtnClick % 2 == 0){
-			$("#notification_list").css("display","block");
+			$("#header_notification_list").css("display","block");
 			$.ajax({
 				data: {
 					member_seq: "${login_user_seq}",
@@ -76,7 +76,7 @@ $(document).ready(function(){
 				//css할 때 스크롤로 만들기
 			});
 		}else if("${login_user_seq}" != "" && notificationBtnClick % 2 == 1){
-			$("#notification_list").css("display","none");
+			$("#header_notification_list").css("display","none");
 			
 		}else{
 			if(confirm("로그인이 필요한 서비스입니다. 로그인 하시겠습니까?")){

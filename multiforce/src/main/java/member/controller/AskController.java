@@ -17,6 +17,11 @@ public class AskController {
 	@Autowired
 	AskService askService;
 	
+	@GetMapping("/allask")
+	public String allAsk() {
+		return "member/all_ask";
+	}
+	
 	@GetMapping("/ask")
 	public ModelAndView ask(int project_seq, int collector_seq, int asker_seq) {
 		ModelAndView mv = new ModelAndView();
@@ -46,8 +51,17 @@ public class AskController {
 	
 	@PostMapping(value="/insertmychat", produces = {"application/json;charset=utf-8"})
 	@ResponseBody
-	public String insertMyTalk(String who_am_i, String my_chat, int chatroom_seq, int read_at){
+	public String insertMyChat(String who_am_i, String my_chat, int chatroom_seq, int read_at){
 		int result = askService.insertMyChat(who_am_i, my_chat, chatroom_seq, read_at);
+		System.out.println("result: " + result);
+		return"{\"result\":\"" + result +"\"}";
+	}
+	
+	@PostMapping(value="/updatemyread", produces = {"application/json;charset=utf-8"})
+	@ResponseBody
+	public String updateMyRead(String who_am_i, int chatroom_seq, int read_at){
+		int result = askService.updateMyRead(who_am_i, chatroom_seq, read_at);
+		System.out.println("result: " + result);
 		return"{\"result\":\"" + result +"\"}";
 	}
 }
