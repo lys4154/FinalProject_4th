@@ -42,6 +42,7 @@ import member.service.MemberService;
 import project.dto.BundleDTO;
 import project.dto.FundingBundleCountDTO;
 import project.dto.ProjectDTO;
+import project.dto.ProjectMemberDTO;
 import project.dto.ItemDTO;
 import project.dto.ItemOptionDTO;
 import project.service.BundleService;
@@ -95,8 +96,6 @@ public class ProfileController {
 		return mv;
 	}
 	
-	
-
 	
 
 	
@@ -313,6 +312,7 @@ public class ProfileController {
     }
         
     
+    
     // 후원한 프로젝트 페이지
     @GetMapping("/funded")
     ModelAndView fundedProject(HttpSession session) {
@@ -348,7 +348,7 @@ public class ProfileController {
     List<ProjectDTO> fundedSearch(@RequestParam(required = false) String keyword, HttpSession session) {
 
 		int memberSeq = (int)session.getAttribute("login_user_seq");
-		List<ProjectDTO> searchFunded = projectservice.searchFunded(keyword, memberSeq); //프로젝트 긴제목		
+		List<ProjectDTO> searchFunded = projectservice.searchFunded(keyword, memberSeq); //프로젝트 긴제목
 		return searchFunded;    	
     }
 
@@ -359,12 +359,12 @@ public class ProfileController {
     ModelAndView fundedDetail(@PathVariable int fund_seq, HttpServletRequest request) {
         int fundseq = fund_seq;  //후원번호
         FundingDTO getFundedDetail = fundingservice.getFundedDetail(fundseq);	 		//후원정보
-        System.out.println(getFundedDetail);
 
-        int projectSeq = getFundedDetail.getProject_seq();								//프로젝트번호
-        ProjectDTO getProjectDetail = projectservice.getProjectDetail(projectSeq); 		//프로젝트정보
+        int projectSeq = getFundedDetail.getProject_seq();								//프로젝트번호        
+        ProjectMemberDTO getProjectDetail = projectservice.getProjectDetail(projectSeq); 		//프로젝트정보
+        String creator = getProjectDetail.getNickname();     
 
-        LocalDate dueDate = getProjectDetail.getDue_date();							// 남은기한
+        LocalDate dueDate = getProjectDetail.getDue_date();								// 남은기한
         LocalDate currentTime = LocalDate.now();
         int dDay = (int) ChronoUnit.DAYS.between(currentTime, dueDate);
 
@@ -429,6 +429,7 @@ public class ProfileController {
         mv.addObject("trackNum", trackNum); // 운송장번호
         mv.addObject("fundedDetail", getFundedDetail); //후원정보
         mv.addObject("projectDetail", getProjectDetail); //프로젝정보
+        mv.addObject("creator", creator); //창작자
         mv.addObject("dDay", dDay); //남은기한
         mv.addObject("bundleCount", bundleCount); //꾸러미개수
         mv.addObject("bundleItem", bundleItem); //번들-아이템
