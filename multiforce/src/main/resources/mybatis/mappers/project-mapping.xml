@@ -117,6 +117,26 @@
     VALUES (#{start_date}, #{due_date}, #{goal_price})
 </insert>
 
+<!-- 선물저장(Bundle) -->
+<select id="getProject_seq" parameterType="String" resultType="int">
+	select project_seq from project where long_title=#{long_title} and member_seq=#{member_seq};
+</select>
+
+<insert id="insertBundle" parameterType="project.dto.BundleDTO">
+	insert into bundle (project_seq, bundle_name, bundle_price)
+	values (#{project_seq}, #{bundle_name}, #{bundle_price})
+</insert>
+
+<!-- 상품저장(Item) -->
+<select id="getBundle_seq" parameterType="String" resultType="int">
+	select bundle_seq from bundle where project_seq=#{project_seq}
+</select>
+
+<insert id="insertItem" parameterType="project.dto.ItemDTO">
+	insert into item (bundle_seq, item_name)
+	values (#{bundle_seq}, #{item_name})
+</insert>
+
 
 <!-- 관심 프로젝트 전체 -->
 <select id="myDibsProject" parameterType="java.util.List" resultType="projectdto">
