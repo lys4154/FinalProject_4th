@@ -8,7 +8,8 @@
 
 
 <select id="getProjectsByMemberSeq" parameterType="int" resultType="projectdto">
-	select * from project where member_seq=#{memberSeq}
+	select * from project where member_seq=#{memberSeq} and project_process=4
+	ORDER BY due_date DESC
 </select>
 
 <select id="getAllProjects" resultType="projectdto">
@@ -313,7 +314,7 @@ select member_seq from project_dibs where project_seq = #{project_seq}
 </select>
 <!-- 펀딩 시작 모금자를 팔로우하는 사람 리스트 불러오기 -->
 <select id="selectFollowerFundStart">
-select member_seq from follow where following_seq = #{member_seq}
+select follower_seq from follow where following_seq = #{member_seq}
 </select>
 <!-- 마감임박 프로젝트 찜한 사람 리스트 -->
 <select id="selectDidsFundEnd" resultType="projectmemberdto">
@@ -321,6 +322,14 @@ select d.member_seq, member_id, member_name, nickname, email, d.project_seq, p.s
 join member_info m on d.member_seq = m.member_seq 
 join project p on d.project_seq = p.project_seq 
 where due_date = now() and project_process = 4
+</select>
+
+<!--  -->
+<select id="selectProjectMember">
+select m.member_seq, member_id, nickname, email, project_seq, goal_price,
+long_title, short_title, sub_title, category, project_process, member_url, profile_img
+from project p join member_info m using (member_seq) 
+where project_seq = #{project_seq}
 </select>
 
 <!-- 내가 올린 프로젝트 - 삭제 -->

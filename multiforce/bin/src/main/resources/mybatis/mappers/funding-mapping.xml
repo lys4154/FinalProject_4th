@@ -19,6 +19,17 @@
 	AND del_status = false
 </select>
 
+<!-- 후원한 프로젝트 페이지 + 프로젝트정보 -->
+<select id="getFunded" parameterType="int" resultType="java.util.HashMap">
+    SELECT FUNDING.*, PROJECT.*
+    FROM FUNDING
+    INNER JOIN PROJECT ON FUNDING.project_seq = PROJECT.project_seq
+    WHERE FUNDING.member_seq = #{memberSeq}
+        AND FUNDING.fund_duedate > NOW()
+        AND FUNDING.del_status = FALSE
+</select>
+
+
 <!-- 후원한 프로젝트 페이지 - 후원 성공 -->
 <select id="successFunded" parameterType="int" resultType="fundingdto">
 <![CDATA[

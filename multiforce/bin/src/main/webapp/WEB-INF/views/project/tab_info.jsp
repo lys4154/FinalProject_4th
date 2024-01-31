@@ -196,9 +196,6 @@
 
     realUpload.addEventListener('change', getImageFiles);
   </script>
-
-
-
-
 </body>
+<%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </html>

@@ -18,7 +18,7 @@ $(document).ready(function(){
 			url += ("project_seq=" + project_seq);
 			url += ("&collector_seq=" + collector_seq);
 			url += ("&asker_seq=" + asker_seq);
-			window.open(url,"채팅 서비스", "location=no");
+			window.open(url, "_blank","width: 500, height: 500");
 		}else{
 			if(confirm("로그인이 필요한 서비스입니다. 로그인 하시겠습니까?")){
 				location.href = "/login";

@@ -3,7 +3,6 @@
     
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="java.util.List" %>
-<%@ page import="board.dto.UpdateReplyDTO" %>
 
 
 
@@ -22,6 +21,7 @@
   <style>
   #com_box{
   border:solid 1px black;
+  
   }
   </style>
 </head>
@@ -36,7 +36,7 @@ if(session.getAttribute("login_user_seq") != null){
 
 	}
 %>
-아이디 번호2: ${loggedin_user }
+
 <c:forEach var="update" items="${project}">
 
 
@@ -54,20 +54,21 @@ if(session.getAttribute("login_user_seq") != null){
    
 
      	
-        
+<%
+if (loggedInUserId != null) {
+%>       
     <div>
     <i id="heartIcon_${update.update_seq}" class="${update.likedByCurrentUser ? 'fa fa-heart' : 'fa fa-heart-o'}" 
     aria-hidden="true" style="${update.likedByCurrentUser ? 'color: red;' : ''}" onclick="likePost(${update.update_seq})"></i>
     <span id="like_${update.update_seq}"></span>
     </div>
     <%
-if (loggedInUserId != null) {
-%>
-    <a href="#" onclick="toggleCommentForm(event, ${update.update_seq})">댓글달기</a>
-<%
 }
-%>
 
+%>
+<c:if test="${userIsFunding}">
+    <a href="#" onclick="toggleCommentForm(event, ${update.update_seq})">댓글달기</a>
+</c:if>
 		
 			
 	<div id="comments_${update.update_seq}">
@@ -86,6 +87,8 @@ if (loggedInUserId != null) {
 </c:forEach>
 
 </div>
+
+
 
 <script>
 function deleteUpdate(updateSeq) {
@@ -189,7 +192,34 @@ function toggleCommentForm(event, updateSeq) {
         });
     }
 
- 
+    var loggedInUser = {
+            id: '<%= request.getAttribute("loggedin_user") %>',
+        };
+    function deleteComment(comment_id) {
+        var confirmDelete = confirm('정말로 삭제하시겠습니까?');
+
+        if (confirmDelete) {
+            console.log('삭제진행 ㄱㄱ');
+
+    		
+            $.ajax({
+                type: 'POST',
+                url: '/delete_update_reply',
+                data: { update_reply_seq: comment_id },
+                success: function(response) {
+                    console.log('삭제 성공:', response);
+                    location.reload();
+                    
+                },
+                error: function(error) {
+                    console.error('삭제 실패:', error);
+                }
+            });
+
+        } else {
+            console.log('삭제가 실패함');
+        }
+    }
     function loadComments(updateSeq) {
         $.ajax({
             type: 'GET',
@@ -198,11 +228,21 @@ function toggleCommentForm(event, updateSeq) {
             success: function (comments) {
                 var commentsDiv = $('#comments_' + updateSeq);
                 commentsDiv.empty();
+                
+                var loggedInUserId = loggedInUser.id;
 
+                
                 $.each(comments, function (index, comment) {
-                    commentsDiv.append('<div id="com_box">댓글: ' + comment.content + '</br>아이디:'+
-                    		comment.member.nickname
-                    		+'</br>날짜: '+comment.time+'</div>');
+                	var commentHtml = '<div id="com_box">댓글: ' + comment.content + '</br>아이디:' +
+                    comment.member.nickname + '</br>날짜: ' + comment.time;
+	
+	                if (comment.member_seq == loggedInUserId) {
+	                    commentHtml += '<button onclick="deleteComment(' + comment.update_reply_seq + ')">삭제하기</button>';
+	                }
+	
+	                commentHtml += '</div>';
+	
+	                commentsDiv.append(commentHtml);
                 });
             },
             error: function (error) {

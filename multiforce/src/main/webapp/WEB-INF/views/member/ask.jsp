@@ -9,23 +9,55 @@
 </head>
 <script src="/js/jquery-3.7.1.min.js"></script>
 <script>
-//이건 프로젝트 내부에서 누를 때
+
 var chatroomSeq = 0;
+var readAt = 0;
 var whoAmI = "asker";
+var commonDate = "";
+/*
 if("${dto.asker_seq}" != "${login_user_seq}"){
 	alert("잘못된 접근입니다.");
 	location.href = "/";
 }
+*/
 $(document).ready(function(){
-	if("${result}" == "채팅기록 있음"){
-		chatroomSeq = "${dto.chatroom_seq}";
-		appendChat("${dto.chat}");
+	
+	//현재 url이 ask인가 allask 인가
+	//ask면 바로 랜더링
+	//allask면 대기
+	if(location.pathname = "ask"){
+		if("${result}" == "채팅기록 있음"){
+			chatroomSeq = "${dto.chatroom_seq}";
+			appendChat("${dto.chat}", "${dto.asker_read}");
+			$.ajax({
+				data: {
+					chatroom_seq: chatroomSeq,
+					who_am_i: whoAmI,
+					read_at: readAt
+				},
+				type : "POST",
+				url : "/updatemyread",
+				dataType: 'json',
+				success : function(r){
+					if(r.result == 0){
+						alert("알 수 없는 오류가 발생했습니다");
+					}else{
+						$("#input_my_chat").val("");
+						appendChat(myChat);
+					}
+				}
+			});
+		}
 	}
-	var readAt = 0;
-	function appendChat(allChat){
+	
+	function fillChatInfo(longTitle, projectUrl, mainImagesUrl){
+		$("#project_img").attr("href", mainImagesUrl);
+		$("#project_long_title").html("<a href='"+projectUrl+"'></a>");
+		$("#project_long_title a").text(longTitle);
+	}
+	
+	function appendChat(allChat, read){
 		chatArr = allChat.split("|");
-		console.log(chatArr);
-		let commonDate = "";
 		for(let i = 0; i < chatArr.length - 1; i++){
 			readAt += 1;
 			let chatSplited = chatArr[i].split("]");
@@ -33,6 +65,7 @@ $(document).ready(function(){
 			let chatterNickname = chatSplited[1].substr(1);
 			let chatDateTime = new Date(chatSplited[2].substr(1));
 			let chatContent = chatSplited[3];
+			
 			const options = {
 					  weekday: "long",
 					  year: "numeric",
@@ -41,24 +74,51 @@ $(document).ready(function(){
 					  hour: "numeric",
 					  minute: "numeric"
 					};
+			
 			let chatDateTimeStr = chatDateTime.toLocaleString('ko-KR', options);
 			let chatTimeStr = chatDateTimeStr.substr(chatDateTimeStr.indexOf("요일") + 3);
 			let chatDateStr = chatDateTimeStr.substr(0, chatDateTimeStr.indexOf("요일") + 2);
-			if(chatDateStr != commonDate){
-				commonDate = chatDateStr;
-				$("#chat_list").append("<div class='common_date'>"+"======"+commonDate+"======"+"</div>");
+			
+			if(i == read){
+				$("#chat_list").append("<div style='text-align:center'>(여기까지 읽으셨습니다)</div>");
 			}
-			if(chatterSeq == "${login_user_seq}"){
-				$("#chat_list").append("<div class='my_chat'>"+ chatTimeStr + " " +chatContent + "</div>");
-			}else{
-				$("#chat_list").append("<div class='opponent_chat'>"+chatContent +"</div>");
-			}
+			
+			$("#chat_list").append(createChatForm(chatDateStr, chatTimeStr, chatterSeq, chatContent));
 		}
 	}
 	
+	function clearChatList(){
+		$("#chat_list").html("");
+	}
+	function clearProjectInfo(){
+		$("#project_img").attr("href", "");
+		$("#project_long_title").html("");
+	}
+	
+	function createChatForm(chatDate, chatTime, chatterSeq, chatContent, img, nickname){
+		if(chatDate != commonDate){
+			//채팅에 있는 날짜가 commonDate의 날짜와 다르다면 채팅창에 날짜 넣어주기
+			commonDate = chatDate;
+			$("#chat_list").append("<div class='common_date'>"+"======"+commonDate+"======"+"</div>");
+		}
+		let chatForm = $(".chat_form").clone();
+		if(chatterSeq == "${login_user_seq}"){
+			chatForm.attr("class", "my_chat");
+			chatForm.find(".message").text(chatContent);
+			chatForm.prepend("<div class='time_part' style='display:inline-block'>"+chatTime+"</div>");
+		}else{
+			chatForm.attr("class", "opponent_chat");
+			chatForm.find(".message").text(chatContent);
+			chatForm.find(".sender img").attr("href", img);
+			chatForm.find(".sender span").text(nickname);
+			chatForm.append("<div class='time_part'>"+chatTime+"</div>");
+		}
+		return chatForm;
+	}
 	
 	$("#send_my_chat").on("click", function(){
 		let myChat = myChatPlusInfo($("#input_my_chat").val());	
+		//채팅기록이 없을 경우
 		if(chatroomSeq == 0){
 			$.ajax({
 				data: {
@@ -94,7 +154,12 @@ $(document).ready(function(){
 				url : "/insertmychat",
 				dataType: 'json',
 				success : function(r){
-					$("#input_my_chat").val("");
+					if(r.result == 0){
+						alert("알 수 없는 오류가 발생했습니다");
+					}else{
+						$("#input_my_chat").val("");
+						appendChat(myChat);
+					}
 				}
 			});
 		}
@@ -124,15 +189,28 @@ $(document).ready(function(){
 }
 </style>
 <body>
-<div>
-	<div>
-		<div><a href="/user_profile/${dto.member_url }">${dto.nickname }</a></div>
-		<div>${dto.long_title }</div>
+<div id="chatting_space">
+	<div id="project_info">
+		<img id="project_img">
+		<div id="project_long_title"></div>
 	</div>
 	<div id="chat_list" style="border: 1px black solid">
 	</div>
-	<input type="text" id="input_my_chat">
+	<textarea id="input_my_chat"></textarea>
 	<input type="button" id="send_my_chat" value="보내기">
+	
+	<!-- 채팅 폼 -->
+	<div class="chat_form">
+		<div class="text_part"  style='display:inline-block'>
+			<div class="sender" style='display:inline-block'>
+				<img>
+				<span>
+				</span>
+			</div>
+			<div class="message" style='display:inline-block'>
+			</div>
+		</div>
+	</div>
 </div>
 </body>
 </html>
