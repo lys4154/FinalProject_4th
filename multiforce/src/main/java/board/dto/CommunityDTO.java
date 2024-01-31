@@ -15,6 +15,14 @@ public class CommunityDTO {
     private int del_status;
     private Date del_date;
     private MemberDTO member;
+    boolean LikedByCurrentUser;
+    
+	public boolean isLikedByCurrentUser() {
+		return LikedByCurrentUser;
+	}
+	public void setLikedByCurrentUser(boolean likedByCurrentUser) {
+		LikedByCurrentUser = likedByCurrentUser;
+	}
     
 	public MemberDTO getMember() {
 		return member;

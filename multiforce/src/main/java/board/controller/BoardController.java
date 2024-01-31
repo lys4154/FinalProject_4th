@@ -56,17 +56,23 @@ public class BoardController {
 		
 		List<updateBoardDTO> project_dto = boardService.getAllUpdatePost(project_seq);
 
+		//로그인된 회원이라면
 		if (currentUserObj != null) {
-
+			
+			String currentUserString = (String) session.getAttribute("login_user_seq");
+        	
+			//로그인된 회원 아이디 정수형으로 변환하기
+			int currentUser = Integer.parseInt(currentUserString);
+        	model.addAttribute("loggedin_user", currentUser);
+        	
+        	//후원자인지 true/false 리턴하기 
+        	boolean userIsFunding = boardService.isUserFunding(currentUser, project_seq);
+	        model.addAttribute("userIsFunding", userIsFunding);
+	        
 	        for (updateBoardDTO update : project_dto) {
 
-	        	String currentUserString = (String) session.getAttribute("login_user_seq");
-	        	int currentUser = Integer.parseInt(currentUserString);
+	        	//포스트마다 유저가 좋아요 눌렀는지 true/false 리턴하기
 	            boolean likedByCurrentUser = boardService.isUpdateLikedByUser(update.getUpdate_seq(), currentUser);
-	            boolean userIsFunding = boardService.isUserFunding(currentUser, project_seq);
-
-	            model.addAttribute("userIsFunding", userIsFunding);
-	            model.addAttribute("loggedin_user", currentUser);
 	            update.setLikedByCurrentUser(likedByCurrentUser);
 	        }
 	    }
