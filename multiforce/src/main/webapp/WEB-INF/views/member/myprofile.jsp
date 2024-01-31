@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="/css/member/myprofile.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@350&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400&display=swap" rel="stylesheet">
 
 </head>
 
@@ -37,10 +37,6 @@ $(document).ready(function() {
         }
     };
     
-    // 다른 메뉴 클릭시 border 지우기
-    $(".menu_con").not("#myproject_detail").click(function() {
-        $('.res_con').css('border', 'none');
-    });
 	
 	
 	//자기 소개
@@ -56,13 +52,14 @@ $(document).ready(function() {
 	myDescription();	
 	//프로필 클릭
 	 $("#myprofile_detail").click(function() {
-		 myDescription();
-		 $(".result_count").html('');
-		 setMenuTab("#myprofile_detail", "600", "black");
-		 setMenuTab("#myproject_detail", "400", "grey");
-		 setMenuTab("#funded_detail", "400", "grey");
-		 setMenuTab("#follower_detail", "400", "grey");
-		 setMenuTab("#following_detail", "400", "grey");
+		myDescription();
+		$(".result_count").html('');
+		setMenuTab("#myprofile_detail", "600", "black");
+		setMenuTab("#myproject_detail", "400", "grey");
+		setMenuTab("#funded_detail", "400", "grey");
+		setMenuTab("#follower_detail", "400", "grey");
+		setMenuTab("#following_detail", "400", "grey");
+		$('.res_con').css('border', 'none');
 	    }); //프로필 클릭	 
 	 
 	
@@ -84,7 +81,7 @@ $(document).ready(function() {
 		       		$(".result").append("<div> 등록된 프로젝트가 없습니다. </div>");
 		       	} else {  		       					       		
 		               $(".result_count").html("<div> <span style='color: red;'> " + response.length + "</span> 개의 프로젝트가 있습니다.</div>");
-								   
+	   
 		       			for (var i = 0; i < response.length; i++) {                			
 		       		    // 모금 달성률 계산
 		       		    	var achievementRate = (response[i].collection_amount / response[i].goal_price) * 100;
@@ -92,8 +89,9 @@ $(document).ready(function() {
 		                   // 날짜 포매팅
 		                   var startDate = new Date(response[i].start_date);
 		                   var dueDate = new Date(response[i].due_date);
-		                   var formattedStart = startDate.getFullYear() + ". " + (startDate.getMonth() + 1) + ". " + startDate.getDate();
-		                   var formattedDue = dueDate.getFullYear() + ". " + (dueDate.getMonth() + 1) + ". " + dueDate.getDate();			
+		                   var formattedStart = startDate.getFullYear() + "-" + (startDate.getMonth() + 1) + "-" + startDate.getDate();
+		                   var formattedDue = dueDate.getFullYear() + "-" + (dueDate.getMonth() + 1) + "-" + dueDate.getDate();	
+		                   
 		                   
 		                   $(".result").append(
 	                		    "<div class=\"pro_con\">" +
@@ -101,13 +99,14 @@ $(document).ready(function() {
 			                	        "<div> <a href=\"" + response[i].url + "\"> <img src=\"" + response[i].main_images_url + "\" class=\"pro_img\"></a> </div>" +
 		                	        "</div>" +
 		                	        "<div class=\"pro_right\">" +
-			                	        "<div> <strong> [ <a href=\"" + response[i].url + "\">" + response[i].long_title + " ]</strong></a> </div>" +
-			                	        "<div id=\"pro_category\"> 카테고리 : " + response[i].category + "</div>" +
-			                	        "<div> 시작일 " + formattedStart + "</div>" +
-			                	        "<div> 종료일  " + formattedDue + "<span style='color: #ff4a55'> (D-" + response[i].term + ")</span></div>" +
+		                	        	"<div class=\"pro_title\">" +
+			                	       		"<div class=\"pro_category\"> 카테고리 " + response[i].category + "</div>" +
+				                	        "<div class=\"pro_longtitle\">  <a href=\"" + response[i].url + "\">" + response[i].long_title + "  </a> </div>" +
+			                	        "</div>" +
+			                	        "<div> 기간 " + formattedStart + " ~ " + formattedDue + "<span id=\"pro_day\"> (D-" + response[i].term + ")</span></div>" +
 			                	        "<div> 목표금액  " + response[i].goal_price.toLocaleString() + "원</div>" +
 			                	        "<div> 현재모금액  " + response[i].collection_amount.toLocaleString() + "원" +
-			                	        "<span style='color: #ff4a55'> (" + Math.round(achievementRate) + "% 달성) </span></div>" +
+			                	        "<span id=\"pro_goal\"> (" + Math.round(achievementRate) + "% 달성) </span></div>" +
 		                	        "</div>" +
 		                	    "</div>" 	                	    
 		                   );
@@ -150,9 +149,9 @@ $(document).ready(function() {
 	                           var dueDate = new Date(response[i].due_date);
 	                           var deliDate = new Date(response[i].delivery_date);
 	                           
-	                           var formattedFund = fundDate.getFullYear() + ". " + (fundDate.getMonth() + 1) + ". " + fundDate.getDate();
-	                           var formattedPay = dueDate.getFullYear() + ". " + (dueDate.getMonth() + 1) + ". " + (dueDate.getDate() + 1);
-	                           var formattedDeli = deliDate.getFullYear() + ". " + (deliDate.getMonth() + 1) + ". " + deliDate.getDate();
+	                           var formattedFund = fundDate.getFullYear() + "-" + (fundDate.getMonth() + 1) + "-" + fundDate.getDate();
+	                           var formattedPay = dueDate.getFullYear() + "-" + (dueDate.getMonth() + 1) + "-" + (dueDate.getDate() + 1);
+	                           var formattedDeli = deliDate.getFullYear() + "-" + (deliDate.getMonth() + 1) + "-" + deliDate.getDate();
 	
 	                           $(".result").append(
                         			"<div class=\"pro_con\">" +
@@ -161,11 +160,11 @@ $(document).ready(function() {
 	                        		    "</div>" +
 	                        		    "<div class=\"pro_right\">" +
 	                        	       		"<div class=\"fund_info\"> <span>후원일 " + formattedFund + "</span> | <span> 후원번호 " + response[i].fund_seq + "</span> </div>" +
-		                        	        "<div> <strong> [ <a href=\"" + response[i].url + "\">" + response[i].long_title + " ]</strong></a> </div>" +
+		                        	        "<div class=\"pro_longtitle\">  <a href=\"" + response[i].url + "\">" + response[i].long_title + "  </a> </div>" +
 		                        	        "<div class=\"pay_info\">"+
 			                        	        "<div> " + response[i].fund_option + " </div>" +
-			                        	        "<div> <span class=\"fund_pay\"> 결제예정일 " + formattedPay + " | " + response[i].price.toLocaleString() + "원 결제 예정 </span> </div>" +
-			                        	        "<div> " + formattedDeli + " 배송 예정</div>" +
+			                        	        "<div> <span class=\"fund_pay\"> 후원 성공시 " + formattedPay + " 결제 예정 </span> </div>" +
+			                        	        "<div class=\"amount\"> " + response[i].price.toLocaleString() + "원 결제 예정 </div>" +
 		                        	        "</div>"+
 		                        	    "</div>" +
 		                        	"</div>"
@@ -217,8 +216,7 @@ $(document).ready(function() {
 		                            "<div> 팔로워 " + followerCount + " | 올린 프로젝트 " + projectCount + " </div>" +
 	                            "</div>" +
 	                            "<div class=\"follo_btn\">" +
-		                            "<button class=\"follower_btn\" data-member_seq=" + memberSeq + ">" +
-		                          	  "<img src=\"for_css/follow_btn.png\" alt=\"팔로우\" id=\"follo_img_btn\"> </button> </div>" +
+		                            "<button class=\"follower_btn\" data-member_seq=" + memberSeq + "> + &nbsp; 팔로우 </button> </div>" +
 	                            "</div>" +
                            "</div>"
                          );
@@ -312,15 +310,26 @@ $(document).ready(function() {
 	                        }    	                        
 	
 	                        $(".result").append(
-	                            "<div> <a href=\"" + response.myFollowing[i].member_url + "\"> <img src=\"" + response.myFollowing[i].profile_img + "\"> </a> </div>" +
-	                            "<div> <a href=\"" + response.myFollowing[i].member_url + "\"> " + response.myFollowing[i].nickname + " </a> </div>" +
-	                            "<div>" + description + " </div>" +
-	                            "<div> 팔로워 : " + followerCount + " </div>" +
-	                            "<div> 올린 프로젝트 : " + projectCount + " </div>" +
-	                            "<button class='following_btn' data-member_seq='" + memberSeq + "'> 팔로잉 - 클릭시 취소</button> <hr>"
+                        		"<div class=\"follo_con\">" +
+                        			"<div class=\"follo_left\">" +
+			                            "<div> <a href=\"" + response.myFollowing[i].member_url + "\"> <img src=\"" + response.myFollowing[i].profile_img + "\" class=\"follo_img\"> </a> </div>" +
+		                            "</div>" +
+		                            "<div class=\"follo_right\">" +
+			                            "<div class=\"follo_nick\" <a href=\"" + response.myFollowing[i].member_url + "\"> " + response.myFollowing[i].nickname + " </a> </div>" +
+			                            "<div class=\"follo_desc\">" + description + " </div>" +
+			                            "<div> 팔로워 " + followerCount + " | 올린 프로젝트 " + projectCount + " </div>" +
+		                            "</div>" +
+		                            "<div class=\"follo_btn\">" +
+			                            "<button class='following_btn' data-member_seq='" + memberSeq + "'> + &nbsp; 팔로우</button>" +
+		                            "</div>" +
+	                            "</div>"
 	                        );
+	                         if (i < response.myFollowing.length - 1) {
+	                             $(".result").append("<hr class=\"follo_hr\">");
 	                    }
 	                }
+                    checkResultContent();
+                   }
 	
 	            },
 	            error: function(error) {
@@ -374,7 +383,7 @@ $(document).ready(function() {
 
 
 <body>
-<div class="big_con" >
+<div class="out_con" >
 	<div class="top_con" ><!-- 상단 회원정보 고정 -->
 		<div><img alt="프로필 이미지" src="${loginMember.profile_img}"  id="profile_img"></div>
 		<div class="nick_con">

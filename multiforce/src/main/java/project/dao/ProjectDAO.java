@@ -33,7 +33,7 @@ public interface ProjectDAO {
 	List<ProjectDTO> getAllProjects();
 
 	//후원한 프로젝트 페이지 -> 후원 내역 상세
-	ProjectDTO getProjectDetail(int projectSeq);
+	ProjectMemberDTO getProjectDetail(int projectSeq);
 
 	//only 승인
 	List<ProjectDTO> getAllApprovedProjects();

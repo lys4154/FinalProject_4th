@@ -1,0 +1,42 @@
+@charset "UTF-8";
+
+*{
+	font-family: 'Noto Sans KR', sans-serif;
+	color: #5c5c5c;
+}
+
+a{
+	text-decoration: none;
+	color: black;
+}
+
+/* 전체 div*/
+.out_con {
+	width: 1040px;
+	margin:20px auto;
+	padding: 10px 10px;
+	font-size: 15px;
+	align-items: center;
+}
+img{
+	width: 160px;
+	height: 140px;
+	object-fit: cover;	
+}
+
+/* 상단 프로젝트 정보*/
+.top{
+	display: flex;
+	align-items: center;
+    margin-bottom: 20px;
+}
+.top_right{
+	padding-left: 20px;
+	line-height: 26px;	
+}
+.long_title{
+	font-size: 22px;
+	font-weight: 600;
+	margin-bottom: 10px;	
+
+}

@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 import com.oracle.wls.shaded.org.apache.regexp.recompile;
 
 import jakarta.servlet.http.HttpSession;
+import member.dto.MemberDTO;
 import project.dao.ProjectDAO;
 import project.dto.ProjectDTO;
+import project.dto.ProjectMemberDTO;
 
 @Service
 public class ProjectService {
@@ -67,7 +69,7 @@ public class ProjectService {
 	}
 
 	//후원한 프로젝트 페이지 -> 후원 내역 상세
-	public ProjectDTO getProjectDetail(int projectSeq) {
+	public ProjectMemberDTO getProjectDetail(int projectSeq) {
 		return projectDao.getProjectDetail(projectSeq);
 	}
 
@@ -165,6 +167,8 @@ public class ProjectService {
 	public void insertFundingPlan(ProjectDTO fundingPlan) {
         projectDao.insertFundingPlan(fundingPlan);
     }
+
+
 
 
 

@@ -97,8 +97,11 @@
 
 
 <!-- 후원한 프로젝트 페이지 -> 후원 내역 상세 -->	
-<select id="getProjectDetail" parameterType="int" resultType="projectdto">
-	select * from project where project_seq=#{projectSeq}
+<select id="getProjectDetail" parameterType="int"  >
+	SELECT project.*, member_info.nickname
+	FROM project
+	JOIN member_info ON project.member_seq = member_info.member_seq
+	WHERE project.project_seq = #{projectSeq}
 </select>	
 
 <select id="getMember_seq" parameterType="String" resultType="int">
