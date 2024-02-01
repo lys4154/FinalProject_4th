@@ -46,10 +46,9 @@ $(document).ready(function(){
 							+r[i].project_seq+"'>"+r[i].message + "</a><input type='button' value='삭제' class='notification_delete_btn' id='delete_"
 							+r[i].notification_seq+"'><span> 읽음 여부: "+r[i].is_read+"</span></div>");
 					if(i == r.length - 1){
-						
+						lastNotificationSeq = r[r.length - 1].notification_seq;
 					}
 				}
-				lastNotificationSeq = r[r.length - 1].notification_seq;
 				addNotiDelBtnEvent();
 				addNotiEvent();
 				$("#notification_no_read_count").text(noReadCount);
@@ -229,7 +228,13 @@ $(document).ready(function(){
 	
 	// ============================ 대화 =====================================
 	$("#all_talk_btn").on("click", function(e){
-		$("#talk_login_user_seq").val("${login_user_seq}");
+		if("${login_user_seq}" != ""){
+			$("#talk_login_user_seq").val("${login_user_seq}");
+		}else{
+			e.preventDefault();
+			alert("로그인이 필요한 서비스입니다.");
+		}
+		
 	})
 
 });
@@ -244,7 +249,7 @@ $(document).ready(function(){
 			<div id="header_notification_list" style="display:none"></div>
 		</div>
 		<div>
-			<form method="post" action="/talk" style="display:inline-block">
+			<form method="post" action="/allask" style="display:inline-block">
 				<input type="hidden" id="talk_login_user_seq" name="login_user_seq">
 				<input type="submit" value="대화" id="all_talk_btn"> 
 			</form>

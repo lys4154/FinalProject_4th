@@ -1,5 +1,9 @@
 package member.dto;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+
 import org.springframework.stereotype.Component;
 
 @Component
@@ -13,11 +17,42 @@ public class AskDTO {
 	int collector_read;
 	int asker_read;
 	String long_title;
+	String url;
 	String nickname;
 	String profile_img;
 	String member_url;
+	String main_images_url;
+	String last_chat_date;
 	
+	public String getLast_chat_date() {
+		return last_chat_date;
+	}
+	public void setLast_chat_date(LocalDateTime last_chat_date) {
+		int seconds = (int)ChronoUnit.SECONDS.between(last_chat_date, LocalDateTime.now());
+		if(seconds / 60 < 1) {
+			this.last_chat_date = seconds + "초 전";
+		}else if(seconds / (60 * 60) < 1) {
+			this.last_chat_date = seconds/60 + "분 전";
+		}else if(seconds / (60 * 60 * 24) < 1) {
+			this.last_chat_date = seconds/(60 * 60)  + "시간 전";
+		}else {
+			this.last_chat_date = ChronoUnit.DAYS.between(last_chat_date, LocalDateTime.now()) + "일 전";
+		}
+		
 	
+	}
+	public String getMain_images_url() {
+		return main_images_url;
+	}
+	public void setMain_images_url(String main_images_url) {
+		this.main_images_url = main_images_url;
+	}
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
+	}
 	public String getProfile_img() {
 		return profile_img;
 	}
@@ -95,8 +130,10 @@ public class AskDTO {
 		return "AskDTO [chatroom_seq=" + chatroom_seq + ", project_seq=" + project_seq + ", collector_seq="
 				+ collector_seq + ", asker_seq=" + asker_seq + ", chat=" + chat + ", last_chat=" + last_chat
 				+ ", collector_read=" + collector_read + ", asker_read=" + asker_read + ", long_title=" + long_title
-				+ ", nickname=" + nickname + ", profile_img=" + profile_img + ", member_url=" + member_url + "]";
+				+ ", url=" + url + ", nickname=" + nickname + ", profile_img=" + profile_img + ", member_url="
+				+ member_url + ", main_images_url=" + main_images_url + ", last_chat_date=" + last_chat_date + "]";
 	}
+
 	
 	
 }

@@ -3,7 +3,7 @@
 <mapper namespace="member.dao.AskDAO">
 <select id="selectChatRoom" resultType="member.dto.AskDTO">
 select chatroom_seq, a.project_seq, collector_seq,asker_seq,chat,last_chat,collector_read,
-asker_read,long_title,nickname, profile_img, member_url
+asker_read,long_title,nickname, profile_img, member_url, url, main_images_url
 from project_ask a 
 join project p on a.project_seq = p.project_seq 
 join member_info m on a.collector_seq = m.member_seq
@@ -12,10 +12,10 @@ and collector_seq = #{collector_seq} and asker_seq = #{asker_seq}
 </select>
 <insert id="insertChat">
 insert into project_ask(project_seq, collector_seq, asker_seq, chat, last_chat, asker_read)
-values (#{project_seq}, #{collector_seq}, #{asker_seq}, #{my_chat}, #{my_chat}, 1)
+values (#{project_seq}, #{collector_seq}, #{asker_seq}, #{my_chat}, #{last_chat}, 1)
 </insert>
 <update id="updateChat">
-update project_ask set chat = concat(chat, #{my_chat}), last_chat = #{my_chat},  
+update project_ask set chat = concat(chat, #{my_chat}), last_chat = #{last_chat}, last_chat_date = now(),
 	<choose>
 		<when test="who_am_i == 'asker'">asker_read = #{read_at}</when>
 		<when test="who_am_i == 'collector'"> collector_read = #{read_at} </when>
@@ -30,4 +30,27 @@ update project_ask set
 	</choose>
 where chatroom_seq = #{chatroom_seq}; 
 </update>
+<select id="selectColChatRoom">
+select chatroom_seq, last_chat, nickname, long_title, main_images_url, last_chat_date from project_ask a
+join project p on a.project_seq = p.project_seq 
+join member_info m on a.asker_seq = m.member_seq
+where collector_seq = #{login_user_seq}
+</select>
+<select id="selectAskerChatRoom">
+select chatroom_seq, last_chat, nickname, long_title, main_images_url, last_chat_date from project_ask a
+join project p on a.project_seq = p.project_seq 
+join member_info m on a.collector_seq = m.member_seq
+where asker_seq = #{login_user_seq}
+</select>
+<select id="findChatroom">
+select chatroom_seq, a.project_seq, collector_seq,asker_seq,chat,last_chat,collector_read,
+asker_read,long_title,nickname, profile_img, member_url, url, main_images_url
+from project_ask a
+join project p on a.project_seq = p.project_seq 
+<choose>
+	<when test="who_am_i == 'asker'">join member_info m on a.collector_seq = m.member_seq</when>
+	<when test="who_am_i == 'collector'">join member_info m on a.asker_seq = m.member_seq</when>
+</choose>
+where chatroom_seq = #{chatroom_seq}
+</select>
 </mapper>
