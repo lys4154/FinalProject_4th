@@ -315,7 +315,7 @@ $(document).ready(function() {
 			                            "<div> <a href=\"" + response.myFollowing[i].member_url + "\"> <img src=\"" + response.myFollowing[i].profile_img + "\" class=\"follo_img\"> </a> </div>" +
 		                            "</div>" +
 		                            "<div class=\"follo_right\">" +
-			                            "<div class=\"follo_nick\" <a href=\"" + response.myFollowing[i].member_url + "\"> " + response.myFollowing[i].nickname + " </a> </div>" +
+			                            "<div class=\"follo_nick\"> <a href=\"" + response.myFollowing[i].member_url + "\"> " + response.myFollowing[i].nickname + " </a> </div>" +
 			                            "<div class=\"follo_desc\">" + description + " </div>" +
 			                            "<div> 팔로워 " + followerCount + " | 올린 프로젝트 " + projectCount + " </div>" +
 		                            "</div>" +

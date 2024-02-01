@@ -118,7 +118,6 @@ public class ProfileController {
 		int memberSeq = (int)session.getAttribute("login_user_seq");
 
 		List<Map<String, Object>> ongoingFunded = fundingservice.getFunded(memberSeq);	//후원 진행중
-		System.out.println(ongoingFunded);
 		return ongoingFunded;    	
     }
 	
@@ -248,7 +247,6 @@ public class ProfileController {
     Map<String, Object> fundedMembersInfo(HttpSession session) { 
     	
 		int memberSeq = (int)session.getAttribute("login_user_seq");
-		System.out.println(memberSeq);
 		
 		List<FundingDTO> ongoingFunded = fundingservice.ongoingFunded(memberSeq);	//후원 진행중
 		if(ongoingFunded.size() != 0 ) {
@@ -455,6 +453,7 @@ public class ProfileController {
     							@RequestParam("priceInput") int price,
 					            @RequestParam("longTitleInput") String longTitle,
 					            @RequestParam("dueDateInput") String dueDate,
+					            @RequestParam("creatorInput") String creator,
 					            @RequestParam("bundleDataInput") String bundleData,
 					            Model model ) throws JsonMappingException, JsonProcessingException {
     	
@@ -465,6 +464,7 @@ public class ProfileController {
 
         model.addAttribute("fundSeq", fundSeq);
         model.addAttribute("price", price);
+        model.addAttribute("creator", creator);
         model.addAttribute("dueDate", dueDate);
         model.addAttribute("longTitle", longTitle);
         model.addAttribute("bundle", bundleDataList);
@@ -484,9 +484,7 @@ public class ProfileController {
         
 		List<Integer> dibsList = dibsservice.dibsList(memberSeq); //해당 회원의 관심목록
 		if (dibsList.size() != 0) {
-			System.out.println(dibsList);
 			List<ProjectDTO> myDibsProject = projectservice.myDibsProject(dibsList); //해당 프로젝트 DTO
-			System.out.println(myDibsProject);
 			
 			mv.addObject("myDibs",myDibsProject);		
 			return mv;
