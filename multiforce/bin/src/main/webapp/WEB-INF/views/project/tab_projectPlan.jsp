@@ -131,4 +131,5 @@ $('.item').summernote({
 <br>
 <input type="button" id="saveProjectPlan" value="저장하기">
 </body>
+<%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </html>

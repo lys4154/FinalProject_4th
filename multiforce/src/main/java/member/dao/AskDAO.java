@@ -13,4 +13,6 @@ public interface AskDAO {
 	int insertChat(int project_seq, int collector_seq, int asker_seq, String my_chat);
 
 	int updateChat(String who_am_i, String my_chat, int chatroom_seq, int read_at);
+
+	int updateMyRead(String who_am_i, int chatroom_seq, int read_at);
 }

@@ -58,6 +58,6 @@
         프로젝트 계획 내용
     </div>
 </div>
-
 </body>
+<%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </html>

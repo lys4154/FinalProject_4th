@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import board.dto.BoardDTO;
 import board.dto.CommunityDTO;
 import board.dto.UpdateReplyDTO;
+import board.dto.updateBoardDTO;
 import board.service.BoardService;
 import jakarta.servlet.http.HttpSession;
 import project.dto.ProjectDTO;
@@ -208,11 +209,37 @@ public class ProjectController {
 	//프로젝트 상세 내 커뮤니티
 	@GetMapping("project_detail/community/{project_seq}")
 	public String ShowProjectCommunity(@PathVariable("project_seq") int project_seq,
-			Model model) {
+			Model model,HttpSession session) {
+
+		//현재 유저 세션 가져오기
+		Object currentUserObj = session.getAttribute("login_user_seq");
 		
 		ProjectDTO project_info = projectService.getProjectDetail(project_seq);
 		List<CommunityDTO> com_post = boardService.getAllCommPost(project_seq);
+		
+		
+		//로그인된 회원이라면
+		if (currentUserObj != null) {
+			
+			String currentUserString = (String) session.getAttribute("login_user_seq");
+        	
+			//로그인된 회원 아이디 정수형으로 변환하기
+			int currentUser = Integer.parseInt(currentUserString);
+        	model.addAttribute("loggedin_user", currentUser);
+        	
+        	//후원자인지 true/false 리턴하기 
+        	boolean userIsFunding = boardService.isUserFunding(currentUser, project_seq);
+	        model.addAttribute("userIsFunding", userIsFunding);
+	        
+	        for (CommunityDTO community : com_post) {
 
+	        	//포스트마다 유저가 좋아요 눌렀는지 true/false 리턴하기
+	            boolean likedByCurrentUser = boardService.isUpdateLikedByUser(community.getPro_board_seq(), currentUser);
+	            community.setLikedByCurrentUser(likedByCurrentUser);
+	        }
+	    }
+
+		
 		model.addAttribute("community_posts", com_post);
 		model.addAttribute("projects", project_info);
 		

@@ -16,18 +16,10 @@ values (#{project_seq}, #{collector_seq}, #{asker_seq}, #{my_chat}, #{my_chat}, 
 </insert>
 <update id="updateChat">
 update project_ask set chat = concat(chat, #{my_chat}), last_chat = #{my_chat},  
-	<choose>
-		<when test="who_am_i == 'asker'">asker_read = #{read_at}</when>
-		<when test="who_am_i == 'collector'"> collector_read = #{read_at} </when>
-	</choose>
-where chatroom_seq = #{chatroom_seq}; 
-</update>
-<update id="updateMyRead">
-update project_ask set  
-	<choose>
-		<when test="who_am_i == 'asker'">asker_read = #{read_at}</when>
-		<when test="who_am_i == 'collector'"> collector_read = #{read_at} </when>
-	</choose>
+<choose>
+<when test="who_am_i == 'asker'">asker_read = #{read_at}</when>
+<when test="who_am_i == 'collector'"> collector_read = #{read_at} </when>
+</choose>
 where chatroom_seq = #{chatroom_seq}; 
 </update>
 </mapper>

@@ -24,8 +24,16 @@
         AND member_seq = #{loggedInUserId}
     </select>
     
-    <select id="getUpdatePostByUpdateSeq" parameterType="board.dto.UpdateReplyDTO">
+    <select id="isUserFunding" resultType="boolean" parameterType="funding.dto.FundingDTO">
+        SELECT COUNT(*) > 0 FROM funding where member_seq = #{member_seq} AND project_seq = #{project_seq}
+    </select>
+    
+    <select id="getUpdatePostByUpdateSeq" parameterType="board.dto.updateBoardDTO">
         SELECT * from update_board where update_seq = #{update_seq}
+    </select>
+    
+    <select id="getUpdateCommentByReplySeq" parameterType="board.dto.UpdateReplyDTO">
+        SELECT * from update_reply where update_reply_seq = #{update_reply_seq}
     </select>
     
     <insert id="insertUpdateLike" parameterType="board.dto.UpdateLikeDTO">
@@ -41,6 +49,12 @@
     <update id="deleteUpdatePost" parameterType="board.dto.updateBoardDTO">
         UPDATE update_board SET del_status=true, del_date = #{del_date} 
         WHERE update_seq = #{update_seq}
+          
+    </update>
+    
+    <update id="deleteUpdateComment" parameterType="board.dto.UpdateReplyDTO">
+        UPDATE update_reply SET del_status=true, del_date = #{del_date} 
+        WHERE update_reply_seq = #{update_reply_seq}
           
     </update>
     
@@ -63,7 +77,7 @@
 	</select>
 	
 	<select id="getCommentsByUpdateSeq" resultType="board.dto.UpdateReplyDTO">
-	    select * from update_reply where update_seq = #{update_seq}
+	    select * from update_reply where update_seq = #{update_seq} AND del_status=false
 	</select>
 	
 	<select id="getCommCommentsByBoardSeq" resultType="board.dto.CommunityDTO">
