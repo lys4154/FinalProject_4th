@@ -57,7 +57,7 @@ input::placeholder {
 /* 프로젝트 목록*/
 .ongoing_out, .success_out, .cancel_out{
 	padding: 10px auto;
-	margin: 10px 5px 50px 5px;
+	margin: 10px 5px 40px 5px;
 	align-items: center;
 	border: 1px solid #cfcfcf;
 	border-radius: 5px;
@@ -71,12 +71,12 @@ input::placeholder {
 .status_count{
 	
 }
-.all_funded img{
+img{
 	width: 160px;
 	height: 140px;
 	object-fit: cover;	
 }
-.flex{
+.flex, .result_con{
 	display: flex;
 	margin: 5px; 
 }
@@ -106,6 +106,19 @@ input::placeholder {
 .amount{
 	color: #ff4a55;
 }
+.result_con{
+	align-items: center;
+	border: 1px solid #cfcfcf;
+	border-radius: 5px;
+	padding: 10px 15px;
+	margin: 20px 10px;	
+}
+.search_result{
+	margin-top: 20px;
+}
+.result{
+	margin:30px auto;
+}
 
 
 
@@ -127,7 +140,7 @@ input::placeholder {
 	font-weight: 600;
 	letter-spacing: 2px;
 	background-color: white;
-	border: 1px solid #a3a1a1;
+	border: 1px solid #cfcfcf;
 	border-radius: 5px;
 	cursor:pointer;
 }

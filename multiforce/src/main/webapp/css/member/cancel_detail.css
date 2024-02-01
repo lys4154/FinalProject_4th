@@ -1,0 +1,25 @@
+@charset "UTF-8";
+
+*{
+	font-family: 'Noto Sans KR', sans-serif;
+	color: #5c5c5c;
+}
+
+a{
+	text-decoration: none;
+	color: black;
+}
+
+/* 전체 div*/
+.out_con {
+	width: 1040px;
+	margin:20px auto;
+	padding: 10px 10px;
+	font-size: 15px;
+	align-items: center;
+}
+img{
+	width: 180px;
+	height: 150px;
+	object-fit: cover;	
+}
