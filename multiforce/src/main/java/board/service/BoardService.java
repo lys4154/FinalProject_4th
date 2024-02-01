@@ -120,6 +120,37 @@ public class BoardService {
 	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("게시물 좋아요 실패");
 	    }
 	}
+	
+	//커뮤니티 좋아요 기능 
+	public ResponseEntity<String> toggleCommunityLike(int pro_board_seq, int loggedInUserId) {
+	    try {
+	        boolean isLiked = checkIfCommunityLiked(pro_board_seq, loggedInUserId);
+
+	        if (isLiked) {
+
+	        	performCommUnlikeAction(pro_board_seq, loggedInUserId);
+	          
+	            return ResponseEntity.ok("게시물 좋아요 취소 성공");
+	        } else {
+
+	            performCommLikeAction(pro_board_seq, loggedInUserId);
+	            return ResponseEntity.ok("게시물 좋아요 성공");
+	        }
+
+	    } catch (Exception e) {
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("게시물 좋아요 실패");
+	    }
+	}
+	private void performCommUnlikeAction(int pro_board_seq, int loggedInUserId) {
+			boardDAO.deleteCommunityLike(pro_board_seq, loggedInUserId);
+		
+	}
+	public void performCommLikeAction(int pro_board_seq, int loggedInUserId) {
+		  
+		   
+        boardDAO.insertCommunityLike(pro_board_seq, loggedInUserId);
+    
+}
 	private void performUnlikeAction(int updateSeq, int loggedInUserId) {
 			boardDAO.deleteUpdateLike(updateSeq, loggedInUserId);
 		
@@ -135,6 +166,13 @@ public class BoardService {
 	public boolean checkIfUpdateLiked(int updateSeq, int loggedInUserId) {
 	    
 	    boolean isLiked = boardDAO.checkIfUpdateLikedByUser(updateSeq, loggedInUserId);
+
+	    return isLiked;
+	}
+	//커뮤니티 좋아요 눌렀는지
+	public boolean checkIfCommunityLiked(int pro_board_seq, int loggedInUserId) {
+	    
+	    boolean isLiked = boardDAO.checkIfCommunityLikedByUser(pro_board_seq, loggedInUserId);
 
 	    return isLiked;
 	}
@@ -172,6 +210,33 @@ public class BoardService {
 	public void deleteUpdateComment(int update_reply_seq, LocalDateTime del_date) {
 		boardDAO.deleteUpdateComment(update_reply_seq, del_date);
 		
+	}
+
+	public boolean isCommunityLikedByUser(int pro_board_seq, int currentUser) {
+
+		return boardDAO.isCommunityLikedByUser(pro_board_seq, currentUser);
+	}
+
+	public int getCommLikeCount(int pro_board_seq) {
+		return boardDAO.getCommLikeCount(pro_board_seq);
+	}
+
+	public CommunityDTO getCommunityPostByBoardSeq(int pro_board_seq) {
+		return boardDAO.getCommunityPostByBoardSeq(pro_board_seq);
+	}
+
+	public void deleteCommunityPost(int pro_board_seq, LocalDateTime del_date) {
+		boardDAO.deleteCommunityPost(pro_board_seq, del_date);
+		
+	}
+
+	public CommunityDTO getCommunityCommentByReplySeq(int pro_board_seq) {
+		System.out.println("COMMENT ID:"+pro_board_seq);
+		return boardDAO.getCommunityCommentByReplySeq(pro_board_seq);
+	}
+
+	public void deleteCommunityComment(int pro_board_seq, LocalDateTime del_date) {
+		boardDAO.deleteCommunityComment(pro_board_seq, del_date);
 	}
 
 	
