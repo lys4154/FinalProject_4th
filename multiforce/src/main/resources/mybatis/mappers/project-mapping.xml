@@ -104,21 +104,22 @@
 	WHERE project.project_seq = #{projectSeq}
 </select>	
 
+<!-- tab_info저장 -->
 <select id="getMember_seq" parameterType="String" resultType="int">
 	select member_seq from member_info where member_id=#{member_id};
 </select> 
 
-<!-- tab_info저장 -->
 <insert id="insertProject" parameterType="project.dto.ProjectDTO">
  INSERT INTO project (member_seq, long_title, short_title, sub_title, main_images_url, url, category)
  VALUES (#{member_seq}, #{long_title}, #{short_title}, #{sub_title}, #{main_images_url}, #{url}, #{category})
 </insert>
 
 <!-- tab_fundingPlan 저장 -->
-<insert id="insertFundingPlan" parameterType="java.util.Map">
-    INSERT INTO funding (start_date, due_date, goal_price)
-    VALUES (#{start_date}, #{due_date}, #{goal_price})
-</insert>
+<update id="insertFundingPlan" parameterType="project.dto.ProjectDTO">
+    UPDATE project
+    SET start_date = #{start_date}, due_date = #{due_date}, goal_price = #{goal_price}
+    WHERE project_seq = #{project_seq};
+</update>
 
 <!-- 선물저장(Bundle) -->
 <select id="getProject_seq" parameterType="String" resultType="int">
