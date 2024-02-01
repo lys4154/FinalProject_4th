@@ -103,7 +103,32 @@ public class BoardController {
 	
 	return "redirect:update/view/"+dto.getProject_seq();
 	}
+	//커뮤니티 글 삭제
+	@PostMapping("delete_community_post")
+	public ResponseEntity<String> deleteCommunityPost(@RequestParam int pro_board_seq, HttpSession session) {
+		int current_user = 0;
+		LocalDateTime del_date = LocalDateTime.now();
 
+
+		
+		try {
+	        String loggedInUserId = (String) session.getAttribute("login_user_seq");
+	        current_user = Integer.parseInt(loggedInUserId);
+	        //여기 작업중
+
+	        CommunityDTO communityPost = boardService.getCommunityPostByBoardSeq(pro_board_seq);
+
+	        if (communityPost != null && current_user == communityPost.getMember_seq()) {
+//		        	System.out.println("같은사람 맞음");
+	        	boardService.deleteCommunityPost(pro_board_seq, del_date);
+	            return new ResponseEntity<>("삭제 성공", HttpStatus.OK);
+	        } else {
+	            return new ResponseEntity<>("삭제 권한이 없습니다", HttpStatus.FORBIDDEN);
+	        }
+	    } catch (Exception e) {
+	        return new ResponseEntity<>("삭제 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
+	}
 	//업데이트 댓글 삭제
 	@PostMapping("delete_update_post")
 	public ResponseEntity<String> deleteUpdatePost(@RequestParam int update_seq, HttpSession session) {
@@ -151,6 +176,32 @@ public class BoardController {
 	        }
 	    } catch (Exception e) {
 //	    	e.printStackTrace();
+	        return new ResponseEntity<>("삭제 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
+	}
+	@PostMapping("delete_community_reply")
+	public ResponseEntity<String> deleteCommunityComment(@RequestParam int pro_board_seq, HttpSession session) {
+		int current_user = 0;
+		LocalDateTime del_date = LocalDateTime.now();
+		
+		try {
+	        String loggedInUserId = (String) session.getAttribute("login_user_seq");
+	        
+	        current_user = Integer.parseInt(loggedInUserId);
+	        
+	        //작업중 여기
+	        CommunityDTO CommunityComment = boardService.getCommunityCommentByReplySeq(pro_board_seq);
+	   
+	        System.out.println(current_user+" / "+CommunityComment.getMember_seq());
+	        if (CommunityComment != null && current_user == CommunityComment.getMember_seq()) {
+	        	
+	        	boardService.deleteCommunityComment(pro_board_seq, del_date);
+	            return new ResponseEntity<>("삭제 성공", HttpStatus.OK);
+	        } else {
+	            return new ResponseEntity<>("삭제 권한이 없습니다", HttpStatus.FORBIDDEN);
+	        }
+	    } catch (Exception e) {
+	    	//e.printStackTrace();
 	        return new ResponseEntity<>("삭제 실패", HttpStatus.INTERNAL_SERVER_ERROR);
 	    }
 	}
@@ -227,19 +278,35 @@ public class BoardController {
 		//커뮤니티 댓글 달기 POST
 		@PostMapping("communtiy_comment")
 		public String InsertCommunityComment(@RequestParam String comment, 
-		        @RequestParam int board_seq) {
+		        @RequestParam int board_seq, @RequestParam int project_seq, HttpSession session) {
 		    
-		    int tmpUser = 1;
-		    int tmpProject = 3;
+			
+			// post_id = project_seq
+			int current_user = 0;
+			String loggedInUserId = (String) session.getAttribute("login_user_seq");
+			current_user = Integer.parseInt(loggedInUserId);
+			
+			boolean userIsFunding = boardService.isUserFunding(current_user, project_seq);
+			
+
+	
+		    //NOT NULL이라 임시로 카테고리 저장
 		    String tmpCategory = "cheer";
+		    
+		    //후원하는게 맞으면 댓글 진행 
 		    CommunityDTO reply = new CommunityDTO();
-		    reply.setMember_seq(tmpUser);
-		    reply.setParent_seq(board_seq);
-		    reply.setProject_seq(tmpProject);
-		    reply.setCategory(tmpCategory);
-		    reply.setContent(comment);
-		    reply.setDate(new Date()); 
-		    boardService.insertCommunityReply(reply); 
+		    if(userIsFunding == true ) {
+				
+		    	reply.setMember_seq(current_user);
+			    reply.setParent_seq(board_seq);
+			    reply.setProject_seq(project_seq);
+			    reply.setCategory(tmpCategory);
+			    reply.setContent(comment);
+			    reply.setDate(new Date()); 
+			    boardService.insertCommunityReply(reply); 
+			}
+		    
+		    
 
 		    return "redirect:project_detail/"+board_seq;
 		}

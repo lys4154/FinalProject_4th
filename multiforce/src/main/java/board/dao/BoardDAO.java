@@ -64,6 +64,24 @@ public interface BoardDAO {
 
 	void deleteUpdateComment(int update_reply_seq, LocalDateTime del_date);
 
+	boolean isCommunityLikedByUser(int pro_board_seq, int currentUser);
+
+	int getCommLikeCount(int pro_board_seq);
+
+	boolean checkIfCommunityLikedByUser(int pro_board_seq, int loggedInUserId);
+
+	void deleteCommunityLike(int pro_board_seq, int loggedInUserId);
+
+	void insertCommunityLike(int pro_board_seq, int loggedInUserId);
+
+	CommunityDTO getCommunityPostByBoardSeq(int pro_board_seq);
+
+	void deleteCommunityPost(int pro_board_seq, LocalDateTime del_date);
+
+	CommunityDTO getCommunityCommentByReplySeq(int pro_board_seq);
+
+	void deleteCommunityComment(int pro_board_seq, LocalDateTime del_date);
+
 
 	
 

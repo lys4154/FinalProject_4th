@@ -151,7 +151,7 @@ public class ProjectController {
 	public List<UpdateReplyDTO> getComments(@RequestParam("updateSeq") int updateSeq) {
 	    return boardService.getCommentsByUpdateSeq(updateSeq);
 	}
-	
+	//업데이트 좋아요 수 
 	@GetMapping("/getLikeCount")
 	@ResponseBody
 	public ResponseEntity<Integer> getLikeCount(@RequestParam("updateSeq") int updateSeq) {
@@ -160,6 +160,39 @@ public class ProjectController {
 	
 	    return ResponseEntity.ok(count);
 	}
+	//커뮤니티 좋아요 수 
+	@GetMapping("/getCommLikeCount")
+	@ResponseBody
+	public ResponseEntity<Integer> getCommLikeCount(@RequestParam("pro_board_seq") int pro_board_seq) {
+	    
+		int count = boardService.getCommLikeCount(pro_board_seq);
+	
+	    return ResponseEntity.ok(count);
+	}
+	// 커뮤니티 좋아요 / 좋아요 취소
+		@PostMapping("/toggleCommunityLike")
+		public ResponseEntity<Map<String, Object>> toggleCommunityLikePost(@RequestParam("pro_board_seq") int pro_board_seq,
+				HttpSession session) {
+		   
+			//로그인된 유저 아이디 가져옴 
+			String user_id_str = (String) session.getAttribute("login_user_seq");
+			int user_id = Integer.parseInt(user_id_str);
+			
+			
+		    ResponseEntity<String> responseEntity = boardService.toggleCommunityLike(pro_board_seq, user_id);
+
+		    Map<String, Object> responseMap = new HashMap<>();
+		    
+		    if (responseEntity.getStatusCode() == HttpStatus.OK) {
+		        responseMap.put("status", "success");
+		        responseMap.put("likedByCurrentUser", boardService.isCommunityLikedByUser(pro_board_seq, user_id));
+		        return ResponseEntity.ok(responseMap);
+		    } else {
+		        responseMap.put("status", "error");
+		        responseMap.put("message", "게시물 좋아요 실패");
+		        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseMap);
+		    }
+		}
 	// 업데이트 좋아요 / 좋아요 취소
 	@PostMapping("/toggleUpdateLike")
 	public ResponseEntity<Map<String, Object>> toggleLikePost(@RequestParam("updateSeq") int updateSeq,
@@ -234,7 +267,7 @@ public class ProjectController {
 	        for (CommunityDTO community : com_post) {
 
 	        	//포스트마다 유저가 좋아요 눌렀는지 true/false 리턴하기
-	            boolean likedByCurrentUser = boardService.isUpdateLikedByUser(community.getPro_board_seq(), currentUser);
+	            boolean likedByCurrentUser = boardService.isCommunityLikedByUser(community.getPro_board_seq(), currentUser);
 	            community.setLikedByCurrentUser(likedByCurrentUser);
 	        }
 	    }
@@ -250,16 +283,27 @@ public class ProjectController {
 	
 	@PostMapping("community_post")
 	public String saveCommunityPost(@RequestParam String post_category, @RequestParam int post_id, 
-			@RequestParam String content) {
+			@RequestParam String content, HttpSession session) {
+		// post_id = project_seq
+		int current_user = 0;
+		String loggedInUserId = (String) session.getAttribute("login_user_seq");
+		current_user = Integer.parseInt(loggedInUserId);
 		
-		int tmpUser = 1;
+		boolean userIsFunding = boardService.isUserFunding(current_user, post_id);
+        
 		CommunityDTO com_post = new CommunityDTO();
-		com_post.setProject_seq(post_id);
-		com_post.setContent(content);
-		com_post.setCategory(post_category);
-		com_post.setMember_seq(tmpUser);
+		//후원하는 프로젝트면 글작성 진행
+		if(userIsFunding == true ) {
+			
+			com_post.setProject_seq(post_id);
+			com_post.setContent(content);
+			com_post.setCategory(post_category);
+			com_post.setMember_seq(current_user);
+			boardService.saveCommunityPost(com_post);
+		}
 		
-		boardService.saveCommunityPost(com_post);
+		
+		
 		
 		return "redirect:project_detail/"+post_id;
 	}
