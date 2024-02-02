@@ -59,6 +59,7 @@ public class MemberService {
 		}
 		while(true) {
 			StringBuilder randomUrl = new StringBuilder();
+			randomUrl.append("/user_profile/");
 			int urlLength = (int)((Math.random() + 3) * 4); //12 ~ 16자리
 			//소문자 아스키코드값 :  97~122
 			for(int i = 0; i < urlLength; i++) {

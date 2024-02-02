@@ -70,7 +70,7 @@ $(document).ready(function(){
 <%	}
 %>
 <hr>
-<div>
+<div id="page_btn_wrap">
 <%	int pageListLength = 5;
 	int tmp = nowPage/(pageListLength + 1);
 	//<-버튼 기능 구현
@@ -80,6 +80,7 @@ $(document).ready(function(){
 %>		<a href="/notices?category=<%=category%>&page=<%= pageListLength * (tmp - 1) + 1%><%=query%>">←</a>
 <%	}
 %>	
+
 <%	//페이지 숫자 
 	for(int i = 1; i <= pageListLength; i++){
 %>		<a href="/notices?category=<%=category%>&page=<%=i + tmp*pageListLength%><%=query%>"><%=i + tmp*pageListLength%></a>
@@ -93,5 +94,6 @@ $(document).ready(function(){
 	}
 %>	
 </div>
+
 </body>
 </html>

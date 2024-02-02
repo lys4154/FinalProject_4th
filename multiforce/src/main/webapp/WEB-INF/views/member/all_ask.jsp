@@ -12,67 +12,127 @@
 </head>
 <script src="/js/jquery-3.7.1.min.js"></script>
 <style>
-div[class*="_chatroom_wrap"]{
+li[class*="_chatroom_wrap"]{
 	border: 1px solid black;
 	cursor: pointer;
 }
 </style>
 <body>
-<div id="talk_room_list" style="border: 1px red solid; display: inline-block">
-	<div id="my_project_ask">
-		<h3>내 프로젝트 문의</h3>
-		<c:if test="${fn:length(collector) == 0}">
-			<c:out value="결과 없음"/>
-		</c:if>
-		<c:forEach var="item" items="${collector }">
-			<div class="collector_chatroom_wrap" id="chatroom_${item.chatroom_seq }">
-				${item.long_title }/
-				${item.last_chat }/
-				${item.last_chat_date }
-			</div>
-		</c:forEach>
-	</div>
-	<div id="project_ask">
-		<h3>프로젝트 문의</h3>
-		<c:if test="${fn:length(asker) == 0}">
-			<c:out value="결과 없음"/>
-		</c:if>
-		<c:forEach var="item" items="${asker}">
-			<div class="asker_chatroom_wrap" id="chatroom_${item.chatroom_seq }">
-				${item.long_title }/
-				${item.last_chat }/
-				${item.last_chat_date }
-			</div>
-		</c:forEach>
-	</div>
+<div id="all_ask_wrap" style="border: 1px red solid; display: inline-block">
+	<h3>내 프로젝트 문의</h3>
+	<ul id="my_project_ask">
+		<li id="collector_chatroom_list">
+		</li>
+	</ul>
+	<h3>프로젝트 문의</h3>
+	<ul id="project_ask">
+		<li id="asker_chatroom_list">
+		</li>
+	</ul>
 </div>
 <div style="display: inline-block">
 	<%@ include file="/WEB-INF/views/member/ask.jsp" %>
 </div>
+<div style="display:none">
+	<ul id="chatroom_list">
+		<li class="chatroom_wrap">
+			<span class="chatroom_long_title">
+			</span>
+			<span class="chatroom_last_chat">
+			</span>
+			<span class="chatroom_last_chat_date">
+			</span>
+		</li>
+	</ul>
+</div>
 </body>
 <script>
-//채팅방 클릭 시 채팅화면 띄워주기
-$("div[class*='_chatroom_wrap']").on("click", function(e){
-	console.log("클릭확인");
-	whoAmI = e.target.getAttribute("class").substr(0, e.target.getAttribute("class").indexOf("_"));
-	chatroomSeq = e.target.getAttribute("id").substr(e.target.getAttribute("id").indexOf("_") + 1);
-	$.ajax({
-		data: {
-			chatroom_seq: chatroomSeq,
-			who_am_i: whoAmI
-		},
-		type : "POST",
-		url : "/findchatroom",
-		dataType: 'json',
-		success : function(r){
-			console.log("ajax확인");
-			clearChatList();
-			clearProjectInfo();
-			appendChat(r.chat);
-			fillChatInfo(r.long_title, r.url, r.main_images_url);
+function createChatroomWrap(longTitle, lastChat, lastChatDate, chatroomSeq, ac){
+	let chatroomWrap = $(".chatroom_wrap").clone();
+	chatroomWrap.find(".chatroom_long_title").append(longTitle);
+	chatroomWrap.find(".chatroom_last_chat").append(lastChat);
+	chatroomWrap.find(".chatroom_last_chat_date").append(lastChatDate);
+	chatroomWrap.attr("id", "chatroom_" + chatroomSeq);
+	chatroomWrap.attr("class", ac + "_chatroom_wrap");
+	return chatroomWrap;
+}
+//처음 입장 시 대화목록 띄워주기
+const LOGIN_USER_SEQ = "${login_user_seq}";
+$.ajax({
+	data: {
+		login_user_seq: LOGIN_USER_SEQ
+	},
+	type : "POST",
+	url : "/allask",
+	dataType: 'json',
+	success : function(r){
+		if(r.collector.length == 0){
+			let noData = "<li>대화 기록이 없습니다</li>";
+			$("#collector_chatroom_list").append(noData);
+		}else{
+			for(let i = 0; i < r.collector.length; i++){
+				console.log(r.collector.length);
+				let longTitle = r.collector[i].long_title;
+				let lastChat = r.collector[i].last_chat;
+				let lastChatDate = r.collector[i].last_chat_date;
+				let chatroomSeq = r.collector[i].chatroom_seq;
+				let ac = "collector";
+				let chatroomWrap = createChatroomWrap(longTitle, lastChat, lastChatDate, chatroomSeq, ac);
+				$("#collector_chatroom_list").append(chatroomWrap);
+			}
 		}
-	});
+		
+		if(r.asker.length == 0){
+			let noData = "<li>대화 기록이 없습니다</li>";
+			$("#asker_chatroom_list").append(noData);
+		}else{
+			for(let i = 0; i < r.asker.length; i++){
+				let longTitle = r.asker[i].long_title;
+				let lastChat = r.asker[i].last_chat;
+				let lastChatDate = r.asker[i].last_chat_date;
+				let chatroomSeq = r.asker[i].chatroom_seq;
+				let ac = "asker";
+				let chatroomWrap = createChatroomWrap(longTitle, lastChat, lastChatDate, chatroomSeq, ac);
+				$("#asker_chatroom_list").append(chatroomWrap);
+			}
+		}
+		chatroomWrapClickEAdd();
+	}
 });
+//채팅방 클릭 시 채팅화면 띄워주기
+function chatroomWrapClickEAdd(){
+	$("li[class*='_chatroom_wrap']").on("click", function(e){
+		
+		whoAmI = e.target.parentNode.getAttribute("class").substr(0, e.target.parentNode.getAttribute("class").indexOf("_"));
+		chatroomSeq = e.target.parentNode.getAttribute("id").substr(e.target.parentNode.getAttribute("id").indexOf("_") + 1);
+		$.ajax({
+			data: {
+				chatroom_seq: chatroomSeq,
+				who_am_i: whoAmI
+			},
+			type : "POST",
+			url : "/findchatroom",
+			dataType: 'json',
+			success : function(r){
+				clearInputMessage();
+				clearChatList();
+				clearProjectInfo();
+				readAt = 0;
+				commonDate = "";
+				if(whoAmI == "asker"){
+					appendChat(r.chat, r.asker_read, r.profile_img);
+				}else if(whoAmI == "collector"){
+					appendChat(r.chat, r.collector_read, r.profile_img);
+				}
+				
+				fillChatInfo(r.long_title, r.url, r.main_images_url);
+				updateMyRead(chatroomSeq, whoAmI, readAt);
+			}
+		});
+	});
+}
+
+
 
 </script>
 </html>

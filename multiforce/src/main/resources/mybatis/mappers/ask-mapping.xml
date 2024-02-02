@@ -35,12 +35,14 @@ select chatroom_seq, last_chat, nickname, long_title, main_images_url, last_chat
 join project p on a.project_seq = p.project_seq 
 join member_info m on a.asker_seq = m.member_seq
 where collector_seq = #{login_user_seq}
+order by last_chat_date desc
 </select>
 <select id="selectAskerChatRoom">
 select chatroom_seq, last_chat, nickname, long_title, main_images_url, last_chat_date from project_ask a
 join project p on a.project_seq = p.project_seq 
 join member_info m on a.collector_seq = m.member_seq
 where asker_seq = #{login_user_seq}
+order by last_chat_date desc
 </select>
 <select id="findChatroom">
 select chatroom_seq, a.project_seq, collector_seq,asker_seq,chat,last_chat,collector_read,
