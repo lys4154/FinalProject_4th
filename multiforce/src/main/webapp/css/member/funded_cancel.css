@@ -33,3 +33,59 @@ a{
 .cancel_header{
 	margin-bottom: 30px;
 }
+
+/* 하단 상세내역*/
+.cancel_contents{
+	padding: 20px;
+	line-height: 32px;
+	border: 2px solid #cfcfcf;
+	margin: 30px 0;
+}
+.cancel_contents_ment{
+	font-size: 17px;
+	font-weight: 600;
+	color: #292929;
+	margin: 10px 0 30px 0;
+}
+hr {
+	margin: 20px 0;
+	border: 1px solid #cfcfcf;
+	transform: scaleY(0.5);
+}
+.contents_flex{
+	display: flex;
+}
+.contents_left{
+	width: 130px;
+}
+.contents_right{
+	padding-left: 20px;
+	line-height: 26px;
+	color: #292929;	
+	font-weight: 500;
+}
+.contents_right_item{
+	padding-left: 20px;
+}
+.contents_price{
+	color: #fc035a;
+}
+
+
+/* 후원 목록 버튼*/
+.funded_btn{
+	display: flex;
+	justify-content: center;
+}
+#btn {
+	background-color: #6e6e6e;
+	color: #f0f0f0;
+	font-size: 18px;
+	font-weight: 500;
+	width: 300px;
+	height: 50px;
+	border: 1px solid #cfcfcf;
+	border-radius: 5px;
+	cursor: pointer;	
+}
+

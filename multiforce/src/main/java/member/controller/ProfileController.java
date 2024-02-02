@@ -479,17 +479,16 @@ public class ProfileController {
 	public ModelAndView mydibs(HttpSession session)  {
         int memberSeq = (int) session.getAttribute("login_user_seq");
         
-        ModelAndView mv = new ModelAndView("member/mydibs");
+        ModelAndView mv = new ModelAndView("member/mydibs");        
         mv.addObject("memberSeq",memberSeq);
         
-		List<Integer> dibsList = dibsservice.dibsList(memberSeq); //해당 회원의 관심목록
+		List<Integer> dibsList = dibsservice.dibsList(memberSeq); //해당 회원의 관심목록		
 		if (dibsList.size() != 0) {
-			List<ProjectDTO> myDibsProject = projectservice.myDibsProject(dibsList); //해당 프로젝트 DTO
-			
-			mv.addObject("myDibs",myDibsProject);		
+			List<ProjectMemberDTO> myDibsProject = projectservice.myDibsProject(dibsList); //해당 프로젝트 DTO			
+			mv.addObject("myDibs",myDibsProject);
 			return mv;
-		}
-		
+		}	
+
 		return mv;
 	}
 	
@@ -497,10 +496,10 @@ public class ProfileController {
 	//찜한 프로젝트 - 진행중
 	@PostMapping("/getDibsOngoing")
 	@ResponseBody
-	List<ProjectDTO> getDibsOngoing(@RequestBody List<Integer> projectSeqArray) {
+	List<ProjectMemberDTO> getDibsOngoing(@RequestBody List<Integer> projectSeqArray) {
 		
 		if (projectSeqArray != null) {
-		    List<ProjectDTO> dibsOngoing = projectservice.dibsOngoing(projectSeqArray);
+		    List<ProjectMemberDTO> dibsOngoing = projectservice.dibsOngoing(projectSeqArray);
 		    return dibsOngoing;
 		}		
 		return null;
@@ -511,10 +510,10 @@ public class ProfileController {
 	//찜한 프로젝트 - 종료된
 	@PostMapping("/getDibsEnd")
 	@ResponseBody
-	List<ProjectDTO> getDibsEnd(@RequestBody List<Integer> projectSeqArray) {
+	List<ProjectMemberDTO> getDibsEnd(@RequestBody List<Integer> projectSeqArray) {
 		
 		if (projectSeqArray != null) {
-		    List<ProjectDTO> dibsEnd = projectservice.dibsEnd(projectSeqArray);
+		    List<ProjectMemberDTO> dibsEnd = projectservice.dibsEnd(projectSeqArray);
 		    return dibsEnd;
 		}		
 		return null;

@@ -48,16 +48,16 @@ public interface ProjectDAO {
 	int unapprovedCount();
 	
 	//관심 프로젝트 - 전체
-	List<ProjectDTO> myDibsProject(List<Integer> dibsList);
+	List<ProjectMemberDTO> myDibsProject(List<Integer> dibsList);
 	
 	//관심 프로젝트 - 진행중
-	List<ProjectDTO> dibsOngoing(List<Integer> projectSeqArray);
+	List<ProjectMemberDTO> dibsOngoing(List<Integer> projectSeqArray);
 	
 	//승인된 프로젝트 + 시작날짜 기준 최신순으로 정렬해서 들고오기
 	List<ProjectDTO> getAllApprovedProjectsOrderByStartDate();
 
 	//찜한 프로젝트 - 종료된
-	List<ProjectDTO> dibsEnd(List<Integer> projectSeqArray);
+	List<ProjectMemberDTO> dibsEnd(List<Integer> projectSeqArray);
 
 	// 프로젝트 작성
 	void insertProject(ProjectDTO project);
