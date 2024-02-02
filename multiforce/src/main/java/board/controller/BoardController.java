@@ -40,9 +40,27 @@ public class BoardController {
 	@Autowired
 	private MemberService member;
 	
-	@GetMapping("update/write")
-	public String WriteUpdateBoard() {
-
+	@GetMapping("update/write/{project_seq}")
+	public String WriteUpdateBoard(HttpSession session, Model model,
+			@PathVariable("project_seq") int project_seq) {
+		
+		Object currentUserObj = session.getAttribute("login_user_seq");
+		if (currentUserObj != null) {
+			String currentUserString = (String) session.getAttribute("login_user_seq");
+			int currentUser = Integer.parseInt(currentUserString); //현재 회원 번호
+			model.addAttribute("loggedin_user", currentUser);
+			
+			//프로젝트 권한있는지?
+			boolean userIsProjectManager = boardService.userIsProjectManager(project_seq, currentUser);
+			
+			if(userIsProjectManager == true) {
+				model.addAttribute("project_seq", project_seq);
+				return "board/update_write"; 
+			}
+			
+		
+		}
+		//메인페이지로 바꾸기
         return "board/update_write"; 
     }
 	
@@ -84,24 +102,37 @@ public class BoardController {
 	@PostMapping("update_write")
 	 public String updateWriteProcess(
              @RequestParam String contents,
-             Model model) {
+             Model model, HttpSession session, @RequestParam int project_seq) {
 	
 
+		Object currentUserObj = session.getAttribute("login_user_seq");
+		updateBoardDTO dto = new updateBoardDTO();
+		
+		if (currentUserObj != null) {
+			String currentUserString = (String) session.getAttribute("login_user_seq");
+        	
+			//로그인된 회원 아이디 정수형으로 변환하기
+			int currentUser = Integer.parseInt(currentUserString);
 
-	int tmpUser = 1;
-	int tmpProjectSeq = 3;
-	updateBoardDTO dto = new updateBoardDTO();
+			
+			boolean userIsProjectManager = boardService.userIsProjectManager(project_seq, currentUser);
 
-	dto.setContent(contents);
-	dto.setMember_seq(tmpUser);
-	dto.setProject_seq(tmpProjectSeq);
+			if(userIsProjectManager == true) {
+				dto.setContent(contents);
+				dto.setMember_seq(currentUser);
+				dto.setProject_seq(project_seq);
+				
+				
+				boardService.saveUpdateBoard(dto);
+				return "redirect:update/view/"+dto.getProject_seq();
+			}
+			
+		}
+		
+		
 	
-	
-	boardService.saveUpdateBoard(dto);
-	
-
-	
-	return "redirect:update/view/"+dto.getProject_seq();
+		//메인 페이지 로 바꾸기
+		return "redirect:update/view/"+dto.getProject_seq();
 	}
 	//커뮤니티 글 삭제
 	@PostMapping("delete_community_post")

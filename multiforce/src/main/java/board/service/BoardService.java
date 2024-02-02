@@ -239,5 +239,9 @@ public class BoardService {
 		boardDAO.deleteCommunityComment(pro_board_seq, del_date);
 	}
 
+	public boolean userIsProjectManager(int project_seq, int currentUser) {
+		return boardDAO.userIsProjectManager(project_seq, currentUser);
+	}
+
 	
 }
