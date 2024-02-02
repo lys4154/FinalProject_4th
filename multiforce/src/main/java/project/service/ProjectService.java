@@ -74,17 +74,17 @@ public class ProjectService {
 	}
 
 	//관심 프로젝트 - 전체
-	public List<ProjectDTO> myDibsProject(List<Integer> dibsList) {
+	public List<ProjectMemberDTO> myDibsProject(List<Integer> dibsList) {
 		return projectDao.myDibsProject(dibsList);
 	}
 
 	//관심 프로젝트 - 진행중
-	public List<ProjectDTO> dibsOngoing(List<Integer> projectSeqArray) {
+	public List<ProjectMemberDTO> dibsOngoing(List<Integer> projectSeqArray) {
 		return projectDao.dibsOngoing(projectSeqArray);
 	}
 
 	//찜한 프로젝트 - 종료된
-	public List<ProjectDTO> dibsEnd(List<Integer> projectSeqArray) {
+	public List<ProjectMemberDTO> dibsEnd(List<Integer> projectSeqArray) {
 		return projectDao.dibsEnd(projectSeqArray);
 	}
 

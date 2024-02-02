@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 <!DOCTYPE html>
 <html>
@@ -31,32 +32,57 @@ $(document).ready(function() {
 		<div class="cancel_due"><span id="due_date">${dueDate }</span>까지 다시 후원할 수 있습니다.</div>
 	</div>	
 	
-	<div class="cancel_contents">
-		<div> 후원 번호 <span>${fundSeq }</span>가 취소되었습니다. </div>
-		<div> 프로젝트 이름 <span>${longTitle}</span> </div>
-		<div> 창작자 <span id="프로젝트 회원번호">${creator }</span> </div>
-		
-		<div>
-			<div>
+	<div class="cancel_contents">	
+		<div class="cancel_contents_ment"> 후원 번호 <span>${fundSeq }</span>가 취소되었습니다. </div>
+		<hr>
+		<div class="contents_flex">
+			<div class="contents_left">
+				<div> 프로젝트 이름 </div>
+			</div>		
+			<div class="contents_right">
+				<div>${longTitle}</div>
+			</div>
+		</div>
+		<div class="contents_flex">
+			<div class="contents_left">
+				<div> 창작자 </div>
+			</div>
+			<div class="contents_right">	
+				<div >${creator }</div>
+			</div>
+		</div>
+		<div class="contents_flex">
+			<div class="contents_left">
 				<div>선택한 선물</div>
+			</div>
+			<div class="contents_right">
 				<c:forEach var="bundleEntry" items="${bundle}">
-				    <div>  ${bundleEntry.name} <span>${bundleEntry.count} </span>개</div>			    
+				    <div> * ${bundleEntry.name} <span>${bundleEntry.count}</span>개</div>			    
 				    <c:forEach var="itemEntry" items="${bundleEntry.items}">
-				        <div> ${itemEntry.itemName} </div>			        
-				        <c:forEach var="option" items="${itemEntry.options}">
-				            <div> 옵션 ${option} </div>
+				        <div class="contents_right_item"> ${itemEntry.itemName} 		        
+					        <c:forEach var="option" items="${itemEntry.options}">
+				            <span> (옵션 - ${option} )</span>			            
 				        </c:forEach>
-				    </c:forEach>			    
-				    <hr>
+				        </div>
+				    </c:forEach>		    
 				</c:forEach>
 			</div>			
 		</div>
-		<div> 후원 금액 <span> ${price }원</span> </div>	
+		<div class="contents_flex">
+			<div class="contents_left">
+				<div> 후원 금액 </div> 
+			</div>
+			<div class="contents_right">
+				<div class="contents_price">
+					<fmt:formatNumber value="${price }" type="currency" currencySymbol="" />원 결제 예약 취소 완료
+				</div>
+			</div>
+		</div>			
 	</div>
 	
-	<p>
-		
-	<input type="button" onclick="location='/funded'" value="후원한 프로젝트 목록">
+	<div class="funded_btn">	
+		<input type="button" onclick="location='/funded'" value="후원한 프로젝트 목록" id="btn">
+	</div>
 
 </div>
 </body>
