@@ -82,6 +82,8 @@ public interface BoardDAO {
 
 	void deleteCommunityComment(int pro_board_seq, LocalDateTime del_date);
 
+	boolean userIsProjectManager(int project_seq, int currentUser);
+
 
 	
 

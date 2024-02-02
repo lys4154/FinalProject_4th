@@ -24,6 +24,11 @@
         AND member_seq = #{loggedInUserId}
     </select>
     
+    <select id="userIsProjectManager" resultType="boolean" parameterType="projectdto">
+        SELECT COUNT(*) > 0 FROM project WHERE project_seq = #{project_seq} 
+        AND member_seq = #{currentUser}
+    </select>
+    
     <select id="checkIfCommunityLikedByUser" resultType="boolean" parameterType="board.dto.CommunityLikeDTO">
         SELECT COUNT(*) > 0 FROM community_like WHERE pro_board_seq = #{pro_board_seq} 
         AND member_seq = #{loggedInUserId}

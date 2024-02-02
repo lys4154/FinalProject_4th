@@ -45,6 +45,7 @@
             <div class="cs-submit-btn">
                 <input type="submit" value="제출" name="submit">
             </div>
+            <input type="hidden" name="project_seq" value="${project_seq }">
         </form>
     </div>
  
