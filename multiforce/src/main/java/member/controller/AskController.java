@@ -18,14 +18,16 @@ public class AskController {
 	@Autowired
 	AskService askService;
 	
+	@GetMapping("/allask")
+	public String allAskPage() {
+		return "member/all_ask";
+	}
+	
 	@PostMapping("/allask")
-	public ModelAndView allAsk(int login_user_seq) {
-		ModelAndView mv = new ModelAndView();
+	@ResponseBody
+	public HashMap<String, List<AskDTO>> allAsk(int login_user_seq) {
 		HashMap<String, List<AskDTO>> map = askService.selectAllChatRoom(login_user_seq);
-		mv.addObject("collector", map.get("collector"));
-		mv.addObject("asker", map.get("asker"));
-		mv.setViewName("member/all_ask");
-		return mv;
+		return map;
 	}
 	
 	@GetMapping("/ask")

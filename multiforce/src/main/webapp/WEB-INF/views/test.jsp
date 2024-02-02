@@ -12,7 +12,7 @@ $(document).ready(function(){
 	$("#ask_btn").on("click",function(){
 		if("${login_user_seq}" != ""){
 			let url = "/ask?";
-			let project_seq = 1;//나중엔 프로젝트 상세페이지 들어오면 자동으로 넣어지게
+			let project_seq = 20;//나중엔 프로젝트 상세페이지 들어오면 자동으로 넣어지게
 			let collector_seq = 2;//마찬가지
 			let asker_seq = "${login_user_seq}";
 			url += ("project_seq=" + project_seq);
