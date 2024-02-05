@@ -84,6 +84,10 @@ public interface BoardDAO {
 
 	boolean userIsProjectManager(int project_seq, int currentUser);
 
+	BoardDTO getCsCommentByPostId(int help_ask_seq);
+
+	void deleteCsComment(int help_ask_seq, LocalDateTime del_date);
+
 
 	
 

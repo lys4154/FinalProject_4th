@@ -243,5 +243,16 @@ public class BoardService {
 		return boardDAO.userIsProjectManager(project_seq, currentUser);
 	}
 
+	public BoardDTO getCsCommentByPostId(int help_ask_seq) {
+		return boardDAO.getCsCommentByPostId(help_ask_seq);
+	}
+
+	public void deleteCsComment(int help_ask_seq, LocalDateTime del_date) {
+		boardDAO.deleteCsComment(help_ask_seq, del_date);
+		
+	}
+	
+	
+
 	
 }

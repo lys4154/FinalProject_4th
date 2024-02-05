@@ -38,6 +38,10 @@
         SELECT COUNT(*) > 0 FROM funding where member_seq = #{member_seq} AND project_seq = #{project_seq}
     </select>
     
+    <select id="getCsCommentByPostId" parameterType="board.dto.BoardDTO">
+        SELECT * from help_ask where help_ask_seq = #{help_ask_seq}
+    </select>
+    
     <select id="getUpdatePostByUpdateSeq" parameterType="board.dto.updateBoardDTO">
         SELECT * from update_board where update_seq = #{update_seq}
     </select>
@@ -87,6 +91,12 @@
     <update id="deleteCommunityComment" parameterType="board.dto.CommunityDTO">
         UPDATE community_board SET del_status=true, del_date = #{del_date} 
         WHERE pro_board_seq = #{pro_board_seq}
+          
+    </update>
+    
+    <update id="deleteCsComment" parameterType="board.dto.BoardDTO">
+        UPDATE help_ask SET del_status=true, del_date = #{del_date} 
+        WHERE help_ask_seq = #{help_ask_seq}
           
     </update>
     
@@ -150,7 +160,7 @@
     </insert>
     
     <select id="getCsCommentsById" resultType="board.dto.BoardDTO">
-	    select * from help_ask where parent_seq = #{help_ask_seq}
+	    select * from help_ask where parent_seq = #{help_ask_seq} AND del_status=false
 	</select>
 	 <insert id="saveCommunityPost" parameterType="board.dto.BoardDTO">
         INSERT INTO community_board (project_seq, member_seq, category, content)
