@@ -9,6 +9,8 @@
     <title>1:1 고객센터 게시판</title>
 </head>
 <body>
+
+
     <table class="table table-hover">
         <colgroup>
             <col style="width:7%">

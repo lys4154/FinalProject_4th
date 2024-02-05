@@ -262,30 +262,98 @@ public class BoardController {
 	
 	//1:1 게시물 글보기, 댓글정보 보내기
 	@GetMapping("cs/read_post/{help_ask_seq}")
-	public String showPostDetail(@PathVariable("help_ask_seq") int help_ask_seq, Model model) {
-        BoardDTO board = boardService.getCsPostById(help_ask_seq);
-        List<BoardDTO> board_comment = boardService.getCsCommentsById(help_ask_seq);
-        MemberDTO post_writer = member.getNicknameById(board.getMember_seq());
+	public String showPostDetail(@PathVariable("help_ask_seq") int help_ask_seq, Model model,
+			HttpSession session) {
+		BoardDTO board = boardService.getCsPostById(help_ask_seq);
+		//로그인된 유저 아이디 가져옴 
+		String user_id_str = (String) session.getAttribute("login_user_seq");
+		int user_id = Integer.parseInt(user_id_str);
+		
+		//글쓴이가 본인인지 확인하기 아니면 관리자인가
+		if((board.getMember_seq() == user_id) || 
+				(Integer.parseInt(session.getAttribute("login_user_level").toString()) == 2)) {
+				List<BoardDTO> board_comment = boardService.getCsCommentsById(help_ask_seq);
+		        MemberDTO post_writer = member.getNicknameById(board.getMember_seq());
+		        
+		        List<Map<String, String>> comments = new ArrayList<>();
+		        
+		        for (BoardDTO comment : board_comment) {
+		        	Map<String, String> commentMap = new HashMap<>();
+		        	MemberDTO nick = member.getNicknameById(board.getMember_seq());
+		            commentMap.put("nickname", nick.getNickname());
+		            commentMap.put("content", comment.getContent());
+		            commentMap.put("member_seq", String.valueOf(comment.getMember_seq()));
+		            commentMap.put("help_ask_seq", String.valueOf(comment.getHelp_ask_seq()));
+		            commentMap.put("date", comment.getHelp_ask_date().toString());
+		            
+		            comments.add(commentMap);
+		        }
+		
+		        model.addAttribute("comments", comments);
+		        model.addAttribute("loggedin_user",user_id);
+		        model.addAttribute("board_comment",board_comment); //댓글들
+		        model.addAttribute("board", board);
+		        model.addAttribute("post_writer",post_writer.getNickname()); //게시물 작성자 닉네임 
+		        return "board/cs_board_read";
+			
+		}else {
+		    System.out.println("권한없음");
+		    model.addAttribute("errorMessage", "권한이 없습니다.");
+		    return "board/error/error"; 
+		}
+		
         
-        List<Map<String, String>> comments = new ArrayList<>();
         
-        for (BoardDTO comment : board_comment) {
-        	Map<String, String> commentMap = new HashMap<>();
-        	MemberDTO nick = member.getNicknameById(board.getMember_seq());
-            commentMap.put("nickname", nick.getNickname());
-            commentMap.put("content", comment.getContent());
-            commentMap.put("date", comment.getHelp_ask_date().toString());
-            
-            comments.add(commentMap);
-        }
-
-        model.addAttribute("comments", comments);
-        
-        model.addAttribute("board_comment",board_comment); //댓글들
-        model.addAttribute("board", board);
-        model.addAttribute("post_writer",post_writer.getNickname()); //게시물 작성자 닉네임 
-        return "board/cs_board_read";
     }
+	@GetMapping("edit_cs_post/{help_ask_seq}")
+	public String editCsPost(@PathVariable("help_ask_seq") int help_ask_seq,
+			Model model,HttpSession session) {
+		
+		
+		
+		Object currentUserObj = session.getAttribute("login_user_seq");
+		
+		if (currentUserObj != null) {
+			String currentUserString = (String) session.getAttribute("login_user_seq");
+			
+			//로그인된 회원 아이디 정수형으로 변환하기
+			int currentUser = Integer.parseInt(currentUserString);
+        	model.addAttribute("loggedin_user", currentUser);
+        	
+        	
+        	BoardDTO board = boardService.getCsPostById(help_ask_seq);
+        	model.addAttribute("board", board);
+        	return "board/edit_cs_post";
+        	
+		}
+		
+		return null;
+	}
+	@PostMapping("delete_cs_comment")
+	public ResponseEntity<String> delete_cs_comment(@RequestParam int help_ask_seq, HttpSession session) {
+		int current_user = 0;
+		LocalDateTime del_date = LocalDateTime.now();
+		
+		try {
+	        String loggedInUserId = (String) session.getAttribute("login_user_seq");
+	        
+	        current_user = Integer.parseInt(loggedInUserId);
+	        
+	        BoardDTO csComment = boardService.getCsCommentByPostId(help_ask_seq);
+
+	        if (csComment != null && current_user == csComment.getMember_seq()) {
+	        	
+	        	boardService.deleteCsComment(help_ask_seq, del_date);
+
+	            return new ResponseEntity<>("삭제 성공", HttpStatus.OK);
+	        } else {
+	            return new ResponseEntity<>("삭제 권한이 없습니다", HttpStatus.FORBIDDEN);
+	        }
+	    } catch (Exception e) {
+//	    	e.printStackTrace();
+	        return new ResponseEntity<>("삭제 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
+	}
 
 	// 댓글 작성 POST
 	@PostMapping("cs_comment")
