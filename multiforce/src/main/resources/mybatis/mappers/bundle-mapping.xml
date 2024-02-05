@@ -13,6 +13,16 @@
 	</foreach>
 </select>
 
+<!-- 선물저장(Bundle) -->
+<select id="getProject_seq" parameterType="int" resultType="int">
+	select project_seq from project where member_seq=#{member_seq} order by project_seq desc limit 0,1 
+</select>
+
+<insert id="insertBundle" parameterType="project.dto.BundleDTO">
+	insert into bundle (project_seq, bundle_name, bundle_price)
+	values (#{project_seq}, #{bundle_name}, #{bundle_price})
+</insert>
+
 
 </mapper>	
 

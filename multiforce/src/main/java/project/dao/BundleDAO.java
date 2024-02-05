@@ -14,5 +14,9 @@ public interface BundleDAO {
 	//후원 상세 - 번들
 	List<BundleDTO> getBundle(List<Integer> bundleList);
 
+	void insertBundle(BundleDTO bundle);
+	
+	//member_seq불러오기
+	Integer getProject_seq(int member_seq);
 	
 }

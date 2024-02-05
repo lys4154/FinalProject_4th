@@ -26,7 +26,10 @@ import board.dto.UpdateReplyDTO;
 import board.dto.updateBoardDTO;
 import board.service.BoardService;
 import jakarta.servlet.http.HttpSession;
+import project.dto.BundleDTO;
+import project.dto.ItemDTO;
 import project.dto.ProjectDTO;
+import project.service.BundleService;
 import project.service.ProjectService;
 
 
@@ -38,6 +41,9 @@ public class ProjectController {
 	
 	@Autowired
 	private BoardService boardService;
+	
+	@Autowired
+	private BundleService bundleService;
 	
 	
 	@RequestMapping("/projectdesign")
@@ -139,6 +145,7 @@ public class ProjectController {
 	@GetMapping("project_detail/{project_seq}")
 	public String ShowProjectDetail(Model model,@PathVariable("project_seq") int project_seq) {
 		ProjectDTO projects = projectService.getProjectDetail(project_seq);
+		//BundleDTO bundle = bundleService.getBundle(bundle_seq);
 		
 		
 		model.addAttribute("project", projects);
@@ -326,6 +333,18 @@ public class ProjectController {
         }
     }
 	
+	@PostMapping("saveBundle")
+	@ResponseBody
+	public String savePackages(@RequestBody BundleDTO bundleDTO, HttpSession session) {
+		try {
+			bundleService.createBundle(bundleDTO, session);
+			return "Success";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "Error";
+		}
+	}
+	
 	@GetMapping("/getProject")
     public String getProject(@RequestParam int memberSeq, Model model) {
         // memberSeq에 해당하는 프로젝트 정보 가져오기
@@ -351,30 +370,32 @@ public class ProjectController {
 		return "project/projectmain";
 	}
 	
-	@RequestMapping("/tab_fundingPlan")
-	public String tabFundingPlan() {
-		return "project/tab_fundingPlan";
-	}
-	
-	//펀딩계획저장
-	@RequestMapping("/submitFundingPlan")
-    public String insertFundingPlan(@RequestBody ProjectDTO fundingPlanDTO, Model model) {
-        try {
-            // FundingService를 통해 펀딩 계획 데이터를 DB에 저장
-            projectService.insertFundingPlan(fundingPlanDTO);
-            model.addAttribute("message", "펀딩 계획이 성공적으로 제출되었습니다.");
-        } catch (Exception e) {
-            e.printStackTrace();
-            model.addAttribute("error", "펀딩 계획 제출 중 오류가 발생했습니다.");
-        }
-
-        return "forward:/funding/tab_fundingPlan.jsp";
-    }
+//	@RequestMapping("/tab_fundingPlan")
+//	public String tabFundingPlan() {
+//		return "project/tab_fundingPlan";
+//	}
+//	
+//	//펀딩계획저장
+//	@RequestMapping("/submitFundingPlan")
+//    public String insertFundingPlan(@RequestBody ProjectDTO fundingPlanDTO, Model model) {
+//        try {
+//            // FundingService를 통해 펀딩 계획 데이터를 DB에 저장
+//            projectService.insertFundingPlan(fundingPlanDTO);
+//            model.addAttribute("message", "펀딩 계획이 성공적으로 제출되었습니다.");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            model.addAttribute("error", "펀딩 계획 제출 중 오류가 발생했습니다.");
+//        }
+//
+//        return "forward:/funding/tab_fundingPlan.jsp";
+//    }
 	
 	@RequestMapping("/tab_gift")
 	public String tabGift() {
 		return "project/tab_gift";
 	}
+	
+	
 	
 	@RequestMapping("/tab_projectPlan")
 	public String tabProjectPlan() {

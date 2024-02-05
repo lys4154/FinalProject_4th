@@ -57,5 +57,4 @@ function inputPrice(num) {
 </form>
 
 </body>
-<%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </html>
