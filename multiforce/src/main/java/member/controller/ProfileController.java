@@ -193,6 +193,7 @@ public class ProfileController {
 		int memberSeq = (int)session.getAttribute("login_user_seq");
 		
 		List<Integer> getMyFollowing = followservice.getMyFollowing(memberSeq); 		//현재 회원의 팔로잉들의 memberSeq 리스트
+		
 		if (getMyFollowing.size() != 0) {
 			List<MemberDTO> myFollowing = memberservice.myFollowingList(getMyFollowing);	//위 회원들의 정보
 			

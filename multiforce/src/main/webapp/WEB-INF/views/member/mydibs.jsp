@@ -91,6 +91,21 @@ $(document).ready(function() {
 	$("#total_dibs").html(<%= allCount %>);	
 
 	
+	
+	$(".selected_menu").click(function () {
+		if ($(".menu").css("display") === "block") {
+			$(".menu").css("display", "none")
+		}else {
+			$(".menu").css("display", "block");
+		}		
+	})
+	
+	
+
+	
+	
+	
+	
 	//진행중
     $("#ongoing").click(function() {
         var projectSeqArray = [];	// 각 프로젝트의 번호를 배열에 추가
@@ -99,6 +114,8 @@ $(document).ready(function() {
             projectSeqArray.push(${project.project_seq});
         </c:forEach>
 
+        
+        
         $.ajax({
             type: "POST",
             url: "/getDibsOngoing",
@@ -118,6 +135,9 @@ $(document).ready(function() {
 				$("#total_dibs").html(count);
                 $(".result").html(html);
 
+                $(".selected_menu").html("진행중");
+                $(".menu").css("display", "none")
+                
             },
             error: function(error) {
                 console.log(error);
@@ -150,7 +170,10 @@ $(document).ready(function() {
 				var count = response.length;
                 
 				$("#total_dibs").html(count);
-                $(".result").html(html);                
+                $(".result").html(html);  
+                
+                $(".selected_menu").html("종료된");
+                $(".menu").css("display", "none")
             },
             error: function(error) {
                 console.log(error);
@@ -232,23 +255,19 @@ $(document).ready(function() {
 
 <body>
 <div class="out_con">
-	<div class="dibs_title">관심 프로젝트</div>	
+	<span class="dibs_title">관심 프로젝트</span>
 	<div class="top_con">
 		<div class="top_count"> <span id="total_dibs" style="color: red"></span> 건의 관심 내역이 있습니다. </div>			
 	</div>
 	<hr class="top_under_hr">
 
-	<div class="wrapper">
-	<ul class="menu">
-		<li id="all" style="cursor:pointer;">전체</li>
-		<li id="sub_drop">
-			<ul>
-				<li id="ongoing" style="cursor:pointer;">진행중</li>
-				<li id="end" style="cursor:pointer;">종료된</li>
-			</ul>
-		</li>
-	</ul>	
+	<div class="selected_menu">전체</div>
+	<div class="menu" style="display: none;">
+		<div class="css_menu" id="all" style="cursor:pointer;">전체</div>
+		<div class="css_menu" id="ongoing" style="cursor:pointer;">진행중</div>
+		<div class="css_menu" id="end" style="cursor:pointer;">종료된</div>
 	</div>
+
 
 	<div class="result_con">
 		<div class="result">

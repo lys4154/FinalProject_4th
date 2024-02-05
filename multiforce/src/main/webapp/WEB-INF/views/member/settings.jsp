@@ -9,23 +9,41 @@
 <title>Insert title here</title>
 <script src="http://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<link rel="stylesheet" href="/css/member/settings.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400&display=swap" rel="stylesheet">
 </head>
 
 <script>
 $(document).ready(function() {
 	
+	//메뉴탭 선택시 css
+	function setMenuTab(element, fontWeight, color) {
+	    $(element).css({
+	        "font-weight": fontWeight,
+	        "color": color
+	    })	    
+	};	
+	
 	//프로필 클릭
 	$("#profile_detail").click(function() { 
 		$(".profile").show();
 		$(".account").hide();		
-		$(".delevery").hide();		
+		$(".delevery").hide();
+		setMenuTab("#profile_detail", "600", "black");
+		setMenuTab("#account_detail", "400", "grey");
+		setMenuTab("#delivery_detail", "400", "grey");
 	});
 	
 	//계정 클릭
 	$("#account_detail").click(function() { 
 		$(".account").show();
 		$(".profile").hide();		
-		$(".delevery").hide();		
+		$(".delevery").hide();
+		setMenuTab("#profile_detail", "400", "grey");
+		setMenuTab("#account_detail", "600", "black");
+		setMenuTab("#delivery_detail", "400", "grey");
 	});
 
 	//배송지 클릭
@@ -33,7 +51,15 @@ $(document).ready(function() {
 		$(".delevery").show();
 		$(".profile").hide();		
 		$(".account").hide();
+		setMenuTab("#profile_detail", "400", "grey");
+		setMenuTab("#account_detail", "400", "grey");
+		setMenuTab("#delivery_detail", "600", "black");
 	});
+	
+	
+
+	
+	
 	
 
 	
@@ -598,170 +624,212 @@ $(document).ready(function() {
 
 <body>
 
-<h1>설정</h1>
-
-<div>
-	<div id="profile_detail" style="cursor:pointer;">프로필</div>
-	<div id="account_detail" style="cursor:pointer;">계정</div>
-	<div id="delivery_detail" style="cursor:pointer;">배송지</div>
-</div>
-<hr>
-<p>
-
-<div>
-
-
-	<div class="profile">
-		<div>
-			<div>프로필 사진</div>
-			<div><img src="${loginMember.profile_img }" id="img_final"></div>
-			<div><input type="button" value="변경" id="img_change"></div>
-			<div style="display: none;" class="img_container">
-				<div><input type="file" value="이미지업로드"  id="img_upload"></div>
-				<div><input type="button" value="삭제" id="img_del" ></div>
-			</div>
-		</div>
-		<hr>
-		<div>
-			<div>닉네임</div>
-			<div id="nick_final">${loginMember.nickname }</div>
-			<div><input type="button" value="변경" id="nick_change"></div>
-			<div style="display: none;" class="nick_container">
-				<div><input type="text" value="${loginMember.nickname }"  id="nick_upload"></div>
-				<div id="nick_warning"></div>
-				<div><input type="button" value="저장" id="nick_save" ></div>
-			</div>
-		</div>
-		<hr>
-		
-		<div>
-			<div>자기소개</div>
-	        <c:if test="${not empty loginMember.description}">
-	            <div id="desc_final">${loginMember.description}</div>
-	        </c:if>
-	        <c:if test="${empty loginMember.description}">
-	            <div>등록된 자기소개가 없습니다.</div>
-	        </c:if>
-	        <div><input type="button" value="변경" id="desc_change"></div>
-			<div style="display: none;" class="desc_container">
-				<div><textarea id="desc_upload" >${loginMember.description }</textarea></div>
-				<div><input type="button" value="저장" id="desc_save" ></div>
-			</div>
-		</div>
-		<hr>
-		
-		<div>
-			<div>사용자 이름(URL)</div>
-				<c:if test="${not empty loginMember.member_url}">
-					<div>
-						<span>${pageContext.request.scheme}://${pageContext.request.serverName}:${pageContext.request.serverPort}</span><span id="url_new">${loginMember.member_url}</span>
+<div class="out_con">
+	<div class="settings_title">설정</div>
+	
+	<div class="menu_con">
+		<div class="menu_item" id="profile_detail" style="cursor:pointer; color: black; font-weight:600;">프로필</div>
+		<div class="menu_item" id="account_detail" style="cursor:pointer;">계정</div>	
+		<div class="menu_item" id="delivery_detail" style="cursor:pointer;">배송지</div>
+	</div>
+	<hr class="menu_under_hr">
+	
+	
+	<div class="contents_con">	
+		<div class="profile">
+			<div class="sub_con">
+				<div class="title_button">
+					<div class="subtitle">프로필 사진</div>
+					<div><input type="button" value="변경" id="img_change" class="change_btn"></div>
+				</div>
+				<div class="change_con">
+					<div><img src="${loginMember.profile_img }" id="img_final"></div>
+					<div class="input_con_img">					
+						<div style="display: none;" class="img_container">
+							<div>								
+								<label for="img_upload" id="img_upload_label">이미지 업로드</label>
+								<input type="file" id="img_upload" accept=".jpeg, .png" style="display: none;"/>
+							</div>
+							<div style="font-size: 13px "> * 250 x 250 픽셀에 최적화되어 있으며, JPG 파일과 PNG 파일을 지원합니다. </div>
+							<div><input type="button" value="삭제" id="img_del" ></div>
+						</div>
 					</div>
-				</c:if>
-			<div><input type="button" value="변경" id="url_change"></div>
-			<div style="display: none;" class="url_container">
-				<div><input type="text" placeholder="6자리 이상의 영문으로 작성해주세요." id="url_upload"></div>
-				<div>사용자 이름은 회원님의 프로필 주소로 활용됩니다. 예) multiforce/user_profile/사용자이름</div>
-				<div id="url_warning"></div>
-				<div><input type="button" value="저장" id="url_save" ></div>
+				</div>
 			</div>			
-		</div>		
-		<hr>
-
-	</div>
-	
-	
-	<div class="account" style="display: none;">
-		<div>
-			<div>이메일</div>
-			<div id="mail_final">${loginMember.email }</div>
-			<div><input type="button" value="변경" id="mail_change"></div>
-			<div style="display: none;" class="mail_container">
-				<div><input type="text" value="${loginMember.email }"  id="mail_upload"></div>
-				<div class="mail_send_result"></div>
-				<div><input type="button" value="인증메일 전송" id="mail_send" ></div>
-				<div><input type="text"  placeholder="인증번호 입력"  id="mail_confirm"></div>
-				<div><input type="button" value="인증번호 확인" id="mail_save" ></div>
-			</div>
-			<hr>
-		</div>
 			
-		<div>
-			<div>비밀번호</div>
-			<div><input type="button" value="변경" id="pw_change"></div>
-			<div style="display: none;" class="pw_container">
-				<div>현재 비밀번호</div>
-				<div><input type="password" id="pw_check"></div>
-				<div class="pw_warning"></div>
-				<br>
-				<div>변경할 비밀번호</div>				
-				<div><input type="password"  placeholder="변경할 비밀번호"  id="pw_new1"></div>
-				<div class="pw_new1_warning"></div>
-				<div><input type="password"  placeholder="변경할 비밀번호 확인"  id="pw_new2"></div>
-				<div class="pw_new2_warning"></div>
-				<div>특수문자 2개 이상 포함 필수 ~ ! @ # $ % ^ * + = - ? _</div>
-				<div><input type="button" value="저장" id="pw_save" ></div>
+			<hr class="dividing_hr">
+
+			<div class="sub_con">
+				<div class="title_button">			
+					<div class="subtitle">닉네임</div>
+					<div><input type="button" value="변경" id="nick_change" class="change_btn"></div>
+				</div>
+				<div class="change_con">
+					<div id="nick_final">${loginMember.nickname }</div>
+					<div class="">					
+						<div style="display: none;" class="nick_container">
+							<div><input type="text" value="${loginMember.nickname }"  id="nick_upload"></div>
+							<div id="nick_warning"></div>
+							<div><input type="button" value="저장" id="nick_save" ></div>
+						</div>
+					</div>
+				</div>				
 			</div>
-			<hr>
-		</div>	
-	</div>
-
-
-	<div class="delevery" style="display: none;">
-		<div class="address_added">
-		    <div>등록된 배송지</div>
-		    <div>
-		        <c:choose>
-		            <c:when test="${not empty delivery}">
-		                <c:forEach var="delivery" items="${delivery}" varStatus="vs">
-		                    <div class="for_delete${vs.count}" >
-		                        <div>${delivery.name}</div>
-								<c:if test="${delivery.default_address}">
-								    <div style="color: red;">기본배송지</div>
-								</c:if>
-		                        <div>${delivery.phone}</div>
-		                        <div>[${delivery.postcode}] ${delivery.road_address} ${delivery.extra_address}</div>
-		                        <div>${delivery.detail_address}</div>
-		                        <input type="button" value="삭제" class="address_del"
-	                                   data-name="${delivery.name}"
-						               data-phone="${delivery.phone}"
-						               data-postcode="${delivery.postcode}"
-						               data-road="${delivery.road_address}"
-						               data-detail="${delivery.detail_address}"
-						               data-for_delete="${vs.count }">
-		                        <hr>                
-		                    </div>
-		                </c:forEach>
-		            </c:when>
-		            <c:otherwise>
-		                <div>배송지를 등록해주세요.</div>
-		            </c:otherwise>
-		        </c:choose>       
-		    </div>
+			
+			<hr class="dividing_hr">
+			
+			<div class="sub_con">
+				<div class="title_button">
+					<div class="subtitle">자기소개</div>
+					<div><input type="button" value="변경" id="desc_change" class="change_btn"></div>
+				</div>
+				<div class="change_con">
+			        <c:if test="${not empty loginMember.description}">
+			            <div id="desc_final">${loginMember.description}</div>
+			        </c:if>
+			        <c:if test="${empty loginMember.description}">
+			            <div>등록된 자기소개가 없습니다.</div>
+			        </c:if>
+			        
+					<div style="display: none;" class="desc_container">
+						<div><textarea id="desc_upload" >${loginMember.description }</textarea></div>
+						<div><input type="button" value="저장" id="desc_save" ></div>
+					</div>
+				</div>
+			</div>
+			
+			<hr class="dividing_hr">
+			
+			<div class="sub_con">
+				<div class="title_button">
+					<div class="subtitle">사용자 이름(URL)</div>
+					<div><input type="button" value="변경" id="url_change" class="change_btn"></div>
+				</div>
+				<div class="change_con">
+					<c:if test="${not empty loginMember.member_url}">
+						<div>
+							<span>${pageContext.request.scheme}://${pageContext.request.serverName}:${pageContext.request.serverPort}</span><span id="url_new">${loginMember.member_url}</span>
+						</div>
+					</c:if>
+									
+					<div style="display: none;" class="url_container">
+						<div><input type="text" placeholder="6자리 이상의 영문으로 작성해주세요." id="url_upload"></div>
+						<div>사용자 이름은 회원님의 프로필 주소로 활용됩니다. 예) multiforce/user_profile/사용자이름</div>
+						<div id="url_warning"></div>
+						<div><input type="button" value="저장" id="url_save" ></div>
+					</div>	
+				</div>		
+			</div>			
 		</div>
-		<div><input type="button" value="+ 추가" id="address_add"></div>		
 		
-		<div style="display: none;" class="address_container">
-			<div>새로운 배송지 입력</div>
-			<div>수령자 : <input type="text" id="name"></div>
-			<div id="name_result"></div>
-			<div>연락처 : <input type="text" id="phone" maxlength="13" placeholder="숫자만 입력해주세요."></div>
-			<div id="phone_result"></div>
-			<div><input type="button" id="find_postcode" value="우편번호 찾기"></div>
-			<div><input type="text" id="postcode" readonly placeholder="우편번호 찾기 클릭"></div>
-			<div><input type="text" id="road_address" readonly placeholder="우편번호 찾기 클릭"></div>
-			<div><input type="text" id="jibun_address" readonly placeholder="우편번호 찾기 클릭"></div>
-			<div><input type="text" id="extra_address" readonly placeholder="우편번호 찾기 클릭"></div>
-			<div><input type="text" id="detail_address"></div>
-			<div>배송 요청사항 : <input type="text" id="requeste"></div>
-			<div><input type="checkbox" id="default_address" checked>기본주소로 저장</div>
-			<div><input type="button" id="address_save" value="저장"></div>
-		</div>
+		
+		<div class="account" style="display: none;">
+		
+			<div class="sub_con">
+				<div class="title_button">
+					<div class="subtitle">이메일</div>
+					<div><input type="button" value="변경" id="mail_change" class="change_btn"></div>
+				</div>
+				<div class="change_con">
+					<div id="mail_final">${loginMember.email }</div>				
+					<div style="display: none;" class="mail_container">
+						<div><input type="text" value="${loginMember.email }"  id="mail_upload"></div>
+						<div class="mail_send_result"></div>
+						<div><input type="button" value="인증메일 전송" id="mail_send" ></div>
+						<div><input type="text"  placeholder="인증번호 입력"  id="mail_confirm"></div>
+						<div><input type="button" value="인증번호 확인" id="mail_save" ></div>
+					</div>
+				</div>				
+			</div>
+			
+			<hr class="dividing_hr">
 				
-	</div>
+			<div class="sub_con">
+				<div class="title_button">
+					<div class="subtitle">비밀번호</div>
+					<div><input type="button" value="변경" id="pw_change" class="change_btn"></div>
+				</div>
+				<div class="change_con">
+					<div style="display: none;" class="pw_container">
+						<div>현재 비밀번호</div>
+						<div><input type="password" id="pw_check"></div>
+						<div class="pw_warning"></div>
+						<br>
+						<div>변경할 비밀번호</div>				
+						<div><input type="password"  placeholder="변경할 비밀번호"  id="pw_new1"></div>
+						<div class="pw_new1_warning"></div>
+						<div><input type="password"  placeholder="변경할 비밀번호 확인"  id="pw_new2"></div>
+						<div class="pw_new2_warning"></div>
+						<div>특수문자 2개 이상 포함 필수 ~ ! @ # $ % ^ * + = - ? _</div>
+						<div><input type="button" value="저장" id="pw_save" ></div>
+					</div>
+				</div>
+			</div>	
+		</div>
 	
+	
+		<div class="delevery" style="display: none;">
+			<div class="sub_con">
+				<div class="address_added">
+					<div class="title_button">	
+					    <div class="subtitle">등록된 배송지</div>
+					    <div><input type="button" value="+ 추가" id="address_add" class="change_btn"></div>
+				    </div>
+					    <div>
+					        <c:choose>
+					            <c:when test="${not empty delivery}">
+					                <c:forEach var="delivery" items="${delivery}" varStatus="vs">
+					                    <div class="for_delete${vs.count}" >
+					                        <div>${delivery.name}</div>
+											<c:if test="${delivery.default_address}">
+											    <div style="color: red;">기본배송지</div>
+											</c:if>
+					                        <div>${delivery.phone}</div>
+					                        <div>[${delivery.postcode}] ${delivery.road_address} ${delivery.extra_address}</div>
+					                        <div>${delivery.detail_address}</div>
+					                        <input type="button" value="삭제" class="address_del"
+				                                   data-name="${delivery.name}"
+									               data-phone="${delivery.phone}"
+									               data-postcode="${delivery.postcode}"
+									               data-road="${delivery.road_address}"
+									               data-detail="${delivery.detail_address}"
+									               data-for_delete="${vs.count }">
+					                        <hr>                
+					                    </div>
+					                </c:forEach>
+					            </c:when>
+					            <c:otherwise>
+					                <div>배송지를 등록해주세요.</div>
+					            </c:otherwise>
+					        </c:choose>       
+					    </div>
+				</div>
+						
+				
+				<div style="display: none;" class="address_container">
+					<div>새로운 배송지 입력</div>
+					<div>수령자 : <input type="text" id="name"></div>
+					<div id="name_result"></div>
+					<div>연락처 : <input type="text" id="phone" maxlength="13" placeholder="숫자만 입력해주세요."></div>
+					<div id="phone_result"></div>
+					<div><input type="button" id="find_postcode" value="우편번호 찾기"></div>
+					<div><input type="text" id="postcode" readonly placeholder="우편번호 찾기 클릭"></div>
+					<div><input type="text" id="road_address" readonly placeholder="우편번호 찾기 클릭"></div>
+					<div><input type="text" id="jibun_address" readonly placeholder="우편번호 찾기 클릭"></div>
+					<div><input type="text" id="extra_address" readonly placeholder="우편번호 찾기 클릭"></div>
+					<div><input type="text" id="detail_address"></div>
+					<div>배송 요청사항 : <input type="text" id="requeste"></div>
+					<div><input type="checkbox" id="default_address" checked>기본주소로 저장</div>
+					<div><input type="button" id="address_save" value="저장"></div>
+				</div>
+				
+			</div>	
+		</div>
+		
+		
+	</div>
 	
 </div>
-
 
 </body>
 </html>

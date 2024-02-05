@@ -17,6 +17,7 @@
 	WHERE member_seq =#{memberSeq}
 	AND fund_duedate > now()
 	AND del_status = false
+	ORDER BY project_seq ASC
 </select>
 
 <!-- 후원한 프로젝트 페이지 + 프로젝트정보 -->
@@ -37,6 +38,7 @@
 	WHERE member_seq =#{memberSeq}
 	AND fund_duedate < now()
 	AND pay_status = true
+	ORDER BY project_seq ASC
 ]]>
 </select>
 
@@ -45,7 +47,8 @@
 <![CDATA[
 	SELECT * FROM FUNDING
 	WHERE member_seq =#{memberSeq}
-	AND del_status= true 
+	AND del_status= true
+	ORDER BY project_seq ASC
 ]]>
 </select>
 
