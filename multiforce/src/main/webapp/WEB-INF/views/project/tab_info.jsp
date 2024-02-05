@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <title>기본정보</title>
 <script src="/js/jquery-3.7.1.min.js"></script>
+<!-- <script src="js/imageUpload.js"></script> -->
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <script>
     $(document).ready(function() {
@@ -17,7 +18,10 @@
             short_title: $("#short_title").val(),
             sub_title: $("#sub_title").val(),
             main_images_url: $("#main_images_url").val(),
-            url : $("#url").val()
+            url : $("#url").val(),
+            start_date : $("#start_date").val(),
+            due_date : $("#due_date").val(),
+            goal_price : $("#goal_price").val()
         };
 
         // AJAX를 통해 서버에 JSON 형태의 데이터 전송
@@ -33,6 +37,26 @@
                 console.error(error);
             }
         });
+    });
+    
+    $("#addBundle").click(function() {
+    	var packages = {
+    			bundle_price : $("#bundle_price").val(),
+    			bundle_name : $("#bundle_name").val()
+    			/* item_name : $("item_name").val() */
+    	};
+    	$.ajax({
+    		type: "POST",
+    		url: "/saveBundle",
+    		contentType: "application/json",
+    		data:JSON.stringify(packages),
+    		success: function(response) {
+    			console.log(response);
+    		},
+    		error: function(error) {
+    			console.error(error);
+    		}
+    	});
     });
 });
 </script>
@@ -148,11 +172,11 @@
 	</div>
 	<hr>
 </div>
-<button type="button" id="submitBtn">저장</button>
-</form>
+
+
 <!-- footer -->
 
-<script> // 이미지 관련 스크립트
+<!-- <script> // 이미지 관련 스크립트
     function getImageFiles(e) {
       const uploadFiles = [];
       const files = e.currentTarget.files;
@@ -195,7 +219,40 @@
     upload.addEventListener('click', () => realUpload.click());
 
     realUpload.addEventListener('change', getImageFiles);
-  </script>
+  </script> -->
+<!-- tab_fundingPlan -->
+<script>
+function inputPrice(num) {
+	if(isFinite(num.value) == false) {
+		alert("목표금액은 숫자만 입력할 수 있습니다.");
+		num.value = "";
+		return false;
+	}
+}
+</script>
+ <h1>펀딩 계획</h1>
+ 
+  <label for="start_date">시작일:</label>
+  <input type="date" id="start_date" name="start_date"><br><br>
+  
+  <label for="due_date">마감일:</label>
+  <input type="date" id="due_date" name="due_date"><br><br>
+  
+  <label for="goal_price">목표 금액:</label>
+  <input type="text" id="goal_price" name="goal_price" onKeyup="inputPrice(this);"><br><br>
+  <button type="button" id="submitBtn">저장</button>
+  <!-- <button type="button" id="submitBtn">저장</button>  -->
+</form>
+<!-- tab_gift -->
+<h1>선물 계획</h1>
+  <label for="bundle_price">후원 금액</label>
+  <input type="text" id="bundle_price" name="bundle_price"><br><br>
+
+  <label for="bundle_name">선물 이름</label>
+  <input type="text" id="bundle_name" name="bundle_name"><br><br>
+  <label for="item_name">상품 이름</label>
+  <input type="text" id="item_name" name="item_name"><br><br>
+
+  <input type="button" id="addBundle" value="추가">
 </body>
-<%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </html>

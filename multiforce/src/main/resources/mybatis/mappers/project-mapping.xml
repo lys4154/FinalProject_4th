@@ -110,26 +110,18 @@
 </select> 
 
 <insert id="insertProject" parameterType="project.dto.ProjectDTO">
- INSERT INTO project (member_seq, long_title, short_title, sub_title, main_images_url, url, category)
- VALUES (#{member_seq}, #{long_title}, #{short_title}, #{sub_title}, #{main_images_url}, #{url}, #{category})
+ INSERT INTO project (member_seq, long_title, short_title, sub_title, main_images_url, url, category, start_date, due_date, goal_price)
+ VALUES (#{member_seq}, #{long_title}, #{short_title}, #{sub_title}, #{main_images_url}, #{url}, #{category}, #{start_date}, #{due_date}, #{goal_price})
 </insert>
 
 <!-- tab_fundingPlan 저장 -->
 <update id="insertFundingPlan" parameterType="project.dto.ProjectDTO">
     UPDATE project
     SET start_date = #{start_date}, due_date = #{due_date}, goal_price = #{goal_price}
-    WHERE project_seq = #{project_seq};
+    WHERE project_seq = #{project_seq}
+    order by project_seq desc
+    limit 0,1
 </update>
-
-<!-- 선물저장(Bundle) -->
-<select id="getProject_seq" parameterType="String" resultType="int">
-	select project_seq from project where long_title=#{long_title} and member_seq=#{member_seq};
-</select>
-
-<insert id="insertBundle" parameterType="project.dto.BundleDTO">
-	insert into bundle (project_seq, bundle_name, bundle_price)
-	values (#{project_seq}, #{bundle_name}, #{bundle_price})
-</insert>
 
 <!-- 상품저장(Item) -->
 <select id="getBundle_seq" parameterType="String" resultType="int">
@@ -317,6 +309,7 @@ collection_amount, start_date, due_date, long_title, short_title, sub_title, cat
 from member_info m join project p using (member_seq) 
 where due_date = date(now() - interval 1 day) and project_process = 5
 </select>
+
 <!-- 펀딩 실패 모금자 리스트 불러오기 -->
 <select id="selectSupporterFundFail" resultType="projectmemberdto">
 select f.member_seq, member_id, member_name, nickname, email, f.project_seq, p.short_title from funding f 
@@ -324,6 +317,7 @@ join member_info m on f.member_seq = m.member_seq
 join project p on f.project_seq = p.project_seq 
 where f.project_seq = #{project_seq}
 </select>
+
 <!-- 펀딩 성공 모금자 리스트 불러오기 -->
 <select id="selectCollectorFundSuccess" resultType="projectmemberdto">
 select member_seq, member_id, nickname, email, project_seq, goal_price,
@@ -331,6 +325,7 @@ collection_amount, start_date, due_date, long_title, short_title, sub_title, cat
 from member_info m join project p using (member_seq) 
 where due_date = date(now() - interval 1 day) and project_process = 6
 </select>
+
 <!-- 펀딩 시작 모금자 리스트 불러오기 -->
 <select id="selectCollectorFundstart" resultType="projectmemberdto">
 select m.member_seq, member_id, nickname, email, project_seq, goal_price,
@@ -338,14 +333,17 @@ collection_amount, start_date, due_date, long_title, short_title, sub_title, cat
 from project p join member_info m using (member_seq) 
 where start_date = now() and project_process = 4
 </select>
+
 <!-- 펀딩 시작 프로젝트 찜한 사람 리스트 불러오기 -->
 <select id="selectDibsFundStart">
 select member_seq from project_dibs where project_seq = #{project_seq}
 </select>
+
 <!-- 펀딩 시작 모금자를 팔로우하는 사람 리스트 불러오기 -->
 <select id="selectFollowerFundStart">
 select follower_seq from follow where following_seq = #{member_seq}
 </select>
+
 <!-- 마감임박 프로젝트 찜한 사람 리스트 -->
 <select id="selectDidsFundEnd" resultType="projectmemberdto">
 select d.member_seq, member_id, member_name, nickname, email, d.project_seq, p.short_title from project_dibs d 

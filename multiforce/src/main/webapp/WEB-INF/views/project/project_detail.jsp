@@ -15,8 +15,11 @@
     <p>목표 금액: ${project.goal_price}</p>
     <p>펀딩 기간: ${project.start_date} - ${project.due_date}</p>
     <p>프로젝트 소개: ${project.content}</p>
- 
 </section>
+<secion class="bundle-info">
+	<p>선물 이름 : ${bundle.name}</p>
+	<p>선물 가격 : ${bundle.price}</p>
+</secion>
 <a href="#" id="updateLink" data-project-id="${project.project_seq}">업데이트</a>
 <a href="#" id="communityLink" data-project-id="${project.project_seq}">커뮤니티</a>
 <hr>
