@@ -23,7 +23,7 @@ $(document).ready(function() {
 	    $(element).css({
 	        "font-weight": fontWeight,
 	        "color": color
-	    });
+	    })	    
 	}
 	
 	//.result에 내용이 있을때만 테두리 만들기
@@ -34,9 +34,11 @@ $(document).ready(function() {
             	'border-color': '#cfcfcf',
             	'border-radius': '5px'
             });
+        } else {
+        	 $('.res_con').css('border', 'none'); // .result 내용이 없을 때는 border를 제거
         }
-    };
-    
+     };
+   
 	
 	
 	//자기 소개
@@ -53,6 +55,7 @@ $(document).ready(function() {
 	//프로필 클릭
 	 $("#myprofile_detail").click(function() {
 		myDescription();
+		$(".empty_result").empty();
 		$(".result_count").html('');
 		setMenuTab("#myprofile_detail", "600", "black");
 		setMenuTab("#myproject_detail", "400", "grey");
@@ -77,11 +80,18 @@ $(document).ready(function() {
 	       success: function(response) {
 		       	console.log(response);
 		       	$(".result").empty();
+		       	checkResultContent();
 		       	if(response.length == 0) {
-		       		$(".result").append("<div> 등록된 프로젝트가 없습니다. </div>");
+		       		$(".empty_con").html(		       				
+           				"<div class='empty_result'>" +
+           					"<div class='empty_ment'> 작성한 프로젝트가 없습니다. </div>" +
+       					"</div>"	       				
+		       		);
 		       	} else {  		       					       		
 		               $(".result_count").html("<div> <span style='color: red;'> " + response.length + "</span> 개의 프로젝트가 있습니다.</div>");
-	   
+	   					
+		               $(".empty_result").empty();
+		               
 		       			for (var i = 0; i < response.length; i++) {                			
 		       		    // 모금 달성률 계산
 		       		    	var achievementRate = (response[i].collection_amount / response[i].goal_price) * 100;
@@ -111,9 +121,9 @@ $(document).ready(function() {
 		                	    "</div>" 	                	    
 		                   );
                            if (i < response.length - 1) {
-                               $(".result").append("<hr>");
+                               $(".result").append("<hr class=\"follo_hr\">");
                            }
-		       			} 
+		       			}
 		       			checkResultContent();
 	       			}                   
 		       },
@@ -138,10 +148,18 @@ $(document).ready(function() {
                success: function(response) {
 	               	console.log(response); 
 	               	$(".result").empty();
+	               	checkResultContent();
 	               	if(response.length == 0) {
-	               		$(".result").append("<div> 후원한 프로젝트가 없습니다. </div>");
+	               		$(".empty_con").html(
+	               				"<div class='empty_result'>" +
+	               					"<div class='empty_ment'> 후원한 프로젝트가 없습니다. </div>" +
+	               					"<div><button class='backToMain'> 프로젝트 둘러보기 </button> </div>" +
+               					"</div>"	               					
+	               		);
 	               	} else {
 	                       $(".result_count").html("<div> <span style='color: red;'> " + response.length + "</span> 개의 프로젝트가 있습니다.</div>")
+	                       
+	                       $(".empty_result").empty();
 	                       
 	               		for (var i = 0; i < response.length; i++) {	               		    
 	                           // 날짜 포매팅
@@ -170,7 +188,7 @@ $(document).ready(function() {
 		                        	"</div>"
 	                           );
 	                           if (i < response.length - 1) {
-	                               $(".result").append("<hr>");
+	                               $(".result").append("<hr class=\"follo_hr\">");
 	                           }
 	               		}
                        checkResultContent();
@@ -192,9 +210,17 @@ $(document).ready(function() {
              success: function(response) {
              	console.log(response); 
              	$(".result").empty();
+             	checkResultContent();
              	if (Object.keys(response).length === 0) {
-             		$(".result").append("<div> 팔로워가 없습니다. </div>");
+             		$(".empty_con").html(     				
+             				"<div class='empty_result'>" +
+             					"<div class='empty_ment'> 팔로워한 사용자가 없습니다.</div>" +
+             				"</div>"
+             		);
                  } else {
+                	 
+                	 $(".empty_result").empty();
+                	 
                      for (var i = 0; i < response.myFollower.length; i++) {
                          var memberSeq = response.myFollower[i].member_seq;
                          var followerCount = response.followerCounts[memberSeq];
@@ -242,6 +268,7 @@ $(document).ready(function() {
 		 setMenuTab("#funded_detail", "400", "grey");
 		 setMenuTab("#follower_detail", "600", "black");
 		 setMenuTab("#following_detail", "400", "grey");
+		 
    	}); 	
 	    
     
@@ -296,9 +323,17 @@ $(document).ready(function() {
 	            success: function(response) {
 	            	console.log(response); 
 	            	$(".result").empty();
+	            	checkResultContent();
 	            	if (Object.keys(response).length === 0) {
-	            		$(".result").append("<div> 팔로잉한 사용자가 없습니다. </div>");
+	            		$(".empty_con").html(	            				
+             				"<div class='empty_result'>" +
+             					"<div class='empty_ment'> 팔로잉한 사용자가 없습니다.</div>" +
+             				"</div>"	            		
+	            		);
 	                } else {
+	                	
+	                	$(".empty_result").empty();
+	                	
 	                    for (var i = 0; i < response.myFollowing.length; i++) {
 	                        var memberSeq = response.myFollowing[i].member_seq;
 	                        var followerCount = response.followerCounts[memberSeq];
@@ -413,6 +448,10 @@ $(document).ready(function() {
 	<div class="res_con" >
 		<div class="result" ></div>
 	</div>
+	
+	<div class="empty_con">
+	</div>
+	
 </div>
 
 </body>

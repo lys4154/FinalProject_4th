@@ -29,92 +29,97 @@ $(document).ready(function() {
     
     if (totalCount === 0) {
     	$(".no_funded").html(
-    			"<div> 아직 참여하신 후원 내역이 없습니다.<div> " +
+    			"<div class='empty_ment'> 아직 참여하신 후원 내역이 없습니다.<div> " +
     			"<input type='button' value='프로젝트 둘러보기' id='backToMain'>");
-    }
-    
-    $("#backToMain").click(function() {
-    	location.href = '/';
-    });
+    	
+        $("#backToMain").click(function() {
+        	location.href = '/';
+        });
+    	
+    }else {
+    	
+    	//프로젝트 긴제목 검색
+     	$("#search_keyword").keyup(function() {
+     		let keyword = $("#search_keyword").val().toLowerCase();
+    	       $.ajax({
+    	          type: "get",
+    	          data: { "keyword": keyword},
+    	          url: "/funded_search",	          
+    	          dataType: "JSON",
+    	          success: function(response) {
+    	        	$("#total_funded").html(response.length);	          	
+    	          	if(response.length == 0) {
+    	          		$(".all_funded").hide();
+    	          		$(".search_result").html("<div> 검색어와 일치하는 내역이 없습니다. </div>");
+    	          	} else {
+    	          		$(".all_funded").hide();
+    	          		$(".search_result").empty();
+    	          		$("#total_funded").html(response.length);
+    	  	            for (var i = 0; i < response.length; i++) {
+    	  	            	
+    	  	            	//후원일
+    	  	            	var fund_date = new Date(response[i].fund_date);
+    	  	                var fundDate =  fund_date.getFullYear() + "년 " + (fund_date.getMonth() + 1) + "월 " + fund_date.getDate() + "일";             
+    	  	           		var formatter = new Intl.NumberFormat('ko-KR', { style: 'currency', currency: 'KRW' });
+    	  	           		
+    	                    //취소일이 있는 경우만 출력
+    	                    var delDate = "";
+    	                    if(response[i].del_date){
+    	                    	var del_date = new Date(response[i].del_date);
+    	                    	delDate = "<div> <span class='pay_status'> " + del_date.getFullYear() + "년 " + (del_date.getMonth() + 1) + "월 " + del_date.getDate() + "일 취소 완료 </span> </div>" +
+    	                    				"<div class='amount'> 후원 실패 ㅣ " + formatter.format(response[i].price).replace(/₩/, '') + "원 결제 예약 취소 </div>";	                    	
+    	                    } 
+
+    	                    //결제완료된 경우에만 출력
+    	                    var payDate = "";
+    	                    if (response[i].pay_date) {
+    	                        var pay_date = new Date(response[i].pay_date);
+    	                        payDate = "<div> <span class='pay_status'> " + pay_date.getFullYear() + "년 " + (pay_date.getMonth() + 1) + "월 " + pay_date.getDate() + "일 결제 완료 </span> </div> " +
+    	                        "<div class='amount'> 후원 성공 ㅣ " + formatter.format(response[i].price).replace(/₩/, '') + "원 예약 결제 완료 </div>";
+    	                    }
+    	                    
+    	                    //현재진행중인 경우에만 출력
+    	                    var ongoing = "";
+    	                    if (response[i].pay_status == false && response[i].del_status == false) {
+    	                        var due_date = new Date(response[i].due_date);
+    	                        ongoing = "<div> <span class='pay_status'> " + due_date.getFullYear() + "년 " + (due_date.getMonth() + 1) + "월 " + (due_date.getDate() +1) + "일 결제 예정 </span> </div>" +
+    	                        "<div class='amount'> 후원 진행중 ㅣ " + formatter.format(response[i].price).replace(/₩/, '') + "원 결제 예약 </div>";
+    	                    }
+    	                    
+
+    	  	                $(".search_result").append(
+    	  	                		"<div class='result'>" +
+    		  	                		"<div class='result_con'>" +
+    		  	                		"<div> <a href=\"" + response[i].url + "\"> <img src=\"" + response[i].main_images_url + "\" </a> </div>" +
+    		  	                		"<div class='pro_right'>" +
+    		  	                			"<div class='funded_day_seq'> <span> 후원일 " + fundDate + "</span> ㅣ " +
+    		  	                				"<span> 후원번호 " + response[i].fund_seq + "</span> </div>" +
+    			  	                		"<div class='long_title'> <a href=\"" + response[i].url + "\"> " + response[i].long_title + "</a> </div>" +
+    			  	                		"<div>" + response[i].fund_option + "</div>" +   	                		
+    			  	                		ongoing +
+    			  	                		delDate +
+    			  	               	 		payDate + 
+    	  	                			"</div>" + 
+      	                			"</div>"
+    	  	                	);
+    	  	                }
+    	  	            }
+    	          	
+    	          	if (keyword  === "") {
+    	          		location.reload();
+    	          	}
+    	          	
+    	          },
+    	          error: function(error) {
+    	              console.log(error);
+    	          }
+    	     });        
+    	 }); 
+    }   
+
   
 
-	//프로젝트 긴제목 검색
- 	$("#search_keyword").keyup(function() {
- 		let keyword = $("#search_keyword").val().toLowerCase();
-	       $.ajax({
-	          type: "get",
-	          data: { "keyword": keyword},
-	          url: "/funded_search",	          
-	          dataType: "JSON",
-	          success: function(response) {
-	        	$("#total_funded").html(response.length);	          	
-	          	if(response.length == 0) {
-	          		$(".all_funded").hide();
-	          		$(".search_result").html("<div> 검색어와 일치하는 내역이 없습니다. </div>");
-	          	} else {
-	          		$(".all_funded").hide();
-	          		$(".search_result").empty();
-	          		$("#total_funded").html(response.length);
-	  	            for (var i = 0; i < response.length; i++) {
-	  	            	
-	  	            	//후원일
-	  	            	var fund_date = new Date(response[i].fund_date);
-	  	                var fundDate =  fund_date.getFullYear() + "년 " + (fund_date.getMonth() + 1) + "월 " + fund_date.getDate() + "일";             
-	  	           		var formatter = new Intl.NumberFormat('ko-KR', { style: 'currency', currency: 'KRW' });
-	  	           		
-	                    //취소일이 있는 경우만 출력
-	                    var delDate = "";
-	                    if(response[i].del_date){
-	                    	var del_date = new Date(response[i].del_date);
-	                    	delDate = "<div> <span class='pay_status'> " + del_date.getFullYear() + "년 " + (del_date.getMonth() + 1) + "월 " + del_date.getDate() + "일 취소 완료 </span> </div>" +
-	                    				"<div class='amount'> 후원 실패 ㅣ " + formatter.format(response[i].price).replace(/₩/, '') + "원 결제 예약 취소 </div>";	                    	
-	                    } 
 
-	                    //결제완료된 경우에만 출력
-	                    var payDate = "";
-	                    if (response[i].pay_date) {
-	                        var pay_date = new Date(response[i].pay_date);
-	                        payDate = "<div> <span class='pay_status'> " + pay_date.getFullYear() + "년 " + (pay_date.getMonth() + 1) + "월 " + pay_date.getDate() + "일 결제 완료 </span> </div> " +
-	                        "<div class='amount'> 후원 성공 ㅣ " + formatter.format(response[i].price).replace(/₩/, '') + "원 예약 결제 완료 </div>";
-	                    }
-	                    
-	                    //현재진행중인 경우에만 출력
-	                    var ongoing = "";
-	                    if (response[i].pay_status == false && response[i].del_status == false) {
-	                        var due_date = new Date(response[i].due_date);
-	                        ongoing = "<div> <span class='pay_status'> " + due_date.getFullYear() + "년 " + (due_date.getMonth() + 1) + "월 " + (due_date.getDate() +1) + "일 결제 예정 </span> </div>" +
-	                        "<div class='amount'> 후원 진행중 ㅣ " + formatter.format(response[i].price).replace(/₩/, '') + "원 결제 예약 </div>";
-	                    }
-	                    
-
-	  	                $(".search_result").append(
-	  	                		"<div class='result'>" +
-		  	                		"<div class='result_con'>" +
-		  	                		"<div> <a href=\"" + response[i].url + "\"> <img src=\"" + response[i].main_images_url + "\" </a> </div>" +
-		  	                		"<div class='pro_right'>" +
-		  	                			"<div class='funded_day_seq'> <span> 후원일 " + fundDate + "</span> ㅣ " +
-		  	                				"<span> 후원번호 " + response[i].fund_seq + "</span> </div>" +
-			  	                		"<div class='long_title'> <a href=\"" + response[i].url + "\"> " + response[i].long_title + "</a> </div>" +
-			  	                		"<div>" + response[i].fund_option + "</div>" +   	                		
-			  	                		ongoing +
-			  	                		delDate +
-			  	               	 		payDate + 
-	  	                			"</div>" + 
-  	                			"</div>"
-	  	                	);
-	  	                }
-	  	            }
-	          	
-	          	if (keyword  === "") {
-	          		location.reload();
-	          	}
-	          	
-	          },
-	          error: function(error) {
-	              console.log(error);
-	          }
-	     });        
-	 }); 
 
     
 });

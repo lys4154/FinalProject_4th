@@ -133,6 +133,9 @@ img{
 	line-height: 50px;
 	font-size: 16px;
 }
+.empty_ment{
+	margin: 50px;
+}
 #backToMain{
 	width: 300px;
 	height: 40px;

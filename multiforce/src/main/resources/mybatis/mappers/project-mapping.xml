@@ -91,7 +91,7 @@
     FROM project
     INNER JOIN funding ON project.project_seq = funding.project_seq
     WHERE (project.long_title LIKE concat("%", #{searchKeyword, jdbcType=VARCHAR}, "%"))
-        AND  project.member_seq=#{memberSeq, jdbcType=INTEGER}
+        AND  funding.member_seq=#{memberSeq, jdbcType=INTEGER}
 </select>
 
 

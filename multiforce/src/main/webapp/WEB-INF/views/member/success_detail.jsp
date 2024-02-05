@@ -83,17 +83,22 @@ $(document).ready(function() {
 				<div class="info_flex_left">선물 구성 </div>
 				<div class="info_flex_right">
 					<div class="bundle">
-				    <c:forEach var="bundleEntry" items="${bundleItem}">
-				        <div>* ${bundleEntry.key} <span>${bundleCount[bundleEntry.key]}개</span></div>
-				        <c:forEach var="itemEntry" items="${bundleEntry.value}">
-				            <div class="item_option">
-				            	<span>${itemEntry} </span>
-				           		<c:forEach var="optionEntry" items="${itemOption[itemEntry]}">
-				                <span> (옵션 - ${optionEntry})</span>				            
-				           		</c:forEach>
-			           		</div>            
-				        </c:forEach>				        
-				    </c:forEach>
+						
+					    <c:forEach var="bundleEntry" items="${bundleItem}">
+					    <div class="info_inner">
+					        <div>* ${bundleEntry.key} <span>( x${bundleCount[bundleEntry.key]})</span></div>
+					        <c:forEach var="itemEntry" items="${bundleEntry.value}">
+					            <div class="item_option">
+					            	<span>${itemEntry} </span>
+						            <c:set var="options" value="${itemOption[itemEntry]}" />
+						            <c:if test="${not empty options}">
+						                <span> (옵션 - ${options[0]}<c:forEach var="optionEntry" begin="1" items="${options}">, ${optionEntry}</c:forEach>)</span>
+						            </c:if>
+				           		</div>            
+					        </c:forEach>
+				        </div>				        
+					    </c:forEach>
+
 				    </div>				    
 				</div>
 			</div>
