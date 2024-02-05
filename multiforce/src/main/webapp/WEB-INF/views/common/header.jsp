@@ -9,80 +9,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
-<style>
-#header_wrap{
-	width: 1200px;
-	margin: 0 auto;
-	
-}
-#header_upper_part{
-	height: 50%;
-	margin-top: 30px;
-	margin-bottom: 30px;
-	overflow: visible;
-}
-#header_logo{
-	float: left;
-	margin: 0 30px 0 0;
-	position: relative;
-	top:50%;
-}
-#header_search_wrap{
-	border-radius:10px;
-	border: 1px solid black;
-	padding-left: 3px;
-	padding-right: 3px;
-	padding-bottom: 11px;
-}
-#header_search_form{
-	position: relative;
-	top:6px;
-}
-#header_search_input{
-	width:500px;
-	position: relative;
-	top:50%;
-	border: 0px;
-}
-#header_search_input:focus{
-	outline: none;
-}
-#header_search_btn{
-	height:30px;
-	position: relative;
-	width:30px;
-	border: 0px;
-	background-color: white;
-	cursor: pointer;
-}
-#notification_wrap{
-	margin-top: 10px;
-	margin-right: 230px;
-	float: right;
-}
-#category_list{
-	width: 400px;
-	height: 200px;
-	border: 1px solid rgb(0, 0, 0);
-}
-
-#change_part{
-	display: inline-block;
-}
-#notification_no_read_count{
-	background-color: red;
-	display:inline-block;
-	width: 22px;
-	height: 22px;
-	text-align: center;
-	color: white;
-	border-radius: 20px;
-	position: relative;
-	left: -15px;
-	top: -15px;
-}
-#navigator 
-</style>
+<link rel="stylesheet" type="text/css" href="/css/header.css">
 <script src="/js/jquery-3.7.1.min.js"></script>
 <script>
 $(document).ready(function(){
@@ -93,6 +20,10 @@ $(document).ready(function(){
 	//알림버튼 클릭 시 이벤트) 로그인 여부 확인, 버튼클릭 횟수 체크 후 알림 리스트 보여주거나 숨김 + 읽기 처리
 	var noReadCount = 0;
 	if("${login_user_seq}" != ""){
+		notificationListLoad();
+	}
+	
+	function notificationListLoad(){
 		$.ajax({
 			data: {
 				member_seq: "${login_user_seq}"
@@ -119,8 +50,7 @@ $(document).ready(function(){
 				if(noReadCount > 0 ){
 					$("#notification_no_read_count").css("display", "inline-block");
 				}
-			}
-			//css할 때 스크롤로 만들기
+			}//css할 때 스크롤로 만들기
 		});
 	}
 	var lastNotificationSeq = 0;
@@ -215,22 +145,25 @@ $(document).ready(function(){
 		let result = "";
 		let checkWord = $("#header_search_input").val();
 		let ko_reg = /[ㄱ-ㅎㅏ-ㅣ]{1}/g;
-		$("#search_result").html();
 		
 		if(checkWord == ""){
-			$("#search_result").html();
+			$("#search_result").css("display", "none");
 		}else if(ko_reg.test(checkWord)){
 			
 		}else{
 			let count = 0;
+			$("#search_result").css("display", "inline-block");
 			for(let i = 0; i < projectNameArr.length; i++){
 				if(projectNameArr[i].includes(checkWord)){
 					result += ("<a href='discover?query= " + checkWord + "'>" + projectNameArr[i] +"</a>" + "<br>");
 					count++;
+				}else{
+					$("#search_result").css("display", "none");
 				}
 				if(count == 5){
 					break;
 				}
+				
 			}
 		}
 		$("#search_result").html(result);
@@ -253,16 +186,48 @@ $(document).ready(function(){
 		if(loginUserLevel == "1"){
 			html = 
 				`<div id = "login_wrap">
-					프로필 사진, ${login_user_name}(클릭시 메뉴)<br>
+					프로필 사진, ${login_user_name}<br>
 					<div id="my_menu_list" style="display:none">
-						<a href="/myprofile">프로필</a>
-						<a href="/funded">후원 프로젝트</a>
-						<a href="/mydibs">관심 프로젝트</a>
-						<a href="/follow">팔로우</a>
-						<a href="/allask">메세지</a>
-						<a href="/myproject">내 프로젝트</a>
-						<a href="/settings">회원정보 수정</a>
-						<a href="/logout">로그아웃</a>
+						<a href="/myprofile">
+							<div class="my_menu_wrap">
+								프로필
+							</div>
+						</a>
+						<a href="/funded">
+							<div class="my_menu_wrap">
+								후원 프로젝트
+							</div>
+						</a>
+						<a href="/mydibs">
+							<div class="my_menu_wrap">
+								관심 프로젝트
+							</div>
+						</a>
+						<a href="/follow">
+							<div class="my_menu_wrap">
+								팔로우
+							</div>
+						</a>
+						<a href="/allask">
+							<div class="my_menu_wrap">
+								메세지
+							</div>
+						</a>
+						<a href="/myproject">
+							<div class="my_menu_wrap">
+								내 프로젝트
+							</div>
+						</a>
+						<a href="/settings">
+							<div class="my_menu_wrap">
+								회원정보 수정
+							</div>
+						</a>
+						<a href="/logout">
+							<div class="my_menu_wrap">
+								로그아웃
+							</div>
+						</a>
 					</div>
 				</div>
 				`;
@@ -317,21 +282,35 @@ $(document).ready(function(){
 	  					<path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2M8 1.918l-.797.161A4 4 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4 4 0 0 0-3.203-3.92zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5 5 0 0 1 13 6c0 .88.32 4.2 1.22 6"/>
 					</svg>
 				</i>
-				<span id="notification_no_read_count" >0</span>
+				<span id="notification_no_read_count" style="display:none"></span>
 				<div id="header_notification_list" style="display:none"></div>
 			</div>
 		</div>
 		<nav id="navigator">
-			<a class="category" id="category">카테고리</a>
-			<a href="/discover?sort=new">신규</a>
-			<a href="/discover?sort=popular">인기</a>
-			<a href="/discover?sort=end">마감임박</a>
-			<a id="project_design_btn" href="projectdesign">프로젝트 등록</a>
+			<div id="category_wrap" style="display:inline-block">
+				<div class="category_" style="display:inline-block">
+					<a class="category" id="category">카테고리</a>
+				</div>
+				<div style="display:inline-block">
+					<a href="/discover?sort=new">신규</a>
+				</div>
+				<div style="display:inline-block">
+					<a href="/discover?sort=popular">인기</a>
+				</div>
+				<div style="display:inline-block">
+					<a href="/discover?sort=end">마감임박</a>
+				</div>
+			</div>
 			<div id = "change_part"></div>
+			<div id="project_design_btn_wrap" style="display:inline-block;">
+				<a id="project_design_btn" href="projectdesign">프로젝트 등록</a>
+			</div>
 			<div class="category" id="category_list" style="display:none">
 <%			for(ProjectCategory item : ProjectCategory.values()){ %>
-				<a class="category_btn" href="discover?category=<%=item.getEngName()%>"><%=item.getKorName()%></a>
-<%			}
+				<div class="category_btn_wrap">
+					<a class="category_btn" href="discover?category=<%=item.getEngName()%>"><%=item.getKorName()%></a>
+				</div>
+<% 			}
 %>
 			</div>
 		</nav>
