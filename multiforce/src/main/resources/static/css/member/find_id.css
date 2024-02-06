@@ -1,0 +1,12 @@
+@charset "UTF-8";
+#find_id_container{
+	margin: 0 auto;
+	margin-top: 200px;
+	width: 600px;
+	border: 1px solid black;
+	border-radius: 10px;
+}
+#find_id_wrap{
+	height: 200px;
+	padding: 50px;
+}
