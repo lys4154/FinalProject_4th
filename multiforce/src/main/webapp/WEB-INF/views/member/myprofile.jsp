@@ -49,9 +49,12 @@ $(document).ready(function() {
 		}else {
 			$(".result").html(description);
 		};
-	}
+	}	
+	myDescription();
+
 	
-	myDescription();	
+	
+	
 	//프로필 클릭
 	 $("#myprofile_detail").click(function() {
 		myDescription();
@@ -424,7 +427,7 @@ $(document).ready(function() {
 		<div class="nick_con">
 			<div>
 				<span id="my_nick">${loginMember.nickname} </span>
-				<span> <a href="/settings" ><img alt="회원정보 수정으로 가는 이모티콘" src="	/settings/settings.png" id="set_icon"></a></span>
+				<span> <a href="/settings" ><img alt="회원정보 수정으로 가는 이모티콘" src="/settings/settings.png" id="set_icon"></a></span>
 			</div>
 			<div class="url_con">
 				<span>${pageContext.request.scheme}://${pageContext.request.serverName}:${pageContext.request.serverPort}</span><span id="url_new">${loginMember.member_url}</span>
