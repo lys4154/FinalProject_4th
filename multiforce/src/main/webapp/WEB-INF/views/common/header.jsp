@@ -9,7 +9,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
-<link rel="stylesheet" type="text/css" href="/css/header.css">
+<link rel="stylesheet" type="text/css" href="/css/common/header.css">
 <script src="/js/jquery-3.7.1.min.js"></script>
 <script>
 $(document).ready(function(){

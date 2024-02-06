@@ -1,13 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ include file="/WEB-INF/views/common/header.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
+<link rel="stylesheet" type="text/css" href="/css/member/sign_up.css">
 <script src="/js/jquery-3.7.1.min.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
@@ -431,105 +431,107 @@ $(document).ready(function(){
 
 </script>
 <body>
-<form action="welcome" method="post" id="sign_up_form">
-	<table>
-		<tr>
-			<th>이름</th>
-			<td>
-				<input type="text" class="text" id="user_name" name="member_name" placeholder="성함을 입력해주세요.">
-				<p style="display:none" id="user_name_errmsg">올바르지 않은 이름입니다</p>
-			</td>
-		</tr>
-		<tr>
-			<th>생년월일</th>
-			<td>
-				<input type="date" id="user_birth" >
-				<p style="display:none" id="user_birth_errmsg">올바르지 않은 날짜입니다</p>
-			</td>
-		</tr>
-		<tr>
-			<th>아이디</th>
-			<td>
-				<input type="text" id="user_id" name="member_id" placeholder="4~12글자 영문+숫자 조합">
-				<button id="user_id_dup_check_btn">중복확인</button>
-				<p id="user_id_pass_msg" style="display:none">사용가능한 아이디입니다</p>
-				<p style="display:none" id="user_id_dup_errmsg">중복된 아이디입니다</p>
-				<p style="display:none" id="user_id_check_errmsg">형식에 맞지않는 아이디입니다</p>
-			</td>
-		</tr>
-		<tr>
-			<th>별명</th>
-			<td>
-				<input type="text" id="user_nickname" name="nickname" placeholder="10글자이내 영문,한글,숫자를 입력해주세요" maxlength=10>
-				<button id="user_nickname_dup_check_btn">중복확인</button>
-				<p id="user_nickname_pass_msg" style="display:none">사용가능한 별명입니다</p>
-				<p style="display:none" id="user_nickname_dup_errmsg">중복된 별명입니다</p>
-				<p style="display:none" id="user_nickname_check_errmsg">형식에 맞지않는 별명입니다</p>
-			</td>
-		</tr>
-		<tr>
-			<th>비밀번호</th>
-			<td>
-				<input type="password" id="user_pw" name="password" placeholder="특수문자 2개 이상을 포함한 8~16자의 비밀번호를 입력해주세요" maxlength="16">
-				<span>사용가능한 특수문자 ~ ! @ # $ % ^ * + = - ? _</span>
-				<p id="user_pw_on_caps" style="display:none">CAPS LOCK이 켜져있습니다</p>
-				<p id="user_pw_errmsg_spcl_num" style="display:none">특수문자를 반드시 2글자 이상 넣어야합니다</p>
-				<p id="user_pw_errmsg_pw_num" style="display:none">비밀번호를 최소 8자리 입력해주세요</p>
-			</td>
-		</tr>
-		<tr>
-			<th>비밀번호 확인</th>
-			<td>
-				<input type="password" id="user_pw_check">
-				<p style="display:none" id="user_pw_check_errmsg">비밀번호가 일치하지 않습니다</p>
-			</td>
-		</tr>
-		<tr>
-			<th>이메일</th>
-			<td>
-				<input type="text" class="text" id="user_email" placeholder="이메일을 입력해주세요" >
-				@
-				<select id="email_select">
-					<option>naver.com</option>
-					<option>gmail.com</option>
-					<option>daum.net</option>
-					<option>직접입력</option>
-				</select>
-				<input type="text" class="text" id="user_email_dir" placeholder="도메인을 입력해주세요" style="display:none" >
-				<input type="hidden" id="email" name="email">
-				<button id="mail_auth_btn">인증메일 전송</button>
-				<span id="mail_send_msg" style="display:none">전송 중</span>
-				<div>
-					<input type="text" id="auth_code_input" style="display:none" placeholder="인증번호 6자리를 입력해주세요">
-					<button id="auth_code_check_btn" style="display:none">인증</button>
-				</div>
-				<p id="user_email_auth_msg" style="display:none">인증되었습니다</p>
-				<p class="error_message" id="user_email_id_errmsg" style="display:none">입력 양식이 올바르지 않습니다</p>
-				<p class="error_message" id="user_email_domain_errmsg" style="display:none">도메인 입력 양식이 올바르지 않습니다</p>
-			</td>
-		</tr>
-		<tr>
-			<th>성별</th>
-			<td>
-				남<input type="radio" name="gender" value="0" checked>
-				여<input type="radio" name="gender" value="1">
-			</td>
-		</tr>
-		<tr>
-			<th>주소</th>
-			<td>
-				<input type="text" id="postcode" name="postcode" placeholder="우편번호" readonly>
-				<input type="button" id="find_address" value="우편번호 찾기"><br>
-				<input type="text" id="roadAddress" name="road_address" placeholder="도로명주소" readonly>
-				<input type="text" id="jibunAddress" name="jibun_address" placeholder="지번주소" readonly>
-				<input type="text" id="extraAddress" name="extra_address" placeholder="참고항목" readonly><br>
-				<input type="text" id="detailAddress" name="detail_address" placeholder="상세주소">
-			</td>
-		</tr>
-	</table>
-	<div id="btn_join_wrap">
-		<button id="btn_join">회원가입</button>
-	</div>
-</form>
+<div id="sign_up_container">
+	<form action="welcome" method="post" id="sign_up_form">
+		<table>
+			<tr>
+				<th>이름</th>
+				<td>
+					<input type="text" class="text" id="user_name" name="member_name" placeholder="성함을 입력해주세요.">
+					<p style="display:none" id="user_name_errmsg">올바르지 않은 이름입니다</p>
+				</td>
+			</tr>
+			<tr>
+				<th>생년월일</th>
+				<td>
+					<input type="date" id="user_birth" >
+					<p style="display:none" id="user_birth_errmsg">올바르지 않은 날짜입니다</p>
+				</td>
+			</tr>
+			<tr>
+				<th>아이디</th>
+				<td>
+					<input type="text" id="user_id" name="member_id" placeholder="4~12글자 영문+숫자 조합">
+					<button id="user_id_dup_check_btn">중복확인</button>
+					<p id="user_id_pass_msg" style="display:none">사용가능한 아이디입니다</p>
+					<p style="display:none" id="user_id_dup_errmsg">중복된 아이디입니다</p>
+					<p style="display:none" id="user_id_check_errmsg">형식에 맞지않는 아이디입니다</p>
+				</td>
+			</tr>
+			<tr>
+				<th>별명</th>
+				<td>
+					<input type="text" id="user_nickname" name="nickname" placeholder="10글자이내 영문,한글,숫자를 입력해주세요" maxlength=10>
+					<button id="user_nickname_dup_check_btn">중복확인</button>
+					<p id="user_nickname_pass_msg" style="display:none">사용가능한 별명입니다</p>
+					<p style="display:none" id="user_nickname_dup_errmsg">중복된 별명입니다</p>
+					<p style="display:none" id="user_nickname_check_errmsg">형식에 맞지않는 별명입니다</p>
+				</td>
+			</tr>
+			<tr>
+				<th>비밀번호</th>
+				<td>
+					<input type="password" id="user_pw" name="password" placeholder="특수문자 2개 이상을 포함한 8~16자의 비밀번호를 입력해주세요" maxlength="16">
+					<span>사용가능한 특수문자 ~ ! @ # $ % ^ * + = - ? _</span>
+					<p id="user_pw_on_caps" style="display:none">CAPS LOCK이 켜져있습니다</p>
+					<p id="user_pw_errmsg_spcl_num" style="display:none">특수문자를 반드시 2글자 이상 넣어야합니다</p>
+					<p id="user_pw_errmsg_pw_num" style="display:none">비밀번호를 최소 8자리 입력해주세요</p>
+				</td>
+			</tr>
+			<tr>
+				<th>비밀번호 확인</th>
+				<td>
+					<input type="password" id="user_pw_check">
+					<p style="display:none" id="user_pw_check_errmsg">비밀번호가 일치하지 않습니다</p>
+				</td>
+			</tr>
+			<tr>
+				<th>이메일</th>
+				<td>
+					<input type="text" class="text" id="user_email" placeholder="이메일을 입력해주세요" >
+					@
+					<select id="email_select">
+						<option>naver.com</option>
+						<option>gmail.com</option>
+						<option>daum.net</option>
+						<option>직접입력</option>
+					</select>
+					<input type="text" class="text" id="user_email_dir" placeholder="도메인을 입력해주세요" style="display:none" >
+					<input type="hidden" id="email" name="email">
+					<button id="mail_auth_btn">인증메일 전송</button>
+					<span id="mail_send_msg" style="display:none">전송 중</span>
+					<div>
+						<input type="text" id="auth_code_input" style="display:none" placeholder="인증번호 6자리를 입력해주세요">
+						<button id="auth_code_check_btn" style="display:none">인증</button>
+					</div>
+					<p id="user_email_auth_msg" style="display:none">인증되었습니다</p>
+					<p class="error_message" id="user_email_id_errmsg" style="display:none">입력 양식이 올바르지 않습니다</p>
+					<p class="error_message" id="user_email_domain_errmsg" style="display:none">도메인 입력 양식이 올바르지 않습니다</p>
+				</td>
+			</tr>
+			<tr>
+				<th>성별</th>
+				<td>
+					남<input type="radio" name="gender" value="0" checked>
+					여<input type="radio" name="gender" value="1">
+				</td>
+			</tr>
+			<tr>
+				<th>주소</th>
+				<td>
+					<input type="text" id="postcode" name="postcode" placeholder="우편번호" readonly>
+					<input type="button" id="find_address" value="우편번호 찾기"><br>
+					<input type="text" id="roadAddress" name="road_address" placeholder="도로명주소" readonly>
+					<input type="text" id="jibunAddress" name="jibun_address" placeholder="지번주소" readonly>
+					<input type="text" id="extraAddress" name="extra_address" placeholder="참고항목" readonly><br>
+					<input type="text" id="detailAddress" name="detail_address" placeholder="상세주소">
+				</td>
+			</tr>
+		</table>
+		<div id="btn_join_wrap">
+			<button id="btn_join">회원가입</button>
+		</div>
+	</form>
+</div>
 </body>
 </html>
