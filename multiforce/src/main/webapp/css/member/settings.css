@@ -55,7 +55,6 @@ a{
 
 
 
-
 /* 이미지 */
 img {
 	width: 90px;
@@ -69,7 +68,6 @@ img {
 /* 하단 전체 */
 .contents_con{
 	margin-top: 15px;
-	padding: 10px 0;
 }
 .subtitle{
 	font-size: 16px;
@@ -111,9 +109,6 @@ img {
 .input_con_img{
 	margin-left: 50px;
 }
-.input_con_img{
-	
-}
 #img_upload_label, #img_del{
     display: flex;
     justify-content: center;
@@ -124,4 +119,230 @@ img {
 	height: 30px;
 	cursor: pointer;
 	margin: 10px 0;	
+}
+#img_del{
+	background-color: #6e6e6e;
+	color: #f0f0f0;
+	font-size: 15px;
+}
+
+
+
+/* 닉네임 변경 */
+.input_con_nick{
+	margin-left: 5px;
+}
+.nick_container{
+	display: flex;
+	align-items: flex-start;
+}
+#nick_upload{
+	margin-right: 10px;
+}
+#nick_upload{ /* text */
+	width: 200px;
+	height: 30px;
+	border: 1px solid #cfcfcf;
+	border-radius: 5px;
+	padding-left: 10px;
+	font-size: 15px;
+	outline: none;
+}
+#nick_warning{
+	font-size: 12px;
+	color: #fc035a;
+}
+#nick_save{ /* btn */
+	width: 110px;
+	height: 33px;
+	font-size: 15px;
+	border: 1px solid #cfcfcf;
+	border-radius: 5px;
+	background-color: #6e6e6e;
+	color: #f0f0f0;
+	outline: none;
+	cursor: pointer;
+}
+
+/* 자기소개 변경 */
+.desc_container{
+	margin-left: 5px;
+	display: flex;
+	align-items: flex-end;
+}
+#desc_upload{
+	resize: none;
+	width: 600px;
+	height: 100px;
+	border-radius: 5px;
+	border: 1px solid #cfcfcf;
+	padding: 10px;
+	margin-right: 10px;
+	outline: none;
+}
+#desc_save{
+	width: 110px;
+	height: 33px;
+	font-size: 15px;
+	border: 1px solid #cfcfcf;
+	border-radius: 5px;
+	background-color: #6e6e6e;
+	color: #f0f0f0;
+	margin-bottom: 5px;
+}
+
+/* url 변경 */
+.change_con_row{
+	display:flex;
+	flex-direction: column	
+}
+.url_container{
+	margin: 10px 0;
+}
+#url_upload{/* text */
+	width: 200px;
+	height: 30px;
+	border: 1px solid #cfcfcf;
+	border-radius: 5px;
+	padding-left: 10px;
+	font-size: 15px;
+	outline: none;
+	margin-right: 5px;
+}
+.url_container{
+	margin-top: 10px;
+	display: flex;
+	flex-direction: column;
+}
+#url_save{ /* btn */
+	width: 110px;
+	height: 33px;
+	font-size: 15px;
+	border: 1px solid #cfcfcf;
+	border-radius: 5px;
+	background-color: #6e6e6e;
+	color: #f0f0f0;
+	outline: none;
+	cursor: pointer;
+}
+#url_warning{
+	font-size: 12px;
+	color: #fc035a;
+}
+.input_con_url{
+	margin-top: 5px;
+	display: flex;
+}
+
+
+/* 이메일변경 */
+.mail_top, .mail_bottom{
+	display: flex;
+	align-items: center
+}
+.mail_bottom{
+	margin-top: 5px;
+}
+
+#mail_upload, #mail_confirm{
+	width: 200px;
+	height: 30px;
+	border: 1px solid #cfcfcf;
+	border-radius: 5px;
+	padding-left: 10px;
+	font-size: 15px;
+	outline: none;
+	margin-right: 5px;		
+}
+#mail_send, #mail_save{
+	width: 110px;
+	height: 33px;
+	border: 1px solid #cfcfcf;
+	border-radius: 5px;
+	background-color: #6e6e6e;
+	color: #f0f0f0;
+	outline: none;
+	cursor: pointer;
+}
+#mail_save{
+	background-color: white;
+	color: #292929;
+}
+
+
+
+/* 비밀번호 변경 */
+.current_pw{
+	display: flex;
+	align-items: flex-end;
+	margin-bottom: 30px;
+}
+.change_pw{
+	display: flex;
+	align-items: flex-end;	
+}
+
+#pw_check, #pw_new1, #pw_new2 {
+	width: 200px;
+	height: 30px;
+	border: 1px solid #cfcfcf;
+	border-radius: 5px;
+	padding-left: 10px;
+	font-size: 15px;
+	outline: none;
+	margin: 5px 5px 0 0;
+	font-size: 13px;
+}
+#pw_save{
+	margin-top: 20px;
+	width: 110px;
+	height: 33px;
+	border: 1px solid #cfcfcf;
+	border-radius: 5px;
+	background-color: #6e6e6e;
+	color: #f0f0f0;
+	outline: none;
+	cursor: pointer;
+}
+
+
+
+/* 주소 추가*/
+#name, #phone, #final_address, #detail_address, #requeste{
+	width: 200px;
+	height: 30px;
+	border: 1px solid #cfcfcf;
+	border-radius: 5px;
+	padding-left: 10px;
+	font-size: 15px;
+	outline: none;
+	margin: 5px 5px 0 0;
+	font-size: 13px;
+}
+
+#final_address, #requeste, #detail_address{
+	width: 400px;	
+}
+#find_postcode, #address_save{
+	width: 110px;
+	height: 33px;
+	border: 1px solid #cfcfcf;
+	border-radius: 5px;
+	background-color: #6e6e6e;
+	color: #f0f0f0;
+	outline: none;
+	cursor: pointer;
+}
+.css_name_result, .css_phone_result,
+.css_address_result, .css_save_result{
+	display: flex;
+	align-items: flex-end;
+	margin-bottom: 15px;
+}
+.css_address_result{
+	margin-bottom: 0;
+}
+.checkbox{
+
+	border-bottom: 1px solid #cfcfcf;
 }

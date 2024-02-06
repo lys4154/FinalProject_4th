@@ -2,28 +2,29 @@ package member.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.security.Principal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.tags.HtmlEscapeTag;
+import org.springframework.web.util.HtmlUtils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -41,17 +42,16 @@ import member.service.FollowService;
 import member.service.MemberService;
 import project.dto.BundleDTO;
 import project.dto.FundingBundleCountDTO;
-import project.dto.ProjectDTO;
-import project.dto.ProjectMemberDTO;
 import project.dto.ItemDTO;
 import project.dto.ItemOptionDTO;
+import project.dto.ProjectDTO;
+import project.dto.ProjectMemberDTO;
 import project.service.BundleService;
 import project.service.FundingBundleCountService;
 import project.service.ItemOptionService;
 import project.service.ItemService;
 import project.service.ProjectDibsService;
 import project.service.ProjectService;
-import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 public class ProfileController {
@@ -91,14 +91,52 @@ public class ProfileController {
 		int memberSeq = (int) session.getAttribute("login_user_seq");
 		MemberDTO loginMemberSeq = memberservice.loginMemberSeq(memberSeq);
 		
+//		String desc = escapeHtml(loginMemberSeq.getDescription());
+//		System.out.println("치환 - " + desc);
+//		System.out.println("그냥 - " +loginMemberSeq.getDescription());
+
 		ModelAndView mv = new ModelAndView("member/myprofile");		
 		mv.addObject("loginMember",loginMemberSeq);
+//		mv.addObject("desc",desc);
+
 		return mv;
 	}
-	
-	
+/*	
+	public static String escapeHtml(String input) {
+	    if (input == null) {
+	        return null;
+	    }
+	    return input.replace("&", "&amp;")
+	                .replace("\"", "&quot;")
+	                .replace("'", "&#39;")
+	                .replace(" ", "&nbsp;") // 공백 처리
+	                .replace("?", "&#63;")  // 물음표 처리
+	                .replace("!", "&#33;")
+	                .replace("@", "&#64;")
+	                .replace("#", "&#35;")
+	                .replace("$", "&#36;")
+	                .replace("%", "&#37;")
+	                .replace("^", "&#94;")
+	                .replace("&", "&#38;")
+	                .replace("(", "&#40;")
+	                .replace(")", "&#41;")
+	                .replace(",", "&#44;")
+	                .replace(".", "&#46;")
+	                .replace(";", "&#59;")
+	                .replace("{", "&#123;")
+	                .replace("}", "&#125;")
+	                .replace("[", "&#91;")
+	                .replace("]", "&#93;")
+	                .replace("<", "&lt;")
+	                .replace(">", "&gt;")
+	                .replace("/", "&#47;")
+	                .replace("★", "&#9733;") // 별표 처리
+	                .replace("☆", "&#9734;") // 별 처리
+			        .replace("\n", "<br>") // 엔터(개행 문자) 처리
+			        .replace("\r", ""); // 캐리지 리턴 처리
+	}
+*/
 
-	
 	//마이 프로필 - 올린 프로젝트
     @GetMapping("/getMyproject")
     @ResponseBody
