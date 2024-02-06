@@ -20,7 +20,10 @@ public interface ItemDAO {
 	// 아이템 작성
 	void insertItem(ItemDTO item);
 			
-	//member_seq불러오기
-	int getBundle_seq(int bundle_seq);	
+	//bundle_seq불러오기
+	Integer getBundle_seq(int project_seq);
+	
+	//project_seq불러오기
+	Integer getProject_seq(int member_seq);
 
 }

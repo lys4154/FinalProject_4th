@@ -10,15 +10,45 @@
 <script src="/js/summernote/summernote-lite.js"></script>
 <script src="/js/summernote/lang/summernote-ko-KR.js"></script>
 <link rel="stylesheet" href="/css/summernote/summernote-lite.css">
+<script>
+		$(document).ready(function() {
+		    // Button click event
+		    $("#saveProjectPlan").click(function() {
+		        // Get form data
+		        var formData = {
+		        		purpose: $("#purpose").val(),
+		        		planning: $("#planning").val(),
+		        		budget: $("#budget").val(),
+		        		introduce: $("#introduce").val(),
+		        		item: $("#item").val()
+		        };
+		
+		        // AJAX request
+		        $.ajax({
+		            type: "POST",
+		            url: "/saveProjectPlan",  // Replace with your server endpoint
+		            contentType: "application/json",
+		            data: JSON.stringify(formData),
+		            success: function(response) {
+		                console.log("Success:", response);
+		            },
+		            error: function(error) {
+		                console.error("Error:", error);
+		            }
+		        });
+		    });
+		});
+</script>
 </head>
 <body>
+<form action="/projectPlan" id="projectPlan">
 <h1>프로젝트 계획</h1>
 <br>
 
 <h2>프로젝트 목적</h2>
 <dl>어떤 프로젝트인지 설명해주세요.</dl>
 <div class="container">
-	<textarea class="purpose" name="purposeEditor"></textarea>
+	<textarea class="purpose" name="purposeEditor" id="purpose"></textarea>
 </div>
 <script>
 $('.purpose').summernote({
@@ -41,7 +71,7 @@ $('.purpose').summernote({
 <h2>프로젝트 일정</h2>
 <dl>작업 일정을 구체적인 날짜와 작성해주세요.</dl>
 <div class="container">
-	<textarea class="planning" name="planEditor"></textarea>
+	<textarea class="planning" name="planEditor" id="planning"></textarea>
 </div>
 <script>
 $('.planning').summernote({
@@ -64,7 +94,7 @@ $('.planning').summernote({
 <h2>프로젝트 예산</h2>
 <dl>후원 금액을 어떻게 사용할 것인지 작성해주세요.</dl>
 <div class="container">
-	<textarea class="budget" name="budgetEditor"></textarea>
+	<textarea class="budget" name="budgetEditor" id="budget"></textarea>
 </div>
 <script>
 $('.budget').summernote({
@@ -87,7 +117,7 @@ $('.budget').summernote({
 <h2>프로젝트 팀 소개</h2>
 <dl>프로젝트를 진행하는 팀에 대해서 소개해주세요.</dl>
 <div class="container">
-	<textarea class="introduce" name="introduceEditor"></textarea>
+	<textarea class="introduce" name="introduceEditor" id="introduce"></textarea>
 </div>
 <script>
 $('.introduce').summernote({
@@ -110,7 +140,7 @@ $('.introduce').summernote({
 <h2>선물 설명</h2>
 <dl>후원 금액별로 받을 수 있는 선물을 설명해주세요.</dl>
 <div class="container">
-	<textarea class="item" name="itemEditor"></textarea>
+	<textarea class="item" name="itemEditor" id="item"></textarea>
 </div>
 <script>
 $('.item').summernote({
@@ -130,5 +160,6 @@ $('.item').summernote({
 </script>
 <br>
 <input type="button" id="saveProjectPlan" value="저장하기">
+</form>
 </body>
 </html>

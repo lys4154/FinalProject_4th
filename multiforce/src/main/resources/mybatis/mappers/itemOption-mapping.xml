@@ -14,5 +14,23 @@
 </select>
 
 
+<select id="getProject_seq" parameterType="int" resultType="int">
+	select project_seq from project where member_seq=#{member_seq} order by project_seq desc limit 0,1 
+</select>
+
+
+<select id="getBundle_seq" parameterType="int" resultType="int">
+	select bundle_seq from bundle where project_seq=#{project_seq}
+</select>
+
+<select id="getItem_seq" parameterType="int" resultType="int">
+	select item_seq from item where bundle_seq = #{bundle_seq}
+</select>
+
+<insert id="insertItemOption" parameterType="project.dto.ItemDTO">
+	insert into item (item_seq, item_option_seq)
+	values (#{item_seq}, #{item_option_seq}) 
+</insert>
+
 </mapper>	
 

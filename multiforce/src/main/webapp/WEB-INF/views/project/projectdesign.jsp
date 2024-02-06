@@ -42,7 +42,7 @@
 		</li>
 		
 		<li class="tab_projectPlan">
-			<a href="#" id="tab_projectPlan">기본정보</a>
+			<a href="#" id="tab_projectPlan">프로젝트 계획</a>
 		</li>
 	</ul>
 	<hr>

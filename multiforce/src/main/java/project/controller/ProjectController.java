@@ -30,6 +30,8 @@ import project.dto.BundleDTO;
 import project.dto.ItemDTO;
 import project.dto.ProjectDTO;
 import project.service.BundleService;
+import project.service.ItemOptionService;
+import project.service.ItemService;
 import project.service.ProjectService;
 
 
@@ -44,6 +46,12 @@ public class ProjectController {
 	
 	@Autowired
 	private BundleService bundleService;
+	
+	@Autowired
+	private ItemService itemService;
+	
+	@Autowired
+	private ItemOptionService itemOptionService;
 	
 	
 	@RequestMapping("/projectdesign")
@@ -333,17 +341,7 @@ public class ProjectController {
         }
     }
 	
-	@PostMapping("saveBundle")
-	@ResponseBody
-	public String savePackages(@RequestBody BundleDTO bundleDTO, HttpSession session) {
-		try {
-			bundleService.createBundle(bundleDTO, session);
-			return "Success";
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "Error";
-		}
-	}
+
 	
 	@GetMapping("/getProject")
     public String getProject(@RequestParam int memberSeq, Model model) {
@@ -395,12 +393,50 @@ public class ProjectController {
 		return "project/tab_gift";
 	}
 	
+	@PostMapping("saveBundle")
+	@ResponseBody
+	public String savePackages(@RequestBody BundleDTO bundleDTO, HttpSession session) {
+		try {
+			bundleService.createBundle(bundleDTO, session);
+//			itemService.createItem(itemdto, session);	
+			return "Success";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "Error";
+		}
+	}
+	
+	@PostMapping("saveItem")
+	@ResponseBody
+	public String saveItem(@RequestBody ItemDTO itemDTO, HttpSession session) {
+		try {
+			itemService.createItem(itemDTO, session);
+			return "Success";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "Error";
+		}
+	}
 	
 	
 	@RequestMapping("/tab_projectPlan")
 	public String tabProjectPlan() {
 		return "project/tab_projectPlan";
 	}
+	
+	@PostMapping("saveProjectPlan")
+	@ResponseBody
+	public String saveProjectPlan(@RequestBody ProjectDTO projectDTO, HttpSession session) {
+		try {
+			projectService.createProjectPlan(projectDTO, session);
+			return "Success";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "Error";
+		}
+	}
+	
+	
 	
 	@RequestMapping("/projectmain")
 	public String projectMain() {

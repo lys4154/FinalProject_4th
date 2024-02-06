@@ -109,6 +109,11 @@ public interface ProjectDAO {
 	
 	//펀딩계획
 	void insertFundingPlan(ProjectDTO fundingPlan);
+	
+	void insertProjectPlan(ProjectDTO projectPlan);
+	
+	//project_seq 가져오기
+	Integer getProject_seq(int member_seq);
 
 	List<ProjectMemberDTO> selectSupporterFundFail(int project_seq);
 	List<Integer> selectDibsFundStart(int project_seq);
