@@ -239,9 +239,19 @@ public class BoardController {
 
 	//1:1 고객센터 글쓰기
 	@GetMapping("cs/write-form")
-    public String CustomerServiceWrite(Model model) {
+    public String CustomerServiceWrite(Model model, HttpSession session) {
     	model.addAttribute("boardType", "cs");
-        return "board/cs_write"; 
+    	
+    	String user_id_str = (String) session.getAttribute("login_user_seq");
+	
+		
+		if (user_id_str != null) {
+			return "board/cs_write"; 
+		}
+		 model.addAttribute("errorMessage", "권한이 없습니다.");
+		return "board/error/error";
+    	
+        
     }
 	
 	//게시물 리스트 페이징
@@ -318,13 +328,20 @@ public class BoardController {
 			
 			//로그인된 회원 아이디 정수형으로 변환하기
 			int currentUser = Integer.parseInt(currentUserString);
-        	model.addAttribute("loggedin_user", currentUser);
         	
-        	
+
         	BoardDTO board = boardService.getCsPostById(help_ask_seq);
-        	model.addAttribute("board", board);
-        	return "board/edit_cs_post";
-        	
+        	int userLevel = (int) session.getAttribute("login_user_level");
+        	//작성자가 본인이라면 - 권한 체크
+        	if(board.getMember_seq() == currentUser || userLevel == 2) {
+        		
+        		
+        		model.addAttribute("loggedin_user", currentUser);
+        		model.addAttribute("board", board);
+        		return "board/edit_cs_post";
+        		
+        	}
+
 		}
 		
 		return null;
@@ -422,24 +439,50 @@ public class BoardController {
 	@PostMapping("boardwrite")
     public String writeProcess(@RequestParam String title,
                                @RequestParam String contents,
-                               Model model) {
+                               Model model, HttpSession session) {
         
+		int current_user = 0;
+		String loggedInUserId = (String) session.getAttribute("login_user_seq");
+		current_user = Integer.parseInt(loggedInUserId);
+		
+		if(loggedInUserId != null) {
+	
+	        BoardDTO dto = new BoardDTO();
+	        dto.setTitle(title);
+	        dto.setContent(contents);
+	        dto.setMember_seq(current_user);
+	
+	        
+	        int saveboard = boardService.saveBoard(dto);
 
-		int tmpUser = 1;
-        BoardDTO dto = new BoardDTO();
-        dto.setTitle(title);
-        dto.setContent(contents);
-        dto.setMember_seq(tmpUser);
 
-        
-        boardService.saveBoard(dto);
-        
-        System.out.println("Inserted Board Data:");
-        System.out.println("Title: " + dto.getTitle());
-        System.out.println("Content: " + dto.getContent());
-        System.out.println("MemberSeq: " + dto.getMember_seq());
-
-        return "redirect:cs/write-form";
+	        return "redirect:cs/read_post/"+dto.getHelp_ask_seq();
+		}
+		
+		return "redirect:board_list/cs";
     }
+	
+	@PostMapping("edit_cs")
+	public String editCsPost(@RequestParam String title,
+            @RequestParam String content, @RequestParam int post_id,
+            Model model, HttpSession session) {
+		
+		int current_user = 0;
+		String loggedInUserId = (String) session.getAttribute("login_user_seq");
+		current_user = Integer.parseInt(loggedInUserId);
+		
+		if(loggedInUserId != null) {
+			 BoardDTO dto = new BoardDTO();
+	         dto.setTitle(title);
+	         dto.setContent(content);
+
+	         
+	         boardService.editBoard(dto, post_id);
+	         return "redirect:cs/raed_post/"+post_id;
+	         
+		}
+		
+		return "redirect:board_list/cs";
+	}
 	
 }
