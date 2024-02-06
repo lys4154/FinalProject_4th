@@ -43,7 +43,7 @@
     	var packages = {
     			bundle_price : $("#bundle_price").val(),
     			bundle_name : $("#bundle_name").val()
-    			/* item_name : $("item_name").val() */
+    			/* item_name : $("#item_name").val() */
     	};
     	$.ajax({
     		type: "POST",
@@ -58,6 +58,25 @@
     		}
     	});
     });
+    
+    $("#addItem").click(function() {
+    	var item = {
+    			item_name : $("#item_name").val()
+    	};
+    	$.ajax({
+    		type: "POST",
+    		url: "/saveItem",
+    		contentType: "application/json",
+    		data:JSON.stringify(item),
+    		success: function(response) {
+    			console.log(response);
+    		},
+    		error: function(error) {
+    			console.error(error);
+    		}
+    	});
+    });
+    
 });
 </script>
 <style>
@@ -250,9 +269,12 @@ function inputPrice(num) {
 
   <label for="bundle_name">선물 이름</label>
   <input type="text" id="bundle_name" name="bundle_name"><br><br>
+  <input type="button" id="addBundle" value="번들 추가">
+  <br>
   <label for="item_name">상품 이름</label>
   <input type="text" id="item_name" name="item_name"><br><br>
+  <input type="button" id="addItem" value="상품명 추가">
 
-  <input type="button" id="addBundle" value="추가">
+
 </body>
 </html>

@@ -123,16 +123,16 @@
     limit 0,1
 </update>
 
-<!-- 상품저장(Item) -->
-<select id="getBundle_seq" parameterType="String" resultType="int">
-	select bundle_seq from bundle where project_seq=#{project_seq}
+<!-- projectPlan 저장 -->
+<select id="getProject_seq" parameterType="int" resultType="int">
+	select project_seq from project where member_seq=#{member_seq} order by project_seq desc limit 0,1 
 </select>
 
-<insert id="insertItem" parameterType="project.dto.ItemDTO">
-	insert into item (bundle_seq, item_name)
-	values (#{bundle_seq}, #{item_name})
-</insert>
-
+<update id="insertProjectPlan" parameterType="project.dto.ProjectDTO">
+	update project
+	set content = #{content}
+	where project_seq = #{project_seq}
+</update>
 
 <!-- 관심 프로젝트 전체 -->
 <select id="myDibsProject" parameterType="java.util.List" resultType="projectmemberdto">

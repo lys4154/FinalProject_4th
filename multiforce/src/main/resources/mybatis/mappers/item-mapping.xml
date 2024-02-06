@@ -13,4 +13,20 @@
 	</foreach>
 </select>
 
+<!-- 상품저장(Item) -->
+
+<select id="getProject_seq" parameterType="int" resultType="int">
+	select project_seq from project where member_seq=#{member_seq} order by project_seq desc limit 0,1 
+</select>
+
+
+<select id="getBundle_seq" parameterType="int" resultType="int">
+	select bundle_seq from bundle where project_seq=#{project_seq} order by bundle_seq desc limit 0,1
+</select>
+
+<insert id="insertItem" parameterType="project.dto.ItemDTO">
+	insert into item (bundle_seq, item_name)
+	values (#{bundle_seq}, #{item_name})
+</insert>
+
 </mapper>	
