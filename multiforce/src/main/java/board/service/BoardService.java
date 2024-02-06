@@ -34,8 +34,8 @@ public class BoardService {
     
     //MemberService memberService = new MemberService();
     
-    public void saveBoard(BoardDTO dto) {
-        boardDAO.insertBoard(dto);
+    public int saveBoard(BoardDTO dto) {
+        return boardDAO.insertBoard(dto);
     }
     
     public void saveUpdateBoard(updateBoardDTO dto) {
@@ -251,6 +251,13 @@ public class BoardService {
 		boardDAO.deleteCsComment(help_ask_seq, del_date);
 		
 	}
+
+	public void editBoard(BoardDTO dto, int post_id) {
+		boardDAO.editBoard(dto, post_id);
+		
+	}
+
+	
 	
 	
 

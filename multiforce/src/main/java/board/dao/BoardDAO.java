@@ -19,7 +19,7 @@ public interface BoardDAO {
 
 	
 	//1:1 게시판 데이터 insert
-	void insertBoard(BoardDTO board);
+	int insertBoard(BoardDTO board);
     
 	List<BoardDTO> getAllCsPosts();
 
@@ -87,6 +87,8 @@ public interface BoardDAO {
 	BoardDTO getCsCommentByPostId(int help_ask_seq);
 
 	void deleteCsComment(int help_ask_seq, LocalDateTime del_date);
+
+	void editBoard(BoardDTO dto, int post_id);
 
 
 	
