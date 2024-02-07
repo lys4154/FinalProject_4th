@@ -425,9 +425,9 @@ public class ProfileController {
 
         Map<Integer, List<String>> bundleAndItem = new HashMap<>();						// 꾸러미 고유번호랑 아이템 이름 맵 생성
         for (ItemDTO item : getItem) {
-            int bundleSeq = item.getBundle_seq();
+           // int bundleSeq = item.getBundle_seq();
             String itemName = item.getItem_name();
-            bundleAndItem.computeIfAbsent(bundleSeq, k -> new ArrayList<>()).add(itemName);
+          //  bundleAndItem.computeIfAbsent(bundleSeq, k -> new ArrayList<>()).add(itemName);
         }
 
         Map<Integer, String> bundleNameMap = getBundle.stream()
