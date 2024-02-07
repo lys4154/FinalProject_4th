@@ -71,26 +71,50 @@ public class ProjectController {
 
 	//프로젝트 승인 리스트
 	@GetMapping("project_approve_list")
-	public String showAppoveList(Model model) {
-		int approvedCount = projectService.approvedCount(); 
-		int unapprovedCount = projectService.unapprovedCount();
+	public String showAppoveList(Model model, HttpSession session) {
 		
+		//세션 레벨 가져오기
+		String user_level_str = (String)session.getAttribute("login_user_level");
+		int current_user = Integer.parseInt(user_level_str);
 		
-		model.addAttribute("approvedCount", approvedCount);
-		model.addAttribute("unapprovedCount", unapprovedCount);
-		return "project/project_approve_list";
+		//관리자라면 페이지 접근허용
+		if(current_user == 2) {
+			int approvedCount = projectService.approvedCount(); 
+			int unapprovedCount = projectService.unapprovedCount();
+			
+			
+			model.addAttribute("approvedCount", approvedCount);
+			model.addAttribute("unapprovedCount", unapprovedCount);
+			return "project/project_approve_list";
+		}
+		
+		  model.addAttribute("errorMessage", "해당 페이지에 권한이 없습니다.");
+		  return "board/error/error";
 		
 	}
 	@GetMapping("project_reject/{project_seq}")
-	public String showRejectDetail(Model model, @PathVariable("project_seq") int project_seq) {
-		ProjectDTO project_detail = projectService.getProjectDetail(project_seq);
-		model.addAttribute("project", project_detail);
-		return "project/project_reject";
+	
+	public String showRejectDetail(Model model, 
+			@PathVariable("project_seq") int project_seq, HttpSession session) {
+		//세션 레벨 가져오기
+		String user_level_str = (String)session.getAttribute("login_user_level");
+		int current_user = Integer.parseInt(user_level_str);
+		
+		//관리자라면 페이지 접근허용
+		if(current_user == 2) {
+			ProjectDTO project_detail = projectService.getProjectDetail(project_seq);
+			model.addAttribute("project", project_detail);
+			return "project/project_reject";
+		}
+		  model.addAttribute("errorMessage", "해당 페이지에 권한이 없습니다.");
+		  return "board/error/error";
+		
 	}
 	
 	//프로젝트 반려 and 승인 상세
 	@GetMapping("project_approve_detail/{project_seq}")
 	public String showApproveDetail(Model model, @PathVariable("project_seq") int project_seq) {
+		
 		ProjectDTO project_detail = projectService.getProjectDetail(project_seq);
 		model.addAttribute("project", project_detail);
 		return null;
@@ -236,20 +260,30 @@ public class ProjectController {
 	//업데이트 댓글 달기 POST
 	@PostMapping("update_comment")
 	public String InsertUpdateComment(@RequestParam String comment, 
-	        @RequestParam int update_seq) {
+	        @RequestParam int update_seq, HttpSession session, Model model) {
 	    
-	    int tmpUser = 1;
-	    UpdateReplyDTO reply = new UpdateReplyDTO();
-	    reply.setMember_seq(tmpUser);
-	    reply.setUpdate_seq(update_seq);
-	    reply.setContent(comment);
-	    reply.setTime(new Date()); 
-	    
-	
-	    
-	    boardService.insertUpdateReply(reply); 
+		//현재 유저 세션 가져오기
+		int current_user = 0;
+		String loggedInUserId = (String) session.getAttribute("login_user_seq");
+		current_user = Integer.parseInt(loggedInUserId);
+			
+		if (loggedInUserId != null) {
 
-	    return "redirect:project_detail/"+update_seq;
+		    UpdateReplyDTO reply = new UpdateReplyDTO();
+		    reply.setMember_seq(current_user);
+		    reply.setUpdate_seq(update_seq);
+		    reply.setContent(comment);
+		    reply.setTime(new Date()); 
+		    
+		
+		    
+		    boardService.insertUpdateReply(reply); 
+	
+		    return "redirect:project_detail/"+update_seq;
+		}
+		model.addAttribute("errorMessage", "권한이 없습니다.");
+		return "board/error/error";
+	   
 	}
 
 	

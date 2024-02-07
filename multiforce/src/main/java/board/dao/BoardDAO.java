@@ -88,7 +88,7 @@ public interface BoardDAO {
 
 	void deleteCsComment(int help_ask_seq, LocalDateTime del_date);
 
-	void editBoard(BoardDTO dto, int post_id);
+	void editBoard(BoardDTO dto);
 
 
 	
