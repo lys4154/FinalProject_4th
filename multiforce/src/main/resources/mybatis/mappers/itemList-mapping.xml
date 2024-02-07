@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+	<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="project.dao.ItemListDAO">
+
+<!-- 상품저장(ItemList) -->
+<select id="getProject_seq" parameterType="int" resultType="int">
+	select project_seq from project where member_seq=#{member_seq} order by project_seq desc limit 0,1 
+</select>
+
+<select id="getItem_seq" parameterType="int" resultType="int">
+	select item_seq from item where project_seq=#{project_seq} order by item_seq desc limit 0,1 
+</select>
+
+<select id="getBundle_seq" parameterType="int" resultType="int">
+	select bundle_seq from bundle where project_seq=#{project_seq} order by bundle_seq desc limit 0,1
+</select>
+
+<insert id="insertItemList" parameterType="project.dto.ItemListDTO">
+	insert into item_list (bundle_seq, item_seq, item_count)
+	values (#{bundle_seq}, #{item_seq}, #{item_coutn})
+</insert>
+
+</mapper>	
