@@ -33,9 +33,9 @@ public class ItemService {
 		int member_seq = projectDao.getMember_seq((String)session.getAttribute("login_user_id"));
 		int project_seq = bundleDao.getProject_seq(member_seq);
 		int bundl_seq = itemDao.getBundle_seq(project_seq);
-		item.setBundle_seq(bundl_seq); 
-		item.getBundle_seq();
-		System.out.println(item.getBundle_seq());
+//		item.setBundle_seq(bundl_seq); 
+//		item.getBundle_seq();
+//		System.out.println(item.getBundle_seq());
 		itemDao.insertItem(item);
     }
 

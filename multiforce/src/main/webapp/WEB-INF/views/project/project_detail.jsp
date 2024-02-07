@@ -1,67 +1,98 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ include file="/WEB-INF/views/common/header.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>ÇÁ·ÎÁ§Æ® »ó¼¼ ÆäÀÌÁö</title>
+<title>í”„ë¡œì íŠ¸ ìƒì„¸ í˜ì´ì§€</title>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<style>
+.bundle_box{
+	border: 1px solid black;
+}
+</style>
 </head>
 <body>
 <section class="project-info">
-    <h1>ÇÁ·ÎÁ§Æ® »ó¼¼ Á¤º¸</h1>
-    <p>ÇÁ·ÎÁ§Æ® Á¦¸ñ: ${project.short_title}</p>
-    <p>¸ğÀÎ ±İ¾×: ${project.collection_amount}</p>
-    <p>¸ñÇ¥ ±İ¾×: ${project.goal_price}</p>
-    <p>Æİµù ±â°£: ${project.start_date} - ${project.due_date}</p>
-    <p>ÇÁ·ÎÁ§Æ® ¼Ò°³: ${project.content}</p>
+    <h1>í”„ë¡œì íŠ¸ ìƒì„¸ ì •ë³´</h1>
+    <p>í”„ë¡œì íŠ¸ ì œëª©: ${project.short_title}</p>
+    <p>ëª¨ì¸ ê¸ˆì•¡: ${project.collection_amount}</p>
+    <p>ëª©í‘œ ê¸ˆì•¡: ${project.goal_price}</p>
+    <p>í€ë”© ê¸°ê°„: ${project.start_date} - ${project.due_date}</p>
+    <p>í”„ë¡œì íŠ¸ ì†Œê°œ: ${project.content}</p>
 </section>
-<secion class="bundle-info">
-	<p>¼±¹° ÀÌ¸§ : ${bundle.name}</p>
-	<p>¼±¹° °¡°İ : ${bundle.price}</p>
-</secion>
-<a href="#" id="updateLink" data-project-id="${project.project_seq}">¾÷µ¥ÀÌÆ®</a>
-<a href="#" id="communityLink" data-project-id="${project.project_seq}">Ä¿¹Â´ÏÆ¼</a>
+<section class="bundle-info">
+	<c:forEach var="item" items="${bundleList }" varStatus="status">
+		<div class="bundle_box" id="bundel_${item.bundle_seq}">
+			ë²ˆë“¤ì´ë¦„: ${item.bundle_name}<br>
+			ë²ˆë“¤ê°€ê²©: ${item.bundle_price }<br>
+		</div>
+	</c:forEach>
+</section>
+bundle seq ê°™ì€ê°€ ë‹¤ë¥¸ê°€
+ê°™ë‹¤ => ë„˜ì–´ê°€ê¸°
+ë‹¤ë¥´ë‹¤ => ìƒˆ div ì—´ì–´ì£¼ê¸° /ë§Œì•½ bundle_seqì´  
+<a href="#" id="updateLink" data-project-id="${project.project_seq}">ì—…ë°ì´íŠ¸</a>
+<a href="#" id="communityLink" data-project-id="${project.project_seq}">ì»¤ë®¤ë‹ˆí‹°</a>
 <hr>
 <div id="content_container">
 </div>
 <script>
-    $(document).ready(function () {
+$(document).ready(function () {
 
-    	$("#updateLink").click();
-    	
-    	$("#communityLink").click(function (e) {
-            e.preventDefault();
-            var pid = $(this).data("project-id");
-            var baseUrl = window.location.origin;
-            loadContent(baseUrl + "/project_detail/community/"+pid);
-        });
-
-
-        $("#updateLink").click(function (e) {
-            e.preventDefault();
-            var pid = $(this).data("project-id");
-            var baseUrl = window.location.origin;
-            loadContent(baseUrl + "/update/view/"+pid); 
-        });
-        
-        $("#updateLink").click();
-        
-        function loadContent(url) {
-        
-            $.ajax({
-                url: url,
-                type: "GET",
-                success: function (data) {
-
-                    $("#content_container").html(data);
-                },
-                error: function (xhr, status, error) {
-                    console.error("Error loading content:", error);
-                }
-            });
-        }
-    });
+	$("#updateLink").click();
+	
+	$("#communityLink").click(function (e) {
+	    e.preventDefault();
+	    var pid = $(this).data("project-id");
+	    var baseUrl = window.location.origin;
+	    loadContent(baseUrl + "/project_detail/community/"+pid);
+	});
+	
+	
+	$("#updateLink").click(function (e) {
+	    e.preventDefault();
+	    var pid = $(this).data("project-id");
+	    var baseUrl = window.location.origin;
+	    loadContent(baseUrl + "/update/view/"+pid); 
+	});
+	
+	$("#updateLink").click();
+	
+	function loadContent(url) {
+	    $.ajax({
+	        url: url,
+	        type: "GET",
+	        success: function (data) {
+	            $("#content_container").html(data);
+	        },
+	        error: function (xhr, status, error) {
+	            console.error("Error loading content:", error);
+	        }
+	    });
+	}
+	function getItem(){
+		$.ajax({
+	        url: "getitem",
+	        data:{
+	        	project_seq: ${project.project_seq}
+	        },
+	        type: "post",
+	        success: function (data) {
+	        	if(data.bundle_seq == null){
+	        		
+	        	}
+	        },
+	        error: function (xhr, status, error) {
+	            console.error("Error loading content:", error);
+	        }
+	    });
+	}
+	
+});
 </script>
 </body>
 </html>

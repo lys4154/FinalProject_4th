@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 public class ItemDTO {
 	
 	int item_seq;
-	int bundle_seq;
+	int project_seq;
 	String item_name;
 	
 	
@@ -16,11 +16,11 @@ public class ItemDTO {
 	public void setItem_seq(int item_seq) {
 		this.item_seq = item_seq;
 	}
-	public int getBundle_seq() {
-		return bundle_seq;
+	public int getProject_seq() {
+		return project_seq;
 	}
-	public void setBundle_seq(int bundle_seq) {
-		this.bundle_seq = bundle_seq;
+	public void setProject_seq(int bundle_seq) {
+		this.project_seq = bundle_seq;
 	}
 	public String getItem_name() {
 		return item_name;
@@ -30,7 +30,7 @@ public class ItemDTO {
 	}
 	@Override
 	public String toString() {
-		return "ItemDTO [item_seq=" + item_seq + ", bundle_seq=" + bundle_seq + ", item_name=" + item_name + "]";
+		return "ItemDTO [item_seq=" + item_seq + ", bundle_seq=" + project_seq + ", item_name=" + item_name + "]";
 	}
 	
 	

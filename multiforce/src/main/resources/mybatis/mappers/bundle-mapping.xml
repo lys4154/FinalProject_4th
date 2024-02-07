@@ -13,6 +13,23 @@
 	</foreach>
 </select>
 
+<select id="getBundleWithPseq">
+	select * from bundle where project_seq = #{project_seq}
+</select>
+<select id="getItem" parameterType="list" resultType="project.dto.ItemListDTO">
+	select bundle_name, bundle_price, b.bundle_seq, item_list_seq, l.item_seq , item_count, b.project_seq,
+	 item_name, item_option_seq, item_option_name 
+	from item_list l
+	join item i on l.item_seq = i.item_seq
+	left join item_option o on l.item_seq = o.item_seq
+	join bundle b on l.bundle_seq = b.bundle_seq
+	where b.bundle_seq =
+	<foreach collection="bundleSeqList" item="item" separator=" or ">
+	 #{item}
+	</foreach>
+	 order by bundle_seq asc ,item_list_seq asc, item_seq asc;
+</select>
+
 <!-- 선물저장(Bundle) -->
 <select id="getProject_seq" parameterType="int" resultType="int">
 	select project_seq from project where member_seq=#{member_seq} order by project_seq desc limit 0,1 

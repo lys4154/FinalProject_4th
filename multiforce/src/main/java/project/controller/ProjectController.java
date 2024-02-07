@@ -28,6 +28,7 @@ import board.service.BoardService;
 import jakarta.servlet.http.HttpSession;
 import project.dto.BundleDTO;
 import project.dto.ItemDTO;
+import project.dto.ItemListDTO;
 import project.dto.ProjectDTO;
 import project.service.BundleService;
 import project.service.ItemOptionService;
@@ -147,18 +148,20 @@ public class ProjectController {
 	    session.invalidate();
 	}
 
-	
-	
 	//프로젝트 상세
 	@GetMapping("project_detail/{project_seq}")
 	public String ShowProjectDetail(Model model,@PathVariable("project_seq") int project_seq) {
 		ProjectDTO projects = projectService.getProjectDetail(project_seq);
-		//BundleDTO bundle = bundleService.getBundle(bundle_seq);
-		
-		
+		List<BundleDTO> bundleList = bundleService.getBundleList(project_seq);
 		model.addAttribute("project", projects);
-
+		model.addAttribute("bundleList", bundleList);
 		return "project/project_detail";
+	}
+	@PostMapping("getitem")
+	@ResponseBody
+	public List<ItemListDTO> getItem(int project_seq){
+		List<ItemListDTO> list = bundleService.getItem(project_seq);
+		return list;
 	}
 	//업데이트 댓글 가져오기
 	@GetMapping("/getComments")
