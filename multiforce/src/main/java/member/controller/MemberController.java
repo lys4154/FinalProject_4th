@@ -54,6 +54,13 @@ public class MemberController {
 		}else {
 			MemberDTO result = memberService.loginProcess(id, pw);
 			if(result != null) {
+				//김소영 추가, 탈퇴날짜 있으면 로그인 불가
+	            if (result.getResign_date() != null) {
+	                m.addAttribute("fail_id", id);
+	                m.addAttribute("result", "실패");
+	                return "member/login";
+	            }
+				
 				session.setAttribute("login_user_id", result.getMember_id());
 				session.setAttribute("login_user_level", result.getLevel());
 				session.setAttribute("login_user_name", result.getMember_name());

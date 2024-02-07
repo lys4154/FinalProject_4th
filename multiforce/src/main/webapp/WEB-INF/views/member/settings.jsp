@@ -509,12 +509,12 @@ $(document).ready(function() {
 			$("#address_add").val("취소");
 			$(".address_added").hide();
 			$(".address_container").show();
-			$(".subtitle").html("새로운 배송지 입력");
+			$(".subtitle_delivery").html("새로운 배송지 입력");
 		} else {
 			$(".address_container").hide();
 			$(".address_added").show();
 			$("#address_add").val("+ 추가");
-			$(".subtitle").html("등록된 배송지");
+			$(".subtitle_delivery").html("등록된 배송지");
 		}		
 	})
 	
@@ -649,22 +649,34 @@ $(document).ready(function() {
 		    		$(".address_container").hide();
 		    		$(".address_added").show();
 		    		$("#address_add").val("+ 추가");		    		
-
-		    	    var newAddressHtml = "<div class=\"addaddress\">";
-		    	    newAddressHtml += "<div>" + name + "</div>";
-		    	    newAddressHtml += "<div>" + phone + "</div>";
-		    	    newAddressHtml += "<div>[" + postcode + "]</div>";
-		    	    newAddressHtml += "<div>" + road + extra + "</div>";
-		    	    newAddressHtml += "<div>" + detail + "</div>";
-		    	    newAddressHtml += "<div> <input type=\"button\" value=\"삭제\" class=\"delete_address\" </div>";
-		    	    newAddressHtml += "<hr></div>";
 					
-		    	    $(".address_added > div:eq(1)").append(newAddressHtml);
+		    		//새로고침
+		    		$('.address_added').load(location.href+' .address_added');
+		    		$(".subtitle_delivery").html("등록된 배송지");
 		    	    
-		    	    $(".address_added > div:eq(1)").on("click", ".delete_address", function() {
+		    		$(".address_added").on("click", ".address_del", function() {
 		    	    	var deleteButton = $(this); // 클릭된 삭제 버튼
-		    	    	if (confirm("해당 배송지를 삭제하시겠습니까?")){
+		    	    	if (confirm("해당 배송지를 삭제하시겠습니까? ajax속 ajax")){
 		    	    		console.log("ajax 속 ajax 출발")
+		    	    		
+		                    // 삭제할 데이터
+		                    var name = deleteButton.data("name");
+		                    var phone = deleteButton.data("phone");
+		                    var postcode = deleteButton.data("postcode");
+		                    var road = deleteButton.data("road");
+		                    var jibun = deleteButton.data("jibun");
+		                    var extra = deleteButton.data("extra");
+		                    var detail = deleteButton.data("detail");
+		    	    		
+				    		console.log("전송전" + name);
+				    		console.log("전송전" + phone);
+				    		console.log("전송전" + postcode);
+				    		console.log("전송전" + road);
+				    		console.log("전송전" + jibun);
+				    		console.log("전송전" + extra);
+				    		console.log("전송전" + detail);
+		                    
+		                    
 			    			$.ajax({
 						        type: "POST",
 						        url: "/address_add_delete",
@@ -681,7 +693,9 @@ $(document).ready(function() {
 						        success: function(response) { 
 						    		console.log(response);
 						    		alert("삭제되었습니다.")
-						    		$(".addaddress").empty();
+		                            // 삭제 후 다시 새로고침
+		                            $('.address_added').load(location.href + ' .address_added');
+						    		
 						    	},
 								error: function(error) {
 								       console.log(error);
@@ -710,7 +724,7 @@ $(document).ready(function() {
 	    var detail = $(this).data("detail");
 	    var count = $(this).data("for_delete");
 	    
-	    if (confirm("해당 주소를 삭제하시겠습니까?")) {
+	    if (confirm("해당 배송지를 삭제하시겠습니까?")) {
 			$.ajax({
 		        type: "POST",
 		        url: "/address_delete",
@@ -724,7 +738,7 @@ $(document).ready(function() {
 		        },
 		        success: function(response) { 
 		    		alert("삭제되었습니다.")
-		    		$(".for_delete" + count).remove();
+		    		$("#for_delete" + count).remove();
 		    	},
 				error: function(error) {
 				       console.log(error);
@@ -732,6 +746,12 @@ $(document).ready(function() {
 		     });
 	    }
 	});
+	
+	$("#user_leave").click(function() {
+		location.href="/unregister";
+	});
+	
+	
 	
 });
 </script>
@@ -895,45 +915,66 @@ $(document).ready(function() {
 						<div><input type="button" value="저장" id="pw_save" ></div>
 					</div>
 				</div>
-			</div>	
-		</div>
-	
+			</div>
+			
+			<hr class="dividing_hr">
+			
+			<div class="sub_con">
+				<div class="title_button">
+					<div class="subtitle">탈퇴</div>
+					<div><input type="button" value="탈퇴" id="user_leave" class="change_btn"></div>
+				</div>
+
+			</div>			
+		</div>	
 	
 		<div class="delevery" style="display: none;">
 			<div class="sub_con">
 				<div class="title_button">	
-				    <div class="subtitle">등록된 배송지</div>
+				    <div class="subtitle_delivery">등록된 배송지</div>
 				    <input type="button" value="+ 추가" id="address_add" class="change_btn">
 			    </div>
 			    <div class="address_added">
-				    <div>
-				        <c:choose>
-				            <c:when test="${not empty delivery}">
-				                <c:forEach var="delivery" items="${delivery}" varStatus="vs">
-				                    <div class="for_delete${vs.count}" >
-				                        <div>${delivery.name}</div>
+			        <c:choose>
+			            <c:when test="${not empty delivery}">
+			                <c:forEach var="delivery" items="${delivery}" varStatus="vs">
+			                    <div id="for_delete${vs.count}" class="css_delivery" >
+			                    	<div class="name_default">
+				                        <div class="delivery_name">${delivery.name}</div>
 										<c:if test="${delivery.default_address}">
-										    <div style="color: red;">기본배송지</div>
+										    <div class="default_ck">기본배송지</div>
 										</c:if>
-				                        <div>${delivery.phone}</div>
-				                        <div>[${delivery.postcode}] ${delivery.road_address} ${delivery.extra_address}</div>
-				                        <div>${delivery.detail_address}</div>
+									</div>
+									<div class="css_address">
+										<div class="css_address_left">
+											<div>
+												[${delivery.postcode}] ${delivery.road_address} 
+												${delivery.extra_address} ${delivery.detail_address}
+											</div>	
+					                        <div>${delivery.phone}</div>
+				                        </div>
+				                        <div class="css_address_right">
 				                        <input type="button" value="삭제" class="address_del"
 			                                   data-name="${delivery.name}"
 								               data-phone="${delivery.phone}"
 								               data-postcode="${delivery.postcode}"
 								               data-road="${delivery.road_address}"
 								               data-detail="${delivery.detail_address}"
+								               data-extra="${delivery.extra_address}"
+								               data-jibun="${delivery.jibun_address}"
 								               data-for_delete="${vs.count }">
-				                        <hr>                
-				                    </div>
-				                </c:forEach>
-				            </c:when>
-				            <c:otherwise>
-				                <div>배송지를 등록해주세요.</div>
-				            </c:otherwise>
-				        </c:choose>       
-				    </div>
+						               	</div>
+				           			</div>    					                                        
+			                    </div>
+			                </c:forEach>
+			            </c:when>
+			            <c:otherwise>
+			                <div class="empty_delivery">
+			                	등록된 배송지가 없습니다. <br>
+			                	배송지를 등록해주세요.				                
+			                </div>
+			            </c:otherwise>
+			        </c:choose>       
 			    </div>
 
 						
@@ -957,10 +998,10 @@ $(document).ready(function() {
 						<div><input type="button" id="find_postcode" value="우편번호 찾기"></div>
 					</div>					
 					<div class="hidden_address">	
-						<div><input type="hidden" id="postcode" readonly placeholder="우편번호 찾기 클릭"></div>
-						<div><input type="hidden" id="road_address" readonly placeholder="우편번호 찾기 클릭"></div>
-						<div><input type="hidden" id="jibun_address" readonly placeholder="우편번호 찾기 클릭"></div>
-						<div><input type="hidden" id="extra_address" readonly placeholder="우편번호 찾기 클릭"></div>
+						<div><input type="hidden" id="postcode" ></div>
+						<div><input type="hidden" id="road_address" ></div>
+						<div><input type="hidden" id="jibun_address" ></div>
+						<div><input type="hidden" id="extra_address" ></div>
 					</div>
 					<div class="css_address_result">
 						<div><input type="text" id="detail_address" placeholder="상세주소를 입력해주세요."></div>
@@ -973,7 +1014,7 @@ $(document).ready(function() {
 					</div>						
 					<div class="checkbox">
 						<input type="checkbox" id="default_address" checked>
-						 기본 주소로 저장 (기본 주소로 설정된 기존의 주소가 있을 경우, 현재 입력하신 주소로 대체됩니다.)
+						 기본 주소로 저장 (기본 주소로 설정된 기존의 주소가 있을 경우, 현재 입력하신 주소로 변경됩니다.)
 					</div>	
 				</div>
 				

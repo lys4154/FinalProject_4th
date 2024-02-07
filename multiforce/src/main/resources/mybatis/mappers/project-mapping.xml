@@ -269,15 +269,12 @@
 	AND project_process = 6
 </select>
 
-
-
-<!-- 내가 올린 프로젝트 - 종료 -->
+<!-- 내가 올린 프로젝트 - 펀딩종료 -->
 <select id="fundingComplete" resultType="projectdto">
 	SELECT * FROM project 
 	WHERE member_seq = #{memberSeq}
 	AND project_process = 7
 </select>
-
 
 <!-- 프로젝트 가져오기 -->
 <select id="getProject" resultType="project.dto.ProjectDTO">
@@ -367,11 +364,18 @@ where project_seq = #{project_seq}
 </delete>
 
 
+<!-- 회원탈퇴 - 본인 프로젝트 삭제 -->
+<delete id="unregisterProjectDelete" parameterType="int">
+	DELETE FROM project
+	WHERE member_seq = #{memberSeq}
+	AND project_process IN (0, 1, 2, 3, 4);
+</delete>
 
 
-
-
-
+<!-- 내가 올린 프로젝트 - 전체 -->
+<select id="getAllProjectsMemberSeq">
+	select * from project where member_seq = #{memberSeq}
+</select>
 
 
 </mapper>

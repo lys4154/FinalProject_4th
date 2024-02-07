@@ -143,7 +143,7 @@ public class ProfileController {
     List<ProjectDTO> getMyproject(HttpSession session) {
 		int memberSeq = (int)session.getAttribute("login_user_seq");
 
-		List<ProjectDTO> myprojectList = projectservice.getProjectsByMemberSeq(memberSeq);			
+		List<ProjectDTO> myprojectList = projectservice.getProjectsByMemberSeq(memberSeq);//진행중만			
 		return myprojectList;    	
     }
     
@@ -614,7 +614,7 @@ public class ProfileController {
 			file.transferTo(saveFile);										//파일로 변경
 		}	
 		
-		int memberSeq = dto.getMember_seq();
+		int memberSeq = dto.getMember_seq(); 
 		String filePath = "/memberimages/" + newFileName;
 
 		int updateProfileImg = memberservice.updateProfileImg(filePath, memberSeq);	//프로필 url 변경
@@ -711,10 +711,13 @@ public class ProfileController {
 	@PostMapping("/address_add")
 	@ResponseBody
 	public int addressAdd(int memberSeq, String name, String phone, String postcode, String road, String jibun, 
-							String extra, String detail, String requeste,  boolean defaultAddress) {		 
+							String extra, String detail, String requeste,  boolean defaultAddress) {
 		
+		if (defaultAddress == true) {
+			int allDefaultFalse = deliveryservice.allDefaultFalse(memberSeq); //다른 기본배송지 false 만들기
+		} 			
 		int addressAdd = deliveryservice.addressAdd(memberSeq, name, phone, postcode, road, jibun, extra, detail, requeste, defaultAddress );
-		
+
 		List<DeliveryDTO> getDelivery = deliveryservice.getDelivery(memberSeq);
 		ModelAndView mv = new ModelAndView();		
 		mv.addObject("delivery",getDelivery);		
@@ -745,13 +748,47 @@ public class ProfileController {
 	}
 	
 	
+	//회원정보수정 -> 탈퇴
+	@GetMapping("/unregister")
+	public ModelAndView unregister(HttpSession session) {  
+	    
+		int memberSeq = (int) session.getAttribute("login_user_seq");	
+		MemberDTO loginMemberSeq = memberservice.loginMemberSeq(memberSeq);
+		
+		ModelAndView mv = new ModelAndView("member/unregister");		
+		mv.addObject("loginMember",loginMemberSeq);
+		return mv;		
+	}
+	
+	//회원탈퇴
+	@PostMapping("/member_unregister")
+	@ResponseBody
+	public String memberUnregister(int memberSeq) {	
+				
+		//프로젝트 지우기 - 종료된 프로젝트는 삭제하지 않음, 4번까지삭제
+		int unregisterProjectDelete = projectservice.unregisterProjectDelete(memberSeq);
+		
+		//팔로우에서 삭제하기
+		int unregisterFollowDelete = followservice.unregisterFollowDelete(memberSeq);
+		
+		//멤버 resign 변경
+		int unregisterDelStatusChange = memberservice.unregisterDelStatusChange(memberSeq);		
+		if(unregisterDelStatusChange == 1) {
+			return "resign 업데이트";
+		}		
+		return "회원 삭제 오류";
+	}
+	
+	
+	
 	
 	//내가 올린 프로젝트 - 전체
     @GetMapping("/myproject")
     public ModelAndView myproject(HttpSession session) {
 
         int memberSeq = (int) session.getAttribute("login_user_seq");
-        List<ProjectDTO> myprojectList = projectservice.getProjectsByMemberSeq(memberSeq);
+        List<ProjectDTO> myprojectList = projectservice.getAllProjectsMemberSeq(memberSeq);
+
 
         ModelAndView mv = new ModelAndView("member/myproject");
         mv.addObject("myprojectList", myprojectList);		//모든프로젝트

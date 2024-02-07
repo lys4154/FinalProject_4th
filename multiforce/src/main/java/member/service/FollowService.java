@@ -41,6 +41,11 @@ public class FollowService {
 		return followDao.unfollow(followingMemberSeq, followerMemberSeq);
 	}
 
+	//회원탈퇴 - 팔로우 삭제하기
+	public int unregisterFollowDelete(int memberSeq) {
+		return followDao.unregisterFollowDelete(memberSeq);
+	}
+
 
 
 
