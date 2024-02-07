@@ -32,9 +32,6 @@
 		</div>
 	</c:forEach>
 </section>
-bundle seq 같은가 다른가
-같다 => 넘어가기
-다르다 => 새 div 열어주기 /만약 bundle_seq이  
 <a href="#" id="updateLink" data-project-id="${project.project_seq}">업데이트</a>
 <a href="#" id="communityLink" data-project-id="${project.project_seq}">커뮤니티</a>
 <hr>

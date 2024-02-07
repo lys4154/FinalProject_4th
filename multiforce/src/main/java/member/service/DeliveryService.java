@@ -36,5 +36,10 @@ public class DeliveryService {
 		return deliveryDao.addressDelete(memberSeq, name, phone, postcode, road, detail);
 	}
 
+	//회원정보수정 - 배송지 추가 - 기본배송지 업데이트
+	public int allDefaultFalse(int memberSeq) {
+		return deliveryDao.allDefaultFalse(memberSeq);		
+	}
+
 
 }

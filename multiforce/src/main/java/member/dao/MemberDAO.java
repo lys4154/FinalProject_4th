@@ -78,6 +78,8 @@ public interface MemberDAO {
 
 	List<MemberDTO> selectMemberByUrl(String randomUrl);
 
+	//회원탈퇴 - resign 변경
+	int unregisterDelStatusChange(int memberSeq);
 
 
 	

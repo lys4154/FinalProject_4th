@@ -8,6 +8,10 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="http://code.jquery.com/jquery-3.7.1.min.js"></script>
+<link rel="stylesheet" href="/css/member/myproject.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400&display=swap" rel="stylesheet">
 </head>
 
 <script>
@@ -16,8 +20,48 @@ $(document).ready(function() {
 	
 	let memberSeq = <%= session.getAttribute("login_user_seq") %>;
 	
+	//메뉴탭 선택시 css
+	function setMenuTab(element, fontWeight, color) {
+	    $(element).css({
+	        "font-weight": fontWeight,
+	        "color": color
+	    })	    
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	//작성중
-	$("#write_incomplete").click(function() {	
+	$("#write_incomplete").click(function() {
+		 setMenuTab("#all", "400", "#5c5c5c");
+		 setMenuTab("#write_incomplete", "600", "#292929");
+		 setMenuTab("#request_approval", "400", "#5c5c5c");
+		 setMenuTab("#request_reject", "400", "#5c5c5c");
+		 setMenuTab("#request_admit", "400", "#5c5c5c");
+		 setMenuTab("#funding_start", "400", "#5c5c5c");
+		 setMenuTab("#funding_failed", "400", "#5c5c5c");
+		 setMenuTab("#funding_success", "400", "#5c5c5c");
+		 setMenuTab("#funding_complete", "400", "#5c5c5c");		 
+		 
        $.ajax({
 	          type: "GET",
 	          url: "/write_incomplete",
@@ -47,7 +91,17 @@ $(document).ready(function() {
 	
 	
 	//심사중
-	$("#request_approval").click(function() {	
+	$("#request_approval").click(function() {
+		 setMenuTab("#all", "400", "#5c5c5c");
+		 setMenuTab("#write_incomplete", "400", "#5c5c5c");
+		 setMenuTab("#request_approval", "600", "#292929");
+		 setMenuTab("#request_reject", "400", "#5c5c5c");
+		 setMenuTab("#request_admit", "400", "#5c5c5c");
+		 setMenuTab("#funding_start", "400", "#5c5c5c");
+		 setMenuTab("#funding_failed", "400", "#5c5c5c");
+		 setMenuTab("#funding_success", "400", "#5c5c5c");
+		 setMenuTab("#funding_complete", "400", "#5c5c5c");	
+				
        $.ajax({
 	          type: "GET",
 	          url: "/request_approval",
@@ -79,7 +133,17 @@ $(document).ready(function() {
 	
 	
 	//반려됨
-	$("#request_reject").click(function() {	
+	$("#request_reject").click(function() {
+		 setMenuTab("#all", "400", "#5c5c5c");
+		 setMenuTab("#write_incomplete", "400", "#5c5c5c");
+		 setMenuTab("#request_approval", "400", "#5c5c5c");
+		 setMenuTab("#request_reject", "600", "#292929");
+		 setMenuTab("#request_admit", "400", "#5c5c5c");
+		 setMenuTab("#funding_start", "400", "#5c5c5c");
+		 setMenuTab("#funding_failed", "400", "#5c5c5c");
+		 setMenuTab("#funding_success", "400", "#5c5c5c");
+		 setMenuTab("#funding_complete", "400", "#5c5c5c");			
+		
        $.ajax({
 	          type: "GET",
 	          url: "/request_reject",
@@ -113,7 +177,17 @@ $(document).ready(function() {
 	
 	
 	//승인됨
-	$("#request_admit").click(function() {	
+	$("#request_admit").click(function() {
+		 setMenuTab("#all", "400", "#5c5c5c");
+		 setMenuTab("#write_incomplete", "400", "#5c5c5c");
+		 setMenuTab("#request_approval", "400", "#5c5c5c");
+		 setMenuTab("#request_reject", "400", "#5c5c5c");
+		 setMenuTab("#request_admit", "600", "#292929");
+		 setMenuTab("#funding_start", "400", "#5c5c5c");
+		 setMenuTab("#funding_failed", "400", "#5c5c5c");
+		 setMenuTab("#funding_success", "400", "#5c5c5c");
+		 setMenuTab("#funding_complete", "400", "#5c5c5c");		
+		
        $.ajax({
 	          type: "GET",
 	          url: "/request_admit",
@@ -146,7 +220,17 @@ $(document).ready(function() {
 	
 	
 	//진행중
-	$("#funding_start").click(function() {	
+	$("#funding_start").click(function() {
+		 setMenuTab("#all", "400", "#5c5c5c");
+		 setMenuTab("#write_incomplete", "400", "#5c5c5c");
+		 setMenuTab("#request_approval", "400", "#5c5c5c");
+		 setMenuTab("#request_reject", "400", "#5c5c5c");
+		 setMenuTab("#request_admit", "400", "#5c5c5c");
+		 setMenuTab("#funding_start", "600", "#292929");
+		 setMenuTab("#funding_failed", "400", "#5c5c5c");
+		 setMenuTab("#funding_success", "400", "#5c5c5c");
+		 setMenuTab("#funding_complete", "400", "#5c5c5c");	
+		
        $.ajax({
 	          type: "GET",
 	          url: "/funding_start",
@@ -174,7 +258,17 @@ $(document).ready(function() {
 	
 	
 	//펀딩 실패
-	$("#funding_failed").click(function() {	
+	$("#funding_failed").click(function() {
+		 setMenuTab("#all", "400", "#5c5c5c");
+		 setMenuTab("#write_incomplete", "400", "#5c5c5c");
+		 setMenuTab("#request_approval", "400", "#5c5c5c");
+		 setMenuTab("#request_reject", "400", "#5c5c5c");
+		 setMenuTab("#request_admit", "400", "#5c5c5c");
+		 setMenuTab("#funding_start", "400", "#5c5c5c");
+		 setMenuTab("#funding_failed", "600", "#292929");
+		 setMenuTab("#funding_success", "400", "#5c5c5c");
+		 setMenuTab("#funding_complete", "400", "#5c5c5c");			
+		
        $.ajax({
 	          type: "GET",
 	          url: "/funding_failed",
@@ -204,7 +298,17 @@ $(document).ready(function() {
 	
 	
 	//펀딩 성공
-	$("#funding_success").click(function() {	
+	$("#funding_success").click(function() {
+		 setMenuTab("#all", "400", "#5c5c5c");
+		 setMenuTab("#write_incomplete", "400", "#5c5c5c");
+		 setMenuTab("#request_approval", "400", "#5c5c5c");
+		 setMenuTab("#request_reject", "400", "#5c5c5c");
+		 setMenuTab("#request_admit", "400", "#5c5c5c");
+		 setMenuTab("#funding_start", "400", "#5c5c5c");
+		 setMenuTab("#funding_failed", "400", "#5c5c5c");
+		 setMenuTab("#funding_success", "600", "#292929");
+		 setMenuTab("#funding_complete", "400", "#5c5c5c");			
+		
        $.ajax({
 	          type: "GET",
 	          url: "/funding_success",
@@ -234,7 +338,17 @@ $(document).ready(function() {
 	
 	
 	//펀딩 종료
-	$("#funding_complete").click(function() {	
+	$("#funding_complete").click(function() {
+		 setMenuTab("#all", "400", "#5c5c5c");
+		 setMenuTab("#write_incomplete", "400", "#5c5c5c");
+		 setMenuTab("#request_approval", "400", "#5c5c5c");
+		 setMenuTab("#request_reject", "400", "#5c5c5c");
+		 setMenuTab("#request_admit", "400", "#5c5c5c");
+		 setMenuTab("#funding_start", "400", "#5c5c5c");
+		 setMenuTab("#funding_failed", "400", "#5c5c5c");
+		 setMenuTab("#funding_success", "400", "#5c5c5c");
+		 setMenuTab("#funding_complete", "600", "#292929");		
+		
        $.ajax({
 	          type: "GET",
 	          url: "/funding_complete",
@@ -302,27 +416,45 @@ $(document).ready(function() {
 </script>
 
 <body>
+<div class="out_con">
+	<div class="mypro_title">내가 만든 프로젝트</div>
+	
+	
+	<div class="menu_con">
 
-<h1>내가 만든 프로젝트</h1>
-
-<div>
-	<div>
-		<input type="button" id="all" onclick="location='/myproject'" value="전체">
-		<input type="button" id="write_incomplete" value="작성중">
-		<input type="button" id="request_approval" value="심사중">
-		<input type="button" id="request_reject" value="반려됨">
-		<input type="button" id="request_admit" value="승인됨">
-		<input type="button" id="funding_start" value="진행중">
-		<input type="button" id="funding_failed" value="펀딩실패">
-		<input type="button" id="funding_success" value="펀딩성공">
-		<input type="button" id="funding_complete" value="종료">
+		<div class="menu_item" id="all" onclick="location='/myproject'" style="color: #292929; font-weight: 600;">전체</div>
+		<div class="menu_item" id="write_incomplete">작성중</div>
+		<div class="menu_item" id="request_approval">심사중</div>
+		<div class="menu_item" id="request_reject">반려됨</div>
+		<div class="menu_item" id="request_admit">승인됨</div>
+		<div class="menu_item" id="funding_start">진행중</div>
+		<div class="menu_item" id="funding_failed">펀딩실패</div>
+		<div class="menu_item" id="funding_success">펀딩성공</div>
+		<div class="menu_item" id="funding_complete">종료</div>
+		
 	</div>
-	
-	<p>
-	
+
+	<hr class="menu_under_hr">	
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+
+		
 	<div class="result">
 	    <c:if test="${empty myprojectList}">
-	        <div>제작하신 프로젝트가 없습니다.</div>
+	        <div class="empty_result">제작하신 프로젝트가 없습니다.</div>
 	    </c:if>
 	    <c:forEach var="project" items="${myprojectList}">
 	        <div><img src="${project.main_images_url}"></div>
@@ -339,6 +471,7 @@ $(document).ready(function() {
 	        <hr>
 	    </c:forEach>
 	</div>
+
 </div>
 </body>
 

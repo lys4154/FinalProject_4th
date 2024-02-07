@@ -26,6 +26,9 @@ public interface DeliveryDAO {
 	//회원정보수정 - 기존 배송지 삭제
 	int addressDelete(int memberSeq, String name, String phone, String postcode, String road, String detail);
 
+	//회원정보수정 - 배송지 추가 - 기본배송지 업데이트
+	int allDefaultFalse(int memberSeq);
+
 
 
 }

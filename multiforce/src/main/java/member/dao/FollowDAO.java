@@ -29,5 +29,8 @@ public interface FollowDAO {
 	//마이프로필 - 팔로우 취소하기
 	int unfollow(int param1, int param2);
 
+	//회원탈퇴 - 팔로우 삭제하기
+	int unregisterFollowDelete(int memberSeq);
+
 
 }

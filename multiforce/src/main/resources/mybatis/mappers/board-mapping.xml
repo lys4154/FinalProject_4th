@@ -8,9 +8,8 @@
     </insert>
     
     <update id="editBoard" parameterType="board.dto.BoardDTO">
-	    UPDATE help_ask SET title = #{title},
-	    content = #{content}
-	    WHERE help_ask_seq = #{post_id}
+	    UPDATE help_ask SET title = #{title}, content = #{content}
+	    WHERE help_ask_seq = #{help_ask_seq}
     </update>
     
 
@@ -131,7 +130,7 @@
 	</select>
 	
     <select id="getAllCsPosts" resultType="board.dto.BoardDTO">
-	    select * from help_ask
+	    select * from help_ask where del_status=false
 	</select>
 	
 	<select id="isUpdateLikedByUser" resultType="boolean">
