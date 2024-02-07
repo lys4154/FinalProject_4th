@@ -13,7 +13,7 @@
 </head>
 <body>
 <h2>글 수정</h2>
-<form method="POST" action="edit_cs" onsubmit="return validateForm()">
+<form method="POST" action="/editCsPost" onsubmit="return validateForm()">
 <div><input type="text" name="title" value="${board.getTitle()}"></input></div>
 <div><textarea name="content">${board.getContent()}</textarea></div>
 <input type="hidden" name="post_id" value="${board.help_ask_seq}">

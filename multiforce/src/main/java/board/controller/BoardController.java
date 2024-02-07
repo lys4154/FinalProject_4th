@@ -328,7 +328,7 @@ public class BoardController {
 			
 			//로그인된 회원 아이디 정수형으로 변환하기
 			int currentUser = Integer.parseInt(currentUserString);
-        	
+
 
         	BoardDTO board = boardService.getCsPostById(help_ask_seq);
         	int userLevel = (int) session.getAttribute("login_user_level");
@@ -375,19 +375,29 @@ public class BoardController {
 	// 댓글 작성 POST
 	@PostMapping("cs_comment")
 	public String writeCsComment(@RequestParam String comment
-			,@RequestParam int post_id, Model model) {
-		int tmpUser = 1;
-		BoardDTO comment_dto = new BoardDTO();
-		comment_dto.setTitle("title");
-		comment_dto.setContent(comment);
-		comment_dto.setMember_seq(tmpUser);
-		comment_dto.setParent_seq(post_id);
+			,@RequestParam int post_id, Model model, HttpSession session) {
 		
-		model.addAttribute("help_ask_seq", post_id);
+		int current_user = 0;
+		String loggedInUserId = (String) session.getAttribute("login_user_seq");  
+	    current_user = Integer.parseInt(loggedInUserId);
+	    
+	    if(loggedInUserId != null) {
+
+			BoardDTO comment_dto = new BoardDTO();
+			comment_dto.setTitle("title");
+			comment_dto.setContent(comment);
+			comment_dto.setMember_seq(current_user);
+			comment_dto.setParent_seq(post_id);
+			
+			model.addAttribute("help_ask_seq", post_id);
+			
+			boardService.saveCsComment(comment_dto);
+			return "redirect:cs/read_post/" + post_id;
+	    }
 		
-		boardService.saveCsComment(comment_dto);
 		
-		return "redirect:cs/read_post/" + post_id;
+	    model.addAttribute("errorMessage", "권한이 없습니다.");
+		return "board/error/error";
 		
 	}
 	
@@ -462,27 +472,28 @@ public class BoardController {
 		return "redirect:board_list/cs";
     }
 	
-	@PostMapping("edit_cs")
+	@PostMapping("editCsPost")
 	public String editCsPost(@RequestParam String title,
-            @RequestParam String content, @RequestParam int post_id,
-            Model model, HttpSession session) {
-		
-		int current_user = 0;
-		String loggedInUserId = (String) session.getAttribute("login_user_seq");
-		current_user = Integer.parseInt(loggedInUserId);
-		
-		if(loggedInUserId != null) {
-			 BoardDTO dto = new BoardDTO();
+	                         @RequestParam String content, @RequestParam int post_id,
+	                         Model model, HttpSession session) {
+
+	    int current_user = 0;
+	    String loggedInUserId = (String) session.getAttribute("login_user_seq");
+	    current_user = Integer.parseInt(loggedInUserId);
+	    
+	    if(loggedInUserId != null) {
+	         BoardDTO dto = new BoardDTO();
 	         dto.setTitle(title);
 	         dto.setContent(content);
-
+	         dto.setHelp_ask_seq(post_id);
 	         
-	         boardService.editBoard(dto, post_id);
-	         return "redirect:cs/raed_post/"+post_id;
+	         boardService.editBoard(dto);
+	         return "redirect:cs/read_post/"+post_id;
 	         
-		}
-		
-		return "redirect:board_list/cs";
+	    }
+	    
+	    return "redirect:board_list/cs";
 	}
+
 	
 }
