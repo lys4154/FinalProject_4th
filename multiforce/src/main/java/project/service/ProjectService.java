@@ -177,19 +177,15 @@ public class ProjectService {
         projectDao.insertFundingPlan(fundingPlan);
     }
 
+	//회원탈퇴 - 프로젝트삭제
+	public int unregisterProjectDelete(int memberSeq) {
+		return projectDao.unregisterProjectDelete(memberSeq);
+	}
 
-
-
-
-
-
-
-
-	
-	
-	
-	
-	
+	//내가 올린 프로젝트 - 전체
+	public List<ProjectDTO> getAllProjectsMemberSeq(int memberSeq) {
+		return projectDao.getAllProjectsMemberSeq(memberSeq);
+	}
 
 
 
