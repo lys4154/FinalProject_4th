@@ -252,8 +252,9 @@ public class BoardService {
 		
 	}
 
-	public void editBoard(BoardDTO dto, int post_id) {
-		boardDAO.editBoard(dto, post_id);
+	public void editBoard(BoardDTO dto) {
+
+		boardDAO.editBoard(dto);
 		
 	}
 

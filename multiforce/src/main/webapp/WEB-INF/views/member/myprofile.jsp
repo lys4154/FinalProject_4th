@@ -60,22 +60,22 @@ $(document).ready(function() {
 		myDescription();
 		$(".empty_result").empty();
 		$(".result_count").html('');
-		setMenuTab("#myprofile_detail", "600", "black");
-		setMenuTab("#myproject_detail", "400", "grey");
-		setMenuTab("#funded_detail", "400", "grey");
-		setMenuTab("#follower_detail", "400", "grey");
-		setMenuTab("#following_detail", "400", "grey");
+		setMenuTab("#myprofile_detail", "600", "#292929");
+		setMenuTab("#myproject_detail", "400", "#5c5c5c");
+		setMenuTab("#funded_detail", "400", "#5c5c5c");
+		setMenuTab("#follower_detail", "400", "#5c5c5c");
+		setMenuTab("#following_detail", "400", "#5c5c5c");
 		$('.res_con').css('border', 'none');
 	    }); //프로필 클릭	 
 	 
 	
 	//올린프로젝트 클릭
 	$("#myproject_detail").click(function() {		
-		 setMenuTab("#myprofile_detail", "400", "grey");
-		 setMenuTab("#myproject_detail", "600", "black");
-		 setMenuTab("#funded_detail", "400", "grey");
-		 setMenuTab("#follower_detail", "400", "grey");
-		 setMenuTab("#following_detail", "400", "grey");
+		 setMenuTab("#myprofile_detail", "400", "#5c5c5c");
+		 setMenuTab("#myproject_detail", "600", "#292929");
+		 setMenuTab("#funded_detail", "400", "#5c5c5c");
+		 setMenuTab("#follower_detail", "400", "#5c5c5c");
+		 setMenuTab("#following_detail", "400", "#5c5c5c");
 	    
 	    $.ajax({
 	       type: "get",
@@ -139,11 +139,11 @@ $(document).ready(function() {
 	 
 	 //후원한 프로젝트 클릭
 	 $("#funded_detail").click(function() {
-		 setMenuTab("#myprofile_detail", "400", "grey");
-		 setMenuTab("#myproject_detail", "400", "grey");
-		 setMenuTab("#funded_detail", "600", "black");
-		 setMenuTab("#follower_detail", "400", "grey");
-		 setMenuTab("#following_detail", "400", "grey");
+		 setMenuTab("#myprofile_detail", "400", "#5c5c5c");
+		 setMenuTab("#myproject_detail", "400", "#5c5c5c");
+		 setMenuTab("#funded_detail", "600", "#292929");
+		 setMenuTab("#follower_detail", "400", "#5c5c5c");
+		 setMenuTab("#following_detail", "400", "#5c5c5c");
 	
            $.ajax({
                type: "get",
@@ -266,11 +266,11 @@ $(document).ready(function() {
 	//팔로워 클릭
 	$("#follower_detail").click(function() {	
 	 	getFollower();
-		 setMenuTab("#myprofile_detail", "400", "grey");
-		 setMenuTab("#myproject_detail", "400", "grey");
-		 setMenuTab("#funded_detail", "400", "grey");
-		 setMenuTab("#follower_detail", "600", "black");
-		 setMenuTab("#following_detail", "400", "grey");
+		 setMenuTab("#myprofile_detail", "400", "#5c5c5c");
+		 setMenuTab("#myproject_detail", "400", "#5c5c5c");
+		 setMenuTab("#funded_detail", "400", "#5c5c5c");
+		 setMenuTab("#follower_detail", "600", "#292929");
+		 setMenuTab("#following_detail", "400", "#5c5c5c");
 		 
    	}); 	
 	    
@@ -380,11 +380,11 @@ $(document).ready(function() {
 	//팔로잉 클릭
 	$("#following_detail").click(function() {	
 		getFollowing();
-		 setMenuTab("#myprofile_detail", "400", "grey");
-		 setMenuTab("#myproject_detail", "400", "grey");
-		 setMenuTab("#funded_detail", "400", "grey");
-		 setMenuTab("#follower_detail", "400", "grey");
-		 setMenuTab("#following_detail", "600", "black");
+		 setMenuTab("#myprofile_detail", "400", "#5c5c5c");
+		 setMenuTab("#myproject_detail", "400", "#5c5c5c");
+		 setMenuTab("#funded_detail", "400", "#5c5c5c");
+		 setMenuTab("#follower_detail", "400", "#5c5c5c");
+		 setMenuTab("#following_detail", "600", "#292929");
 	 
 	});
 	    
@@ -437,7 +437,7 @@ $(document).ready(function() {
 	
 	
 	<div class="menu_con"><!-- 상단 선택바 고정 -->
-		<div class="menu_item" id="myprofile_detail" style="cursor:pointer; color: black; font-weight:600;" > 프로필 </div>
+		<div class="menu_item" id="myprofile_detail" style="cursor:pointer; color: #292929; font-weight:600;" > 프로필 </div>
 		<div class="menu_item" id="myproject_detail" style="cursor:pointer;"> 올린 프로젝트 <span></span> </div>
 		<div class="menu_item" id="funded_detail" style="cursor:pointer;"> 후원한 프로젝트 </div>
 		<div class="menu_item" id="follower_detail" style="cursor:pointer;"> 팔로워 </div>

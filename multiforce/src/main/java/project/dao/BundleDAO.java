@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 import project.dto.BundleDTO;
+import project.dto.ItemListDTO;
 
 @Repository
 @Mapper
@@ -18,5 +19,11 @@ public interface BundleDAO {
 	
 	//member_seq불러오기
 	Integer getProject_seq(int member_seq);
+
+	List<BundleDTO> getBundleWithPseq(int project_seq);
+
+	List<ItemListDTO> getBundleList(List<Integer> bundleSeqList);
+
+	List<ItemListDTO> getItem(int project_seq);
 	
 }

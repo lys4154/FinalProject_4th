@@ -24,8 +24,8 @@ if(session.getAttribute("login_user_seq") != null){
 %>
 <div class="board_view" style="border:solid black 1px">
 	<h3>1:1 고객센터</h3>
-	<a href="#">수정하기</a>
-	<a href="#">삭제하기</a>
+	<a href="/edit_cs_post/${board.help_ask_seq}">수정하기</a>
+	<a href="#" onclick="deletePost(${board.help_ask_seq})">삭제하기</a>
     <div class="title" style="background-color: #f5f5f5;">
         ${board.title}
     </div>
@@ -97,6 +97,31 @@ function deleteComment(comment_id) {
             success: function(response) {
                 console.log('삭제 성공:', response);
                 location.reload();
+                
+            },
+            error: function(error) {
+                console.error('삭제 실패:', error);
+            }
+        });
+
+    } else {
+        console.log('삭제가 실패함');
+    }
+}
+function deletePost(comment_id) {
+    var confirmDelete = confirm('정말로 삭제하시겠습니까?');
+
+    if (confirmDelete) {
+        console.log('삭제진행 ㄱㄱ');
+
+		
+        $.ajax({
+            type: 'POST',
+            url: '/delete_cs_comment',
+            data: { help_ask_seq: comment_id },
+            success: function(response) {
+                console.log('삭제 성공:', response);
+                window.location.href = "/board_list/cs";
                 
             },
             error: function(error) {

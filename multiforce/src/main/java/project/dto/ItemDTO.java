@@ -19,8 +19,10 @@ public class ItemDTO {
 	public int getProject_seq() {
 		return project_seq;
 	}
+
 	public void setProject_seq(int project_seq) {
 		this.project_seq = project_seq;
+
 	}
 	public String getItem_name() {
 		return item_name;
@@ -31,6 +33,8 @@ public class ItemDTO {
 	
 	@Override
 	public String toString() {
+
 		return "ItemDTO [item_seq=" + item_seq + ", project_seq=" + project_seq + ", item_name=" + item_name + "]";
-	}	
+  }
+
 }

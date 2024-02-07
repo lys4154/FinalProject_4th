@@ -39,5 +39,12 @@
 </delete>
 
 
+<!-- 회원탈퇴 - 팔로우 삭제하기 -->
+<delete id="unregisterFollowDelete" >
+	DELETE FROM follow
+	WHERE follower_seq = #{memberSeq} OR following_seq = #{memberSeq};
+</delete>
+
+
 
 </mapper>	

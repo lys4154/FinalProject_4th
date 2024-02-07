@@ -130,9 +130,11 @@ public class MemberService {
 	public int urlChange(int memberSeq, String newUrlPath) {
 		return memberDao.urlChange(memberSeq, newUrlPath);
 	}
-
-
-
+	
+	//회원탈퇴 - resign 변경
+	public int unregisterDelStatusChange(int memberSeq) {
+		return memberDao.unregisterDelStatusChange(memberSeq);
+	}
 
 
 }

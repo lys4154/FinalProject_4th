@@ -69,7 +69,7 @@ img {
 .contents_con{
 	margin-top: 15px;
 }
-.subtitle{
+.subtitle, .subtitle_delivery{
 	font-size: 16px;
 	color: #292929;
 	font-weight: 600;	
@@ -343,6 +343,63 @@ img {
 	margin-bottom: 0;
 }
 .checkbox{
-
-	border-bottom: 1px solid #cfcfcf;
+	display: flex;
+	align-items: center;
 }
+
+
+/* 배송지 */
+.css_delivery{
+	border: 1px solid #cfcfcf;
+	border-radius: 5px;
+	outline: none;
+	padding: 15px;
+	margin-bottom: 20px;
+}
+.name_default{
+	display:flex;
+	margin-bottom: 10px;
+	align-items: flex-end
+}
+.delivery_name{
+	font-size: 15px;
+	font-weight: 600;
+	color: #292929;
+	margin-right: 15px;
+}
+.default_ck{
+	background-color: #82c8a0;
+	color: white;
+	font-size: 12px;
+	border-radius: 5px;
+	width: 65px;
+	height: 20px;
+	text-align: center;
+}
+.empty_delivery {	
+    font-size: 17px;
+    font-weight: 500;
+    width: 1000px;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;	
+}
+.css_address{
+	display: flex;
+	justify-content: space-between;
+    align-items: flex-end;
+}
+.address_del{
+	background-color: white;
+	color: #292929;
+	border: none;
+	width: 70px;
+	height: 30px;
+    border-radius: 5px;
+    font-weight: 500;
+    cursor:pointer;
+    border: 1px solid #cfcfcf;
+}
+
