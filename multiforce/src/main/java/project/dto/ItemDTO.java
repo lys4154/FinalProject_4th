@@ -9,7 +9,7 @@ public class ItemDTO {
 	int project_seq;
 	String item_name;
 	
-	
+
 	public int getItem_seq() {
 		return item_seq;
 	}
@@ -19,8 +19,10 @@ public class ItemDTO {
 	public int getProject_seq() {
 		return project_seq;
 	}
-	public void setProject_seq(int bundle_seq) {
-		this.project_seq = bundle_seq;
+
+	public void setProject_seq(int project_seq) {
+		this.project_seq = project_seq;
+
 	}
 	public String getItem_name() {
 		return item_name;
@@ -28,13 +30,11 @@ public class ItemDTO {
 	public void setItem_name(String item_name) {
 		this.item_name = item_name;
 	}
+	
 	@Override
 	public String toString() {
-		return "ItemDTO [item_seq=" + item_seq + ", bundle_seq=" + project_seq + ", item_name=" + item_name + "]";
-	}
-	
-	
-	
-	
-	
+
+		return "ItemDTO [item_seq=" + item_seq + ", project_seq=" + project_seq + ", item_name=" + item_name + "]";
+  }
+
 }
