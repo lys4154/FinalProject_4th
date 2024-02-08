@@ -1,5 +1,7 @@
 package project.dto;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 @Component
@@ -8,8 +10,14 @@ public class ItemDTO {
 	int item_seq;
 	int project_seq;
 	String item_name;
-	
+	List<ItemOptionDTO> optionDTOList;
 
+	public List<ItemOptionDTO> getOptionDTOList() {
+		return optionDTOList;
+	}
+	public void setOptionDTOList(List<ItemOptionDTO> optionDTOList) {
+		this.optionDTOList = optionDTOList;
+	}
 	public int getItem_seq() {
 		return item_seq;
 	}
@@ -30,11 +38,11 @@ public class ItemDTO {
 	public void setItem_name(String item_name) {
 		this.item_name = item_name;
 	}
-	
 	@Override
 	public String toString() {
-
-		return "ItemDTO [item_seq=" + item_seq + ", project_seq=" + project_seq + ", item_name=" + item_name + "]";
-  }
+		return "ItemDTO [item_seq=" + item_seq + ", project_seq=" + project_seq + ", item_name=" + item_name
+				+ ", optionDTOList=" + optionDTOList + "]";
+	}
+	
 
 }

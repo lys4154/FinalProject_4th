@@ -10,37 +10,129 @@
 <title>프로젝트 상세 페이지</title>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <style>
-.bundle_box{
+#project_detail_container{
+	width: 1200px;
+	margin: 0 auto;
+}
+
+.project-info{
 	border: 1px solid black;
+}
+#project_info_upper_part{
+	text-align: center;
+}
+#project_info_lower_part{
+	height:500px;
+}
+#main_images_wrap{
+	display: inline-block;
+	height:100%;
+}
+#main_images_wrap img{
+	height: 100%;
+}
+#other_info_wrap{
+	height: 100%;
+	display: inline-block;
+	position:relative;
+	float: right;
+}
+#content_container{
+	display: inline-block;
+	width: 900px;
+	position:relative;
+	float: left;
+	border: 1px solid black;
+}
+.bundle-info{
+	display: inline-block;
+	width: 256px;
+	border: 1px solid black;
+	padding: 20px 20px 20px 20px;
+}
+.bundle_box{
+	cursor: pointer;
+	border: 1px solid black;
+}
+.bundle_box_chosen{
+	cursor: pointer;
+	border: 1px solid red;
 }
 </style>
 </head>
 <body>
-<section class="project-info">
-    <h1>프로젝트 상세 정보</h1>
-    <p>프로젝트 제목: ${project.short_title}</p>
-    <p>모인 금액: ${project.collection_amount}</p>
-    <p>목표 금액: ${project.goal_price}</p>
-    <p>펀딩 기간: ${project.start_date} - ${project.due_date}</p>
-    <p>프로젝트 소개: ${project.content}</p>
-</section>
-<section class="bundle-info">
-	<c:forEach var="item" items="${bundleList }" varStatus="status">
-		<div class="bundle_box" id="bundel_${item.bundle_seq}">
-			번들이름: ${item.bundle_name}<br>
-			번들가격: ${item.bundle_price }<br>
-		</div>
-	</c:forEach>
-</section>
-<a href="#" id="updateLink" data-project-id="${project.project_seq}">업데이트</a>
-<a href="#" id="communityLink" data-project-id="${project.project_seq}">커뮤니티</a>
-<hr>
-<div id="content_container">
+<div id="project_detail_container">
+	<section class="project-info">
+		<div id="project_info_upper_part">
+	    	<h1>${project.long_title}</h1>
+	    </div>
+	    <div id="project_info_lower_part">
+		    <div id="main_images_wrap">
+		    	<img src="${project.main_images_url}">
+		    </div>
+		    <div id="other_info_wrap">
+			    <p>모인 금액: ${project.collection_amount_format}</p>
+			    <p>목표 금액: ${project.goal_price_format}</p>
+			    <p>펀딩 기간: ${project.start_date} - ${project.due_date}</p>
+			    <p>남은 날짜: ${project.term}일</p>
+			    <button id="funding_btn">후원하기</button>
+		    </div>
+	    </div>
+	</section>
+	<a href="#" id="projectLink" data-project-id="${project.project_seq}">프로젝트 계획</a>
+	<a href="#" id="updateLink" data-project-id="${project.project_seq}">업데이트</a>
+	<a href="#" id="communityLink" data-project-id="${project.project_seq}">커뮤니티</a>
+	<hr>
+	<div id="content_container">
+		${project.content}
+	</div>
+	<section class="bundle-info">
+		<c:forEach var="bundle" items="${bundleList }" varStatus="status">
+			<div class="bundle_box" data-id="${bundle.bundle_seq}">
+				<div class="bundle_name_wrap">
+					${bundle.bundle_name}
+				</div>
+				<div class="bundle_price_wrap">
+					${bundle.bundle_price_format}원
+				</div>
+				<ul class="item_list">
+				<c:forEach var="item" items="${bundle.itemDTOList }" varStatus="status">
+					<li class="item">
+						<div class="item_name_wrap">
+							${item.item_name }
+						</div>
+						<c:forEach var="option" items="${item.optionDTOList }" varStatus="status">
+							<c:if test="${fn:length(item.optionDTOList) != 1 && status.index == 0}">
+								<select class="item_option_select">
+							</c:if>
+							<c:if test="${fn:length(item.optionDTOList) != 1}">
+								<option value="${option.item_option_seq }">
+									${option.item_option_name }
+								</option>
+							</c:if>
+							<c:if test="${fn:length(item.optionDTOList) != 0 && status.count == fn:length(item.optionDTOList)}">
+								</select>
+							</c:if>
+						</c:forEach>
+					</li>
+				</c:forEach>
+				</ul>
+			</div>
+		</c:forEach>
+	</section>
+	
 </div>
 <script>
 $(document).ready(function () {
-
-	$("#updateLink").click();
+//==================== 프로젝트 계획, 업데이트, 커뮤니티 클릭 이벤트 ============================
+	$.ajax({
+        url: "/viewcountupdate",
+        type: "POST",
+        data:{
+        	project_seq: "${project_seq}"
+        }
+	});
+	
 	
 	$("#communityLink").click(function (e) {
 	    e.preventDefault();
@@ -57,7 +149,10 @@ $(document).ready(function () {
 	    loadContent(baseUrl + "/update/view/"+pid); 
 	});
 	
-	$("#updateLink").click();
+	$("#projectLink").click(function(e){
+		e.preventDefault();
+		$("#content_container").html("${project.content}");
+	});
 	
 	function loadContent(url) {
 	    $.ajax({
@@ -71,24 +166,18 @@ $(document).ready(function () {
 	        }
 	    });
 	}
-	function getItem(){
-		$.ajax({
-	        url: "getitem",
-	        data:{
-	        	project_seq: ${project.project_seq}
-	        },
-	        type: "post",
-	        success: function (data) {
-	        	if(data.bundle_seq == null){
-	        		
-	        	}
-	        },
-	        error: function (xhr, status, error) {
-	            console.error("Error loading content:", error);
-	        }
-	    });
-	}
-	
+//==========================번들 이벤트================================
+	var click_bundle_seq = 0;
+	$(".bundle_box").click(function(e){
+		//이벤트 발생 객체의 class 명이 bundle_box인 경우
+		if(e.currentTarget.getAttribute("class") == "bundle_box"){
+			$(this).attr("class","bundle_box_chosen");
+		//아니면서 select를 클릭한게 아닌 경우
+		}else if(e.currentTarget.getAttribute("class") != "bundle_box" && e.target.tagName != "SELECT"){
+			$(this).attr("class","bundle_box");
+		}
+		
+	});
 });
 </script>
 </body>

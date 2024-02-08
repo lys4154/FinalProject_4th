@@ -380,5 +380,8 @@ where project_seq = #{project_seq}
 	order by project_process asc
 </select>
 
-
+<!-- 조회수 증가 -->
+<update id="updateViewCount">
+update project set view_count = view_count + 1 where project_seq = #{project_seq}
+</update>
 </mapper>

@@ -1,12 +1,17 @@
 package funding.dto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import member.dto.MemberDTO;
+import project.dto.FundingBundleCountDTO;
+import project.dto.ProjectDTO;
+
 
 @Component
-public class FundingDTO {
+public class FundingDTO{
 	int fund_seq;	
 	int member_seq;
 	int	project_seq;
@@ -26,15 +31,35 @@ public class FundingDTO {
 	String track_num;
 	String track_status;	
 	// 주소 수정	
-	
 	String road_address;
 	String jibun_address;
 	String extra_address;
 	String detail_address;
 	String postcode;
+	List<FundingBundleCountDTO> bCountDTOList;
+	ProjectDTO pDTO;
+	MemberDTO collectorDTO;
 	
 	
 	
+	public ProjectDTO getpDTO() {
+		return pDTO;
+	}
+	public void setpDTO(ProjectDTO pDTO) {
+		this.pDTO = pDTO;
+	}
+	public MemberDTO getCollectorDTO() {
+		return collectorDTO;
+	}
+	public void setCollectorDTO(MemberDTO collectorDTO) {
+		this.collectorDTO = collectorDTO;
+	}
+	public List<FundingBundleCountDTO> getbCountDTOList() {
+		return bCountDTOList;
+	}
+	public void setbCountDTOList(List<FundingBundleCountDTO> bCountDTOList) {
+		this.bCountDTOList = bCountDTOList;
+	}
 	public int getFund_seq() {
 		return fund_seq;
 	}

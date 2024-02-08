@@ -188,5 +188,11 @@ public class ProjectService {
 	}
 
 
+	public int viewCountUpdate(int project_seq) {
+		int result = projectDao.updateViewCount(project_seq);
+		return result;
+	}
+
+
 
 }
