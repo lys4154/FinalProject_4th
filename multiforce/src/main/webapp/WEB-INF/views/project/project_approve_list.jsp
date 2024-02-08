@@ -17,6 +17,7 @@
     <div id="menu">
         <a href="#" onclick="getApproveList('unapproved')">승인 대기 (${unapprovedCount})</a>
         <a href="#" onclick="getApproveList('approved')">승인 완료 (${approvedCount})</a>
+        <a href="#" onclick="getApproveList('rejected')">반려 (${rejectedCount})</a>
     </div>
     
 

@@ -138,6 +138,10 @@ public interface ProjectDAO {
 	//조회수 증가
 	int updateViewCount(int project_seq);
 
+	int rejectedCount();
+
+	List<ProjectDTO> getAllRejectedProject();
+
 
 }
 
