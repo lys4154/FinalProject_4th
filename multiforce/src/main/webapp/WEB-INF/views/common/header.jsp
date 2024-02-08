@@ -10,6 +10,9 @@
 <title>Insert title here</title>
 </head>
 <link rel="stylesheet" type="text/css" href="/css/common/header.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400&display=swap" rel="stylesheet">
 <script src="/js/jquery-3.7.1.min.js"></script>
 <script>
 $(document).ready(function(){
@@ -189,7 +192,10 @@ $(document).ready(function(){
 		if(loginUserLevel == "1"){
 			html = 
 				`<div id = "login_wrap">
-					프로필 사진, ${login_user_name}<br>
+					<div class="user_name_img">
+						<div><img src="${login_user_img}" class="login_user_img"></div>
+						<div>${login_user_name}</div>
+					</div>
 					<div id="my_menu_list" style="display:none">
 						<a href="/myprofile">
 							<div class="my_menu_wrap">
@@ -265,6 +271,7 @@ $(document).ready(function(){
 
 </script>
 <header>
+
 	<div id="header_wrap">
 		<div id="header_upper_part">
 			<h1 id="header_logo" style="display: inline-block"><a href="/">멀티포스 펀딩</a></h1>
@@ -291,23 +298,24 @@ $(document).ready(function(){
 		</div>
 		<nav id="navigator">
 			<div id="category_wrap" style="display:inline-block">
-				<div class="category_" style="display:inline-block">
+				<div class="category_tab" style="display:inline-block">
 					<a class="category" id="category">카테고리</a>
 				</div>
-				<div style="display:inline-block">
+				<div class="category_tab" style="display:inline-block">
 					<a href="/discover?sort=new">신규</a>
 				</div>
-				<div style="display:inline-block">
+				<div class="category_tab" style="display:inline-block">
 					<a href="/discover?sort=popular">인기</a>
 				</div>
-				<div style="display:inline-block">
+				<div class="category_tab" style="display:inline-block">
 					<a href="/discover?sort=end">마감임박</a>
 				</div>
+				<div >
+					<a id="project_design_btn" href="projectdesign">프로젝트 등록</a>
+				</div>				
+				<div id = "change_part"></div>
 			</div>
-			<div id = "change_part"></div>
-			<div id="project_design_btn_wrap" style="display:inline-block;">
-				<a id="project_design_btn" href="/projectdesign">프로젝트 등록</a>
-			</div>
+
 			<div class="category" id="category_list" style="display:none">
 <%			for(ProjectCategory item : ProjectCategory.values()){ %>
 				<div class="category_btn_wrap">
@@ -318,5 +326,6 @@ $(document).ready(function(){
 			</div>
 		</nav>
 	</div>
+
 </header>
 </html>
