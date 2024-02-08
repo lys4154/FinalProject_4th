@@ -32,11 +32,12 @@ public class ItemService {
 	public void createItem(ItemDTO item, HttpSession session) {
 		int member_seq = projectDao.getMember_seq((String)session.getAttribute("login_user_id"));
 		int project_seq = bundleDao.getProject_seq(member_seq);
-
-		item.setProject_seq(member_seq); 
+		System.out.println("member_seq=" + member_seq + ", project_seq=" + project_seq );
+		
+		item.setProject_seq(project_seq); 
 		item.getProject_seq();
-		System.out.println(item.getProject_seq());
-
+		System.out.println("===>"+item.getProject_seq());
+		
 		itemDao.insertItem(item);
     }
 
