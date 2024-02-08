@@ -10,6 +10,9 @@
 <title>Insert title here</title>
 </head>
 <link rel="stylesheet" type="text/css" href="/css/common/header.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400&display=swap" rel="stylesheet">
 <script src="/js/jquery-3.7.1.min.js"></script>
 <script>
 $(document).ready(function(){
@@ -19,6 +22,7 @@ $(document).ready(function(){
 	var isClickedNotiDeleteBtn = false;
 	//알림버튼 클릭 시 이벤트) 로그인 여부 확인, 버튼클릭 횟수 체크 후 알림 리스트 보여주거나 숨김 + 읽기 처리
 	var noReadCount = 0;
+	var lastNotificationSeq = 0;
 	if("${login_user_seq}" != ""){
 		notificationListLoad();
 	}
@@ -33,6 +37,10 @@ $(document).ready(function(){
 			dataType: 'json',
 			success : function(r){
 				for(let i = 0; i < r.length; i++){
+					if(i == 0){
+						lastNotificationSeq = r[0].notification_seq;
+					}
+					
 					if(r[i].is_read == false){
 						noReadCount++;
 					}
@@ -40,9 +48,7 @@ $(document).ready(function(){
 							"<div id='notification_"+r[i].notification_seq+"' class='notifications'><a href='/projectdetail/"
 							+r[i].project_seq+"'>"+r[i].message + "</a><input type='button' value='삭제' class='notification_delete_btn' id='delete_"
 							+r[i].notification_seq+"'><span> 읽음 여부: "+r[i].is_read+"</span></div>");
-					if(i == r.length - 1){
-						lastNotificationSeq = r[r.length - 1].notification_seq;
-					}
+					
 				}
 				addNotiDelBtnEvent();
 				addNotiEvent();
@@ -53,7 +59,7 @@ $(document).ready(function(){
 			}//css할 때 스크롤로 만들기
 		});
 	}
-	var lastNotificationSeq = 0;
+	
 	$("#notification_btn").on("click", function(){
 		if("${login_user_seq}" != "" && notificationBtnClick % 2 == 0){
 			$("#header_notification_list").css("display","block");
@@ -186,7 +192,10 @@ $(document).ready(function(){
 		if(loginUserLevel == "1"){
 			html = 
 				`<div id = "login_wrap">
-					프로필 사진, ${login_user_name}<br>
+					<div class="user_name_img">
+						<div><img src="${login_user_img}" class="login_user_img"></div>
+						<div>${login_user_name}</div>
+					</div>
 					<div id="my_menu_list" style="display:none">
 						<a href="/myprofile">
 							<div class="my_menu_wrap">
@@ -262,6 +271,7 @@ $(document).ready(function(){
 
 </script>
 <header>
+
 	<div id="header_wrap">
 		<div id="header_upper_part">
 			<h1 id="header_logo" style="display: inline-block"><a href="/">멀티포스 펀딩</a></h1>
@@ -288,32 +298,34 @@ $(document).ready(function(){
 		</div>
 		<nav id="navigator">
 			<div id="category_wrap" style="display:inline-block">
-				<div class="category_" style="display:inline-block">
+				<div class="category_tab" style="display:inline-block">
 					<a class="category" id="category">카테고리</a>
 				</div>
-				<div style="display:inline-block">
+				<div class="category_tab" style="display:inline-block">
 					<a href="/discover?sort=new">신규</a>
 				</div>
-				<div style="display:inline-block">
+				<div class="category_tab" style="display:inline-block">
 					<a href="/discover?sort=popular">인기</a>
 				</div>
-				<div style="display:inline-block">
+				<div class="category_tab" style="display:inline-block">
 					<a href="/discover?sort=end">마감임박</a>
 				</div>
+				<div >
+					<a id="project_design_btn" href="projectdesign">프로젝트 등록</a>
+				</div>				
+				<div id = "change_part"></div>
 			</div>
-			<div id = "change_part"></div>
-			<div id="project_design_btn_wrap" style="display:inline-block;">
-				<a id="project_design_btn" href="projectdesign">프로젝트 등록</a>
-			</div>
+
 			<div class="category" id="category_list" style="display:none">
 <%			for(ProjectCategory item : ProjectCategory.values()){ %>
 				<div class="category_btn_wrap">
-					<a class="category_btn" href="discover?category=<%=item.getEngName()%>"><%=item.getKorName()%></a>
+					<a class="category_btn" href="/discover?category=<%=item.getEngName()%>"><%=item.getKorName()%></a>
 				</div>
 <% 			}
 %>
 			</div>
 		</nav>
 	</div>
+
 </header>
 </html>
