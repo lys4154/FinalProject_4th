@@ -51,8 +51,10 @@ public class FundingService {
 		fundingDao.delStatusChange(fundSeq);
 	}
 
-
-
+	//결제 페이지 정보 가져오기
+	public FundingDTO getPaymentInfo(int fundseq){
+		return fundingDao.getPaymentInfo(fundseq);
+	}
 
 
 }

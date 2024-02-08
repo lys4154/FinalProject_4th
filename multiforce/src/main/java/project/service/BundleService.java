@@ -35,8 +35,9 @@ public class BundleService {
 	
 	//프로젝트 상세페이지 번들
 	public List<BundleDTO> getBundleList(int project_seq) {
-		List<BundleDTO> bundleSeqList = bundleDao.getBundleWithPseq(project_seq);
-		return bundleSeqList;
+		List<Integer> bundleSeqList = bundleDao.getBundleWithPseq(project_seq);
+		List<BundleDTO> bundleList = bundleDao.getBundleList(bundleSeqList);
+		return bundleList;
 	}
 
 	 //번들 생성
@@ -49,9 +50,5 @@ public class BundleService {
         bundleDao.insertBundle(bundle);
     }
 
-	public List<ItemListDTO> getItem(int project_seq) {
-		List<ItemListDTO> list =bundleDao.getItem(project_seq);
-		return list;
-	}
 
 }

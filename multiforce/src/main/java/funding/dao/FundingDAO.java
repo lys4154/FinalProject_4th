@@ -33,4 +33,6 @@ public interface FundingDAO {
 	//후원 취소
 	void delStatusChange(int fundSeq);
 
+	FundingDTO getPaymentInfo(int fundseq);
+
 }

@@ -70,4 +70,84 @@
 	values (now(), #{pay_option}, #{price}, #{paydate}, 0)
 </insert>
 
+<!-- 결제정보 상세페이지 정보 끌어오기 -->
+<resultMap type="fundingdto" id="fundingMap">
+	<id property="fund_seq" column="fund_seq"/>
+	<result property="member_seq" column="member_seq"/>
+	<result property="price" column="price"/>
+	<result property="fund_date" column="fund_date"/>
+	<result property="del_status" column="del_status"/>
+	<result property="del_date" column="del_date"/>
+	<result property="pay_option" column="pay_option"/>
+	<result property="pay_number" column="pay_number"/>
+	<result property="pay_status" column="pay_status"/>
+	<result property="pay_date" column="pay_date"/>
+	<result property="name" column="name"/>
+	<result property="postcode" column="postcode"/>
+	<result property="requeste" column="requeste"/>
+	<result property="track_num" column="track_num"/>
+	<result property="track_status" column="track_status"/>
+	<result property="road_address" column="road_address"/>
+	<result property="jibun_address" column="jibun_address"/>
+	<result property="extra_address" column="extra_address"/>
+	<result property="detail_address" column="detail_address"/>
+	<association property="pDTO" resultMap="projectMap"/>
+	<association property="collectorDTO" resultMap="collectorMap"/>
+	<collection property="bCountDTOList" resultMap="countMap"/>
+</resultMap>
+<resultMap type="projectdto" id="projectMap">
+	<id property="project_seq" column="project_seq"/>
+	<result property="long_title" column="long_title"/>
+	<result property="url" column="url"/>
+	<result property="main_images_url" column="main_images_url"/>
+	<result property="category" column="category"/>
+	<result property="start_date" column="start_date"/>
+	<result property="due_date" column="due_date"/>
+</resultMap>
+<resultMap type="memberdto" id="collectorMap">
+	<id property="member_seq" column="member_seq"/>
+	<result property="member_url" column="member_url"/>
+	<result property="nickname" column="nickname"/>
+	<result property="profile_img" column="profile_img"/>
+</resultMap>
+<resultMap type="countdto" id="countMap">
+	<id property="bundle_count_seq" column="bundle_count_seq"/>
+	<result property="fund_seq" column="fund_seq"/>
+	<result property="bundle_seq" column="bundle_seq"/>
+	<result property="perchase_count" column="perchase_count"/>
+	<collection property="bundleDTOList" resultMap="bundleMap"/>
+</resultMap>
+<resultMap type="bundledto" id="bundleMap">
+	<id property="bundle_seq" column="bundle_seq"/>
+	<result property="project_seq" column="project_seq"/>
+	<result property="bundle_name" column="bundle_name"/>
+	<result property="bundle_price" column="bundle_price"/>
+	<collection property="itemDTOList" resultMap="itemMap"/>
+</resultMap>
+<resultMap type="itemdto" id="itemMap">
+	<id property="item_seq" column="item_seq"/>
+	<result property="project_seq" column="project_seq"/>
+	<result property="item_name" column="item_name"/>
+	<collection property="optionDTOList" resultMap="itemOptionMap"/>
+</resultMap>
+<resultMap type="itemoptiondto" id="itemOptionMap">
+	<id property="item_option_seq" column="item_option_seq"/>
+	<result property="item_seq" column="item_seq"/>
+	<result property="item_option_name" column="item_option_name"/>
+</resultMap>
+<select id="getPaymentInfo" resultMap="fundingMap">
+select * from funding f
+join funding_bundle_count c on f.fund_seq = c.fund_seq
+join chosen_option o on c.bundle_count_seq = o.bundle_count_seq
+join item_option n on o.item_option_seq = n.item_option_seq
+join item i on n.item_seq = i.item_seq
+join bundle b on c.bundle_seq = b.bundle_seq
+join project p on f.project_seq = p.project_seq
+join member_info m on m.member_seq = p.member_seq
+where f.fund_seq = #{fundseq};	
+</select>
+
+
+
+
 </mapper>

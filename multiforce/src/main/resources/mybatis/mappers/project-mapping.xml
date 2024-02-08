@@ -377,5 +377,8 @@ where project_seq = #{project_seq}
 	select * from project where member_seq = #{memberSeq}
 </select>
 
-
+<!-- 조회수 증가 -->
+<update id="updateViewCount">
+update project set view_count = view_count + 1 where project_seq = #{project_seq}
+</update>
 </mapper>

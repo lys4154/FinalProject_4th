@@ -181,12 +181,8 @@ public class ProjectController {
 		model.addAttribute("bundleList", bundleList);
 		return "project/project_detail";
 	}
-	@PostMapping("getitem")
-	@ResponseBody
-	public List<ItemListDTO> getItem(int project_seq){
-		List<ItemListDTO> list = bundleService.getItem(project_seq);
-		return list;
-	}
+	
+
 	//업데이트 댓글 가져오기
 	@GetMapping("/getComments")
 	@ResponseBody
@@ -473,11 +469,16 @@ public class ProjectController {
 		}
 	}
 	
-	
-	
 	@RequestMapping("/projectmain")
 	public String projectMain() {
 		return "project/projectmain";
 	}
 	
+	//프로젝트 조회수 업데이트
+	@PostMapping("/viewcountupdate")
+	@ResponseBody
+	public String viewCountUpdate(int project_seq) {
+		int result = projectService.viewCountUpdate(project_seq);
+		return "{\"result\": \"" + result + "\"}";
+	}
 }
