@@ -18,7 +18,7 @@
       <td>프로젝트 번호:</td><td>${project.project_seq}</td>
    </tr>
    <tr>
-      <td>회원 번호:</td><td>${project.member_seq}</td>
+      <td>프로젝트 관리자:</td><td>${member_nickname.nickname}</td>
    </tr>
    <tr>
       <td>목표 금액:</td><td>${project.goal_price}</td>
@@ -29,12 +29,8 @@
    <tr>
       <td>카테고리:</td><td>${project.category}</td>
       </tr>
-   <tr>
-      <td>승인 여부:</td><td>${project.project_process}</td>
-      </tr>
-   <tr>
-      <td>승인 버튼:</td><td>${project.project_process}</td>
-   </tr>
+
+
    <tr>
       <td>반려 이유:</td><td><textarea name="content" style="height:300px;width:200px;"></textarea></td>
    </tr>

@@ -135,6 +135,10 @@ public interface ProjectDAO {
 	//내가 올린 프로젝트 - 전체
 	List<ProjectDTO> getAllProjectsMemberSeq(int memberSeq);
 
+	int rejectedCount();
+
+	List<ProjectDTO> getAllRejectedProject();
+
 
 }
 

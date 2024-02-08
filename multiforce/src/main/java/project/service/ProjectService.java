@@ -188,5 +188,15 @@ public class ProjectService {
 	}
 
 
+	public int rejectedCount() {
+		return projectDao.rejectedCount();
+	}
+
+
+	public List<ProjectDTO> getAllRejectedProject() {
+		return projectDao.getAllRejectedProject();
+	}
+
+
 
 }

@@ -26,6 +26,8 @@ import board.dto.UpdateReplyDTO;
 import board.dto.updateBoardDTO;
 import board.service.BoardService;
 import jakarta.servlet.http.HttpSession;
+import member.dto.MemberDTO;
+import member.service.MemberService;
 import project.dto.BundleDTO;
 import project.dto.ItemDTO;
 import project.dto.ItemListDTO;
@@ -41,6 +43,9 @@ import project.service.ProjectService;
 public class ProjectController {
 	@Autowired
 	private ProjectService projectService;
+	
+	@Autowired
+    private MemberService memberService;
 	
 	@Autowired
 	private BoardService boardService;
@@ -75,19 +80,23 @@ public class ProjectController {
 	public String showAppoveList(Model model, HttpSession session) {
 		
 		//세션 레벨 가져오기
-		String user_level_str = (String)session.getAttribute("login_user_level");
-		int current_user = Integer.parseInt(user_level_str);
+
+		int current_user = (int) session.getAttribute("login_user_level");
+
+
+			if(current_user == 2) {
+				int approvedCount = projectService.approvedCount(); 
+				int unapprovedCount = projectService.unapprovedCount();
+				int rejectedCount = projectService.rejectedCount();
+				
+				
+				model.addAttribute("approvedCount", approvedCount);
+				model.addAttribute("unapprovedCount", unapprovedCount);
+				model.addAttribute("rejectedCount", rejectedCount);
+				return "project/project_approve_list";
+			}
 		
-		//관리자라면 페이지 접근허용
-		if(current_user == 2) {
-			int approvedCount = projectService.approvedCount(); 
-			int unapprovedCount = projectService.unapprovedCount();
-			
-			
-			model.addAttribute("approvedCount", approvedCount);
-			model.addAttribute("unapprovedCount", unapprovedCount);
-			return "project/project_approve_list";
-		}
+		
 		
 		  model.addAttribute("errorMessage", "해당 페이지에 권한이 없습니다.");
 		  return "board/error/error";
@@ -98,13 +107,16 @@ public class ProjectController {
 	public String showRejectDetail(Model model, 
 			@PathVariable("project_seq") int project_seq, HttpSession session) {
 		//세션 레벨 가져오기
-		String user_level_str = (String)session.getAttribute("login_user_level");
-		int current_user = Integer.parseInt(user_level_str);
+		int current_user = (int)session.getAttribute("login_user_level");
+
 		
 		//관리자라면 페이지 접근허용
 		if(current_user == 2) {
 			ProjectDTO project_detail = projectService.getProjectDetail(project_seq);
+			MemberDTO member_nick = memberService.getNicknameById(project_detail.getMember_seq());
+
 			model.addAttribute("project", project_detail);
+			model.addAttribute("member_nickname", member_nick);
 			return "project/project_reject";
 		}
 		  model.addAttribute("errorMessage", "해당 페이지에 권한이 없습니다.");
@@ -126,18 +138,27 @@ public class ProjectController {
 	public String showApprovedOnly(Model model) {
 		List<ProjectDTO> projects = projectService.getAllApprovedProjects(); 
 		
-		
+		model.addAttribute("style","approved");
         model.addAttribute("projects", projects);
 		return "project/approve_list_table";
 		
 	}
-	
+	//반려 리스트
+	@GetMapping("approve_list/rejected")
+	public String showRejectedOnly(Model model) {
+		List<ProjectDTO> projects = projectService.getAllRejectedProject(); 
+		
+		model.addAttribute("style","rejected");
+        model.addAttribute("projects", projects);
+		return "project/approve_list_table";
+		
+	}
 	//승인 대기 리스트
 	@GetMapping("approve_list/unapproved")
 	public String showUnapprovedOnly(Model model) {
 		List<ProjectDTO> projects = projectService.getAllUnapprovedProjects(); 
 		
-		
+		model.addAttribute("style","unapproved");
         model.addAttribute("projects", projects);
 		return "project/approve_list_table";
 		
@@ -156,7 +177,7 @@ public class ProjectController {
 	public String setTestAccountTwo(HttpSession session) {
 		String id = "test";
 		session.setAttribute("login_user_id", id);
-		session.setAttribute("login_user_level", 1);
+		session.setAttribute("login_user_level", 2);
 		session.setAttribute("login_user_name", "일반회원");
 		session.setAttribute("login_user_seq", "2");
 		return "board/test";
