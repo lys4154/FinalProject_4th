@@ -786,7 +786,7 @@ public class ProfileController {
     @GetMapping("/myproject")
     public ModelAndView myproject(HttpSession session) {
 
-        int memberSeq = (int) session.getAttribute("login_user_seq");
+        int memberSeq = (int) session.getAttribute("login_user_seq");        
         List<ProjectDTO> myprojectList = projectservice.getAllProjectsMemberSeq(memberSeq);
 
 

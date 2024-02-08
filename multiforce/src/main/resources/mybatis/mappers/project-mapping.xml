@@ -220,7 +220,8 @@
 	SELECT 
 	    project.*,
 	    approval_request.approval_reason,
-	    approval_request.evaluation_date
+	    approval_request.evaluation_date,
+	    approval_request.approval_req_date
 	FROM 
 	    project
 	JOIN 
@@ -235,7 +236,8 @@
 <select id="requestAdmit" resultType="java.util.Map">
 	SELECT 
 	    project.*,
-	    approval_request.evaluation_date
+	    approval_request.evaluation_date,
+	    approval_request.approval_req_date
 	FROM 
 	    project
 	JOIN 
@@ -375,6 +377,7 @@ where project_seq = #{project_seq}
 <!-- 내가 올린 프로젝트 - 전체 -->
 <select id="getAllProjectsMemberSeq">
 	select * from project where member_seq = #{memberSeq}
+	order by project_process asc
 </select>
 
 
