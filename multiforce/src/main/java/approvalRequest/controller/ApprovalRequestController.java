@@ -9,34 +9,40 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import approvalRequest.dto.ApprovalRequestDTO;
 import approvalRequest.service.ApprovalRequestService;
+import project.dto.ProjectDTO;
+import project.service.ProjectService;
 
 @Controller
 public class ApprovalRequestController {
 	@Autowired
 	private ApprovalRequestService approvalService;
 	
+	@Autowired
+	private ProjectService projectService;
+	
 	@PostMapping("post_project_reject")
 	public String InsertProjectReject(@RequestParam String content, 
 			@RequestParam int project_seq) {
 
-		int tmpUser = 1;
-		int tmpManager = 2;
-		String tmpManagerAccount = "23423423";
-		int tmpCommission = 3;
-		LocalDateTime tmpDate = LocalDateTime.of(2024, 1, 16, 12, 34, 56);
+		ProjectDTO project_detail = projectService.getProjectDetail(project_seq);
+		
+		int user = project_detail.getMember_seq();
+		String user_account = project_detail.getAccount();
+
+		int tmpCommission = 10;
+		LocalDateTime req_date = LocalDateTime.now();
 		
 		ApprovalRequestDTO approvalDTO = new ApprovalRequestDTO();
 		approvalDTO.setApproval_reason(content);
-		approvalDTO.setManager_seq(tmpManager);
+		approvalDTO.setManager_seq(user);
 		approvalDTO.setApproval_status(1);
-		approvalDTO.setMember_seq(tmpUser);
-		approvalDTO.setManager_account(tmpManagerAccount);
+		approvalDTO.setManager_account(user_account);
 		approvalDTO.setCommission(tmpCommission);
-		approvalDTO.setApproval_req_date(tmpDate);
+		approvalDTO.setApproval_req_date(req_date);
 		approvalDTO.setProject_seq(project_seq);
 		
 		
-		System.out.println(approvalDTO.getProject_seq());
+
 		approvalService.insertApprovalReject(approvalDTO);
 		
 		

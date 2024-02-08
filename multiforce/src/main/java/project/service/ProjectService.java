@@ -189,4 +189,20 @@ public class ProjectService {
 
 
 
+	public int rejectedCount() {
+		return projectDao.rejectedCount();
+	}
+
+
+	public List<ProjectDTO> getAllRejectedProject() {
+		return projectDao.getAllRejectedProject();
+  }
+
+	public int viewCountUpdate(int project_seq) {
+		int result = projectDao.updateViewCount(project_seq);
+		return result;
+	}
+
+
+
 }

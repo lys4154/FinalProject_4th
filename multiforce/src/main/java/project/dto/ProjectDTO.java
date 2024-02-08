@@ -1,11 +1,13 @@
 package project.dto;
 
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 import org.springframework.stereotype.Component;
 
+import member.dto.MemberDTO;
 import project.code.ProjectCategory;
 import project.code.ProjectProcess;
 
@@ -33,7 +35,31 @@ public class ProjectDTO {
 	LocalDateTime delivery_date;
 	ProjectProcess project_process;
 	long term;
-
+	String goal_price_format;
+	String collection_amount_format;
+	MemberDTO memberDTO;
+	
+	
+	public MemberDTO getMemberDTO() {
+		return memberDTO;
+	}
+	public void setMemberDTO(MemberDTO memberDTO) {
+		this.memberDTO = memberDTO;
+	}
+	public String getGoal_price_format() {
+		return goal_price_format;
+	}
+	public void setGoal_price_format() {
+		DecimalFormat format = new DecimalFormat("###,###");
+		this.goal_price_format = format.format(goal_price);
+	}
+	public String getCollection_amount_format() {
+		return collection_amount_format;
+	}
+	public void setCollection_amount_format() {
+		DecimalFormat format = new DecimalFormat("###,###");
+		this.collection_amount_format = format.format(collection_amount);
+	}
 	public long getTerm() {
 		return term;
 	}
@@ -72,12 +98,14 @@ public class ProjectDTO {
 	}
 	public void setGoal_price(int goal_price) {
 		this.goal_price = goal_price;
+		setGoal_price_format();
 	}
 	public int getCollection_amount() {
 		return collection_amount;
 	}
 	public void setCollection_amount(int collection_amount) {
 		this.collection_amount = collection_amount;
+		setCollection_amount_format();
 	}
 	public LocalDate getStart_date() {
 		return start_date;

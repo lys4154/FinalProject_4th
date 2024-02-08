@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ApprovalRequestDTO {
 	private int manager_seq;
-    private int member_seq;
+
     private int project_seq;
     private int approval_status;
     private String approval_reason;
@@ -21,12 +21,7 @@ public class ApprovalRequestDTO {
 	public void setManager_seq(int manager_seq) {
 		this.manager_seq = manager_seq;
 	}
-	public int getMember_seq() {
-		return member_seq;
-	}
-	public void setMember_seq(int member_seq) {
-		this.member_seq = member_seq;
-	}
+
 	public int getProject_seq() {
 		return project_seq;
 	}

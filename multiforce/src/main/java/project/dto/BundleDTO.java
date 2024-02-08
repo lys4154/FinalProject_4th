@@ -1,5 +1,8 @@
 package project.dto;
 
+import java.text.DecimalFormat;
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 @Component
@@ -9,8 +12,22 @@ public class BundleDTO {
 	int project_seq;
 	String bundle_name;
 	int bundle_price;
+	List<ItemDTO> itemDTOList;
+	String bundle_price_format;
 	
-	
+	public String getBundle_price_format() {
+		return bundle_price_format;
+	}
+	public void setBundle_price_format() {
+		DecimalFormat format = new DecimalFormat("###,###");
+		this.bundle_price_format = format.format(bundle_price);
+	}
+	public List<ItemDTO> getItemDTOList() {
+		return itemDTOList;
+	}
+	public void setItemDTOList(List<ItemDTO> itemDTOList) {
+		this.itemDTOList = itemDTOList;
+	}
 	public int getBundle_seq() {
 		return bundle_seq;
 	}
@@ -34,14 +51,16 @@ public class BundleDTO {
 	}
 	public void setBundle_price(int bundle_price) {
 		this.bundle_price = bundle_price;
+		setBundle_price_format();
 	}
-	
-	
 	@Override
 	public String toString() {
 		return "BundleDTO [bundle_seq=" + bundle_seq + ", project_seq=" + project_seq + ", bundle_name=" + bundle_name
-				+ ", bundle_price=" + bundle_price + "]";
+				+ ", bundle_price=" + bundle_price + ", itemDTOList=" + itemDTOList + "]";
 	}
+	
+	
+	
 	
 	
 	

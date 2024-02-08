@@ -19,11 +19,11 @@ public interface BundleDAO {
 	
 	//member_seq불러오기
 	Integer getProject_seq(int member_seq);
+	
+	//project_seq로 번들 찾기
+	List<Integer> getBundleWithPseq(int project_seq);
+	//bundle_seq list로 일치하는 번들 + 아이템 + 옵션 한꺼번에
+	List<BundleDTO> getBundleList(List<Integer> bundleSeqList);
 
-	List<BundleDTO> getBundleWithPseq(int project_seq);
-
-	List<ItemListDTO> getBundleList(List<Integer> bundleSeqList);
-
-	List<ItemListDTO> getItem(int project_seq);
 	
 }

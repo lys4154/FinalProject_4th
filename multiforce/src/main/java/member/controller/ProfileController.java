@@ -395,82 +395,9 @@ public class ProfileController {
     @GetMapping(value = {"/ongoing_detail/{fund_seq}", "/cancel_detail/{fund_seq}", "/success_detail/{fund_seq}"})
     ModelAndView fundedDetail(@PathVariable int fund_seq, HttpServletRequest request) {
         int fundseq = fund_seq;  //후원번호
-        FundingDTO getFundedDetail = fundingservice.getFundedDetail(fundseq);	 		//후원정보
-
-        int projectSeq = getFundedDetail.getProject_seq();								//프로젝트번호        
-        ProjectMemberDTO getProjectDetail = projectservice.getProjectDetail(projectSeq); 		//프로젝트정보
-        String creator = getProjectDetail.getNickname();     
-
-        LocalDate dueDate = getProjectDetail.getDue_date();								// 남은기한
-        LocalDate currentTime = LocalDate.now();
-        int dDay = (int) ChronoUnit.DAYS.between(currentTime, dueDate);
-
-        List<FundingBundleCountDTO> getCount = countservice.getCount(fundseq); 			//후원번호로 꾸러미개수 찾기
-        List<Integer> bundleList = new ArrayList<>(); 									//꾸러미 번호만 담긴 리스트
-        for (FundingBundleCountDTO seq : getCount) {
-            bundleList.add(seq.getBundle_seq());
-        }
-
-        List<BundleDTO> getBundle = bundleservice.getBundle(bundleList);				//꾸러미 찾기
-
-        // getBundle 리스트를 Map으로 변환
-        Map<Integer, String> bundleMap = getBundle.stream()
-                .collect(Collectors.toMap(BundleDTO::getBundle_seq, BundleDTO::getBundle_name));
-
-        List<ItemDTO> getItem = itemservice.getItem(bundleList);    					//아이템 찾기
-        List<Integer> itemList = new ArrayList<>();    									//아이템 번호만 담긴 리스트
-        for (ItemDTO seq : getItem) {
-            itemList.add(seq.getItem_seq());
-        }
-
-        Map<Integer, List<String>> bundleAndItem = new HashMap<>();						// 꾸러미 고유번호랑 아이템 이름 맵 생성
-        for (ItemDTO item : getItem) {
-           // int bundleSeq = item.getBundle_seq();
-            String itemName = item.getItem_name();
-          //  bundleAndItem.computeIfAbsent(bundleSeq, k -> new ArrayList<>()).add(itemName);
-        }
-
-        Map<Integer, String> bundleNameMap = getBundle.stream()
-                .collect(Collectors.toMap(BundleDTO::getBundle_seq, BundleDTO::getBundle_name));
-      
-
-        Map<String, List<String>> bundleItem = bundleAndItem.entrySet().stream()
-                .collect(Collectors.toMap(entry -> bundleNameMap.get(entry.getKey()), entry -> entry.getValue()));       
-        
-        Map<String, Integer> bundleCount = getCount.stream()
-                .collect(Collectors.toMap(count -> bundleMap.get(count.getBundle_seq()), FundingBundleCountDTO::getPerchase_count));
-        
-
-        List<ItemOptionDTO> getItemOption = itemoptionservice.getItemOption(itemList);	//옵션찾기
-        Map<Integer, List<String>> itemAndOption = new HashMap<>(); 					// 아이템 고유번호랑 옵션 맵 생성
-        for (ItemOptionDTO option : getItemOption) {
-            int itemSeq = option.getItem_seq();
-            String optionName = option.getItem_option_name();
-            itemAndOption.computeIfAbsent(itemSeq, k -> new ArrayList<>()).add(optionName);
-        }
-
-        Map<Integer, String> itemNameMap = getItem.stream()
-                .collect(Collectors.toMap(ItemDTO::getItem_seq, ItemDTO::getItem_name));
-
-        Map<String, List<String>> itemOption = itemAndOption.entrySet().stream()
-                .collect(Collectors.toMap(entry -> itemNameMap.get(entry.getKey()), entry -> entry.getValue()));
-
-        String trackNum = (getFundedDetail.getTrack_num());   							//운송장번호.
-        if (trackNum == null) {
-            trackNum = "0";
-            
-        }
-
         ModelAndView mv = new ModelAndView();
-
-        mv.addObject("trackNum", trackNum); // 운송장번호
-        mv.addObject("fundedDetail", getFundedDetail); //후원정보
-        mv.addObject("projectDetail", getProjectDetail); //프로젝정보
-        mv.addObject("creator", creator); //창작자
-        mv.addObject("dDay", dDay); //남은기한
-        mv.addObject("bundleCount", bundleCount); //꾸러미개수
-        mv.addObject("bundleItem", bundleItem); //번들-아이템
-        mv.addObject("itemOption", itemOption); //아이템-옵션
+        FundingDTO dto = fundingservice.getPaymentInfo(fundseq);
+		mv.addObject("dto", dto);
         
         // URL에 따라서 다른 JSP 페이지로 보내도록 설정
         if (request.getRequestURI().contains("/ongoing_detail/")) {

@@ -5,6 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import funding.dto.FundingDTO;
+import funding.service.FundingService;
 import project.dao.ProjectDAO;
 import project.dto.ProjectDTO;
 
@@ -13,6 +15,8 @@ public class TestController {
 	
 	@Autowired
 	ProjectDAO dao;
+	@Autowired
+	FundingService fundingService;
 	
 	@GetMapping("/testenum")
 	public ModelAndView testeEum(){
@@ -22,4 +26,12 @@ public class TestController {
 		return mv;
 	}
 	
+	@GetMapping("/test2")
+	public ModelAndView test2(){
+		ModelAndView mv = new ModelAndView();
+		FundingDTO dto = fundingService.getPaymentInfo(2);
+		mv.addObject("dto", dto);
+		mv.setViewName("test2");
+		return mv;
+	}
 }

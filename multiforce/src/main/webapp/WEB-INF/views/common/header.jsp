@@ -22,6 +22,7 @@ $(document).ready(function(){
 	var isClickedNotiDeleteBtn = false;
 	//알림버튼 클릭 시 이벤트) 로그인 여부 확인, 버튼클릭 횟수 체크 후 알림 리스트 보여주거나 숨김 + 읽기 처리
 	var noReadCount = 0;
+	var lastNotificationSeq = 0;
 	if("${login_user_seq}" != ""){
 		notificationListLoad();
 	}
@@ -36,6 +37,10 @@ $(document).ready(function(){
 			dataType: 'json',
 			success : function(r){
 				for(let i = 0; i < r.length; i++){
+					if(i == 0){
+						lastNotificationSeq = r[0].notification_seq;
+					}
+					
 					if(r[i].is_read == false){
 						noReadCount++;
 					}
@@ -43,9 +48,7 @@ $(document).ready(function(){
 							"<div id='notification_"+r[i].notification_seq+"' class='notifications'><a href='/projectdetail/"
 							+r[i].project_seq+"'>"+r[i].message + "</a><input type='button' value='삭제' class='notification_delete_btn' id='delete_"
 							+r[i].notification_seq+"'><span> 읽음 여부: "+r[i].is_read+"</span></div>");
-					if(i == r.length - 1){
-						lastNotificationSeq = r[r.length - 1].notification_seq;
-					}
+					
 				}
 				addNotiDelBtnEvent();
 				addNotiEvent();
@@ -56,7 +59,7 @@ $(document).ready(function(){
 			}//css할 때 스크롤로 만들기
 		});
 	}
-	var lastNotificationSeq = 0;
+	
 	$("#notification_btn").on("click", function(){
 		if("${login_user_seq}" != "" && notificationBtnClick % 2 == 0){
 			$("#header_notification_list").css("display","block");
@@ -289,7 +292,7 @@ $(document).ready(function(){
 			<div class="category" id="category_list" style="display:none">
 <%			for(ProjectCategory item : ProjectCategory.values()){ %>
 				<div class="category_btn_wrap">
-					<a class="category_btn" href="discover?category=<%=item.getEngName()%>"><%=item.getKorName()%></a>
+					<a class="category_btn" href="/discover?category=<%=item.getEngName()%>"><%=item.getKorName()%></a>
 				</div>
 <% 			}
 %>

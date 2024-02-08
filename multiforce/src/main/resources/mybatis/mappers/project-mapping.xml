@@ -24,12 +24,20 @@
     select * from project where project_process=1
 </select>
 
+<select id="getAllRejectedProject" resultType="projectdto">
+    select * from project where project_process=2
+</select>
+
 <select id="approvedCount" resultType="int">
     select count(*) from project where project_process=3
 </select>
 
 <select id="unapprovedCount" resultType="int">
     select count(*) from project where project_process=1
+</select>
+
+<select id="rejectedCount" resultType="int">
+    select count(*) from project where project_process=2
 </select>
 
 <!-- 후원한 프로젝트 페이지 - 후원 진행중 -->
@@ -380,5 +388,8 @@ where project_seq = #{project_seq}
 	order by project_process asc
 </select>
 
-
+<!-- 조회수 증가 -->
+<update id="updateViewCount">
+update project set view_count = view_count + 1 where project_seq = #{project_seq}
+</update>
 </mapper>
