@@ -10,11 +10,12 @@ footer{
   color: #292929;
   font-size: 18px;
   font-weight: 500;
+  
 	
 }
 .wrap {
 	height: auto;
-  	min-height:100vh;
+  	min-height:840px;
   	position:relative;
   	padding-bottom:70px;/* footer height */
   	
