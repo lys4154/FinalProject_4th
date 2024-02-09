@@ -20,7 +20,7 @@
 
 <insert id="insertItemList" parameterType="project.dto.ItemListDTO">
 	insert into item_list (bundle_seq, item_seq, item_count)
-	values (#{bundle_seq}, #{item_seq}, #{item_coutn})
+	values (#{bundle_seq}, #{item_seq}, #{item_count})
 </insert>
 
-</mapper>	
+</mapper>
