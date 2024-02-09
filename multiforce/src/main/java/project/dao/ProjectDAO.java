@@ -142,6 +142,12 @@ public interface ProjectDAO {
 
 	List<ProjectDTO> getAllRejectedProject();
 
+	List<ProjectDTO> getApprovedProjectsPage(int offset, int pageSize);
+
+	List<ProjectDTO> getUnapprovedProjectsPage(int offset, int pageSize);
+
+	List<ProjectDTO> getRejectedProjectsPage(int offset, int pageSize);
+
 
 }
 

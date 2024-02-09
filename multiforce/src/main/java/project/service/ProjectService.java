@@ -204,5 +204,22 @@ public class ProjectService {
 	}
 
 
+	public List<ProjectDTO> getApprovedProjectsPage(int page, int pageSize) {
+		int offset = page * pageSize;
+		return projectDao.getApprovedProjectsPage(offset, pageSize);
+	}
+	
+	public List<ProjectDTO> getUnapprovedProjects(int page, int pageSize) {
+		int offset = page * pageSize;
+		return projectDao.getUnapprovedProjectsPage(offset, pageSize);
+	}
+
+
+	public List<ProjectDTO> getRejectedProjectsPage(int page, int pageSize) {
+		int offset = page * pageSize;
+		return projectDao.getRejectedProjectsPage(offset, pageSize);
+	}
+
+
 
 }
