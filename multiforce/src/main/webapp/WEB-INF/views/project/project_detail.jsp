@@ -71,12 +71,27 @@
 		    	<img src="${project.main_images_url}">
 		    </div>
 		    <div id="other_info_wrap">
-			    <p>모인 금액: ${project.collection_amount_format}</p>
-			    <p>목표 금액: ${project.goal_price_format}</p>
-			    <p>펀딩 기간: ${project.start_date} - ${project.due_date}</p>
-			    <p>남은 날짜: ${project.term}일</p>
-			    <button id="funding_btn">후원하기</button>
-		    </div>
+		    	<div id="project_info_tap">
+				    <p>모인 금액: ${project.collection_amount_format}</p>
+				    <p>목표 금액: ${project.goal_price_format}</p>
+				    <p>펀딩 기간: ${project.start_date} - ${project.due_date}</p>
+				    <p>남은 시간: ${project.term}일</p>
+				    <button id="funding_btn">후원하기</button>
+				</div>
+				<div id="collector_info_tap">
+					<span>
+						<img src="${project.memberDTO.profile_img }">
+					</span>
+					<p>
+						${project.memberDTO.nickname }
+					</p>
+					<p>
+						한줄소개
+					</p>
+					<input type="button" value="판매자 문의" id="ask_btn">
+				</div>
+			</div>
+			
 	    </div>
 	</section>
 	<a href="#" id="projectLink" data-project-id="${project.project_seq}">프로젝트 계획</a>
@@ -177,6 +192,26 @@ $(document).ready(function () {
 			$(this).attr("class","bundle_box");
 		}
 		
+	});
+	
+//==========================1:1 대화=================================
+	$("#ask_btn").on("click",function(){
+		if("${login_user_seq}" != ""){
+			let url = "/ask?";
+			let project_seq = "${project.project_seq}";//나중엔 프로젝트 상세페이지 들어오면 자동으로 넣어지게
+			let collector_seq = "${project.memberDTO.member_seq}";//마찬가지
+			let asker_seq = "${login_user_seq}";
+			url += ("project_seq=" + project_seq);
+			url += ("&collector_seq=" + collector_seq);
+			url += ("&asker_seq=" + asker_seq);
+			window.open(url, "_blank","width= 500, height= 600");
+		}else{
+			if(confirm("로그인이 필요한 서비스입니다. 로그인 하시겠습니까?")){
+				var fromPath = window.location.pathname.substring(1) == "" ?
+						"mainpage" : location.pathname.substring(1) + location.search;
+				location.href = "/login?from=" + fromPath;
+			}
+		}
 	});
 });
 </script>

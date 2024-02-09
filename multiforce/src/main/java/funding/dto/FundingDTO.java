@@ -40,8 +40,6 @@ public class FundingDTO{
 	ProjectDTO pDTO;
 	MemberDTO collectorDTO;
 	
-	
-	
 	public ProjectDTO getpDTO() {
 		return pDTO;
 	}

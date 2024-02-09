@@ -139,7 +139,7 @@
 select * from funding f
 join funding_bundle_count c on f.fund_seq = c.fund_seq
 join chosen_option o on c.bundle_count_seq = o.bundle_count_seq
-join item_option n on o.item_option_seq = n.item_option_seq
+left join item_option n on o.item_option_seq = n.item_option_seq
 join item i on n.item_seq = i.item_seq
 join bundle b on c.bundle_seq = b.bundle_seq
 join project p on f.project_seq = p.project_seq

@@ -204,5 +204,11 @@ public class ProjectService {
 	}
 
 
+	public ProjectDTO getProjectMember(int project_seq) {
+		ProjectDTO dto = projectDao.getProjectMember(project_seq);
+		return dto;
+	}
+
+
 
 }
