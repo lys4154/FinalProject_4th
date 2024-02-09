@@ -103,8 +103,8 @@ public class ProjectController {
 		  return "board/error/error";
 		
 	}
+
 	@GetMapping("project_reject/{project_seq}")
-	
 	public String showRejectDetail(Model model, 
 			@PathVariable("project_seq") int project_seq, HttpSession session) {
 		//세션 레벨 가져오기
@@ -136,31 +136,58 @@ public class ProjectController {
 	
 	//승인 리스트
 	@GetMapping("approve_list/approved")
-	public String showApprovedOnly(Model model) {
-		List<ProjectDTO> projects = projectService.getAllApprovedProjects(); 
-		
-		model.addAttribute("style","approved");
+	 public String showApprovedOnly(Model model, @RequestParam(defaultValue = "0") int page) {
+        int pageSize = 10; // 페이지당 아이템 수
+
+        int totalProjects = projectService.approvedCount(); // 총 프로젝트 수
+
+        int totalPages = (int) Math.ceil((double) totalProjects / pageSize); // 전체 페이지 수
+        
+
+
+        List<ProjectDTO> projects = projectService.getApprovedProjectsPage(page, pageSize);
+
+        model.addAttribute("style", "approved");
         model.addAttribute("projects", projects);
-		return "project/approve_list_table";
-		
-	}
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+
+        return "project/approve_list_table";
+    }
 	//반려 리스트
 	@GetMapping("approve_list/rejected")
-	public String showRejectedOnly(Model model) {
-		List<ProjectDTO> projects = projectService.getAllRejectedProject(); 
+	public String showRejectedOnly(Model model, @RequestParam(defaultValue = "0") int page) {
+		int pageSize = 10; // 페이지당 아이템 수
+
+        int totalProjects = projectService.rejectedCount(); // 총 프로젝트 수
+
+        int totalPages = (int) Math.ceil((double) totalProjects / pageSize); // 전체 페이지 수
+        
+		List<ProjectDTO> projects = projectService.getRejectedProjectsPage(page, pageSize);
 		
 		model.addAttribute("style","rejected");
-        model.addAttribute("projects", projects);
+		  model.addAttribute("projects", projects);
+	        model.addAttribute("currentPage", page);
+	        model.addAttribute("totalPages", totalPages);
 		return "project/approve_list_table";
 		
 	}
 	//승인 대기 리스트
 	@GetMapping("approve_list/unapproved")
-	public String showUnapprovedOnly(Model model) {
-		List<ProjectDTO> projects = projectService.getAllUnapprovedProjects(); 
+	public String showUnapprovedOnly(Model model, @RequestParam(defaultValue = "0") int page) {
+		int pageSize = 10; // 페이지당 아이템 수
+
+	    int totalProjects = projectService.unapprovedCount(); // 총 프로젝트 수
+
+	    int totalPages = (int) Math.ceil((double) totalProjects / pageSize); // 전체 페이지 수
 		
-		model.addAttribute("style","unapproved");
-        model.addAttribute("projects", projects);
+		List<ProjectDTO> projects = projectService.getUnapprovedProjects(page, pageSize); 
+		
+		 model.addAttribute("style", "unapproved");
+	        model.addAttribute("projects", projects);
+	        model.addAttribute("currentPage", page);
+	        model.addAttribute("totalPages", totalPages);
+	        
 		return "project/approve_list_table";
 		
 	}

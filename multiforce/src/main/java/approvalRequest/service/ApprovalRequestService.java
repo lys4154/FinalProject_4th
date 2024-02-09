@@ -15,4 +15,20 @@ public class ApprovalRequestService {
 	public void insertApprovalReject(ApprovalRequestDTO dto) {
 		approvalRequestDAO.insertApprovalReject(dto);
     }
+
+	public void updateProjectApprovalStatus(int project_seq) {
+		approvalRequestDAO.updateProjectApprovalStatus(project_seq);
+		
+	}
+
+	public void insertAcceptRequest(ApprovalRequestDTO approvalDTO) {
+		approvalRequestDAO.insertAcceptRequest(approvalDTO);
+		
+	}
+
+	public void updateProjectAcceptApprovalStatus(int project_seq) {
+		approvalRequestDAO.updateProjectAcceptApprovalStatus(project_seq);
+		
+	}
+	
 }
