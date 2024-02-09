@@ -83,6 +83,7 @@
 	<result property="pay_status" column="pay_status"/>
 	<result property="pay_date" column="pay_date"/>
 	<result property="name" column="name"/>
+	<result property="phone" column="phone"/>
 	<result property="postcode" column="postcode"/>
 	<result property="requeste" column="requeste"/>
 	<result property="track_num" column="track_num"/>
@@ -103,6 +104,9 @@
 	<result property="category" column="category"/>
 	<result property="start_date" column="start_date"/>
 	<result property="due_date" column="due_date"/>
+	<result property="collection_amount" column="collection_amount"/>
+	<result property="goal_price" column="goal_price"/>
+	<result property="delivery_date" column="delivery_date"/>
 </resultMap>
 <resultMap type="memberdto" id="collectorMap">
 	<id property="member_seq" column="member_seq"/>

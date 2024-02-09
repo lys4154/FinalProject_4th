@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -131,113 +132,114 @@ $(document).ready(function() {
 
 
 <body>
-
-<div class="out_con">
-
-	<div class="funded_title">후원한 프로젝트</div>
-	<div class="top_con">
-		<div class="top_count"> <span id="total_funded" style="color: red"></span> 건의 후원 내역이 있습니다. </div>	
-		<div class="top_search">
-			<input type="text" size="30" id="search_keyword" placeholder=" 프로젝트 제목으로 검색할 수 있습니다." 
-			onfocus="this.placeholder=''" onblur="this.placeholder='  프로젝트 제목으로 검색할 수 있습니다.'">
-		</div>				
+<div class="wrap">
+	<div class="out_con">
+	
+		<div class="funded_title">후원한 프로젝트</div>
+		<div class="top_con">
+			<div class="top_count"> <span id="total_funded" style="color: red"></span> 건의 후원 내역이 있습니다. </div>	
+			<div class="top_search">
+				<input type="text" size="30" id="search_keyword" placeholder=" 프로젝트 제목으로 검색할 수 있습니다." 
+				onfocus="this.placeholder=''" onblur="this.placeholder='  프로젝트 제목으로 검색할 수 있습니다.'">
+			</div>				
+		</div>
+		
+		<hr class="top_under_hr">
+		<div class="no_funded_par">
+			<div class="no_funded"></div>
+		</div>	
+		
+		<div class="all_funded" >
+		    <!-- 후원 진행중 리스트 -->
+		    <c:if test="${not empty ongoingFunded}">	    	    	
+		        <div class="status_title">후원 진행중 <span class="status_count"> ( ${ongoingFunded.size()} ) </span> </div>
+		        <div class="ongoing_out">
+		        <c:forEach var="fund" items="${ongoingFunded}" varStatus="out">
+					<div class="flex">
+		            <c:forEach var="project" items="${ongoingProject}" varStatus="inner">
+		            	<c:if test="${out.index eq inner.index}">
+		            		<div class="pro_left">
+				            	<div><a href="/ongoing_detail/${fund.fund_seq }"><img src="${project.main_images_url}" alt="프로젝트 이미지"></a></div>
+			            	</div>
+			            	<div class="pro_right">
+				            	<div class="funded_day_seq"><span> 후원일 ${fund.fund_date.toLocalDate()}</span> ㅣ <span> 후원번호 ${fund.fund_seq}</span></div>
+				            	<div class="long_title"><a href="/ongoing_detail/${fund.fund_seq }"> ${project.long_title } </a></div>
+				            	<div> ${fund.fund_option}</div>
+				            	<div> <span class="pay_status"> 후원 성공시 결제 예정일 ${fund.fund_duedate.toLocalDate().plusDays(1)} </span> </div>
+				            	<div class="amount"> <fmt:formatNumber value="${fund.price }" type="currency" currencySymbol="" />원 결제 예정</div>
+				            	
+				            </div>			            	
+		            	</c:if>
+	            	</c:forEach> 
+					</div>
+	            <c:if test="${!out.last}">
+	                <hr class="inner_hr">
+	            </c:if>
+		        </c:forEach>
+	        </div>
+		    </c:if>
+		
+		    <!-- 후원 성공 리스트 -->
+		    <c:if test="${not empty successFunded}">	    	    	
+		        <div class="status_title">후원 성공 <span class="status_count"> ( ${successFunded.size()} ) </span> </div>
+		        <div class="success_out">
+		        <c:forEach var="fund" items="${successFunded}" varStatus="out">
+					<div class="flex">
+	        		<c:forEach var="project" items="${successProject}" varStatus="inner">
+	        			<c:if test="${out.index eq inner.index}">	
+		            		<div class="pro_left">
+				            	<div><a href="/success_detail/${fund.fund_seq }"><img src="${project.main_images_url}" alt="프로젝트 이미지"></a></div>
+			            	</div>
+			            	<div class="pro_right">
+				            	<div class="funded_day_seq"><span> 후원일 ${fund.fund_date.toLocalDate()}</span> ㅣ <span> 후원번호 ${fund.fund_seq}</span></div>
+				            	<div class="long_title"><a href="/success_detail/${fund.fund_seq }"> ${project.long_title } </a></div>
+				            	<div> ${fund.fund_option}</div>
+				            	<div> <span class="pay_status"> 후원 성공 ${fund.fund_duedate.toLocalDate().plusDays(1)} 결제 완료</span> </div>
+				            	<div class="amount"> <fmt:formatNumber value="${fund.price }" type="currency" currencySymbol="" />원 결제 완료</div>
+		            		</div>
+		            	</c:if>
+		            </c:forEach>
+					</div>
+	            <c:if test="${!out.last}">
+	                <hr class="inner_hr">
+	            </c:if>
+		        </c:forEach>
+	        </div>
+		    </c:if>
+		
+		    <!-- 후원 실패 리스트  -->
+		    <c:if test="${not empty cancelFunded}">	    	    	
+		        <div class="status_title">후원 실패 <span class="status_count"> ( ${cancelFunded.size()} ) </span></div>
+		        <div class="cancel_out">
+		        <c:forEach var="fund" items="${cancelFunded}" varStatus="out">
+					<div class="flex">
+	        		<c:forEach var="project" items="${cancelProject}" varStatus="inner">
+	        			<c:if test="${out.index eq inner.index}">
+	        				<div class="pro_left">
+				            	<div><a href="/cancel_detail/${fund.fund_seq }"><img src="${project.main_images_url}" alt="프로젝트 이미지"></a></div>
+			            	</div>
+			            	<div class="pro_right">	
+				            	<div class="funded_day_seq"><span> 후원일 ${fund.fund_date.toLocalDate()}</span> ㅣ <span> 후원번호 ${fund.fund_seq}</span></div>
+				            	<div class="long_title"> <a href="/cancel_detail/${fund.fund_seq }"> ${project.long_title } </a></div>
+				            	<div> ${fund.fund_option}</div>
+				            	<div> <span class="pay_status">결제 예약 취소일 ${fund.del_date.toLocalDate()}</span></div>
+				            	<div class="amount"> <fmt:formatNumber value="${fund.price }" type="currency" currencySymbol="" />원 결제 예약 취소 완료</div>			            	
+							</div>												
+		            	</c:if>		            	            
+		            </c:forEach>	            	            
+	         		</div>
+	            <c:if test="${!out.last}">
+	                <hr class="inner_hr">
+	            </c:if>
+		        </c:forEach>	        
+	        </div>
+		    </c:if>	
+		    
+		</div>
+		
+		<div class="search_result"></div>	
 	</div>
-	
-	<hr class="top_under_hr">
-	<div class="no_funded_par">
-		<div class="no_funded"></div>
-	</div>	
-	
-	<div class="all_funded" >
-	    <!-- 후원 진행중 리스트 -->
-	    <c:if test="${not empty ongoingFunded}">	    	    	
-	        <div class="status_title">후원 진행중 <span class="status_count"> ( ${ongoingFunded.size()} ) </span> </div>
-	        <div class="ongoing_out">
-	        <c:forEach var="fund" items="${ongoingFunded}" varStatus="out">
-				<div class="flex">
-	            <c:forEach var="project" items="${ongoingProject}" varStatus="inner">
-	            	<c:if test="${out.index eq inner.index}">
-	            		<div class="pro_left">
-			            	<div><a href="/ongoing_detail/${fund.fund_seq }"><img src="${project.main_images_url}" alt="프로젝트 이미지"></a></div>
-		            	</div>
-		            	<div class="pro_right">
-			            	<div class="funded_day_seq"><span> 후원일 ${fund.fund_date.toLocalDate()}</span> ㅣ <span> 후원번호 ${fund.fund_seq}</span></div>
-			            	<div class="long_title"><a href="/ongoing_detail/${fund.fund_seq }"> ${project.long_title } </a></div>
-			            	<div> ${fund.fund_option}</div>
-			            	<div> <span class="pay_status"> 후원 성공시 결제 예정일 ${fund.fund_duedate.toLocalDate().plusDays(1)} </span> </div>
-			            	<div class="amount"> <fmt:formatNumber value="${fund.price }" type="currency" currencySymbol="" />원 결제 예정</div>
-			            	
-			            </div>			            	
-	            	</c:if>
-            	</c:forEach> 
-				</div>
-            <c:if test="${!out.last}">
-                <hr class="inner_hr">
-            </c:if>
-	        </c:forEach>
-        </div>
-	    </c:if>
-	
-	    <!-- 후원 성공 리스트 -->
-	    <c:if test="${not empty successFunded}">	    	    	
-	        <div class="status_title">후원 성공 <span class="status_count"> ( ${successFunded.size()} ) </span> </div>
-	        <div class="success_out">
-	        <c:forEach var="fund" items="${successFunded}" varStatus="out">
-				<div class="flex">
-        		<c:forEach var="project" items="${successProject}" varStatus="inner">
-        			<c:if test="${out.index eq inner.index}">	
-	            		<div class="pro_left">
-			            	<div><a href="/success_detail/${fund.fund_seq }"><img src="${project.main_images_url}" alt="프로젝트 이미지"></a></div>
-		            	</div>
-		            	<div class="pro_right">
-			            	<div class="funded_day_seq"><span> 후원일 ${fund.fund_date.toLocalDate()}</span> ㅣ <span> 후원번호 ${fund.fund_seq}</span></div>
-			            	<div class="long_title"><a href="/success_detail/${fund.fund_seq }"> ${project.long_title } </a></div>
-			            	<div> ${fund.fund_option}</div>
-			            	<div> <span class="pay_status"> 후원 성공 ${fund.fund_duedate.toLocalDate().plusDays(1)} 결제 완료</span> </div>
-			            	<div class="amount"> <fmt:formatNumber value="${fund.price }" type="currency" currencySymbol="" />원 결제 완료</div>
-	            		</div>
-	            	</c:if>
-	            </c:forEach>
-				</div>
-            <c:if test="${!out.last}">
-                <hr class="inner_hr">
-            </c:if>
-	        </c:forEach>
-        </div>
-	    </c:if>
-	
-	    <!-- 후원 실패 리스트  -->
-	    <c:if test="${not empty cancelFunded}">	    	    	
-	        <div class="status_title">후원 실패 <span class="status_count"> ( ${cancelFunded.size()} ) </span></div>
-	        <div class="cancel_out">
-	        <c:forEach var="fund" items="${cancelFunded}" varStatus="out">
-				<div class="flex">
-        		<c:forEach var="project" items="${cancelProject}" varStatus="inner">
-        			<c:if test="${out.index eq inner.index}">
-        				<div class="pro_left">
-			            	<div><a href="/cancel_detail/${fund.fund_seq }"><img src="${project.main_images_url}" alt="프로젝트 이미지"></a></div>
-		            	</div>
-		            	<div class="pro_right">	
-			            	<div class="funded_day_seq"><span> 후원일 ${fund.fund_date.toLocalDate()}</span> ㅣ <span> 후원번호 ${fund.fund_seq}</span></div>
-			            	<div class="long_title"> <a href="/cancel_detail/${fund.fund_seq }"> ${project.long_title } </a></div>
-			            	<div> ${fund.fund_option}</div>
-			            	<div> <span class="pay_status">결제 예약 취소일 ${fund.del_date.toLocalDate()}</span></div>
-			            	<div class="amount"> <fmt:formatNumber value="${fund.price }" type="currency" currencySymbol="" />원 결제 예약 취소 완료</div>			            	
-						</div>												
-	            	</c:if>		            	            
-	            </c:forEach>	            	            
-         		</div>
-            <c:if test="${!out.last}">
-                <hr class="inner_hr">
-            </c:if>
-	        </c:forEach>	        
-        </div>
-	    </c:if>	
-	    
-	</div>
-	
-	<div class="search_result"></div>	
+	<%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </div>
-
 </body>
 </html>

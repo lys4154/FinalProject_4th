@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -230,28 +231,30 @@ $(document).ready(function() {
 
 <body>
 
-<div><!-- 상단 회원정보 고정 -->
-	<div><img alt="프로필 이미지" src="${user.profile_img}"></div>
-	<div>${user.member_name}</div>
+<div class="wrap">
+	<div><!-- 상단 회원정보 고정 -->
+		<div><img alt="프로필 이미지" src="${user.profile_img}"></div>
+		<div>${user.member_name}</div>
+	</div>
+	<p>
+	
+	<div><!-- 상단 선택바 고정 -->
+		<div id="myprofile_detail" style="cursor:pointer;"> 프로필 </div>
+		<div id="myproject_detail" style="cursor:pointer;"> 올린 프로젝트 </div>
+		<div id="follower_detail" style="cursor:pointer;"> 팔로워 </div>
+		<div id="following_detail" style="cursor:pointer;"> 팔로잉 </div>
+	</div>
+	<p>
+	
+	
+	<div>
+		<div class="result" style="color: green"></div>
+	</div>
+	
+	
+	<h1>${user.member_seq }</h1>
+	<%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </div>
-<p>
-
-<div><!-- 상단 선택바 고정 -->
-	<div id="myprofile_detail" style="cursor:pointer;"> 프로필 </div>
-	<div id="myproject_detail" style="cursor:pointer;"> 올린 프로젝트 </div>
-	<div id="follower_detail" style="cursor:pointer;"> 팔로워 </div>
-	<div id="following_detail" style="cursor:pointer;"> 팔로잉 </div>
-</div>
-<p>
-
-
-<div>
-	<div class="result" style="color: green"></div>
-</div>
-
-
-<h1>${user.member_seq }</h1>
-
 
 </body>
 

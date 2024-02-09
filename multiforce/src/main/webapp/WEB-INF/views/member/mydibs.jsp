@@ -254,86 +254,88 @@ $(document).ready(function() {
 
 
 <body>
-<div class="out_con">
-	<span class="dibs_title">관심 프로젝트</span>
-	<div class="top_con">
-		<div class="top_count"> <span id="total_dibs" style="color: red"></span> 건의 관심 내역이 있습니다. </div>			
-	</div>
-	<hr class="top_under_hr">
-
-	<div class="selected_menu">전체</div>
-	<div class="menu" style="display: none;">
-		<div class="css_menu" id="all" style="cursor:pointer;">전체</div>
-		<div class="css_menu" id="ongoing" style="cursor:pointer;">진행중</div>
-		<div class="css_menu" id="end" style="cursor:pointer;">종료된</div>
-	</div>
-
-
-	<div class="result_con">
-		<div class="result">
-			<c:choose>
-	            <c:when test="${empty myDibs}">
-	                <div class="empty_result">
-		                <div class="empty_ment">관심 프로젝트가 없습니다.</div>
-		                <div><button class='backToMain'> 프로젝트 둘러보기 </button> </div>
-	                </div>
-	            </c:when>
-	            <c:otherwise>	
-		            <div class=out_container>
-			            <c:forEach var="project" items="${myDibs}">
-			                <div class="container">
-			                	<a href="${project.url}">
-			                    	<div><img src="${project.main_images_url}" alt="Project Image"></div>
-			                    </a>
-			                    <div class="pro_container">
-			                    <div class="pro_info">
-				                    <div class="category"> ${project.category} ㅣ ${project.nickname }</div>
-				                    <a href="${project.url}">
-				                    	<div class="long_title"> ${project.long_title}</div>
-				                    </a>
-				                    <div class="sub_title"> ${project.sub_title}</div>
-				                    
-	   			                    <div> <!-- 관심버튼 수정해야함 -->
-				                    	<input type="button" class="cancel_btn" value="관심 취소" data-project_seq="${project.project_seq}" data-member_seq="${memberSeq}">
-				                    </div>
-			                    </div>
-				                    	
-		                    	<div class="pro_footer">
-								<c:set var="achievementRate" value="${(project.collection_amount / project.goal_price) * 100}" />									
-								    <script>
-								        $(document).ready(function() {                
-								            // achievementRate 값을 JSTL 변수에서 가져와서 사용
-								            var achievementRate = ${achievementRate};
-								            
-								            // 달성률 출력
-								            var achievementText = Math.floor(achievementRate) + "%";
-								            $("#achievementRate-${project.project_seq}").text(achievementText);
-								        });
-								    </script>       
-	
-			                    	<div class="achieve" id="achievementRate-${project.project_seq}"></div>
-			                    	<div class="amount"> <fmt:formatNumber value="${project.collection_amount}" type="currency" currencySymbol="" />원 </div>
-			                    	<div class="term">
-								        <c:choose>
-								            <c:when test="${project.term >= 0}">
-								                ${project.term}일 남음
-								            </c:when>
-								            <c:otherwise>
-								                펀딩종료
-								            </c:otherwise>
-								        </c:choose>							       							        
-			                    	</div>		                    	                 	
-		                    	</div>	                    	
-							</div>	              		
-	                	</div>            
-					</c:forEach>		            
-     				</div>
-     			</c:otherwise>
-			</c:choose>            
+<div class="wrap">
+	<div class="out_con">
+		<span class="dibs_title">관심 프로젝트</span>
+		<div class="top_con">
+			<div class="top_count"> <span id="total_dibs" style="color: red"></span> 건의 관심 내역이 있습니다. </div>			
 		</div>
-	</div>
+		<hr class="top_under_hr">
 	
+		<div class="selected_menu">전체</div>
+		<div class="menu" style="display: none;">
+			<div class="css_menu" id="all" style="cursor:pointer;">전체</div>
+			<div class="css_menu" id="ongoing" style="cursor:pointer;">진행중</div>
+			<div class="css_menu" id="end" style="cursor:pointer;">종료된</div>
+		</div>
+	
+	
+		<div class="result_con">
+			<div class="result">
+				<c:choose>
+		            <c:when test="${empty myDibs}">
+		                <div class="empty_result">
+			                <div class="empty_ment">관심 프로젝트가 없습니다.</div>
+			                <div><button class='backToMain'> 프로젝트 둘러보기 </button> </div>
+		                </div>
+		            </c:when>
+		            <c:otherwise>	
+			            <div class=out_container>
+				            <c:forEach var="project" items="${myDibs}">
+				                <div class="container">
+				                	<a href="${project.url}">
+				                    	<div><img src="${project.main_images_url}" alt="Project Image"></div>
+				                    </a>
+				                    <div class="pro_container">
+				                    <div class="pro_info">
+					                    <div class="category"> ${project.category} ㅣ ${project.nickname }</div>
+					                    <a href="${project.url}">
+					                    	<div class="long_title"> ${project.long_title}</div>
+					                    </a>
+					                    <div class="sub_title"> ${project.sub_title}</div>
+					                    
+		   			                    <div> <!-- 관심버튼 수정해야함 -->
+					                    	<input type="button" class="cancel_btn" value="관심 취소" data-project_seq="${project.project_seq}" data-member_seq="${memberSeq}">
+					                    </div>
+				                    </div>
+					                    	
+			                    	<div class="pro_footer">
+									<c:set var="achievementRate" value="${(project.collection_amount / project.goal_price) * 100}" />									
+									    <script>
+									        $(document).ready(function() {                
+									            // achievementRate 값을 JSTL 변수에서 가져와서 사용
+									            var achievementRate = ${achievementRate};
+									            
+									            // 달성률 출력
+									            var achievementText = Math.floor(achievementRate) + "%";
+									            $("#achievementRate-${project.project_seq}").text(achievementText);
+									        });
+									    </script>       
+		
+				                    	<div class="achieve" id="achievementRate-${project.project_seq}"></div>
+				                    	<div class="amount"> <fmt:formatNumber value="${project.collection_amount}" type="currency" currencySymbol="" />원 </div>
+				                    	<div class="term">
+									        <c:choose>
+									            <c:when test="${project.term >= 0}">
+									                ${project.term}일 남음
+									            </c:when>
+									            <c:otherwise>
+									                펀딩종료
+									            </c:otherwise>
+									        </c:choose>							       							        
+				                    	</div>		                    	                 	
+			                    	</div>	                    	
+								</div>	              		
+		                	</div>            
+						</c:forEach>		            
+	     				</div>
+	     			</c:otherwise>
+				</c:choose>            
+			</div>
+		</div>
+		
+	</div>
+	<%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </div>
-
 </body>
 </html>

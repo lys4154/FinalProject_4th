@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -535,110 +536,98 @@ $(document).ready(function() {
 </script>
 
 <body>
-<div class="out_con">
-	<div class="mypro_title">내가 만든 프로젝트</div>
+<div class="wrap">
+	<div class="out_con">
+		<div class="mypro_title">내가 만든 프로젝트</div>
+		
+		
+		<div class="menu_con">
+	
+			<div class="menu_item" id="all" onclick="location='/myproject'" style="color: #292929; font-weight: 600;">전체</div>
+			<div class="menu_item" id="write_incomplete">작성중</div>
+			<div class="menu_item" id="request_approval">심사중</div>
+			<div class="menu_item" id="request_reject">반려됨</div>
+			<div class="menu_item" id="request_admit">승인됨</div>
+			<div class="menu_item" id="funding_start">진행중</div>
+			<div class="menu_item" id="funding_failed">펀딩실패</div>
+			<div class="menu_item" id="funding_success">펀딩성공</div>
+			<div class="menu_item" id="funding_complete">종료</div>
+			
+		</div>
+	
+		<hr class="menu_under_hr">	
 	
 	
-	<div class="menu_con">
-
-		<div class="menu_item" id="all" onclick="location='/myproject'" style="color: #292929; font-weight: 600;">전체</div>
-		<div class="menu_item" id="write_incomplete">작성중</div>
-		<div class="menu_item" id="request_approval">심사중</div>
-		<div class="menu_item" id="request_reject">반려됨</div>
-		<div class="menu_item" id="request_admit">승인됨</div>
-		<div class="menu_item" id="funding_start">진행중</div>
-		<div class="menu_item" id="funding_failed">펀딩실패</div>
-		<div class="menu_item" id="funding_success">펀딩성공</div>
-		<div class="menu_item" id="funding_complete">종료</div>
-		
+			
+		<div class="result">
+		    <c:if test="${empty myprojectList}">
+		        <div class="empty_result">제작하신 프로젝트가 없습니다.</div>
+		    </c:if>
+		    <c:forEach var="project" items="${myprojectList}">
+		    	<div class="result_con">
+			        <div><a href="${project.url}"><img src="${project.main_images_url}"></a></div>
+			        <div class="result_right">
+			        	<div class="process_status"> ${project.getProject_process_name()} </div>
+	
+				        <div class="process_title">
+			        		<div class="process_ment">메인 제목</div>
+			        		<div class="process_long_title"><a href="${project.url}">${project.long_title}</a></div>
+				        </div>
+				        <div class="process_sub">
+			        		<div class="process_sub_title">${project.sub_title}</div>
+				        </div>			        
+						
+						<c:choose>
+							<c:when test="${project.project_process eq 0 or project.project_process eq 1 or project.project_process eq 2 or project.project_process eq 3}">
+								 <div class="process_date">
+									<c:choose>
+									    <c:when test="${empty project.start_date}">
+										   <div>시작일을 작성해주세요.</div>
+									    </c:when>
+									    <c:otherwise>
+										   <div>${project.start_date} 시작 예정</div>
+									    </c:otherwise>
+									</c:choose>
+									<c:choose>
+									    <c:when test="${empty project.due_date}">
+										   <div>종료일을 작성해주세요.</div>
+									    </c:when>
+									    <c:otherwise>
+										   <div>${project.due_date} 종료 예정</div>
+									    </c:otherwise>
+									</c:choose>
+								 </div>
+							</c:when>
+							<c:otherwise>
+								<div class="process_date">
+									<div>${project.start_date} 시작</div>
+									<div>${project.due_date} 종료</div>
+								</div>
+							</c:otherwise>
+					  	</c:choose>										
+					</div>
+				        <c:choose>
+				        	
+				            <c:when test="${project.project_process eq 0}">
+					        	<div class="process_btn">    
+					                <input type="button" class="css_btn" data-porject_seq="${project.project_seq }" value="관리">
+					                <input type="button" class="css_btn" id="delete_btn" data-project_seq="${project.project_seq }" value="삭제">
+				                </div>
+				            </c:when>
+				            <c:when test="${project.project_process eq 1 or project.project_process eq 2 or project.project_process eq 3}">
+			                	<div class="process_btn">
+				                	<input type="button" class="css_btn" id="delete_btn" data-project_seq="${project.project_seq }" value="삭제">
+			                	</div>
+				            </c:when>
+				            			            
+			        	</c:choose>
+		        	
+	        	</div>		        
+		    </c:forEach>
+		</div>	
 	</div>
-
-	<hr class="menu_under_hr">	
-
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-
-		
-	<div class="result">
-	    <c:if test="${empty myprojectList}">
-	        <div class="empty_result">제작하신 프로젝트가 없습니다.</div>
-	    </c:if>
-	    <c:forEach var="project" items="${myprojectList}">
-	    	<div class="result_con">
-		        <div><a href="${project.url}"><img src="${project.main_images_url}"></a></div>
-		        <div class="result_right">
-		        	<div class="process_status"> ${project.getProject_process_name()} </div>
-
-			        <div class="process_title">
-		        		<div class="process_ment">메인 제목</div>
-		        		<div class="process_long_title"><a href="${project.url}">${project.long_title}</a></div>
-			        </div>
-			        <div class="process_sub">
-		        		<div class="process_sub_title">${project.sub_title}</div>
-			        </div>			        
-					
-					<c:choose>
-						<c:when test="${project.project_process eq 0 or project.project_process eq 1 or project.project_process eq 2 or project.project_process eq 3}">
-							 <div class="process_date">
-								<c:choose>
-								    <c:when test="${empty project.start_date}">
-									   <div>시작일을 작성해주세요.</div>
-								    </c:when>
-								    <c:otherwise>
-									   <div>${project.start_date} 시작 예정</div>
-								    </c:otherwise>
-								</c:choose>
-								<c:choose>
-								    <c:when test="${empty project.due_date}">
-									   <div>종료일을 작성해주세요.</div>
-								    </c:when>
-								    <c:otherwise>
-									   <div>${project.due_date} 종료 예정</div>
-								    </c:otherwise>
-								</c:choose>
-							 </div>
-						</c:when>
-						<c:otherwise>
-							<div class="process_date">
-								<div>${project.start_date} 시작</div>
-								<div>${project.due_date} 종료</div>
-							</div>
-						</c:otherwise>
-				  	</c:choose>										
-				</div>
-			        <c:choose>
-			        	
-			            <c:when test="${project.project_process eq 0}">
-				        	<div class="process_btn">    
-				                <input type="button" class="css_btn" data-porject_seq="${project.project_seq }" value="관리">
-				                <input type="button" class="css_btn" id="delete_btn" data-project_seq="${project.project_seq }" value="삭제">
-			                </div>
-			            </c:when>
-			            <c:when test="${project.project_process eq 1 or project.project_process eq 2 or project.project_process eq 3}">
-		                	<div class="process_btn">
-			                	<input type="button" class="css_btn" id="delete_btn" data-project_seq="${project.project_seq }" value="삭제">
-		                	</div>
-			            </c:when>
-			            			            
-		        	</c:choose>
-	        	
-        	</div>		        
-	    </c:forEach>
-	</div>
-
-</div>
+	<%@ include file="/WEB-INF/views/common/footer.jsp" %>
+</div>	
 </body>
 
 </html>

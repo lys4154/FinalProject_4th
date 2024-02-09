@@ -379,7 +379,7 @@ public class ProfileController {
 
  
 
-	//후원한 프로젝트 페이지 - 검색 --- 추가필요(선물이름, 창작자도 가능하게) 
+	//후원한 프로젝트 페이지 - 검색 
     @GetMapping("/funded_search")
     @ResponseBody
     List<ProjectDTO> fundedSearch(@RequestParam(required = false) String keyword, HttpSession session) {
@@ -398,7 +398,11 @@ public class ProfileController {
         ModelAndView mv = new ModelAndView();
         FundingDTO dto = fundingservice.getPaymentInfo(fundseq);
 		mv.addObject("dto", dto);
-        
+
+		System.out.println(dto.getbCountDTOList().get(0));
+		//System.out.println(dto.getbCountDTOList().get(1));
+
+
         // URL에 따라서 다른 JSP 페이지로 보내도록 설정
         if (request.getRequestURI().contains("/ongoing_detail/")) {
             mv.setViewName("member/ongoing_detail");
