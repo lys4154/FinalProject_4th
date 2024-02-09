@@ -142,6 +142,8 @@ public interface ProjectDAO {
 
 	List<ProjectDTO> getAllRejectedProject();
 
+	ProjectDTO getProjectMember(int project_seq);
+
 
 }
 

@@ -16,34 +16,44 @@ li[class*="_chatroom_wrap"]{
 	border: 1px solid black;
 	cursor: pointer;
 }
+#content_container{
+	width:1100px;
+	margin:0 auto;
+}
+#all_ask_wrap{
+	width:600px;
+	font-size:16px;
+}
 </style>
 <body>
-<div id="all_ask_wrap" style="border: 1px red solid; display: inline-block">
-	<h3>내 프로젝트 문의</h3>
-	<ul id="my_project_ask">
-		<li id="collector_chatroom_list">
-		</li>
-	</ul>
-	<h3>프로젝트 문의</h3>
-	<ul id="project_ask">
-		<li id="asker_chatroom_list">
-		</li>
-	</ul>
-</div>
-<div style="display: inline-block">
-	<%@ include file="/WEB-INF/views/member/ask.jsp" %>
-</div>
-<div style="display:none">
-	<ul id="chatroom_list">
-		<li class="chatroom_wrap">
-			<span class="chatroom_long_title">
-			</span>
-			<span class="chatroom_last_chat">
-			</span>
-			<span class="chatroom_last_chat_date">
-			</span>
-		</li>
-	</ul>
+<div id="content_container">
+	<div id="all_ask_wrap" style="border: 1px red solid; display: inline-block">
+		<h3>받은 문의</h3>
+		<ul id="my_project_ask">
+			<li id="collector_chatroom_list">
+			</li>
+		</ul>
+		<h3>보낸 문의</h3>
+		<ul id="project_ask">
+			<li id="asker_chatroom_list">
+			</li>
+		</ul>
+	</div>
+	<div style="display: inline-block">
+		<%@ include file="/WEB-INF/views/member/ask.jsp" %>
+	</div>
+	<div style="display:none">
+		<ul id="chatroom_list">
+			<li class="chatroom_wrap">
+				<div class="chatroom_long_title">
+				</div >
+				<div  class="chatroom_last_chat">
+				</div>
+				<div  class="chatroom_last_chat_date">
+				</div >
+			</li>
+		</ul>
+	</div>
 </div>
 </body>
 <script>
@@ -102,9 +112,8 @@ $.ajax({
 //채팅방 클릭 시 채팅화면 띄워주기
 function chatroomWrapClickEAdd(){
 	$("li[class*='_chatroom_wrap']").on("click", function(e){
-		
-		whoAmI = e.target.parentNode.getAttribute("class").substr(0, e.target.parentNode.getAttribute("class").indexOf("_"));
-		chatroomSeq = e.target.parentNode.getAttribute("id").substr(e.target.parentNode.getAttribute("id").indexOf("_") + 1);
+		whoAmI = e.currentTarget.getAttribute("class").substr(0, e.currentTarget.getAttribute("class").indexOf("_"));
+		chatroomSeq = e.currentTarget.getAttribute("id").substr(e.currentTarget.getAttribute("id").indexOf("_") + 1);
 		$.ajax({
 			data: {
 				chatroom_seq: chatroomSeq,

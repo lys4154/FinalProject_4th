@@ -196,7 +196,7 @@ public class ProjectController {
 	//프로젝트 상세
 	@GetMapping("project_detail/{project_seq}")
 	public String ShowProjectDetail(Model model,@PathVariable("project_seq") int project_seq) {
-		ProjectDTO projects = projectService.getProjectDetail(project_seq);
+		ProjectDTO projects = projectService.getProjectMember(project_seq);
 		List<BundleDTO> bundleList = bundleService.getBundleList(project_seq);
 		model.addAttribute("project", projects);
 		model.addAttribute("bundleList", bundleList);
