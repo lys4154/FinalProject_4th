@@ -9,8 +9,8 @@ body{
 	font-size: 14px;
 }
 a{
-  color: inherit;
   text-decoration: none;
+  color: #292929;
 }
 header{
 	border-bottom: 1px solid #ebebeb;
@@ -144,6 +144,7 @@ header{
 #change_part{
 	display: inline-block;
 	position: relative;
+	cursor: pointer;
 }
 #notification_no_read_count{
 	background-color: red;

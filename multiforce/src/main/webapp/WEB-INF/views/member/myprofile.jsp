@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -421,42 +422,44 @@ $(document).ready(function() {
 
 
 <body>
-<div class="out_con" >
-	<div class="top_con" ><!-- 상단 회원정보 고정 -->
-		<div><img alt="프로필 이미지" src="${loginMember.profile_img}"  id="profile_img"></div>
-		<div class="nick_con">
-			<div>
-				<span id="my_nick">${loginMember.nickname} </span>
-				<span> <a href="/settings" ><img alt="회원정보 수정으로 가는 이모티콘" src="/settings/settings.png" id="set_icon"></a></span>
+<div class="wrap">
+	<div class="out_con" >
+		<div class="top_con" ><!-- 상단 회원정보 고정 -->
+			<div><img alt="프로필 이미지" src="${loginMember.profile_img}"  id="profile_img"></div>
+			<div class="nick_con">
+				<div>
+					<span id="my_nick">${loginMember.nickname} </span>
+					<span> <a href="/settings" ><img alt="회원정보 수정으로 가는 이모티콘" src="/settings/settings.png" id="set_icon"></a></span>
+				</div>
+				<div class="url_con">
+					<span>${pageContext.request.scheme}://${pageContext.request.serverName}:${pageContext.request.serverPort}</span><span id="url_new">${loginMember.member_url}</span>
+				</div>			
 			</div>
-			<div class="url_con">
-				<span>${pageContext.request.scheme}://${pageContext.request.serverName}:${pageContext.request.serverPort}</span><span id="url_new">${loginMember.member_url}</span>
-			</div>			
 		</div>
+		
+		
+		<div class="menu_con"><!-- 상단 선택바 고정 -->
+			<div class="menu_item" id="myprofile_detail" style="cursor:pointer; color: #292929; font-weight:600;" > 프로필 </div>
+			<div class="menu_item" id="myproject_detail" style="cursor:pointer;"> 올린 프로젝트 <span></span> </div>
+			<div class="menu_item" id="funded_detail" style="cursor:pointer;"> 후원한 프로젝트 </div>
+			<div class="menu_item" id="follower_detail" style="cursor:pointer;"> 팔로워 </div>
+			<div class="menu_item" id="following_detail" style="cursor:pointer;"> 팔로잉 </div>		
+		</div>
+		<hr class="menu_under_hr">
+		
+		
+		
+		<div class="result_count" ></div>
+		<div class="res_con" >
+			<div class="result" ></div>
+		</div>
+		
+		<div class="empty_con">
+		</div>
+		
 	</div>
-	
-	
-	<div class="menu_con"><!-- 상단 선택바 고정 -->
-		<div class="menu_item" id="myprofile_detail" style="cursor:pointer; color: #292929; font-weight:600;" > 프로필 </div>
-		<div class="menu_item" id="myproject_detail" style="cursor:pointer;"> 올린 프로젝트 <span></span> </div>
-		<div class="menu_item" id="funded_detail" style="cursor:pointer;"> 후원한 프로젝트 </div>
-		<div class="menu_item" id="follower_detail" style="cursor:pointer;"> 팔로워 </div>
-		<div class="menu_item" id="following_detail" style="cursor:pointer;"> 팔로잉 </div>		
-	</div>
-	<hr class="menu_under_hr">
-	
-	
-	
-	<div class="result_count" ></div>
-	<div class="res_con" >
-		<div class="result" ></div>
-	</div>
-	
-	<div class="empty_con">
-	</div>
-	
+	<%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </div>
-
 </body>
 
 </html>
