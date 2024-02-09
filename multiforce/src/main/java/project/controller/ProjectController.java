@@ -31,6 +31,7 @@ import member.service.MemberService;
 import project.dto.BundleDTO;
 import project.dto.ItemDTO;
 import project.dto.ItemListDTO;
+import project.dto.ItemOptionDTO;
 import project.dto.ProjectDTO;
 import project.service.BundleService;
 import project.service.ItemOptionService;
@@ -223,7 +224,7 @@ public class ProjectController {
 	//프로젝트 상세
 	@GetMapping("project_detail/{project_seq}")
 	public String ShowProjectDetail(Model model,@PathVariable("project_seq") int project_seq) {
-		ProjectDTO projects = projectService.getProjectDetail(project_seq);
+		ProjectDTO projects = projectService.getProjectMember(project_seq);
 		List<BundleDTO> bundleList = bundleService.getBundleList(project_seq);
 		model.addAttribute("project", projects);
 		model.addAttribute("bundleList", bundleList);
@@ -487,11 +488,23 @@ public class ProjectController {
 		}
 	}
 	
-	@PostMapping("saveItem")
+	@PostMapping("/saveItem")
 	@ResponseBody
 	public String saveItem(@RequestBody ItemDTO itemDTO, HttpSession session) {
 		try {
 			itemService.createItem(itemDTO, session);
+			return "Success";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "Error";
+		}
+	}
+	
+	@PostMapping("/saveItemOption")
+	@ResponseBody
+	public String saveItemOption(@RequestBody ItemOptionDTO itemOptionDTO, HttpSession session) {
+		try {
+			//itemOptionService.createItemOption(itemOptionDTO, session);
 			return "Success";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -529,4 +542,6 @@ public class ProjectController {
 		int result = projectService.viewCountUpdate(project_seq);
 		return "{\"result\": \"" + result + "\"}";
 	}
+	
+	
 }

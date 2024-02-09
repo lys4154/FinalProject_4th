@@ -3,7 +3,7 @@
 <mapper namespace="member.dao.AskDAO">
 <select id="selectChatRoom" resultType="member.dto.AskDTO">
 select chatroom_seq, a.project_seq, collector_seq,asker_seq,chat,last_chat,collector_read,
-asker_read,long_title,nickname, profile_img, member_url, url, main_images_url
+asker_read,long_title,nickname, profile_img, member_url, url, main_images_url, last_chat_date
 from project_ask a 
 join project p on a.project_seq = p.project_seq 
 join member_info m on a.collector_seq = m.member_seq
