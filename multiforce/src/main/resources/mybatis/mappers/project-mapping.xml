@@ -20,6 +20,17 @@
     select * from project where project_process=3
 </select>
 
+<select id="getApprovedProjectsPage" resultType="ProjectDTO">
+    SELECT * FROM project WHERE project_process = 3 LIMIT #{pageSize} OFFSET #{offset}
+</select>
+
+<select id="getUnapprovedProjectsPage" resultType="ProjectDTO">
+    SELECT * FROM project WHERE project_process = 1 LIMIT #{pageSize} OFFSET #{offset}
+</select>
+<select id="getRejectedProjectsPage" resultType="ProjectDTO">
+    SELECT * FROM project WHERE project_process = 2 LIMIT #{pageSize} OFFSET #{offset}
+</select>
+
 <select id="getAllUnapprovedProjects" resultType="projectdto">
     select * from project where project_process=1
 </select>
@@ -392,4 +403,32 @@ where project_seq = #{project_seq}
 <update id="updateViewCount">
 update project set view_count = view_count + 1 where project_seq = #{project_seq}
 </update>
+
+<!-- 프로젝트 + 멤버 둘다 들고오기 -->
+<select id="getProjectMember" resultMap="projectMap">
+SELECT *
+FROM project
+JOIN member_info ON project.member_seq = member_info.member_seq
+WHERE project.project_seq = #{projectSeq}
+</select>
+<resultMap type="projectdto" id="projectMap">
+	<id property="project_seq" column="project_seq"/>
+	<result property="long_title" column="long_title"/>
+	<result property="url" column="url"/>
+	<result property="main_images_url" column="main_images_url"/>
+	<result property="category" column="category"/>
+	<result property="start_date" column="start_date"/>
+	<result property="due_date" column="due_date"/>
+	<result property="goal_price" column="goal_price"/>
+	<result property="collection_amount" column="collection_amount"/>
+	<result property="project_process" column="project_process"/>
+	<result property="content" column="content"/>
+	<association property="memberDTO" resultMap="memberMap"/>
+</resultMap>
+<resultMap type="memberdto" id="memberMap">
+	<id property="member_seq" column="member_seq"/>
+	<result property="member_url" column="member_url"/>
+	<result property="nickname" column="nickname"/>
+	<result property="profile_img" column="profile_img"/>
+</resultMap>
 </mapper>

@@ -13,44 +13,96 @@
 <style>
 .my_chat{
 	text-align: right;
+	padding-left: 200px;
 }
+.my_chat .message{
+	border: 1px solid black;
+	border-radius: 10px;
+	padding: 5px;
+	
+}
+
 .opponent_chat{
-	text-align: left;
+	text-align: left; 
+	padding-right: 200px;
+	
 }
+.opponent_chat .message{
+	border: 1px solid black;
+	border-radius: 10px;
+	padding: 5px;
+}
+
 .common_date{
 	text-align: center;
 }
 #project_img{
 	width: 30px;
-	heigth: 30px;
+	height: 30px;
+}
+#chat_list{
+	height: 390px;
+	overflow-y: scroll;
+	border-bottom: 1px solid black;
+}
+#send_chat_wrap{
+	font-size: 0px;
+}
+#input_my_chat{
+	width: 390px;
+	height: 80px;
+	resize: none;
+	border: 0px;
+}
+#input_my_chat:focus{
+	outline: none;
+}
+#send_my_chat{
+	width: 69.2px;
+	height: 84px;
+	position: relative;
+	float: right;
+	border: 0px;
+}
+#chat_wrap{
+	border: 1px solid black;
+	width: 480px;
 }
 </style>
 <body>
+
 <div id="chatting_space">
 	<div id="project_info">
 		<img id="project_img">
 		<span id="project_long_title"></span>
 	</div>
-	<div id="chat_list" style="border: 1px black solid">
+	<div id="chat_wrap">
+		<div id="chat_list">
+		</div>
+		<div id="send_chat_wrap">
+			<textarea id="input_my_chat"></textarea>
+			<input type="button" id="send_my_chat" value="보내기">
+		</div>
 	</div>
-	<textarea id="input_my_chat"></textarea>
-	<input type="button" id="send_my_chat" value="보내기">
-	
-	<!-- 채팅 폼 -->
-	<div class="chat_form">
-		<div class="text_part"  style='display:inline-block'>
-			<div class="sender" style='display:inline-block'>
-				<img>
-				<span>
-				</span>
-			</div>
-			<div class="message" style='display:inline-block'>
-			</div>
+</div>	
+
+
+<!-- 복사용 채팅 폼 -->
+<div class="chat_form">
+	<div class="text_part"  style='display:inline-block'>
+		<div class="sender" style='display:inline-block'>
+			<img>
+			<span>
+			</span>
+		</div>
+		<div class="message" style='display:inline-block'>
 		</div>
 	</div>
 </div>
+
 </body>
 <script>
+
 var chatroomSeq = 0;
 var readAt = 0; //기본적으로 0 appendchat으로 올라가는 채팅의 갯수만큼 올림
 var whoAmI = "";
@@ -63,11 +115,16 @@ if(location.pathname == "/ask"){
 	}
 	whoAmI = "asker";
 	if("${result}" == "채팅기록 있음"){
+		console.log("if가 도나");
 		let read = "${dto.asker_read}";
 		chatroomSeq = "${dto.chatroom_seq}";
-		appendChat("${dto.chat}", read, "${dto.profile_img}");
+		let chat = `${dto.chat}`;
+		appendChat(chat, read, "${dto.profile_img}");
 		fillChatInfo("${dto.long_title}","${dto.url}", "${dto.main_images_url}");
 		updateMyRead(chatroomSeq, whoAmI, readAt);
+	}else{
+		chatroomSeq = "${dto.chatroom_seq}";
+		fillChatInfo("${dto.long_title}","${dto.url}", "${dto.main_images_url}");
 	}
 }
 
@@ -203,7 +260,7 @@ function createChatForm(chatDate, chatTime, chatterSeq, chatContent, img, nickna
 	if(chatterSeq == "${login_user_seq}"){
 		chatForm.attr("class", "my_chat");
 		chatForm.find(".message").text(chatContent);
-		chatForm.prepend("<div class='time_part' style='display:inline-block'>"+chatTime+"</div>");
+		chatForm.prepend("<div class='time_part' style='display:inline-block;'>"+chatTime+"</div>");
 	}else{
 		chatForm.attr("class", "opponent_chat");
 		chatForm.find(".sender img").attr("href", img);

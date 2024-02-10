@@ -38,13 +38,13 @@ public class AskController {
 			dto.setCollector_seq(collector_seq);
 			dto.setProject_seq(project_seq);
 			dto.setAsker_seq(asker_seq);
-			System.out.println(dto);
 			mv.addObject("dto", dto);
 			mv.addObject("result", "채팅기록 없음");
 		}else {
 			mv.addObject("dto", dto);
 			mv.addObject("result", "채팅기록 있음");
 		}
+		System.out.println(dto);
 		mv.setViewName("member/ask");
 		return mv;
 	}
