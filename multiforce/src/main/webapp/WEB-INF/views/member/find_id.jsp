@@ -57,32 +57,40 @@ $(document).ready(function(){
 });
 </script>
 <body>
-<div id="find_id_container">
-	<div id="find_id_wrap">
-		<div>
-			회원가입 시 사용했던 이메일을 입력해주세요
+<div class="wrap">
+	<div class="out_con">
+		<div class="findid_title">아이디 찾기</div>
+		<div id="find_id_container">
+			<div id="find_id_wrap">
+				<div class="findid_ment">
+					회원가입 시 사용했던 이메일을 입력해주세요.
+					<span id="sending_msg" style="display: none">발송 중</span>
+				</div>
+				<div id="email_input_wrap">
+					<input type="text" class="text" id="user_email" placeholder="이메일을 입력해주세요" >
+					@
+					<select id="email_select">
+						<option>naver.com</option>
+						<option>gmail.com</option>
+						<option>daum.net</option>
+						<option>직접입력</option>
+					</select>
+				</div>
+				<div>
+					<input type="text" class="text" id="user_email_dir" placeholder="도메인을 입력해주세요" style="display:none" >
+					<input type="hidden" id="email" name="email">
+				</div>
+				<div>
+					<input type="submit" id="find_id_btn" value="아이디 찾기">
+				</div>
+				<div class="login_pw_con">
+					<div>이메일로 발송된 아이디를 확인 후 <a href="login">로그인</a> 해주세요.</div>
+					<div>비밀번호를 잊으셨나요? <a href="resetpw">비밀번호 재설정</a> </div>
+				</div>			
+			</div>
 		</div>
-		<div id="email_input_wrap">
-			<input type="text" class="text" id="user_email" placeholder="이메일을 입력해주세요" >
-			@
-			<select id="email_select">
-				<option>naver.com</option>
-				<option>gmail.com</option>
-				<option>daum.net</option>
-				<option>직접입력</option>
-			</select>
-		</div>
-		<div>
-			<input type="text" class="text" id="user_email_dir" placeholder="도메인을 입력해주세요" style="display:none" >
-			<input type="hidden" id="email" name="email">
-		</div>
-		<div>
-			<input type="submit" id="find_id_btn" value="아이디 찾기">
-		</div>
-		<span id="sending_msg" style="display: none">발송 중</span><br>
 	</div>
-	<a href="login">로그인</a>
-	<a href="pwreset">비밀번호 재설정</a>
-</div>
+	<%@ include file="/WEB-INF/views/common/footer.jsp" %>
+</div>	
 </body>
 </html>

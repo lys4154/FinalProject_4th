@@ -10,10 +10,6 @@
 <title>${loginMember.nickname}님 | 멀티포스 펀딩</title>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <link rel="stylesheet" href="/css/member/myprofile.css">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400&display=swap" rel="stylesheet">
-
 </head>
 
 <script>
@@ -99,14 +95,7 @@ $(document).ready(function() {
 		       			for (var i = 0; i < response.length; i++) {                			
 		       		    // 모금 달성률 계산
 		       		    	var achievementRate = (response[i].collection_amount / response[i].goal_price) * 100;
-		       		    
-		                   // 날짜 포매팅
-		                   var startDate = new Date(response[i].start_date);
-		                   var dueDate = new Date(response[i].due_date);
-		                   var formattedStart = startDate.getFullYear() + "-" + (startDate.getMonth() + 1) + "-" + startDate.getDate();
-		                   var formattedDue = dueDate.getFullYear() + "-" + (dueDate.getMonth() + 1) + "-" + dueDate.getDate();	
-		                   
-		                   
+  		                   
 		                   $(".result").append(
 	                		    "<div class=\"pro_con\">" +
 	                		    	"<div class=\"pro_left\">" +			                	        
@@ -117,7 +106,7 @@ $(document).ready(function() {
 			                	       		"<div class=\"pro_category\"> 카테고리 " + response[i].category + "</div>" +
 				                	        "<div class=\"pro_longtitle\">  <a href=\"" + response[i].url + "\">" + response[i].long_title + "  </a> </div>" +
 			                	        "</div>" +
-			                	        "<div> 기간 " + formattedStart + " ~ " + formattedDue + "<span id=\"pro_day\"> (D-" + response[i].term + ")</span></div>" +
+			                	        "<div> 기간 " + response[i].start_date + " ~ " + response[i].due_date + "<span id=\"pro_day\"> (D-" + response[i].term + ")</span></div>" +
 			                	        "<div> 목표금액  " + response[i].goal_price.toLocaleString() + "원</div>" +
 			                	        "<div> 현재모금액  " + response[i].collection_amount.toLocaleString() + "원" +
 			                	        "<span id=\"pro_goal\"> (" + Math.round(achievementRate) + "% 달성) </span></div>" +

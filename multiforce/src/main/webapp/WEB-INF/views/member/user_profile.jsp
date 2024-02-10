@@ -9,30 +9,71 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<link rel="stylesheet" href="/css/member/myprofile.css">
 </head>
 
 <script>
-$(document).ready(function() {	
+$(document).ready(function() {
+	
+	//메뉴탭 선택시 css
+	function setMenuTab(element, fontWeight, color) {
+	    $(element).css({
+	        "font-weight": fontWeight,
+	        "color": color
+	    })	    
+	}
+	
+	//.result에 내용이 있을때만 테두리 만들기
+    function checkResultContent() {
+        if ($.trim($('.result').html()) !== '') {
+            $('.res_con').css({
+            	'border': '1px solid ',
+            	'border-color': '#cfcfcf',
+            	'border-radius': '5px'
+            });
+        } else {
+        	 $('.res_con').css('border', 'none'); // .result 내용이 없을 때는 border를 제거
+        }
+     };
+	
 	
 	let memberSeq = ${user.member_seq};
 	let followerSeq;
 	
-	if ("${user.description}" == null) {
-		$(".result").html("등록된 자기소개가 없습니다.");
-	}else {
-		$(".result").html("${user.description}");
+
+	//자기 소개
+	function myDescription() {
+		let description = "${user.description}";
+		if (description == "") {
+			$(".result").html("등록된 소개가 없습니다.");
+		}else {
+			$(".result").html(description);
+		};
 	}	
-		 
+	myDescription();
+	 
 
 	
 	//프로필 클릭
 	 $("#myprofile_detail").click(function() {
-		    $(".result").html("${user.description}");
+		myDescription();
+		$(".empty_result").empty();
+		$(".result_count").html('');
+		setMenuTab("#myprofile_detail", "600", "#292929");
+		setMenuTab("#myproject_detail", "400", "#5c5c5c");
+		setMenuTab("#follower_detail", "400", "#5c5c5c");
+		setMenuTab("#following_detail", "400", "#5c5c5c");
+		$('.res_con').css('border', 'none');
 	    }); //프로필 클릭	 
 	 
 	 
 	//올린프로젝트 클릭
-	$("#myproject_detail").click(function() {	    
+	$("#myproject_detail").click(function() {
+		 setMenuTab("#myprofile_detail", "400", "#5c5c5c");
+		 setMenuTab("#myproject_detail", "600", "#292929");
+		 setMenuTab("#follower_detail", "400", "#5c5c5c");
+		 setMenuTab("#following_detail", "400", "#5c5c5c");
+		
 	           $.ajax({
 	              type: "get",
 	              url: "/getUserproject",
@@ -40,40 +81,44 @@ $(document).ready(function() {
 	              success: function(response) {
 	              	console.log(response);
 	              	$(".result").empty();
+	              	checkResultContent();
 	              	if(response.length == 0) {
-	              		$(".result").append("<div> 등록된 프로젝트가 없습니다. </div>");
+	              		$(".empty_con").html(
+		               				"<div class='empty_result'>" +
+			           					"<div class='empty_ment'> 등록한 프로젝트가 없습니다. </div>" +
+			       					"</div>"	
+	              				);
 	              	} else {                		
-	                      $(".result").append("<div> <span style='color: red;'> " + response.length + "</span> 개의 프로젝트가 있습니다.</div>")
+	                      $(".result_count").append("<div> <span style='color: red;'> " + response.length + "</span> 개의 프로젝트가 있습니다.</div>")
+	                      $(".empty_result").empty();
 	                      
 	              		for (var i = 0; i < response.length; i++) {                			
 	              		    // 모금 달성률 계산
 	              		    var achievementRate = (response[i].collection_amount / response[i].goal_price) * 100;
-	              		    
-	                          // 날짜 포매팅
-	                          var startDate = new Date(response[i].start_date);
-	                          var dueDate = new Date(response[i].due_date);
-	                          var formattedStart = startDate.getFullYear() + "년 " + (startDate.getMonth() + 1) + "월 " + startDate.getDate() + "일";
-	                          var formattedDue = dueDate.getFullYear() + "년 " + (dueDate.getMonth() + 1) + "월 " + dueDate.getDate() + "일";
-	
-	                          // 프로젝트 종료일과 현재 날짜 차이 계산
-	                          var currentDate = new Date();
-	                          var timeDifference = dueDate - currentDate;
-	                          var daysRemaining = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
-	
-	                          var statusMessage = (daysRemaining > 0) ? daysRemaining + "일 남음" : "펀딩 종료";
-	
+		
 	                          $(".result").append(
-	                              "<div> 카테고리 : " + response[i].category + "</div>" +
-	                              "<div> <a href=\"" + response[i].url + "\"> <img src=" + response[i].main_images_url + "></a> </div>" +
-	                              "<div> <strong> [ <a href=\"" + response[i].url + "\">" + response[i].long_title + " ]</strong></a> </div>" +
-	                              "<div> 프로젝트 시작일 : " + formattedStart + "</div>" +
-	                              "<div> 프로젝트 종료일 : " + formattedDue + " (" + statusMessage + ")</div>" +
-	                              "<div> 목표금액 : " + response[i].goal_price.toLocaleString() + "원</div>" +
-	                              "<div> 현재모금액 : " + response[i].collection_amount.toLocaleString() + "원</div>" +
-	                              "<div> 현재달성률 : " + Math.round(achievementRate) + "%</div> <hr>"
+  	                		    "<div class=\"pro_con\">" +
+	                		    	"<div class=\"pro_left\">" +			                	        
+			                	        "<div> <a href=\"" + response[i].url + "\"> <img src=\"" + response[i].main_images_url + "\" class=\"pro_img\"></a> </div>" +
+		                	        "</div>" +
+		                	        "<div class=\"pro_right\">" +
+		                	        	"<div class=\"pro_title\">" +
+			                	       		"<div class=\"pro_category\"> 카테고리 " + response[i].category + "</div>" +
+				                	        "<div class=\"pro_longtitle\">  <a href=\"" + response[i].url + "\">" + response[i].long_title + "  </a> </div>" +
+			                	        "</div>" +
+			                	        "<div> 기간 " + response[i].start_date + " ~ " + response[i].due_date + "<span id=\"pro_day\"> (D-" + response[i].term + ")</span></div>" +
+			                	        "<div> 목표금액  " + response[i].goal_price.toLocaleString() + "원</div>" +
+			                	        "<div> 현재모금액  " + response[i].collection_amount.toLocaleString() + "원" +
+			                	        "<span id=\"pro_goal\"> (" + Math.round(achievementRate) + "% 달성) </span></div>" +
+		                	        "</div>" +
+		                	    "</div>"
 	                          );
-	              		}                		
-	              	}                   
+	                           if (i < response.length - 1) {
+	                               $(".result").append("<hr class=\"follo_hr\">");	                          
+	              				}
+	              			}
+	              		checkResultContent();
+              		}                   
 	              },
 	              error: function(error) {
 	                  console.log(error);
@@ -84,6 +129,7 @@ $(document).ready(function() {
 	
 	 //팔로워 찾기
 	 function getUserFollower() {
+		 $(".result_count").html('');
          $.ajax({
              type: "get",
              url: "/getUserFollower",
@@ -91,9 +137,17 @@ $(document).ready(function() {
              success: function(response) {
              	console.log(response); 
              	$(".result").empty();
+             	checkResultContent();
              	if (Object.keys(response).length === 0) {
-             		$(".result").append("<div> 팔로워가 없습니다. </div>");
+             		$(".empty_con").html(
+             				"<div class='empty_result'>" +
+         						"<div class='empty_ment'> 팔로워가 없습니다.</div>" +
+         					"</div>"
+             				);
                  } else {
+                	 
+                	 $(".empty_result").empty();
+                	 
                      for (var i = 0; i < response.myFollower.length; i++) {
                          var memberSeq = response.myFollower[i].member_seq;
                          var description = response.myFollower[i].description;
@@ -105,15 +159,25 @@ $(document).ready(function() {
                          }
 
                          $(".result").append(
-                             "<div> <a href=\"" + response.myFollower[i].member_url + "\"> <img src=\"" + response.myFollower[i].profile_img + "\"> </a> </div>" +
-                             "<div> <a href=\"" + response.myFollower[i].member_url + "\"> " + response.myFollower[i].nickname + " </a> </div>" +
-                             "<div>" + description + " </div>" +
-                             "<div> 팔로워 : " + followerCount + " </div>" +
-                             "<div> 올린 프로젝트 : " + projectCount + " </div>" +
-                             '<div class="modal-dialog modal-dialog-centered">' +                                
-                             "<button class='userFollower_btn' data-follower_seq='" + response.myFollower[i].member_seq + "'> 팔로우</button> </div> <hr>"  
+                       		 "<div class=\"follo_con\">" +
+                       		 	"<div class=\"follo_left\">" +                       		 	
+ 	                            	"<div> <a href=\"" + response.myFollower[i].member_url + "\"> <img src=\"" + response.myFollower[i].profile_img + "\" class=\"follo_img\"> </a> </div>" +
+ 	                       		"</div>" +
+ 	                        	"<div class=\"follo_right\">" +
+ 		                            "<div class=\"follo_nick\"> <a href=\"" + response.myFollower[i].member_url + "\">" + response.myFollower[i].nickname + " </a> </div>" +
+ 		                            "<div class=\"follo_desc\">" + description + " </div>" +
+ 		                            "<div> 팔로워 " + followerCount + " | 올린 프로젝트 " + projectCount + " </div>" +
+ 	                            "</div>" +
+ 	                            "<div class=\"follo_btn\">" +
+ 		                            "<button class=\"follower_btn\" data-member_seq=" + memberSeq + "> + &nbsp; 팔로우 </button> </div>" +
+ 	                            "</div>" +
+                            "</div>"
                          );
+                         if (i < response.myFollower.length - 1) {
+                             $(".result").append("<hr class=\"follo_hr\">");
+                         }
                      }
+                     checkResultContent();
                  }
 
              },
@@ -126,8 +190,13 @@ $(document).ready(function() {
 	 //팔로워 클릭
 	 $("#follower_detail").click(function() {	
 		 getUserFollower();
-	 }); 	
-	    
+		 setMenuTab("#myprofile_detail", "400", "#5c5c5c");
+		 setMenuTab("#myproject_detail", "400", "#5c5c5c");
+		 setMenuTab("#follower_detail", "600", "#292929");
+		 setMenuTab("#following_detail", "400", "#5c5c5c");
+			 
+	}); 	
+		    
     
 	 // memberSeq - 현재회원, follower_seq - 현재 회원의 팔로워의 seq
 	 // 팔로워에서 팔로우추가 클릭
@@ -176,6 +245,7 @@ $(document).ready(function() {
 	 
 	 //팔로잉 찾기
 	 function getUserFollowing() {
+		$(".result_count").html('');
          $.ajax({
              type: "get",
              url: "/getUserFollowing",
@@ -183,9 +253,17 @@ $(document).ready(function() {
              success: function(response) {
              	console.log(response); 
              	$(".result").empty();
+             	checkResultContent();
              	if (Object.keys(response).length === 0) {
-             		$(".result").append("<div> 팔로잉한 사용자가 없습니다. </div>");
+             		$(".empty_con").append(
+             				"<div class='empty_result'>" +
+         						"<div class='empty_ment'> 팔로잉한 사용자가 없습니다.</div>" +
+         					"</div>"            				
+             				);
                  } else {
+                	 
+                	 $(".empty_result").empty();
+                	 
                      for (var i = 0; i < response.myFollowing.length; i++) {
                          var memberSeq = response.myFollowing[i].member_seq;
                          var followerCount = response.followerCounts[memberSeq];
@@ -197,14 +275,25 @@ $(document).ready(function() {
                          }                         
                          
                          $(".result").append(
-                             "<div> <a href=\"" + response.myFollowing[i].member_url + "\">  <img src=\"" + response.myFollowing[i].profile_img + "\"> </a> </div>" +
-                             "<div> <a href=\"" + response.myFollowing[i].member_url + "\"> " + response.myFollowing[i].nickname + " </a> </div>" +
-                             "<div>" + description + " </div>" +
-                             "<div> 팔로워 : " + followerCount + " </div>" +
-                             "<div> 올린 프로젝트 : " + projectCount + " </div>" +
-                             "<button class='userFollower_btn' data-follower_seq='" + response.myFollowing[i].member_seq + "'> 팔로우</button> </div> <hr>"
+                       		"<div class=\"follo_con\">" +
+                    			"<div class=\"follo_left\">" +
+		                            "<div> <a href=\"" + response.myFollowing[i].member_url + "\"> <img src=\"" + response.myFollowing[i].profile_img + "\" class=\"follo_img\"> </a> </div>" +
+	                            "</div>" +
+	                            "<div class=\"follo_right\">" +
+		                            "<div class=\"follo_nick\"> <a href=\"" + response.myFollowing[i].member_url + "\"> " + response.myFollowing[i].nickname + " </a> </div>" +
+		                            "<div class=\"follo_desc\">" + description + " </div>" +
+		                            "<div> 팔로워 " + followerCount + " | 올린 프로젝트 " + projectCount + " </div>" +
+	                            "</div>" +
+	                            "<div class=\"follo_btn\">" +
+		                            "<button class='following_btn' data-member_seq='" + memberSeq + "'> + &nbsp; 팔로우</button>" +
+	                            "</div>" +
+                            "</div>"
                          );
+                         if (i < response.myFollowing.length - 1) {
+                             $(".result").append("<hr class=\"follo_hr\">");
+                         }
                      }
+                     checkResultContent();
                  }
 
              },
@@ -218,7 +307,12 @@ $(document).ready(function() {
 	 //팔로잉 클릭
 	 $("#following_detail").click(function() {	
 		 getUserFollowing();
-	    });
+		 setMenuTab("#myprofile_detail", "400", "#5c5c5c");
+		 setMenuTab("#myproject_detail", "400", "#5c5c5c");
+		 setMenuTab("#follower_detail", "400", "#5c5c5c");
+		 setMenuTab("#following_detail", "600", "#292929");
+		 
+		});
 	    
 
 })//ready
@@ -232,30 +326,38 @@ $(document).ready(function() {
 <body>
 
 <div class="wrap">
-	<div><!-- 상단 회원정보 고정 -->
-		<div><img alt="프로필 이미지" src="${user.profile_img}"></div>
-		<div>${user.member_name}</div>
+	<div class="out_con" >
+		<div class="top_con" >
+			<div><img alt="프로필 이미지" src="${user.profile_img}" id="profile_img"></div>
+			<div class="nick_con">
+				<div>
+					<span id="my_nick">${user.nickname}</span>
+				</div>				
+				<div class="url_con">
+					<span>${pageContext.request.scheme}://${pageContext.request.serverName}:${pageContext.request.serverPort}</span><span id="url_new">${user.member_url}</span>
+				</div>	
+			</div>
+		</div>
+
+		
+		<div class="menu_con"><!-- 상단 선택바 고정 -->
+			<div class="menu_item" id="myprofile_detail" style="cursor:pointer; color: #292929; font-weight:600;"> 프로필 </div>
+			<div class="menu_item" id="myproject_detail" style="cursor:pointer;"> 올린 프로젝트 </div>
+			<div class="menu_item" id="follower_detail" style="cursor:pointer;"> 팔로워 </div>
+			<div class="menu_item" id="following_detail" style="cursor:pointer;"> 팔로잉 </div>
+		</div>
+		<hr class="menu_under_hr">
+		
+		<div class="result_count" ></div>
+		<div class="res_con" >
+			<div class="result" ></div>
+		</div>
+		
+		<div class="empty_con">
+		</div>
+		
 	</div>
-	<p>
-	
-	<div><!-- 상단 선택바 고정 -->
-		<div id="myprofile_detail" style="cursor:pointer;"> 프로필 </div>
-		<div id="myproject_detail" style="cursor:pointer;"> 올린 프로젝트 </div>
-		<div id="follower_detail" style="cursor:pointer;"> 팔로워 </div>
-		<div id="following_detail" style="cursor:pointer;"> 팔로잉 </div>
-	</div>
-	<p>
-	
-	
-	<div>
-		<div class="result" style="color: green"></div>
-	</div>
-	
-	
-	<h1>${user.member_seq }</h1>
 	<%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </div>
-
 </body>
-
 </html>
