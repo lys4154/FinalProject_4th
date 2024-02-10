@@ -34,6 +34,7 @@ import project.dto.ItemListDTO;
 import project.dto.ItemOptionDTO;
 import project.dto.ProjectDTO;
 import project.service.BundleService;
+import project.service.ItemListService;
 import project.service.ItemOptionService;
 import project.service.ItemService;
 import project.service.ProjectService;
@@ -59,6 +60,9 @@ public class ProjectController {
 	
 	@Autowired
 	private ItemOptionService itemOptionService;
+	
+	@Autowired
+	private ItemListService itemListService;
 	
 	
 	@RequestMapping("/projectdesign")
@@ -504,7 +508,19 @@ public class ProjectController {
 	@ResponseBody
 	public String saveItemOption(@RequestBody ItemOptionDTO itemOptionDTO, HttpSession session) {
 		try {
-			//itemOptionService.createItemOption(itemOptionDTO, session);
+			itemOptionService.createItemOption(itemOptionDTO, session);
+			return "Success";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "Error";
+		}
+	}
+	
+	@PostMapping("/saveItemCount")
+	@ResponseBody
+	public String saveItemCount(@RequestBody ItemListDTO itemListDTO, HttpSession session) {
+		try {
+			itemListService.createItemList(itemListDTO, session);
 			return "Success";
 		} catch (Exception e) {
 			e.printStackTrace();
