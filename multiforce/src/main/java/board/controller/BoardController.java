@@ -60,8 +60,8 @@ public class BoardController {
 			
 		
 		}
-		//메인페이지로 바꾸기
-        return "board/update_write"; 
+		model.addAttribute("errorMessage", "권한이 없습니다.");
+		return "board/error/error";
     }
 	
 	//업데이트 글읽기
@@ -131,8 +131,8 @@ public class BoardController {
 		
 		
 	
-		//메인 페이지 로 바꾸기
-		return "redirect:update/view/"+dto.getProject_seq();
+		model.addAttribute("errorMessage", "권한이 없습니다.");
+		return "board/error/error";
 	}
 	//커뮤니티 글 삭제
 	@PostMapping("delete_community_post")
@@ -344,7 +344,8 @@ public class BoardController {
 
 		}
 		
-		return null;
+		model.addAttribute("errorMessage", "권한이 없습니다.");
+		return "board/error/error";
 	}
 	@PostMapping("delete_cs_comment")
 	public ResponseEntity<String> delete_cs_comment(@RequestParam int help_ask_seq, HttpSession session) {
