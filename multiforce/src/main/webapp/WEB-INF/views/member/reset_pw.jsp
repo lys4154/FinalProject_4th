@@ -9,6 +9,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
+<link rel="stylesheet" type="text/css" href="/css/member/reset_pw.css">
 <script src="/js/jquery-3.7.1.min.js"></script>
 <script>
 $(document).ready(function(){
@@ -63,22 +64,37 @@ $(document).ready(function(){
 });
 </script>
 <body>
-<h1>비밀번호 재설정</h1>
-<input type="text" class="text" id="id" placeholder="아이디를 입력해주세요"><br>
-<input type="text" class="text" id="user_email" placeholder="이메일을 입력해주세요" >
-@
-<select id="email_select">
-	<option>naver.com</option>
-	<option>gmail.com</option>
-	<option>daum.net</option>
-	<option>직접입력</option>
-</select>
-<input type="text" class="text" id="user_email_dir" placeholder="도메인을 입력해주세요" style="display:none" >
-<input type="hidden" id="email" name="email">
-<input type="submit" id="reset_pw_btn" value="비밀번호 재설정">
-<span id="sending_msg" style="display: none">발송 중</span><br>
-<a href="login">로그인</a>
-<a href="findid">아이디 찾기</a>
-
+<div class="wrap">
+	<div class="out_con">
+		<div class="resetpw_title">비밀번호 재설정</div>
+		<div class="resetpw_con">
+			<div class="resetpw_wrap">
+				<div style="display: flex; align-items: baseline">
+					<input type="text" id="id" placeholder="아이디를 입력해주세요">
+					<span id="sending_msg" style="display: none">발송 중</span>
+				</div>
+				<div class="" style="display: flex; align-items: center;">
+					<input type="text" id="user_email" placeholder="이메일을 입력해주세요" >
+					@
+					<select id="email_select">
+						<option>naver.com</option>
+						<option>gmail.com</option>
+						<option>daum.net</option>
+						<option>직접입력</option>
+					</select>
+				</div>
+				<input type="text" class="text" id="user_email_dir" placeholder="도메인을 입력해주세요" style="display:none">
+				
+				<input type="hidden" id="email" name="email">
+				<input type="submit" id="reset_pw_btn" value="비밀번호 재설정">
+				<div class="login_findid">
+					<div>발송된 메일의 임시 비밀번호로 <a href="login"> 로그인</a> 해주세요.</div>
+					<div>아이디를 잊으셨나요? <a href="findid"> 아이디 찾기</a> </div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<%@ include file="/WEB-INF/views/common/footer.jsp" %>
+</div>
 </body>
 </html>

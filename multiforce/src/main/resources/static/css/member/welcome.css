@@ -1,0 +1,24 @@
+@charset "UTF-8";
+
+
+.out_con {
+	color: #5c5c5c;
+	display: flex;
+    width: 1040px;
+    height: 300px;
+    margin: 0 auto;
+    padding: 10px 10px;
+    font-size: 30px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.go_login{
+	margin-top: 30px;
+	font-size: 14px;
+}
+a[href="login"]{
+	font-weight: 600;
+	color: #82c8a0;
+	font-size: 16px;
+}

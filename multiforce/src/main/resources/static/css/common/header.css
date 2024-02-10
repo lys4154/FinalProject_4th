@@ -10,7 +10,7 @@ body{
 }
 a{
   text-decoration: none;
-  color: #292929;
+  color: #5c5c5c;
 }
 header{
 	border-bottom: 1px solid #ebebeb;
@@ -25,8 +25,7 @@ header{
 }
 #header_wrap{
 	width: 1040px;
-	margin: 0 auto;
-	
+	margin: 0 auto;	
 }
 #header_upper_part{
 	height: 43px;
