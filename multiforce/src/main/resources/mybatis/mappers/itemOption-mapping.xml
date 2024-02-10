@@ -28,8 +28,8 @@
 </select>
 
 <insert id="insertItemOption" parameterType="project.dto.ItemDTO">
-	insert into item (item_seq, item_option_seq)
-	values (#{item_seq}, #{item_option_seq}) 
+	insert into item (item_seq, item_option_name)
+	values (#{item_seq}, #{item_option_name}) 
 </insert>
 
 </mapper>	

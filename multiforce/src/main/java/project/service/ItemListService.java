@@ -21,7 +21,7 @@ public class ItemListService {
 	@Autowired
 	private BundleDAO bundleDao;
 	
-	public void createItem(ItemListDTO itemList, HttpSession session) {
+	public void createItemList(ItemListDTO itemList, HttpSession session) {
 		int member_seq = projectDao.getMember_seq((String)session.getAttribute("login_user_id"));
 		int project_seq = bundleDao.getProject_seq(member_seq);
 		int bundle_seq = itemListDao.getBundle_seq(project_seq);

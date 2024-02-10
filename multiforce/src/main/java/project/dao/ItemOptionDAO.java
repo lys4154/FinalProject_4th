@@ -25,5 +25,5 @@ public interface ItemOptionDAO {
 	//item_seq 불러오기
 	Integer getItem_seq(int bundle_seq);
 	
-	void insertItem_option(ItemOptionDTO option);
+	void insertItemOption(ItemOptionDTO itemOption);
 }
