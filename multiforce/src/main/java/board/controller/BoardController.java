@@ -261,6 +261,14 @@ public class BoardController {
 	    List<BoardDTO> allPosts = boardService.getAllCsPosts();
 	    int totalPages = (int) Math.ceil((double) allPosts.size() / pageSize); // 전체 페이지 수 계산
 	    
+	    for (BoardDTO post : allPosts) {
+            int memberSeq = post.getMember_seq();
+            MemberDTO post_writer = member.getNicknameById(memberSeq);
+            String member = post_writer.getNickname();
+            
+            post.setNickname(member);
+        }
+	    
 	    List<BoardDTO> postsOnPage = allPosts.subList(page * pageSize, Math.min((page + 1) * pageSize, allPosts.size())); // 현재 페이지에 보여줄 게시물 가져오기
 	    model.addAttribute("posts", postsOnPage);
 	    model.addAttribute("totalPages", totalPages);
@@ -276,12 +284,23 @@ public class BoardController {
 			HttpSession session) {
 		BoardDTO board = boardService.getCsPostById(help_ask_seq);
 		//로그인된 유저 아이디 가져옴 
-		String user_id_str = (String) session.getAttribute("login_user_seq");
-		int user_id = Integer.parseInt(user_id_str);
+		Object user_id_obj = session.getAttribute("login_user_seq");
+		Object user_level_obj = session.getAttribute("login_user_level");
+
+		int user_id = 0;
+		int user_level = 0;
+
+		if(user_level_obj != null) {
+			user_level = (Integer) session.getAttribute("login_user_level");
+		}
+		
+		if(user_id_obj != null) {
+			String user_id_str = (String)session.getAttribute("login_user_seq");
+			user_id = Integer.parseInt(user_id_str);
+		}
 		
 		//글쓴이가 본인인지 확인하기 아니면 관리자인가
-		if((board.getMember_seq() == user_id) || 
-				(Integer.parseInt(session.getAttribute("login_user_level").toString()) == 2)) {
+		if((board.getMember_seq() == user_id) || (user_level == 2)) {
 				List<BoardDTO> board_comment = boardService.getCsCommentsById(help_ask_seq);
 		        MemberDTO post_writer = member.getNicknameById(board.getMember_seq());
 		        
