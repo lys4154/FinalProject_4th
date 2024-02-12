@@ -71,14 +71,14 @@
             loadContent(baseUrl + "/tab_fundingPlan"); 
         }); */
         
-		$("#tab_gift").click();
+		/* $("#tab_gift").click();
     	
         $("#tab_gift").click(function (e) {
             e.preventDefault();
            // var pid = $(this).data("project-id");
             var baseUrl = window.location.origin;
             loadContent(baseUrl + "/tab_gift"); 
-        });
+        }); */
         
 		$("#tab_projectPlan").click();
     	
@@ -106,7 +106,6 @@
         }
     });
 </script>
-<script src="js/imageUpload.js"></script>
 <hr>
 </body>
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>

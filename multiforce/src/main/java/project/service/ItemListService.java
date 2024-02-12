@@ -26,7 +26,7 @@ public class ItemListService {
 		int project_seq = bundleDao.getProject_seq(member_seq);
 		int bundle_seq = itemListDao.getBundle_seq(project_seq);
 		int item_seq = itemListDao.getItem_seq(project_seq);
-		itemList.setBundle_seq(member_seq); 
+		itemList.setBundle_seq(bundle_seq); 
 		itemList.getBundle_seq();
 		itemList.getItem_seq();
 		itemList.setItem_seq(item_seq);

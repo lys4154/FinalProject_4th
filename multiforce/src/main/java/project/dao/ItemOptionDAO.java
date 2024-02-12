@@ -26,4 +26,6 @@ public interface ItemOptionDAO {
 	Integer getItem_seq(int bundle_seq);
 	
 	void insertItemOption(ItemOptionDTO itemOption);
+	
+	void defaultOption(ItemOptionDTO itemOption);
 }

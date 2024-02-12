@@ -38,7 +38,11 @@ public class ProjectDTO {
 	String goal_price_format;
 	String collection_amount_format;
 	MemberDTO memberDTO;
-	
+	String purpose;
+	String planning;
+	String budget;
+	String team_introduce;
+	String item_introduce;
 	
 	public MemberDTO getMemberDTO() {
 		return memberDTO;
@@ -198,6 +202,37 @@ public class ProjectDTO {
 	public String getProject_process_name() {
 		return project_process.getName();
 	}
+	public String getPurpose() {
+		return purpose;
+	}
+	public void setPurpose(String purpose) {
+		this.purpose = purpose;
+	}
+	public String getPlanning() {
+		return planning;
+	}
+	public void setPlanning(String planning) {
+		this.planning = planning;
+	}
+	public String getBudget() {
+		return budget;
+	}
+	public void setBudget(String budget) {
+		this.budget = budget;
+	}
+	public String getTeam_introduce() {
+		return team_introduce;
+	}
+	public void setTeam_introduce(String team_introduce) {
+		this.team_introduce = team_introduce;
+	}
+	public String getItem_introduce() {
+		return item_introduce;
+	}
+	public void setItem_introduce(String item_introduce) {
+		this.item_introduce = item_introduce;
+	}
+	
 	@Override
 	public String toString() {
 		return "ProjectDTO [project_seq=" + project_seq + ", member_seq=" + member_seq + ", content=" + content
@@ -206,7 +241,10 @@ public class ProjectDTO {
 				+ ", sub_title=" + sub_title + ", url=" + url + ", category=" + category + ", gift_status="
 				+ gift_status + ", gift_delivery=" + gift_delivery + ", dibs_count=" + dibs_count + ", share_count="
 				+ share_count + ", account=" + account + ", main_images_url=" + main_images_url + ", delivery_date="
-				+ delivery_date + ", project_process=" + project_process + ", term=" + term + "]";
+				+ delivery_date + ", project_process=" + project_process + ", term=" + term + ", goal_price_format="
+				+ goal_price_format + ", collection_amount_format=" + collection_amount_format + ", memberDTO="
+				+ memberDTO + ", purpose=" + purpose + ", planing=" + planning + ", budget=" + budget
+				+ ", team_introduce=" + team_introduce + ", item_introduce=" + item_introduce + "]";
 	}
 	
 	

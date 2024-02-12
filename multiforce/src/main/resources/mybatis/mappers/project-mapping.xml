@@ -149,7 +149,7 @@
 
 <update id="insertProjectPlan" parameterType="project.dto.ProjectDTO">
 	update project
-	set content = #{content}
+	set purpose = #{purpose}, planning = #{planning}, budget = #{budget}, team_introduce = #{team_introduce}, item_introduce = #{item_introduce}
 	where project_seq = #{project_seq}
 </update>
 

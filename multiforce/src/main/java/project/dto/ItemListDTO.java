@@ -12,6 +12,12 @@ public class ItemListDTO {
 	int item_count;
 	
 
+	public int getItem_count() {
+		return item_count;
+	}
+	public void setItem_count(int item_count) {
+		this.item_count = item_count;
+	}
 	public int getItem_list_seq() {
 		return item_list_seq;
 	}

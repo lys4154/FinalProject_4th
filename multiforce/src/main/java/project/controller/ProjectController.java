@@ -25,6 +25,7 @@ import board.dto.CommunityDTO;
 import board.dto.UpdateReplyDTO;
 import board.dto.updateBoardDTO;
 import board.service.BoardService;
+import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.http.HttpSession;
 import member.dto.MemberDTO;
 import member.service.MemberService;
@@ -508,7 +509,11 @@ public class ProjectController {
 	@ResponseBody
 	public String saveItemOption(@RequestBody ItemOptionDTO itemOptionDTO, HttpSession session) {
 		try {
-			itemOptionService.createItemOption(itemOptionDTO, session);
+			if(StringUtils.isNotBlank(itemOptionDTO.getItem_option_name())) {
+				itemOptionService.createItemOption(itemOptionDTO, session);
+			}else {
+				itemOptionService.defaultItemOption(itemOptionDTO, session);	
+			}			
 			return "Success";
 		} catch (Exception e) {
 			e.printStackTrace();
