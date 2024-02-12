@@ -28,9 +28,10 @@ ${dto.collectorDTO.nickname }
 	<c:forEach var="bundle" items="${count.bundleDTOList}">
 		번들이름: ${bundle.bundle_name }<br>
 		번들가격: ${bundle.bundle_price}<br>
-		<c:forEach var="item" items="${bundle.itemDTOList }">
-			아이템 명: ${item.item_name}<br>
-			<c:forEach var="option" items="${item.optionDTOList }">
+		<c:forEach var="itemList" items="${bundle.itemListDTOList }">
+			아이템 명: ${itemList.itemDTO.item_name}<br>
+			아이템 개수: ${itemList.item_count }<br>
+			<c:forEach var="option" items="${itemList.itemDTO.optionDTOList }">
 				옵션 명:${option.item_option_name }<br>
 			</c:forEach>
 		</c:forEach>
