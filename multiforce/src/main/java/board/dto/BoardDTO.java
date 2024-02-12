@@ -11,8 +11,16 @@ public class BoardDTO {
     private LocalDateTime help_ask_date;
     private Integer parent_seq;
     private int reply_status;
+    private String nickname;
     
+
     
+	public String getNickname() {
+		return nickname;
+	}
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
 	public int getHelp_ask_seq() {
 		return help_ask_seq;
 	}
