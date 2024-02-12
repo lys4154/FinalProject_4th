@@ -29,7 +29,6 @@ public class ProjectDiscoverDTO {
 	int share_count;
 	String account;
 	String main_images_url;
-	LocalDateTime delivery_date;
 	ProjectProcess project_process;
 	long term;
 	
@@ -154,12 +153,6 @@ public class ProjectDiscoverDTO {
 	public void setMain_images_url(String main_images_url) {
 		this.main_images_url = main_images_url;
 	}
-	public LocalDateTime getDelivery_date() {
-		return delivery_date;
-	}
-	public void setDelivery_date(LocalDateTime delivery_date) {
-		this.delivery_date = delivery_date;
-	}
 	public int getProject_process() {
 		return project_process.getCode();
 	}
@@ -176,8 +169,7 @@ public class ProjectDiscoverDTO {
 				+ start_date + ", due_date=" + due_date + ", long_title=" + long_title + ", short_title=" + short_title
 				+ ", sub_title=" + sub_title + ", url=" + url + ", category=" + category + ", gift_status="
 				+ gift_status + ", gift_delivery=" + gift_delivery + ", dibs_count=" + dibs_count + ", share_count="
-				+ share_count + ", account=" + account + ", main_images_url=" + main_images_url + ", delivery_date="
-				+ delivery_date + ", project_process=" + project_process + "]";
+				+ share_count + ", account=" + account + ", main_images_url=" + main_images_url + ",  project_process=" + project_process + "]";
 	}
 	
 }
