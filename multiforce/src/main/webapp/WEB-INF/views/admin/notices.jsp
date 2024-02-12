@@ -17,7 +17,7 @@ $(document).ready(function(){
 	
 	let loginUserLevel = "${login_user_level}"
 	if(loginUserLevel == 2){
-		$("#write_btn_wrap").html("<button id='write_btn'><a href='/notices/write'>글쓰기</a></button>")
+		$("#write_btn_wrap").html("<a href='/notices/write'><button id='write_btn'>글쓰기</button></a>")
 	}
 	$("#discover_category").val("${category}");
 	

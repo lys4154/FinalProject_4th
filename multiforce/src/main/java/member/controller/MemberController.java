@@ -33,52 +33,33 @@ public class MemberController {
 	@PostMapping("/login")
 	public String loginProcess(String id, String pw, String from, HttpSession session, Model m) {
 	
-		if(id.equals("test") && pw.equals("1234")) {
-			session.setAttribute("login_user_id", id);
-			session.setAttribute("login_user_level", 1);
-			session.setAttribute("login_user_name", "일반회원");
-			session.setAttribute("login_user_seq", "");
-			if(from.equals("mainpage")) {
-				return "redirect:/";
-			}
-			return "redirect:/" + from;
-		}else if(id.equals("admin") && pw.equals("1234")) {
-			session.setAttribute("login_user_id", id);
-			session.setAttribute("login_user_level", 2);
-			session.setAttribute("login_user_name", "관리자용");
-			session.setAttribute("login_user_seq", "");
+		MemberDTO result = memberService.loginProcess(id, pw);
+		if(result != null) {
+			//김소영 추가, 탈퇴날짜 있으면 로그인 불가
+            if (result.getResign_date() != null) {
+                m.addAttribute("fail_id", id);
+                m.addAttribute("result", "실패");
+                return "member/login";
+            }
+			
+			session.setAttribute("login_user_id", result.getMember_id());
+			session.setAttribute("login_user_level", result.getLevel());
+			session.setAttribute("login_user_name", result.getMember_name());
+			session.setAttribute("login_user_seq", result.getMember_seq());
+			session.setAttribute("login_user_nickname", result.getNickname());
+			session.setAttribute("login_user_img", result.getProfile_img());
+
 			if(from.equals("mainpage")) {
 				return "redirect:/";
 			}
 			return "redirect:/" + from;
 		}else {
-			MemberDTO result = memberService.loginProcess(id, pw);
-			if(result != null) {
-				//김소영 추가, 탈퇴날짜 있으면 로그인 불가
-	            if (result.getResign_date() != null) {
-	                m.addAttribute("fail_id", id);
-	                m.addAttribute("result", "실패");
-	                return "member/login";
-	            }
-				
-				session.setAttribute("login_user_id", result.getMember_id());
-				session.setAttribute("login_user_level", result.getLevel());
-				session.setAttribute("login_user_name", result.getMember_name());
-				session.setAttribute("login_user_seq", result.getMember_seq());
-				session.setAttribute("login_user_nickname", result.getNickname());
-				session.setAttribute("login_user_img", result.getProfile_img());
-
-				if(from.equals("mainpage")) {
-					return "redirect:/";
-				}
-				return "redirect:/" + from;
-			}else {
-				m.addAttribute("fail_id", id);
-				m.addAttribute("result", "실패");
-				return "member/login";
-			}
+			m.addAttribute("fail_id", id);
+			m.addAttribute("result", "실패");
+			return "member/login";
 		}
 	}
+	
 	
 	@GetMapping("/logout")
 	public String logout(HttpSession session) {
