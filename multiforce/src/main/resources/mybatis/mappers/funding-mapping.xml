@@ -126,7 +126,14 @@
 	<result property="project_seq" column="project_seq"/>
 	<result property="bundle_name" column="bundle_name"/>
 	<result property="bundle_price" column="bundle_price"/>
-	<collection property="itemDTOList" resultMap="itemMap"/>
+	<collection property="itemListDTOList" resultMap="itemListMap"/>
+</resultMap>
+<resultMap type="itemlistdto" id="itemListMap">
+	<id property="item_list_seq" column="item_list_seq"/>
+	<result property="item_seq" column="item_seq"/>
+	<result property="bundle_seq" column="bundle_seq"/>
+	<result property="item_count" column="item_count"/>
+	<association property="itemDTO" resultMap="itemMap"/>
 </resultMap>
 <resultMap type="itemdto" id="itemMap">
 	<id property="item_seq" column="item_seq"/>
@@ -145,6 +152,7 @@ join funding_bundle_count c on f.fund_seq = c.fund_seq
 join chosen_option o on c.bundle_count_seq = o.bundle_count_seq
 left join item_option n on o.item_option_seq = n.item_option_seq
 join item i on n.item_seq = i.item_seq
+join item_list l on l.item_seq = i.item_seq
 join bundle b on c.bundle_seq = b.bundle_seq
 join project p on f.project_seq = p.project_seq
 join member_info m on m.member_seq = p.member_seq

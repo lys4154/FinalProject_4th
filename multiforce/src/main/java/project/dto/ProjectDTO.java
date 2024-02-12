@@ -32,7 +32,7 @@ public class ProjectDTO {
 	int share_count;
 	String account;
 	String main_images_url;
-	LocalDateTime delivery_date;
+	LocalDate delivery_date;
 	ProjectProcess project_process;
 	long term;
 	String goal_price_format;
@@ -187,10 +187,10 @@ public class ProjectDTO {
 	public void setMain_images_url(String main_images_url) {
 		this.main_images_url = main_images_url;
 	}
-	public LocalDateTime getDelivery_date() {
+	public LocalDate getDelivery_date() {
 		return delivery_date;
 	}
-	public void setDelivery_date(LocalDateTime delivery_date) {
+	public void setDelivery_date(LocalDate delivery_date) {
 		this.delivery_date = delivery_date;
 	}
 	public int getProject_process() {

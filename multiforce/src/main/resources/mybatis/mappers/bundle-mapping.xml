@@ -23,7 +23,14 @@
 	<result property="project_seq" column="project_seq"/>
 	<result property="bundle_name" column="bundle_name"/>
 	<result property="bundle_price" column="bundle_price"/>
-	<collection property="itemDTOList" resultMap="itemMap"/>
+	<collection property="itemListDTOList" resultMap="itemListMap"/>
+</resultMap>
+<resultMap type="itemlistdto" id="itemListMap">
+	<id property="item_list_seq" column="item_list_seq"/>
+	<result property="item_seq" column="item_seq"/>
+	<result property="bundle_seq" column="bundle_seq"/>
+	<result property="item_count" column="item_count"/>
+	<association property="itemDTO" resultMap="itemMap"/>
 </resultMap>
 <resultMap type="itemdto" id="itemMap">
 	<id property="item_seq" column="item_seq"/>
@@ -38,7 +45,7 @@
 </resultMap>
 <select id="getBundleList" parameterType="list" resultMap="bundleMap">
 	select bundle_name, bundle_price, b.bundle_seq, item_list_seq, l.item_seq , item_count, b.project_seq,
-		item_name, item_option_seq, item_option_name 
+		item_name, item_option_seq, item_option_name, item_list_seq
 	from item_list l
 	join item i on l.item_seq = i.item_seq
 	left join item_option o on l.item_seq = o.item_seq

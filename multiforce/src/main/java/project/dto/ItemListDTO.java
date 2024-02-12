@@ -1,5 +1,7 @@
 package project.dto;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 @Component
@@ -10,7 +12,8 @@ public class ItemListDTO {
 	int item_seq;
 	int bundle_seq;
 	int item_count;
-	
+  
+  ItemDTO itemDTO;
 
 	public int getItem_count() {
 		return item_count;
@@ -30,18 +33,24 @@ public class ItemListDTO {
 	public void setItem_seq(int item_seq) {
 		this.item_seq = item_seq;
 	}
-
 	public int getBundle_seq() {
 		return bundle_seq;
 	}
 	public void setBundle_seq(int bundle_seq) {
 		this.bundle_seq = bundle_seq;
 	}
-
-	@Override
-	public String toString() {
-		return "ItemListDTO [item_list_seq=" + item_list_seq + ", item_seq=" + item_seq + ", bundle_seq=" + bundle_seq
-				+ ", item_count=" + item_count + "]";
+	public int getItem_count() {
+		return item_count;
 	}
-
+	public void setItem_count(int item_count) {
+		this.item_count = item_count;
+	}
+	public ItemDTO getItemDTO() {
+		return itemDTO;
+	}
+	public void setItemDTO(ItemDTO itemDTO) {
+		this.itemDTO = itemDTO;
+	}
+	
+	
 }

@@ -197,15 +197,15 @@ $(document).ready(function(){
 						<div>${login_user_name}</div>
 					</div>
 				</div>
-				<div class="my_menu_list" style="display: none;">
-					<div class="my_menu_list_tab"><a href="/myprofile">프로필</a></div>
-					<div class="my_menu_list_tab"><a href="/funded">후원 프로젝트</a></div>
-					<div class="my_menu_list_tab"><a href="/mydibs">관심 프로젝트</a></div>
-					<div class="my_menu_list_tab"><a href="/follow">팔로우</a></div>
-					<div class="my_menu_list_tab"><a href="/allask">메세지</a></div>
-					<div class="my_menu_list_tab"><a href="/myproject">내 프로젝트</a></div>
-					<div class="my_menu_list_tab"><a href="/settings">회원정보 수정</a></div>
-					<div class="my_menu_list_tab"><a href="/logout">로그아웃</a></div>				
+					<div class="my_menu_list" style="display: none;">
+					<a href="/myprofile"><div class="my_menu_list_tab">프로필</div></a>
+					<a href="/funded"><div class="my_menu_list_tab">후원 프로젝트</div></a>
+					<a href="/mydibs"><div class="my_menu_list_tab">관심 프로젝트</div></a>
+					<a href="/follow"><div class="my_menu_list_tab">팔로우</div></a>
+					<a href="/allask"><div class="my_menu_list_tab">메세지</div></a>
+					<a href="/myproject"><div class="my_menu_list_tab">내 프로젝트</div></a>
+					<a href="/settings"><div class="my_menu_list_tab">회원정보 수정</div></a>
+					<a href="/logout"><div class="my_menu_list_tab">로그아웃</div>	</a>		
 				</div>
 				`;
 		}else{
