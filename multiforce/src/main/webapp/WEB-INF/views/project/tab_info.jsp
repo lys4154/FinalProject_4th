@@ -7,7 +7,6 @@
 <meta charset="UTF-8">
 <title>기본정보</title>
 <script src="/js/jquery-3.7.1.min.js"></script>
-<!-- <script src="js/imageUpload.js"></script> -->
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <script>
     $(document).ready(function() {
@@ -231,7 +230,7 @@
 
 <!-- footer -->
 
-<!-- <script> // 이미지 관련 스크립트
+<script> // 이미지 관련 스크립트
     function getImageFiles(e) {
       const uploadFiles = [];
       const files = e.currentTarget.files;
@@ -274,7 +273,7 @@
     upload.addEventListener('click', () => realUpload.click());
 
     realUpload.addEventListener('change', getImageFiles);
-  </script> -->
+  </script> 
 <!-- tab_fundingPlan -->
 <script>
 function inputPrice(num) {

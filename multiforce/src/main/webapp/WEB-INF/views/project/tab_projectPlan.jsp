@@ -19,8 +19,8 @@
 		        		purpose: $("#purpose").val(),
 		        		planning: $("#planning").val(),
 		        		budget: $("#budget").val(),
-		        		introduce: $("#introduce").val(),
-		        		item: $("#item").val()
+		        		team_introduce: $("#team_introduce").val(),
+		        		item_introduce: $("#item_introduce").val()
 		        };
 		
 		        // AJAX request
@@ -30,9 +30,11 @@
 		            contentType: "application/json",
 		            data: JSON.stringify(formData),
 		            success: function(response) {
+		            	alert("저장되었습니다.");
 		                console.log("Success:", response);
 		            },
 		            error: function(error) {
+		            	alert("실패하였습니다.");
 		                console.error("Error:", error);
 		            }
 		        });
@@ -117,7 +119,7 @@ $('.budget').summernote({
 <h2>프로젝트 팀 소개</h2>
 <dl>프로젝트를 진행하는 팀에 대해서 소개해주세요.</dl>
 <div class="container">
-	<textarea class="introduce" name="introduceEditor" id="introduce"></textarea>
+	<textarea class="introduce" name="introduceEditor" id="team_introduce"></textarea>
 </div>
 <script>
 $('.introduce').summernote({
@@ -140,7 +142,7 @@ $('.introduce').summernote({
 <h2>선물 설명</h2>
 <dl>후원 금액별로 받을 수 있는 선물을 설명해주세요.</dl>
 <div class="container">
-	<textarea class="item" name="itemEditor" id="item"></textarea>
+	<textarea class="item" name="itemEditor" id="item_introduce"></textarea>
 </div>
 <script>
 $('.item').summernote({

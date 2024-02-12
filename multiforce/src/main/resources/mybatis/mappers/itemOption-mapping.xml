@@ -27,9 +27,14 @@
 	select item_seq from item where bundle_seq = #{bundle_seq}
 </select>
 
-<insert id="insertItemOption" parameterType="project.dto.ItemDTO">
-	insert into item (item_seq, item_option_name)
+<insert id="insertItemOption" parameterType="project.dto.ItemOptionDTO">
+	insert into item_option (item_seq, item_option_name)
 	values (#{item_seq}, #{item_option_name}) 
+</insert>
+
+<insert id="defaultOption" parameterType="project.dto.ItemOptionDTO">
+	insert into item_option (item_seq, item_option_name)
+	values (#{item_seq}, '옵션 없음')
 </insert>
 
 </mapper>	
