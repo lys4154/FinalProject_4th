@@ -35,6 +35,9 @@ public class NoticeService {
 		if(page > totalPage) {
 			page = totalPage;
 		}
+		if(page == 0) {
+			page = 1;
+		}
 		int noticesStart = (page - 1) * numberPerPage;
 		if(category.equals("event")) {
 			List<NoticeDTO> tmp = dao.selectAllEvent(category);
