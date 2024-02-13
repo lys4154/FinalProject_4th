@@ -46,8 +46,8 @@ public class BoardController {
 		
 		Object currentUserObj = session.getAttribute("login_user_seq");
 		if (currentUserObj != null) {
-			String currentUserString = (String) session.getAttribute("login_user_seq");
-			int currentUser = Integer.parseInt(currentUserString); //현재 회원 번호
+			int currentUser = (int) session.getAttribute("login_user_seq");
+
 			model.addAttribute("loggedin_user", currentUser);
 			
 			//프로젝트 권한있는지?
@@ -77,10 +77,10 @@ public class BoardController {
 		//로그인된 회원이라면
 		if (currentUserObj != null) {
 			
-			String currentUserString = (String) session.getAttribute("login_user_seq");
+			int currentUser = (int) session.getAttribute("login_user_seq");
         	
 			//로그인된 회원 아이디 정수형으로 변환하기
-			int currentUser = Integer.parseInt(currentUserString);
+
         	model.addAttribute("loggedin_user", currentUser);
         	
         	//후원자인지 true/false 리턴하기 
@@ -109,10 +109,9 @@ public class BoardController {
 		updateBoardDTO dto = new updateBoardDTO();
 		
 		if (currentUserObj != null) {
-			String currentUserString = (String) session.getAttribute("login_user_seq");
+			int currentUser = (int) session.getAttribute("login_user_seq");
         	
-			//로그인된 회원 아이디 정수형으로 변환하기
-			int currentUser = Integer.parseInt(currentUserString);
+
 
 			
 			boolean userIsProjectManager = boardService.userIsProjectManager(project_seq, currentUser);
@@ -143,8 +142,8 @@ public class BoardController {
 
 		
 		try {
-	        String loggedInUserId = (String) session.getAttribute("login_user_seq");
-	        current_user = Integer.parseInt(loggedInUserId);
+	        current_user = (int) session.getAttribute("login_user_seq");
+
 	        //여기 작업중
 
 	        CommunityDTO communityPost = boardService.getCommunityPostByBoardSeq(pro_board_seq);
@@ -169,8 +168,8 @@ public class BoardController {
 
 		
 		try {
-	        String loggedInUserId = (String) session.getAttribute("login_user_seq");
-	        current_user = Integer.parseInt(loggedInUserId);
+	        current_user = (int) session.getAttribute("login_user_seq");
+	
 	        updateBoardDTO updatePost = boardService.getUpdatePostByUpdateSeq(update_seq);
 
 	        if (updatePost != null && current_user == updatePost.getMember_seq()) {
@@ -191,9 +190,9 @@ public class BoardController {
 		LocalDateTime del_date = LocalDateTime.now();
 		
 		try {
-	        String loggedInUserId = (String) session.getAttribute("login_user_seq");
+	        current_user = (int) session.getAttribute("login_user_seq");
 	        
-	        current_user = Integer.parseInt(loggedInUserId);
+
 	        
 	        UpdateReplyDTO updateComment = boardService.getUpdateCommentByReplySeq(update_reply_seq);
 
@@ -216,9 +215,9 @@ public class BoardController {
 		LocalDateTime del_date = LocalDateTime.now();
 		
 		try {
-	        String loggedInUserId = (String) session.getAttribute("login_user_seq");
+			current_user = (int) session.getAttribute("login_user_seq");
 	        
-	        current_user = Integer.parseInt(loggedInUserId);
+
 	        
 	        //작업중 여기
 	        CommunityDTO CommunityComment = boardService.getCommunityCommentByReplySeq(pro_board_seq);

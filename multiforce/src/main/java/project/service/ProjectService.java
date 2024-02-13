@@ -37,6 +37,11 @@ public class ProjectService {
         return projectDao.getAllUnapprovedProjects(); 
     }
 	
+	//반려이유 가져오기
+	public String getRejectReason(int project_seq) {
+		System.out.println("Reason:"+projectDao.getRejectReason(project_seq));
+		return projectDao.getRejectReason(project_seq);
+	}
 	
 	//승인 프로젝트 개수
 	public int approvedCount() {

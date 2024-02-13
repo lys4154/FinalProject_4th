@@ -3,13 +3,15 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-
+<%@ include file="/WEB-INF/views/common/header.jsp" %>
 
 <!DOCTYPE html>
 <html>
 <head>
+
     <title>1:1 고객센터 게시판</title>
     <link rel="stylesheet" type="text/css" href="/css/board/main.css">
+    <meta charset="UTF-8">
 </head>
 <body>
 
@@ -58,6 +60,6 @@
     </div>
 
 
-    
+    <%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
 </html>

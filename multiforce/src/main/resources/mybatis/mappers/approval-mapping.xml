@@ -30,4 +30,5 @@
 	    UPDATE project SET project_process = 3
 	    WHERE project_seq = #{project_seq}
     </update>
+
 </mapper>
