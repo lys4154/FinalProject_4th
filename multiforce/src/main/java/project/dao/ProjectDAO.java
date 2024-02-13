@@ -151,6 +151,8 @@ public interface ProjectDAO {
 
 	ProjectDTO getProjectMember(int project_seq);
 
+	String getRejectReason(int project_seq);
+
 
 
 }

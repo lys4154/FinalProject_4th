@@ -29,7 +29,7 @@ public class NoticeController {
 	@GetMapping("/notices")
 	public ModelAndView notices(String category, String page, String query) {
 		HashMap<String, Object> resultMap = null;
-		if(page == null || page.equals("")) {
+		if(page == null || page.equals("") || page.equals("0")) {
 			page = "1";
 		}
 		int parsedPage = Integer.parseInt(page);

@@ -147,6 +147,7 @@
 <h1>프로젝트 정보</h1>
 <!-- header -->
 <hr>
+<div class=project_info>
 <form action="/saveProject" method="post">
 <div class="contents">
 	<div class="planContents">
@@ -226,7 +227,7 @@
 	</div>
 	<hr>
 </div>
-
+</div>
 
 <!-- footer -->
 

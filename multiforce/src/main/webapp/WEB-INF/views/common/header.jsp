@@ -209,7 +209,7 @@ $(document).ready(function(){
 				</div>
 				`;
 		}else{
-			$("#project_design_btn").text("프로젝트 심사").attr("href", "프로젝트 승인 페이지 url");
+			$("#project_design_btn").text("프로젝트 심사").attr("href", "project_approve_list");
 			html =
 				`<div id = "login_wrap">
 					<div class="user_name_img">

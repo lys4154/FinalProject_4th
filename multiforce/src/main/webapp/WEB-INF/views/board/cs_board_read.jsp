@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> 
+<%@ include file="/WEB-INF/views/common/header.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,6 +13,7 @@
 <link rel="stylesheet" type="text/css" href="/css/board/main.css">
 </head>
 <body>
+
 <%
 String loggedInUserId = null;
 int user_id = 0;
@@ -150,5 +152,6 @@ function deletePost(comment_id) {
     }
 }
 </script>
+<%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
 </html>
