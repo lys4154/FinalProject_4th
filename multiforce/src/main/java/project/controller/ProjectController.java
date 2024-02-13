@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
+import project.code.ProjectCategory;
 import board.dto.BoardDTO;
 import board.dto.CommunityDTO;
 import board.dto.UpdateReplyDTO;
@@ -80,14 +80,30 @@ public class ProjectController {
 	public String projectManagement() {
 		return "project/projectmanagement";
 	}
-
+	//반려이유 가져오기
+	@GetMapping("/rejection-reason/{project_seq}")
+    @ResponseBody
+    public String getRejectionReason(@PathVariable("project_seq") Integer project_seq) {
+        String reason = projectService.getRejectReason(project_seq);
+        System.out.println("id:"+project_seq);
+        return reason != null ? reason : "반려 이유를 가져오는 데 실패했습니다.";
+    }
 	//프로젝트 승인 리스트
 	@GetMapping("project_approve_list")
 	public String showAppoveList(Model model, HttpSession session) {
 		
 		//세션 레벨 가져오기
 
-		int current_user = (int) session.getAttribute("login_user_level");
+		Object user_level_attribute = session.getAttribute("login_user_level");
+
+		int current_user = 0;
+		if(user_level_attribute != null) {
+			current_user = (int) session.getAttribute("login_user_level");
+		}else {
+			model.addAttribute("errorMessage", "해당 페이지에 권한이 없습니다.");
+			return "board/error/error";
+		}
+
 
 
 			if(current_user == 2) {
@@ -151,6 +167,14 @@ public class ProjectController {
 
 
         List<ProjectDTO> projects = projectService.getApprovedProjectsPage(page, pageSize);
+        
+        for (ProjectDTO project : projects) {
+            int memberSeq = project.getMember_seq();
+            MemberDTO project_user = memberService.getNicknameById(memberSeq);
+            String member = project_user.getNickname();
+            
+            project.setNickname(member);
+        }
 
         model.addAttribute("style", "approved");
         model.addAttribute("projects", projects);
@@ -170,6 +194,14 @@ public class ProjectController {
         
 		List<ProjectDTO> projects = projectService.getRejectedProjectsPage(page, pageSize);
 		
+		for (ProjectDTO project : projects) {
+            int memberSeq = project.getMember_seq();
+            MemberDTO project_user = memberService.getNicknameById(memberSeq);
+            String member = project_user.getNickname();
+            
+            project.setNickname(member);
+        }
+		
 		model.addAttribute("style","rejected");
 		  model.addAttribute("projects", projects);
 	        model.addAttribute("currentPage", page);
@@ -187,6 +219,14 @@ public class ProjectController {
 	    int totalPages = (int) Math.ceil((double) totalProjects / pageSize); // 전체 페이지 수
 		
 		List<ProjectDTO> projects = projectService.getUnapprovedProjects(page, pageSize); 
+		
+		for (ProjectDTO project : projects) {
+            int memberSeq = project.getMember_seq();
+            MemberDTO project_user = memberService.getNicknameById(memberSeq);
+            String member = project_user.getNickname();
+            
+            project.setNickname(member);
+        }
 		
 		 model.addAttribute("style", "unapproved");
 	        model.addAttribute("projects", projects);

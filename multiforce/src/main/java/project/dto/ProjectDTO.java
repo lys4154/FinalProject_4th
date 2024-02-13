@@ -43,7 +43,14 @@ public class ProjectDTO {
 	String budget;
 	String team_introduce;
 	String item_introduce;
+	String nickname;
 	
+	public String getNickname() {
+		return nickname;
+	}
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
 	public MemberDTO getMemberDTO() {
 		return memberDTO;
 	}

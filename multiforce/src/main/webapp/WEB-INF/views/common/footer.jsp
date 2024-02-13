@@ -17,7 +17,7 @@
 	<div class="footer_tab"><a href="notices?category=notice&page=1">공지사항</a></div>
 	<div class="footer_tab"><a href="notices?category=event&page=1">이벤트</a></div>
 	<div class="footer_tab"><a href="">팀소개</a></div>
-	<div class="footer_tab"><a href="">고객센터 1대1 문의</a></div>
+	<div class="footer_tab"><a href="board_list/cs">고객센터 1대1 문의</a></div>
 </div>
 </footer>
 </html>
