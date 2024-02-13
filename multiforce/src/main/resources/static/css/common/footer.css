@@ -15,9 +15,10 @@ footer{
 }
 .wrap {
 	height: auto;
-  	min-height:840px;
+ /*min-height:840px;*/
   	position:relative;
   	padding-bottom:70px;/* footer height */
+  	min-height: 100%;
   	
 }
 html, body {
