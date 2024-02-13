@@ -1,0 +1,150 @@
+@charset "UTF-8";
+
+
+/* 전체 div*/
+.out_con {
+	width: 1040px;
+	margin:20px auto;
+	padding: 10px 10px;
+	font-size: 14px;
+	align-items: center;
+}
+img{
+	width: 240px;
+	height: 240px;
+	object-fit: cover;
+	margin-bottom: 10px;	
+}
+
+/*상단 카테고리*/
+.top_title{
+	display: flex;
+    align-items: flex-end;
+    margin-bottom: 30px;
+}
+.clicked_category{
+	font-size: 20px;
+	color: #292929;
+	font-weight: 600;
+	margin-right: 20px;
+}
+.clicked_category_ment{
+	font-size: 16px;
+}
+#clicked_category_count{
+	color: #fc035a;
+	font-weight: 600;
+}
+
+
+#select_process, #select_sort{
+	height: 30px;
+	padding-left: 5px;
+    border: 1px solid #cfcfcf;
+    border-radius: 5px;
+   	padding: 0 5px;
+   	outline-color: grey;
+   	margin: 0 5px 20px 0;	
+}
+
+#category_condition_btn, #query_condition_btn{
+	height: 30px;
+	border: 1px solid #cfcfcf;
+	background-color: #fff;
+	cursor: pointer;
+	outline: none;
+	border-radius: 5px;
+	margin: 0 5px 20px 0;
+}
+
+
+/* 프로젝트 컨테이너*/
+#project_list{
+	display: flex;
+	flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.container{
+	display: flex;
+	flex-direction: column;
+	width: 24%;
+  	height:430px;
+  	margin: 5px 5px 30px 5px;
+    border-bottom: 2px solid #fc035a;
+}
+
+.pro_category{
+	font-size: 13px;
+	display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+.pro_info{
+	padding: 3px;
+}
+.long_title{
+	font-size: 16px;
+	font-weight: 600;
+	color: black;
+	margin: 2px 0 10px 0;
+	word-break: keep-all;
+}
+.sub_title{
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	word-break: keep-all;	
+	overflow: hidden;
+	font-size: 14px;
+	text-overflow: ellipsis;
+}
+.pro_container{
+    display: flex;
+    flex-direction: column;
+    height: -webkit-fill-available;
+    justify-content: space-between;
+}
+.pro_info{
+    display: flex;
+    flex-direction: column;
+}
+.pro_footer{
+    display: flex;
+    align-items: baseline;
+    padding-bottom: 5px;    
+}
+.achieve{
+	color: #fc035a;
+	font-weight: 600;
+	margin-right: 5px;
+}
+.amount{
+	font-size: 12px;
+}
+.term{
+    margin-inline-start: auto;
+	color: #fc035a;
+}
+
+.project_dibs_btn, .dibs_cancel_btn, .dib_cancel_btn{
+	font-size: 13px;
+	background-color: #fff;
+	cursor: pointer;
+	border:none;
+	outline: none;
+	font-weight:600;
+	color: #82c8a0;
+}
+
+
+#more_project_btn{
+	border: 1px solid #cfcfcf;
+	border-radius: 5px;
+	cursor: pointer;
+	width: 200px;
+	height: 40px;
+	background-color: #fff;
+	letter-spacing: 2px;
+	font-weight: 600;
+}

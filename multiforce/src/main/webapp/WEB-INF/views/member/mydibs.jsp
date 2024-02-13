@@ -287,20 +287,20 @@ $(document).ready(function() {
 				                    	<div><img src="${project.main_images_url}" alt="Project Image"></div>
 				                    </a>
 				                    <div class="pro_container">
-				                    <div class="pro_info">
-					                    <div class="category"> ${project.category} ㅣ ${project.nickname }</div>
-					                    <a href="${project.url}">
-					                    	<div class="long_title"> ${project.long_title}</div>
-					                    </a>
-					                    <div class="sub_title"> ${project.sub_title}</div>
-					                    
-		   			                    <div> <!-- 관심버튼 수정해야함 -->
-					                    	<input type="button" class="cancel_btn" value="관심 취소" data-project_seq="${project.project_seq}" data-member_seq="${memberSeq}">
+					                    <div class="pro_info">
+						                    <div class="category"> ${project.category} ㅣ ${project.nickname }</div>
+						                    <a href="${project.url}">
+						                    	<div class="long_title"> ${project.long_title}</div>
+						                    </a>
+						                    <div class="sub_title"> ${project.sub_title}</div>
+						                    
+			   			                    <div> <!-- 관심버튼 수정해야함 -->
+						                    	<input type="button" class="cancel_btn" value="관심 취소" data-project_seq="${project.project_seq}" data-member_seq="${memberSeq}">
+						                    </div>
 					                    </div>
-				                    </div>
 					                    	
-			                    	<div class="pro_footer">
-									<c:set var="achievementRate" value="${(project.collection_amount / project.goal_price) * 100}" />									
+			                    		<div class="pro_footer">
+										<c:set var="achievementRate" value="${(project.collection_amount / project.goal_price) * 100}" />									
 									    <script>
 									        $(document).ready(function() {                
 									            // achievementRate 값을 JSTL 변수에서 가져와서 사용
@@ -311,7 +311,7 @@ $(document).ready(function() {
 									            $("#achievementRate-${project.project_seq}").text(achievementText);
 									        });
 									    </script>       
-		
+			
 				                    	<div class="achieve" id="achievementRate-${project.project_seq}"></div>
 				                    	<div class="amount"> <fmt:formatNumber value="${project.collection_amount}" type="currency" currencySymbol="" />원 </div>
 				                    	<div class="term">

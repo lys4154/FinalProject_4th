@@ -65,14 +65,6 @@ public class ProfileController {
 	@Autowired
 	private FollowService followservice;
 	@Autowired
-	private BundleService bundleservice;
-	@Autowired
-	private ItemService itemservice;
-	@Autowired
-	private ItemOptionService itemoptionservice;
-	@Autowired
-	private FundingBundleCountService countservice;
-	@Autowired
 	private ProjectDibsService dibsservice;
 	@Autowired
 	private DeliveryService deliveryservice;
@@ -399,7 +391,7 @@ public class ProfileController {
         FundingDTO dto = fundingservice.getPaymentInfo(fundseq);
 		mv.addObject("dto", dto);
 
-		System.out.println(dto.getbCountDTOList().get(0));
+		System.out.println("dto정보" + dto.getbCountDTOList().get(0));
 		//System.out.println(dto.getbCountDTOList().get(1));
 
 

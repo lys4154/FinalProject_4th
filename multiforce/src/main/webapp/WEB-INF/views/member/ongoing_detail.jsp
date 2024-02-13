@@ -24,26 +24,36 @@ var bundleData;
 $(document).ready(function() {	
 	
 	//넘길 꾸러미 정보 
-	bundleData = [
-	   <c:forEach var="bundleEntry" items="${bundleItem}" varStatus="status">
-	     {
-	       name: "${bundleEntry.key}",
-	       count: ${bundleCount[bundleEntry.key]},
-	       items: [
-	         <c:forEach var="itemEntry" items="${bundleEntry.value}" varStatus="innerStatus">
-	           {
-	             itemName: "${itemEntry}",
-	             options: [
-	               <c:forEach var="optionEntry" items="${itemOption[itemEntry]}" varStatus="optionStatus">
-	                 "${optionEntry}"<c:if test="${!optionStatus.last}">, </c:if>
-	               </c:forEach>
-	             ]
-	           }<c:if test="${!innerStatus.last}">, </c:if>
-	         </c:forEach>
-	       ]
-	     }<c:if test="${!status.last}">, </c:if>
-	   </c:forEach>
-	 ];	
+	bundleData = [];
+	
+		<c:forEach var="count" items="${dto.bCountDTOList}">
+		    <c:forEach var="bundle" items="${count.bundleDTOList}">
+		        // 각 꾸러미에 대한 정보를 객체로 생성하여 배열에 추가
+		        var bundleInfo = {
+		            name: "${bundle.bundle_name}",
+		            count: ${count.perchase_count},
+		            items: []
+		        };
+	
+		        <c:forEach var="item" items="${bundle.itemListDTOList}">
+		            // 각 아이템에 대한 정보를 객체로 생성하여 꾸러미 정보의 items 배열에 추가
+		            var itemInfo = {
+		                itemName: "${item.itemDTO.item_name}",
+		                options: []
+		            };
+	
+		            <c:forEach var="option" items="${item.itemDTO.optionDTOList}">
+		                // 각 옵션에 대한 정보를 배열에 추가
+		                itemInfo.options.push("${option.item_option_name}");
+		            </c:forEach>
+	
+		            bundleInfo.items.push(itemInfo);
+		        </c:forEach>
+	
+		        bundleData.push(bundleInfo);
+		    </c:forEach>
+		</c:forEach>
+	 	
 	
 	document.getElementById("bundleDataInput").value = JSON.stringify(bundleData);
 	
@@ -108,8 +118,7 @@ $(document).ready(function() {
 					<div class="long_title"><a href="${dto.pDTO.url }">${dto.pDTO.long_title }</a></div>				
 					<div class="pro_info"> 
 						<span class="amount"> <fmt:formatNumber value="${dto.pDTO.collection_amount }" type="currency" currencySymbol="" />원 </span>
-						<span class="achieve"></span>
-		        	
+						<span class="achieve"></span>		        	
 			        	<span id="d_day">${dto.pDTO.term }일 남음</span>
 			        </div>				
 				</div>
@@ -127,7 +136,7 @@ $(document).ready(function() {
 				</div>
 				<div class="info_flex">
 					<div class="info_flex_left">후원 날짜 </div>
-					<div class="info_flex_right">${dto.fund_date.toLocalDate() }</div>
+					<div class="info_flex_right">${dto.fund_date.toLocalDate()}</div>
 				</div>
 				<div class="info_flex">
 					<div class="info_flex_left">펀딩 마감일 </div>
@@ -144,28 +153,22 @@ $(document).ready(function() {
 					<div class="info_flex_right">
 						<div class="bundle">
 						
-					    <c:forEach var="count" items="${dto.bCountDTOList}">
-					    	<c:forEach var="bundle" items="${count.bundleDTOList}">
-							    <div class="info_inner">
-							        <div>* ${bundle.bundle_name} <span> ( x${count.perchase_count})</span></div>
-							        <c:forEach var="item" items="${bundle.itemDTOList}">
-							            <div class="item_option">
-					                        <span>${item.item_name} </span>
-					                        <c:set var="optionsString" value="" />
-					                        <c:forEach var="option" items="${item.optionDTOList }">
-					                            <c:if test="${not empty option}">
-					                                <c:set var="optionsString" value="${optionsString}${option.item_option_name}, " />
-					                            </c:if>
-					                        </c:forEach>
-					                        <c:if test="${not empty optionsString}">
-					                            <span>(옵션 - ${optionsString.substring(0, optionsString.length() - 2)})</span>
-					                        </c:if>
-						           		</div>            
-							        </c:forEach>
-						        </div>
-					        </c:forEach>				        
-					    </c:forEach>
-					    
+							 <c:forEach var="count" items="${dto.bCountDTOList}">
+								<c:forEach var="bundle" items="${count.bundleDTOList}">
+					    		<div class="info_inner">
+					    		<div>* ${bundle.bundle_name} <span> ( x${count.perchase_count})</span></div>
+					    			<c:forEach var="item" items="${bundle.itemListDTOList}">	
+					    				<div class="item_option">
+					    					<span>${item.itemDTO.item_name} </span>
+					    						<c:forEach var="option" items="${item.itemDTO.optionDTOList }">
+					    							<span>(${option.item_option_name })</span>
+				    							</c:forEach>
+		    							</div>
+	    							</c:forEach>
+    							</div>
+   								</c:forEach>
+							</c:forEach>
+					    				
 					    </div>				    
 					</div>
 				</div>
@@ -208,7 +211,7 @@ $(document).ready(function() {
 				</div>
 				<div class="info_flex">
 					<div class="info_flex_left">배송 예정일 </div>
-					<div class="info_flex_right">${dto.pDTO.delivery_date.toLocalDate()}</div>
+					<div class="info_flex_right">${dto.pDTO.delivery_date}</div>
 				</div>
 				<div class="info_flex">
 					<div class="info_flex_left">운송장 번호 </div>
@@ -216,21 +219,7 @@ $(document).ready(function() {
 				</div>			
 			</div>		
 		</div>
-		
-	<c:forEach var="count" items="${dto.bCountDTOList}">
-		번들구매개수:${count.perchase_count }<br>
-		<c:forEach var="bundle" items="${count.bundleDTOList}">
-			번들이름: ${bundle.bundle_name }<br>
-			번들가격: ${bundle.bundle_price}<br>
-			<c:forEach var="item" items="${bundle.itemDTOList }">
-				아이템 명: ${item.item_name}<br>
-				<c:forEach var="option" items="${item.optionDTOList }">
-					옵션 명:${option.item_option_name }<br>
-				</c:forEach>
-			</c:forEach>
-		</c:forEach>
-		<br>
-	</c:forEach>	
+
 		
 		
 		<div class="button_con">

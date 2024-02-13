@@ -12,13 +12,8 @@
 <link rel="stylesheet" href="/css/common/mainpage.css">
 
 <script>
-
 </script>
-<style>
-img{
-	width: 600px;
-}
-</style>
+
 <body>
 <div class="wrap">
 	<div class="out_con">
