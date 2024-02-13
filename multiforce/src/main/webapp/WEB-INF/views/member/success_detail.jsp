@@ -28,6 +28,12 @@ $(document).ready(function() {
 	    $("#d_day").html("펀딩 성공")
 	}
 	
+	//달성률
+    let amount = ${dto.pDTO.collection_amount * 100};
+    let goal = ${dto.pDTO.goal_price};
+    let achieve = Math.floor(amount/goal);
+    $(".achieve").html(achieve + "%");
+	
 })
 
 </script>
@@ -40,19 +46,14 @@ $(document).ready(function() {
 	<div class="out_con">
 		<div class="content">	
 			<div class="top">
-				<div ><a href="${projectDetail.url }"><img alt="프로젝트 이미지" src="${projectDetail.main_images_url }"></a></div>
+				<div ><a href="${dto.pDTO.url }"><img alt="프로젝트 이미지" src="${dto.pDTO.main_images_url }"></a></div>
 				<div class="top_right">
-					<div class="category_creator">${projectDetail.category} ㅣ ${creator }</div>
-					<div class="long_title"><a href="${projectDetail.url }">${projectDetail.long_title }</a></div>
+					<div class="category_creator">${dto.pDTO.category} ㅣ ${dto.collectorDTO.nickname }</div>
+					<div class="long_title"><a href="${dto.pDTO.url }">${dto.pDTO.long_title }</a></div>
 					<div class="pro_info">
-						<span class="amount"> <fmt:formatNumber value="${projectDetail.collection_amount }" type="currency" currencySymbol="" />원 </span>
-							<script>
-							    let amount = ${projectDetail.collection_amount * 100};
-							    let goal = ${projectDetail.goal_price};
-							    let achieve = Math.floor(amount/goal);
-							    document.write('<span class="achieve">' + achieve + '%</span>');
-							</script>		        	
-			        	<span id="d_day">${dDay }일 남음</span>
+						<span class="amount"> <fmt:formatNumber value="${dto.pDTO.collection_amount }" type="currency" currencySymbol="" />원 </span>
+						<span class="achieve"></span>		        	
+			        	<span id="d_day"> ${dto.pDTO.due_date } 펀딩 종료</span>
 			        </div>
 				</div>
 			</div>
@@ -65,15 +66,15 @@ $(document).ready(function() {
 				</div>
 				<div class="info_flex">
 					<div class="info_flex_left">후원 번호 </div>
-					<div class="info_flex_right">${fundedDetail.fund_seq }</div>
+					<div class="info_flex_right">${dto.fund_seq }</div>
 				</div>
 				<div class="info_flex">
 					<div class="info_flex_left">후원 날짜 </div>
-					<div class="info_flex_right">${fundedDetail.fund_date.toLocalDate() }</div>
+					<div class="info_flex_right">${dto.fund_date.toLocalDate() }</div>
 				</div>
 				<div class="info_flex">
 					<div class="info_flex_left">펀딩 마감일 </div>
-					<div class="info_flex_right">${projectDetail.due_date}</div>
+					<div class="info_flex_right">${dto.pDTO.due_date}</div>
 				</div>
 			</div>
 		
@@ -86,20 +87,21 @@ $(document).ready(function() {
 					<div class="info_flex_right">
 						<div class="bundle">
 							
-						    <c:forEach var="bundleEntry" items="${bundleItem}">
-						    <div class="info_inner">
-						        <div>* ${bundleEntry.key} <span>( x${bundleCount[bundleEntry.key]})</span></div>
-						        <c:forEach var="itemEntry" items="${bundleEntry.value}">
-						            <div class="item_option">
-						            	<span>${itemEntry} </span>
-							            <c:set var="options" value="${itemOption[itemEntry]}" />
-							            <c:if test="${not empty options}">
-							                <span> (옵션 - ${options[0]}<c:forEach var="optionEntry" begin="1" items="${options}">, ${optionEntry}</c:forEach>)</span>
-							            </c:if>
-					           		</div>            
-						        </c:forEach>
-					        </div>				        
-						    </c:forEach>
+							 <c:forEach var="count" items="${dto.bCountDTOList}">
+								<c:forEach var="bundle" items="${count.bundleDTOList}">
+					    		<div class="info_inner">
+					    		<div>* ${bundle.bundle_name} <span> ( x${count.perchase_count})</span></div>
+					    			<c:forEach var="item" items="${bundle.itemListDTOList}">	
+					    				<div class="item_option">
+					    					<span>${item.itemDTO.item_name} </span>
+					    						<c:forEach var="option" items="${item.itemDTO.optionDTOList }">
+					    							<span>(${option.item_option_name })</span>
+				    							</c:forEach>
+		    							</div>
+	    							</c:forEach>
+    							</div>
+   								</c:forEach>
+							</c:forEach>
 	
 					    </div>				    
 					</div>
@@ -111,17 +113,17 @@ $(document).ready(function() {
 				<div class="contents_title">결제 정보</div>
 				<div class="info_flex"> 
 					<div class="info_flex_left">결제 수단 </div>
-					<div class="info_flex_right"> ${fundedDetail.pay_option }</div>
+					<div class="info_flex_right"> ${dto.pay_option }</div>
 				</div>
 				<div class="info_flex">
 					<div class="info_flex_left">결제 금액 </div>
 					<div class="info_flex_right">
-						<fmt:formatNumber value="${fundedDetail.price }" type="currency" currencySymbol="" />원
+						<fmt:formatNumber value="${dto.price }" type="currency" currencySymbol="" />원
 					</div>				
 				</div>
 				<div class="info_flex">
 					<div class="info_flex_left">결제 상태 </div>
-					<div class="info_flex_right"> ${fundedDetail.fund_duedate.toLocalDate().plusDays(1)} 결제 완료</div>
+					<div class="info_flex_right"> ${dto.pDTO.due_date.plusDays(1)} 결제 완료</div>
 				</div>
 			</div>
 		
@@ -130,20 +132,20 @@ $(document).ready(function() {
 				<div class="contents_title">배송 정보</div>
 				<div class="info_flex">
 					<div class="info_flex_left">받는 사람 </div>
-					<div class="info_flex_right"> ${fundedDetail.name}</div>
+					<div class="info_flex_right"> ${dto.name}</div>
 				</div>
 				<div class="info_flex">
 					<div class="info_flex_left">연락처 </div>
-					<div class="info_flex_right"> ${fundedDetail.phone }</div><br>
+					<div class="info_flex_right"> ${dto.phone }</div><br>
 				</div>
 				<div class="info_flex">
 					<div class="info_flex_left">주소 </div>
-					<div class="info_flex_right">(${fundedDetail.postcode })</div>
-					<div class="info_flex_right"> ${fundedDetail.road_address } ${fundedDetail.extra_address } ${fundedDetail.detail_address }</div>
+					<div class="info_flex_right">(${dto.postcode })</div>
+					<div class="info_flex_right"> ${dto.road_address } ${dto.extra_address } ${dto.detail_address }</div>
 				</div>
 				<div class="info_flex">
 					<div class="info_flex_left">배송 완료일 </div>
-					<div class="info_flex_right">${projectDetail.delivery_date.toLocalDate().plusDays(5)}</div>
+					<div class="info_flex_right">${dto.pDTO.delivery_date.plusDays(5)}</div>
 				</div>
 				<div class="info_flex">
 					<div class="info_flex_left">운송장 번호 </div>

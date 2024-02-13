@@ -40,3 +40,29 @@ ${dto.collectorDTO.nickname }
 </c:forEach>
 </body>
 </html>
+
+
+
+
+						
+ <c:forEach var="count" items="${dto.bCountDTOList}">
+ 	<c:forEach var="bundle" items="${count.bundleDTOList}">
+   <div class="info_inner">
+       <div>* ${bundle.bundle_name} <span> ( x${count.perchase_count})</span></div>
+       <c:forEach var="item" items="${bundle.itemListDTOList}">
+           <div class="item_option">
+                     <span>${item.item_name} </span>
+                     <c:set var="optionsString" value="" />
+                     <c:forEach var="option" items="${item.optionDTOList }">
+                         <c:if test="${not empty option}">
+                             <c:set var="optionsString" value="${optionsString}${option.item_option_name}, " />
+                         </c:if>
+                     </c:forEach>
+                     <c:if test="${not empty optionsString}">
+                         <span>(옵션 - ${optionsString.substring(0, optionsString.length() - 2)})</span>
+                     </c:if>
+         		</div>            
+       </c:forEach>
+      </div>
+     </c:forEach>				        
+ </c:forEach>

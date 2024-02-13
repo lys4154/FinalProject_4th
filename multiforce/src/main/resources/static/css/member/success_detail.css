@@ -15,7 +15,7 @@ a{
 	width: 1040px;
 	margin:20px auto;
 	padding: 10px 10px;
-	font-size: 15px;
+	font-size: 14px;
 	align-items: center;
 }
 img{
@@ -51,7 +51,8 @@ img{
 .achieve{
 	display: inline-block;
 	min-width: 40px ;
-	color: #fc035a;	
+	color: #fc035a;
+	margin-right: 10px;	
 }
 
 

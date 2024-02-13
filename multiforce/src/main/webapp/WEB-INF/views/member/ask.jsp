@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ include file="/WEB-INF/views/common/header.jsp" %>
 
 <!DOCTYPE html>
 <html>
@@ -11,72 +10,134 @@
 </head>
 <script src="/js/jquery-3.7.1.min.js"></script>
 <style>
-.my_chat{
-	text-align: right;
-	padding-left: 200px;
+
+*{
+	font-family: 'Noto Sans KR', sans-serif;
+	color: #5c5c5c;
+	font-size: 14px;	
 }
-.my_chat .message{
-	border: 1px solid black;
-	border-radius: 10px;
-	padding: 5px;
-	
+a{
+	text-decoration: none;
+	color: #292929;
 }
 
-.opponent_chat{
-	text-align: left; 
-	padding-right: 200px;
-	
+.my_chat{
+	display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: flex-end;
+   	margin: 10px 0;
+   	max-width: 400px;
+}
+.my_chat .message{
+	border: none;
+	border-radius: 5px;
+	background-color: #82c8a0;
+	padding: 5px 10px;	
+	color: #fff;
+}
+
+.opponent_chat{	
+	display: flex;
+	width: 360px;
+	align-items: flex-end;
+	margin: 10px 0;	
+	max-width: 400px;
 }
 .opponent_chat .message{
-	border: 1px solid black;
-	border-radius: 10px;
-	padding: 5px;
+	border: none;
+	border-radius: 5px;
+	background-color: #f0f0f0;
+	padding: 5px 10px;
+}
+.my_chat .text_part, .opponent_chat .text_part{
+	max-width: 300px;
 }
 
 .common_date{
 	text-align: center;
+	margin-bottom: 10px;
 }
 #project_img{
-	width: 30px;
-	height: 30px;
+	width: 100px;
+	height: 100px;
+	object-fit: cover;
+	margin: 10px 0;
 }
 #chat_list{
 	height: 390px;
-	overflow-y: scroll;
-	border-bottom: 1px solid black;
+	overflow-y: auto;
+	border-bottom: 1px solid #cfcfcf;
+	padding: 10px;
 }
 #send_chat_wrap{
 	font-size: 0px;
 }
 #input_my_chat{
-	width: 390px;
-	height: 80px;
+	width: 340px;
+	height: 64px;
 	resize: none;
-	border: 0px;
+	border: none;
+	border-bottom-left-radius: 5px;
+	padding: 10px;
 }
 #input_my_chat:focus{
 	outline: none;
 }
 #send_my_chat{
-	width: 69.2px;
+	width: 80px;
 	height: 84px;
-	position: relative;
+	position: absolute;
 	float: right;
 	border: 0px;
+	border-bottom-right-radius: 5px;
+	cursor: pointer;
 }
 #chat_wrap{
-	border: 1px solid black;
-	width: 480px;
+	border: 1px solid #cfcfcf;
+	width: 440px;
+	border-radius: 5px;
+	outline: none;
 }
+#project_info{
+	flex-direction: column;
+    align-items: center;
+    margin: 20px; 
+    border: 1px solid #cfcfcf;
+    border-radius: 5px;  	
+}
+#project_long_title{
+	margin-bottom: 10px;
+}
+
+.text_part{
+	display: flex;
+	align-items: baseline
+}
+.time_part{
+	font-size: 10px;
+}
+.sender, .message{
+	margin-right: 5px;
+}
+.sender{
+	min-width: fit-content;
+}
+.chatroom_last_chat_date{
+	color: #fc035a;
+}
+
+
 </style>
 <body>
 
 <div id="chatting_space">
-	<div id="project_info">
-		<img id="project_img">
-		<span id="project_long_title"></span>
-	</div>
+
 	<div id="chat_wrap">
+		<div id="project_info" style="display: none;">
+			<img id="project_img" >
+			<span id="project_long_title"></span>
+		</div>
 		<div id="chat_list">
 		</div>
 		<div id="send_chat_wrap">
@@ -89,8 +150,8 @@
 
 <!-- 복사용 채팅 폼 -->
 <div class="chat_form">
-	<div class="text_part"  style='display:inline-block'>
-		<div class="sender" style='display:inline-block'>
+	<div class="text_part"  >
+		<div class="sender" >
 			<img>
 			<span>
 			</span>
@@ -254,13 +315,13 @@ function createChatForm(chatDate, chatTime, chatterSeq, chatContent, img, nickna
 	if(chatDate != commonDate){
 		//채팅에 있는 날짜가 commonDate의 날짜와 다르다면 채팅창에 날짜 넣어주기
 		commonDate = chatDate;
-		$("#chat_list").append("<div class='common_date'>"+"======"+commonDate+"======"+"</div>");
+		$("#chat_list").append("<div class='common_date'>"+"====== "+commonDate+" ======"+"</div>");
 	}
 	let chatForm = $(".chat_form").clone();
 	if(chatterSeq == "${login_user_seq}"){
 		chatForm.attr("class", "my_chat");
-		chatForm.find(".message").text(chatContent);
 		chatForm.prepend("<div class='time_part' style='display:inline-block;'>"+chatTime+"</div>");
+		chatForm.find(".message").text(chatContent);		
 	}else{
 		chatForm.attr("class", "opponent_chat");
 		chatForm.find(".sender img").attr("href", img);
@@ -272,6 +333,7 @@ function createChatForm(chatDate, chatTime, chatterSeq, chatContent, img, nickna
 }
 
 function fillChatInfo(longTitle, projectUrl, mainImagesUrl){
+	$("#project_info").css("display", "flex");
 	$("#project_img").attr("src", mainImagesUrl);
 	$("#project_long_title").html("<a href='"+projectUrl+"'></a>");
 	$("#project_long_title a").text(longTitle);

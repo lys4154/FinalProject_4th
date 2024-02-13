@@ -6,7 +6,7 @@
 }
 a{
 	text-decoration: none;
-	color: 5c5c5c;
+	color: #5c5c5c;
 	outline: none;
 }
 
@@ -15,7 +15,7 @@ a{
 	width: 1040px;
 	margin:10px auto;
 	padding: 10px 10px;
-	font-size: 15px;
+	font-size: 14px;
 }
 .login_con{
 	display:flex;

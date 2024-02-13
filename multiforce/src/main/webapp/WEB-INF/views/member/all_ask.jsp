@@ -12,49 +12,44 @@
 <title>Insert title here</title>
 </head>
 <script src="/js/jquery-3.7.1.min.js"></script>
-<style>
-li[class*="_chatroom_wrap"]{
-	border: 1px solid black;
-	cursor: pointer;
-}
-#content_container{
-	width:1100px;
-	margin:0 auto;
-}
-#all_ask_wrap{
-	width:600px;
-	font-size:16px;
-}
-</style>
+<link rel="stylesheet" href="/css/member/all_ask.css">
+
 <body>
-<div id="content_container">
-	<div id="all_ask_wrap" style="border: 1px red solid; display: inline-block">
-		<h3>받은 문의</h3>
-		<ul id="my_project_ask">
-			<li id="collector_chatroom_list">
-			</li>
-		</ul>
-		<h3>보낸 문의</h3>
-		<ul id="project_ask">
-			<li id="asker_chatroom_list">
-			</li>
-		</ul>
+<div class="wrap">
+	<div class="out_con">
+		<div id="ask_title">메세지</div>
+		<div id="content_container">
+			<div id="all_ask_wrap" >
+				<h3>받은 문의</h3>
+				<ul id="my_project_ask">
+					<li id="collector_chatroom_list">
+
+					</li>
+				</ul>
+				<h3>보낸 문의</h3>
+				<ul id="project_ask">
+					<li id="asker_chatroom_list">
+					</li>
+				</ul>
+			</div>
+			<div class="chat_window" >
+				<%@ include file="/WEB-INF/views/member/ask.jsp" %>
+			</div>
+			<div style="display:none">
+				<ul id="chatroom_list">
+					<li class="chatroom_wrap">
+						<div class="chatroom_long_title">
+						</div >
+						<div  class="chatroom_last_chat">
+						</div>
+						<div  class="chatroom_last_chat_date">
+						</div >
+					</li>
+				</ul>
+			</div>
+		</div>
 	</div>
-	<div style="display: inline-block">
-		<%@ include file="/WEB-INF/views/member/ask.jsp" %>
-	</div>
-	<div style="display:none">
-		<ul id="chatroom_list">
-			<li class="chatroom_wrap">
-				<div class="chatroom_long_title">
-				</div >
-				<div  class="chatroom_last_chat">
-				</div>
-				<div  class="chatroom_last_chat_date">
-				</div >
-			</li>
-		</ul>
-	</div>
+	<%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </div>
 </body>
 <script>
@@ -141,6 +136,8 @@ function chatroomWrapClickEAdd(){
 		});
 	});
 }
+
+
 
 
 

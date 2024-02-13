@@ -11,15 +11,8 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
-<style>
-.project_dibs_btn{
-	background-color: yellow;
-}
-.dibs_cancel.btn{
-	background-color: red;
-}
-</style>
 <script src="/js/jquery-3.7.1.min.js"></script>
+<link rel="stylesheet" href="/css/project/project_discorver.css">
 <script>
 
 $(document).ready(function(){
@@ -56,6 +49,13 @@ $(document).ready(function(){
 		}
 	});
 	
+	//헤드에 카테고리명 넣기
+	$(".clicked_category").html("${category_kor}");
+
+
+	
+	
+	
 	$("#more_project_btn").on("click", function(){
 		console.log("동작");
 		$.ajax({
@@ -86,37 +86,55 @@ $(document).ready(function(){
 			console.log(i +")" + r[i].long_title + " / start: "+start);
 			let result = "";
 			//================ 태그 부분 ====================
-			result += (16 * forCount + i + 1);
-			result += ("<img src='"+r[i].main_images_url+"'>");
-			result += (r[i].long_title + "/")
-			result += ("카테고리: " + r[i].category_kor + "/")
-			if(r[i].project_process == 4){
-				if(r[i.term == 0]){
-					result += ("오늘 마감/");
-				}else{
-					result += (" "+ r[i].term + "일 남음/");
-				}
-			}else{
-				result += (r[i].project_process_name + "/")
-			}
-			result += ("시작일: "+ r[i].start_date + "/ ");
-			result += ("마감일: "+ r[i].due_date + " ");
-			if(l[0] == 0){
-				result +=("<input type='button' id='" + r[i].project_seq + "' value='찜하기' class='project_dibs_btn'>")
-			}else{
-				let flg = false;
-				for(let j=0; j<l.length; j++){
-					if(r[i].project_seq == l[j]){
-						result +=("<input type='button' id='" + r[i].project_seq + "' value='찜취소' class='dibs_cancel_btn'>");
-						flg = true;
-						break;
-					}
-				}
-				if(!flg){
-					result +=("<input type='button' id='" + r[i].project_seq + "' value='찜하기' class='project_dibs_btn'>")
-				}
-			}
-			result += "<hr>";
+				
+
+				result += ("<div class='container'>");
+//				result += (16 * forCount + i + 1);
+						result += ("<a href='" + r[i].url+"'> <img src='"+r[i].main_images_url+"'></a>");
+						result += ("<div class='pro_container'>");
+							result += ("<div class='pro_info'>");		
+								result += ("<div class='pro_category'>" + r[i].category_kor );
+								
+								if(l[0] == 0){
+									result +=("<input type='button' id='" + r[i].project_seq + "' value='관심 추가' class='project_dibs_btn'></div>")
+								}else{
+									let flg = false;
+									for(let j=0; j<l.length; j++){
+										if(r[i].project_seq == l[j]){
+											result +=("<input type='button' id='" + r[i].project_seq + "' value='관심 취소' class='dibs_cancel_btn'></div>");
+											flg = true;
+											break;
+										}
+									}
+									if(!flg){
+										result +=("<input type='button' id='" + r[i].project_seq + "' value='관심 추가' class='project_dibs_btn'></div>")
+									}
+								}						
+
+								
+								result += ("<a href='" + r[i].url +"'> <div class='long_title'>" + r[i].long_title + "</a> </div>");		
+								result += ("<div class='sub_title'>" + r[i].sub_title + "</div>");		
+							result += ("</div>");		
+							
+							result += ("<div class='pro_footer'>");							
+								var achieve = (r[i].collection_amount / r[i].goal_price) * 100
+								var achievement = Math.floor(achieve) + "%";
+								result += ("<div class='achieve'>" + achievement +"</div>");
+								result += ("<div class='amount'>" + r[i].collection_amount.toLocaleString() + "원 </div>");
+								if(r[i].project_process == 4){
+									if(r[i.term == 0]){
+										result += ("<div class='term'>오늘 마감</div>");
+									}else{
+										result += ("<div class='term'>"+ r[i].term + "일 남음</div>");
+									}
+								}else{
+									result += ("<div class='term'>" + r[i].project_process_name +"</div>" )
+								}
+
+						result += "</div>";
+					result += "</div>";
+				
+				
 			$("#project_list").append(result);
 			//==============================================
 			
@@ -214,11 +232,13 @@ $(document).ready(function(){
 				success : function(r){
 					console.log(r.result);
 					if(r.result == "성공"){
-						e.target.value = "찜취소";
+						e.target.value = "관심 취소";
 						e.target.setAttribute("class", "dib_cancel_btn");
+						alert("관심 프로젝트 목록에 추가되었습니다.")
 					}else if(r.result == "취소"){
-						e.target.value = "찜하기";
+						e.target.value = "관심 추가";
 						e.target.setAttribute("class", "project_dibs_btn");
+						alert("관심 프로젝트 목록에서 삭제되었습니다.")
 					}else{
 						alert("알 수 없는 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
 					}
@@ -231,12 +251,6 @@ $(document).ready(function(){
 	
 });
 </script>
-<style>
-img {
-	width: 100px;
-	height: 80px;
-}
-</style>
 <body>
 <!-- 
 	대표 이미지
@@ -250,23 +264,37 @@ img {
 	
 	프로필은 어떻게 연결하지
  -->
-<h3>${count }개의 프로젝트가 있습니다</h3>
-<div id="search_condition_wrap">
-	<select id="select_process">
-		<option value="0">전체</option>
-		<option value="4">진행 중</option>
-		<option value="3">예정</option>
-		<option value="6">종료</option>
-	</select>
-	<select id="select_sort">
-		<option value="popular">인기순</option>
-		<option value="end">마감 임박순</option>
-		<option value="new">최신순</option>
-	</select>
+ 
+ <div class="wrap">
+	 <div class="out_con">
+	 	<div class="top_title">
+	 		<div class="clicked_category"></div>
+	 		<div class="clicked_category_ment"><span id="clicked_category_count">${count }</span>개의 프로젝트가 있습니다.</div>
+	 	</div>
+	 
+		<div id="search_condition_wrap">
+			<select id="select_process">
+				<option value="0">전체</option>
+				<option value="4">진행 중</option>
+				<option value="3">예정</option>
+				<option value="6">종료</option>
+			</select>
+			<select id="select_sort">
+				<option value="popular">인기순</option>
+				<option value="end">마감 임박순</option>
+				<option value="new">최신순</option>
+			</select>
+		</div>
+		<div id="project_list">
+		
+		</div>
+		<div style="display: flex; justify-content: center;">
+			<input type="button" value="더보기" id="more_project_btn">
+		</div>
+			
+			
+	</div>
+	<%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </div>
-<div id="project_list">
-
-</div>
-<input type="button" value="더보기" id="more_project_btn">
 </body>
 </html>
