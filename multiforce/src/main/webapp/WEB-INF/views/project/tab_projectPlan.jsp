@@ -54,7 +54,7 @@
 </div>
 <script>
 $('.purpose').summernote({
-	toolbar: [
+	/* toolbar: [
 	    // [groupName, [list of button]]
 	    ['style', ['bold', 'italic', 'underline', 'clear']],
 	    ['font', ['strikethrough', 'superscript', 'subscript']],
@@ -65,8 +65,46 @@ $('.purpose').summernote({
 	    ['height', ['height']]
 	  ],
 	height:500,  
-	lang:"ko-KR"
+	lang:"ko-KR" */
+	width:1000,
+	height: 500,                 // 에디터 높이
+	minHeight: 500,             // 최소 높이
+	maxHeight: 500,             // 최대 높이
+	focus: false,                  // 에디터 로딩후 포커스를 맞출지 여부
+	lang: "ko-KR",					// 한글 설정
+	placeholder: '최대 2048자까지 쓸 수 있습니다',	//placeholder 설정
+	callbacks: {	//여기 부분이 이미지를 첨부하는 부분
+		onImageUpload : function(files) {
+			uploadImageFile(files[0], this);
+		},
+		onPaste: function (e) {
+			var clipboardData = e.originalEvent.clipboardData;
+			if (clipboardData && clipboardData.items && clipboardData.items.length) {
+				var item = clipboardData.items[0];
+				if (item.kind === 'file' && item.type.indexOf('image/') !== -1) {
+					e.preventDefault();
+				}
+			}
+		}
+	}
 });
+function uploadImageFile(file, editor) {
+	data = new FormData();
+	data.append("file", file);
+	data.append("path", "C:\\fullstack\\workspace_springboot\\images\\notices\\");
+	data.append("url", "/noticesimages/");
+	$.ajax({
+		data : data,
+		type : "POST",
+		url : "/uploadSummernoteImageFile",
+		contentType : false,
+		processData : false,
+		success : function(data) {
+        	//항상 업로드된 파일의 url이 있어야 한다.
+			$(editor).summernote('insertImage', data.url);
+		}
+	});
+}
 </script>
 <hr>
 
@@ -77,18 +115,27 @@ $('.purpose').summernote({
 </div>
 <script>
 $('.planning').summernote({
-	toolbar: [
-	    // [groupName, [list of button]]
-	    ['style', ['bold', 'italic', 'underline', 'clear']],
-	    ['font', ['strikethrough', 'superscript', 'subscript']],
-	    ['fontsize', ['fontsize']],
-	    ['color', ['color']],
-	    ['para', ['ul', 'ol', 'paragraph']],
-	    ['insert',['picture','link','video']],
-	    ['height', ['height']]
-	  ],
-	height:500,  
-	lang:"ko-KR"
+	width:1000,
+	height: 500,                 // 에디터 높이
+	minHeight: 500,             // 최소 높이
+	maxHeight: 500,             // 최대 높이
+	focus: false,                  // 에디터 로딩후 포커스를 맞출지 여부
+	lang: "ko-KR",					// 한글 설정
+	placeholder: '최대 2048자까지 쓸 수 있습니다',	//placeholder 설정
+	callbacks: {	//여기 부분이 이미지를 첨부하는 부분
+		onImageUpload : function(files) {
+			uploadImageFile(files[0], this);
+		},
+		onPaste: function (e) {
+			var clipboardData = e.originalEvent.clipboardData;
+			if (clipboardData && clipboardData.items && clipboardData.items.length) {
+				var item = clipboardData.items[0];
+				if (item.kind === 'file' && item.type.indexOf('image/') !== -1) {
+					e.preventDefault();
+				}
+			}
+		}
+	}
 });
 </script>
 <hr>
@@ -100,18 +147,27 @@ $('.planning').summernote({
 </div>
 <script>
 $('.budget').summernote({
-	toolbar: [
-	    // [groupName, [list of button]]
-	    ['style', ['bold', 'italic', 'underline', 'clear']],
-	    ['font', ['strikethrough', 'superscript', 'subscript']],
-	    ['fontsize', ['fontsize']],
-	    ['color', ['color']],
-	    ['para', ['ul', 'ol', 'paragraph']],
-	    ['insert',['picture','link','video']],
-	    ['height', ['height']]
-	  ],
-	height:500,  
-	lang:"ko-KR"
+	width:1000,
+	height: 500,                 // 에디터 높이
+	minHeight: 500,             // 최소 높이
+	maxHeight: 500,             // 최대 높이
+	focus: false,                  // 에디터 로딩후 포커스를 맞출지 여부
+	lang: "ko-KR",					// 한글 설정
+	placeholder: '최대 2048자까지 쓸 수 있습니다',	//placeholder 설정
+	callbacks: {	//여기 부분이 이미지를 첨부하는 부분
+		onImageUpload : function(files) {
+			uploadImageFile(files[0], this);
+		},
+		onPaste: function (e) {
+			var clipboardData = e.originalEvent.clipboardData;
+			if (clipboardData && clipboardData.items && clipboardData.items.length) {
+				var item = clipboardData.items[0];
+				if (item.kind === 'file' && item.type.indexOf('image/') !== -1) {
+					e.preventDefault();
+				}
+			}
+		}
+	}
 });
 </script>
 <hr>
@@ -123,18 +179,27 @@ $('.budget').summernote({
 </div>
 <script>
 $('.introduce').summernote({
-	toolbar: [
-	    // [groupName, [list of button]]
-	    ['style', ['bold', 'italic', 'underline', 'clear']],
-	    ['font', ['strikethrough', 'superscript', 'subscript']],
-	    ['fontsize', ['fontsize']],
-	    ['color', ['color']],
-	    ['para', ['ul', 'ol', 'paragraph']],
-	    ['insert',['picture','link','video']],
-	    ['height', ['height']]
-	  ],
-	height:500,  
-	lang:"ko-KR"
+	width:1000,
+	height: 500,                 // 에디터 높이
+	minHeight: 500,             // 최소 높이
+	maxHeight: 500,             // 최대 높이
+	focus: false,                  // 에디터 로딩후 포커스를 맞출지 여부
+	lang: "ko-KR",					// 한글 설정
+	placeholder: '최대 2048자까지 쓸 수 있습니다',	//placeholder 설정
+	callbacks: {	//여기 부분이 이미지를 첨부하는 부분
+		onImageUpload : function(files) {
+			uploadImageFile(files[0], this);
+		},
+		onPaste: function (e) {
+			var clipboardData = e.originalEvent.clipboardData;
+			if (clipboardData && clipboardData.items && clipboardData.items.length) {
+				var item = clipboardData.items[0];
+				if (item.kind === 'file' && item.type.indexOf('image/') !== -1) {
+					e.preventDefault();
+				}
+			}
+		}
+	}
 });
 </script>
 <hr>
@@ -146,18 +211,27 @@ $('.introduce').summernote({
 </div>
 <script>
 $('.item').summernote({
-	toolbar: [
-	    // [groupName, [list of button]]
-	    ['style', ['bold', 'italic', 'underline', 'clear']],
-	    ['font', ['strikethrough', 'superscript', 'subscript']],
-	    ['fontsize', ['fontsize']],
-	    ['color', ['color']],
-	    ['para', ['ul', 'ol', 'paragraph']],
-	    ['insert',['picture','link','video']],
-	    ['height', ['height']]
-	  ],
-	height:500,  
-	lang:"ko-KR"
+	width:1000,
+	height: 500,                 // 에디터 높이
+	minHeight: 500,             // 최소 높이
+	maxHeight: 500,             // 최대 높이
+	focus: false,                  // 에디터 로딩후 포커스를 맞출지 여부
+	lang: "ko-KR",					// 한글 설정
+	placeholder: '최대 2048자까지 쓸 수 있습니다',	//placeholder 설정
+	callbacks: {	//여기 부분이 이미지를 첨부하는 부분
+		onImageUpload : function(files) {
+			uploadImageFile(files[0], this);
+		},
+		onPaste: function (e) {
+			var clipboardData = e.originalEvent.clipboardData;
+			if (clipboardData && clipboardData.items && clipboardData.items.length) {
+				var item = clipboardData.items[0];
+				if (item.kind === 'file' && item.type.indexOf('image/') !== -1) {
+					e.preventDefault();
+				}
+			}
+		}
+	}
 });
 </script>
 <br>
