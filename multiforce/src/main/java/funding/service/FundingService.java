@@ -1,5 +1,6 @@
 package funding.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -54,6 +55,12 @@ public class FundingService {
 	//결제 페이지 정보 가져오기
 	public FundingDTO getPaymentInfo(int fundseq){
 		return fundingDao.getPaymentInfo(fundseq);
+	}
+
+	public int insertFunding(HashMap<String, Object> map) {
+		//펀딩 먼저 넣기 => fundingseq 값 가져오기 => fundingseq 값 + bundleseq + count fundingbundlecount에 넣기
+		//fundingbundlecount seq 값 가져오기 => 옵션seq 넣기
+		return 0;
 	}
 
 

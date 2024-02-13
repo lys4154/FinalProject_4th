@@ -5,6 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <style type="text/css">
 	.moveNumber {
 		text-align:center;
@@ -113,6 +114,17 @@
 </head>
 <body>
 <h1>카드결제 페이지</h1>
+<div>
+	카드사를 선택해주세요<br>
+	<select id="select_company">
+		<option value="신한">신한</option>
+		<option value="국민">국민</option>
+		<option value="농협">농협</option>
+		<option value="기업">기업</option>
+		<option value="우리">우리</option>
+		<option value="하나">하나</option>
+	</select>
+</div>
 카드번호를 입력하세요 <br>
 <input type="text" class="moveNumber" onKeyup="inputMoveNumber(this);" maxlength="4"/>&nbsp;-&nbsp;
 <input type="text" class="moveNumber" onKeyup="inputMoveNumber(this);" maxlength="4"/>&nbsp;-&nbsp;
@@ -132,7 +144,12 @@
 
 <script>
 document.getElementById('pay').addEventListener('click', function(ev) {
-	alert("결제를 진행합니다.");
+	let cardNumber = "";
+	$(".moveNumber").each(function(i, item){
+		cardNumber += $(item).val();
+	})
+	$("#pay_number", opener.document).val(cardNumber);
+	$("#pay_company", opener.document).val($("#select_company").val());
 	window.close();
 	//window.location.href = "payresult"
 });

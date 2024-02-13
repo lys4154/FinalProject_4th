@@ -130,7 +130,7 @@
 			</div>
 			<div id="cart_result_wrap">
 				<h4>추가 후원금(선택)</h4>
-				<input type="number" value="0" id="extra_price">원
+				<input type="number" id="extra_price" min="0">원
 				<div id="total_price_wrap"></div>
 				<div id="support_btn_wrap">
 					<input type="button" value="후원하기" id="funding_btn">
@@ -188,7 +188,7 @@
 		<div class='selected_bundle_box_lower_wrap'>
 			<div class='count_btn_wrap'>
 				<input type='button' value='-' class="minus_btn">
-				<input type='number' value='1' class="count">
+				<input type='number' min="1" class="count">
 				<input type='button' value='+' class="plus_btn">
 			</div>
 			<div class='selected_bundle_price_wrap'>
@@ -206,27 +206,27 @@
 <script>
 $(document).ready(function () {
 	//==========================후원하기 버튼 이벤트============================
-	var selectBundleInfo = [];
+	
 	$("#funding_btn").on("click", function(){
 		if("${login_user_seq}" != ""){
-			$("#selected_bundle_list .selected_bundle_box").each(function(i, dom){
-				dom = $(dom);
-				let bundle = {};
-				bundle.name = dom.find(".selected_bundle_name_wrap").text();
-				bundle.price = dom.find(".selected_bundle_price_wrap").data("price");
-				bundle.seq = dom.data("seq");
-				bundle.item = [];
-				dom.find(".selected_item").each(function(j, dom2){
-					let item = {};
-					dom2 = $(dom2);
-					item.name = dom2.find(".selected_item_name_wrap").data("name");
-					item.count = dom2.find(".selected_item_name_wrap").data("count");
-					item.optionName = dom2.find(".selected_item_option_wrap").data("name");
-					item.optionSeq = dom2.find(".selected_item_option_wrap").data("seq");
-					bundle.item.push(item);
-				});
-				selectBundleInfo.push(bundle);
-			});
+			if(selectBundleInfo.length <= 1 && $("#extra_price").val() == 0){
+				
+			}else{
+				fillSelectBundleInfo();
+				$.ajax({
+			        url: "/payment",
+			        type: "POST",
+			        data: JSON.stringify(selectBundleInfo),
+					dataType:"json",
+					contentType: "application/json; charset=UTF-8",
+			        success: function (data) {
+			           location.href = "/payment";
+			        },
+			        error: function (xhr, status, error) {
+			            console.error("Error loading content:", error);
+			        }
+			    });
+			}
 			console.log(selectBundleInfo);
 		}else{
 			if(confirm("로그인이 필요한 서비스입니다. 로그인 하시겠습니까?")){
@@ -236,8 +236,7 @@ $(document).ready(function () {
 			}
 		}
 	});
-	
-	
+		
 	//==========================번들 이벤트================================
 	//장바구니에 추가
 	$(".add_cart_btn").click(function(e){
@@ -248,6 +247,7 @@ $(document).ready(function () {
 		if(sameBox != ""){
 			let count = sameBox.children(".selected_bundle_box_lower_wrap").children(".count_btn_wrap").children(".count");
 			count.val(Number(count.val()) + 1);
+			
 		}else{
 			let chosenBox = createChosenBox(clickedBox);
 			$("#selected_bundle_list").append(chosenBox);
@@ -255,8 +255,39 @@ $(document).ready(function () {
 			addDelBtnClickEvent(chosenBox);
 		}
 		updateTotalPrice(getTotalPrice());
+		fillSelectBundleInfo();
 		
 	});
+	var selectBundleInfo = [];
+	function fillSelectBundleInfo(){
+		selectBundleInfo = [];
+		$("#selected_bundle_list .selected_bundle_box").each(function(i, dom){
+			dom = $(dom);
+			let bundle = {};
+			bundle.name = dom.find(".selected_bundle_name_wrap").text().trim();
+			bundle.price = dom.find(".selected_bundle_price_wrap").data("price");
+			bundle.seq = dom.data("seq");
+			bundle.count = dom.children(".selected_bundle_box_lower_wrap").children(".count_btn_wrap")
+						.children(".count").val();
+			bundle.item = [];
+			dom.find(".selected_item").each(function(j, dom2){
+				let item = {};
+				dom2 = $(dom2);
+				item.name = dom2.find(".selected_item_name_wrap").data("name").trim();
+				item.count = dom2.find(".selected_item_name_wrap").data("count");
+				item.optionName = dom2.find(".selected_item_option_wrap").data("name").trim();
+				item.optionSeq = dom2.find(".selected_item_option_wrap").data("seq");
+				bundle.item.push(item);
+			});
+			selectBundleInfo.push(bundle);
+		});
+		let extraPrice = {};
+		console.log($("#extra_price").val())
+		extraPrice.name = "추가 후원금";
+		extraPrice.price = $("#extra_price").val() == "" ? 0 : $("#extra_price").val();
+		selectBundleInfo.push(extraPrice);
+		
+	}
 	
 	function findSameBox(selectedBundleBox, clickedBox){
 		let sameBox = "";
@@ -306,10 +337,6 @@ $(document).ready(function () {
 		
 	});
 	
-	function addBundleObject(){
-		
-	}
-	
 	function showHiddenParts(bundleBox){
 		bundleBox.attr("class", "bundle_box_chosen");
 		bundleBox.find(".item_option_select").css("display", "inline-block");
@@ -328,6 +355,7 @@ $(document).ready(function () {
 			console.log("이벤트 확인");
 			$(e.target.parentNode.parentNode).remove();
 			updateTotalPrice(getTotalPrice());
+			fillSelectBundleInfo();
 		})
 	}
 	
@@ -337,8 +365,10 @@ $(document).ready(function () {
 		let plusBtn = btnWrap.children(".plus_btn");
 		minusBtn.click(function(e){
 			let count = $(e.target.parentNode).children(".count");
-			count.val(Number(count.val()) - 1);
-			updateTotalPrice(getTotalPrice());
+			if(count.val() > 1){
+				count.val(Number(count.val()) - 1);
+				updateTotalPrice(getTotalPrice());
+			}
 		});
 		plusBtn.click(function(e){
 			let count = $(e.target.parentNode).children(".count");
@@ -382,7 +412,7 @@ $(document).ready(function () {
 		chosenBoxForm.children(".selected_bundle_name_wrap").text(bundleName);
 		chosenBoxForm.children(".selected_bundle_box_lower_wrap")
 					 .children(".selected_bundle_price_wrap").text(bundlePriceFormat).data("price", bundlePrice);
-		
+		chosenBoxForm.find(".count").val(1);
 		bundleItemArr.each(function(i, item){
 			let bundleItemName = $(item).children(".item_name_wrap").data("name");
 			let itemOptionSeq = $(item).children(".item_option_select").val();
@@ -399,6 +429,7 @@ $(document).ready(function () {
 			selectedItemForm.children(".selected_item_option_wrap").text(itemOptionName);
 			selectedItemForm.children(".selected_item_option_wrap").data("seq",itemOptionSeq);
 			selectedItemForm.children(".selected_item_option_wrap").data("name",itemOptionRealName);
+			
 			chosenBoxForm.children(".selected_bundle_item_list").append(selectedItemForm);
 		});
 		
