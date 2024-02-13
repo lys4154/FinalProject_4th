@@ -17,12 +17,11 @@ public class FundingDTO{
 	int	project_seq;
 	int	price;
 	LocalDateTime fund_date;
-	LocalDateTime fund_duedate;
-	String fund_option;
 	boolean del_status;
 	LocalDateTime del_date;
 	String pay_option;
 	int pay_number;
+	String pay_company;
 	boolean pay_status;
 	LocalDateTime pay_date;
 	String name;
@@ -40,24 +39,6 @@ public class FundingDTO{
 	ProjectDTO pDTO;
 	MemberDTO collectorDTO;
 	
-	public ProjectDTO getpDTO() {
-		return pDTO;
-	}
-	public void setpDTO(ProjectDTO pDTO) {
-		this.pDTO = pDTO;
-	}
-	public MemberDTO getCollectorDTO() {
-		return collectorDTO;
-	}
-	public void setCollectorDTO(MemberDTO collectorDTO) {
-		this.collectorDTO = collectorDTO;
-	}
-	public List<FundingBundleCountDTO> getbCountDTOList() {
-		return bCountDTOList;
-	}
-	public void setbCountDTOList(List<FundingBundleCountDTO> bCountDTOList) {
-		this.bCountDTOList = bCountDTOList;
-	}
 	public int getFund_seq() {
 		return fund_seq;
 	}
@@ -88,18 +69,6 @@ public class FundingDTO{
 	public void setFund_date(LocalDateTime fund_date) {
 		this.fund_date = fund_date;
 	}
-	public LocalDateTime getFund_duedate() {
-		return fund_duedate;
-	}
-	public void setFund_duedate(LocalDateTime fund_duedate) {
-		this.fund_duedate = fund_duedate;
-	}
-	public String getFund_option() {
-		return fund_option;
-	}
-	public void setFund_option(String fund_option) {
-		this.fund_option = fund_option;
-	}
 	public boolean isDel_status() {
 		return del_status;
 	}
@@ -123,6 +92,12 @@ public class FundingDTO{
 	}
 	public void setPay_number(int pay_number) {
 		this.pay_number = pay_number;
+	}
+	public String getPay_company() {
+		return pay_company;
+	}
+	public void setPay_company(String pay_company) {
+		this.pay_company = pay_company;
 	}
 	public boolean isPay_status() {
 		return pay_status;
@@ -166,12 +141,6 @@ public class FundingDTO{
 	public void setTrack_status(String track_status) {
 		this.track_status = track_status;
 	}
-	public String getPostcode() {
-		return postcode;
-	}
-	public void setPostcode(String postcode) {
-		this.postcode = postcode;
-	}
 	public String getRoad_address() {
 		return road_address;
 	}
@@ -196,18 +165,32 @@ public class FundingDTO{
 	public void setDetail_address(String detail_address) {
 		this.detail_address = detail_address;
 	}
-	
-	
-	@Override
-	public String toString() {
-		return "FundingDTO [fund_seq=" + fund_seq + ", member_seq=" + member_seq + ", project_seq=" + project_seq
-				+ ", price=" + price + ", fund_date=" + fund_date + ", fund_duedate=" + fund_duedate + ", fund_option="
-				+ fund_option + ", del_status=" + del_status + ", del_date=" + del_date + ", pay_option=" + pay_option
-				+ ", pay_number=" + pay_number + ", pay_status=" + pay_status + ", pay_date=" + pay_date + ", name="
-				+ name + ", phone=" + phone + ", requeste=" + requeste + ", track_num=" + track_num + ", track_status="
-				+ track_status + ", postcode=" + postcode + ", road_address=" + road_address + ", jibun_address="
-				+ jibun_address + ", extra_address=" + extra_address + ", detail_address=" + detail_address + "]";
+	public String getPostcode() {
+		return postcode;
 	}
+	public void setPostcode(String postcode) {
+		this.postcode = postcode;
+	}
+	public List<FundingBundleCountDTO> getbCountDTOList() {
+		return bCountDTOList;
+	}
+	public void setbCountDTOList(List<FundingBundleCountDTO> bCountDTOList) {
+		this.bCountDTOList = bCountDTOList;
+	}
+	public ProjectDTO getpDTO() {
+		return pDTO;
+	}
+	public void setpDTO(ProjectDTO pDTO) {
+		this.pDTO = pDTO;
+	}
+	public MemberDTO getCollectorDTO() {
+		return collectorDTO;
+	}
+	public void setCollectorDTO(MemberDTO collectorDTO) {
+		this.collectorDTO = collectorDTO;
+	}
+	
+	
 	
 }
 
