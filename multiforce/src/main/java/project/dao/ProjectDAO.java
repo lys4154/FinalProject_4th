@@ -149,9 +149,13 @@ public interface ProjectDAO {
 
 	List<ProjectDTO> getRejectedProjectsPage(int offset, int pageSize);
 
-	ProjectDTO getProjectMember(int project_seq);
+	ProjectDTO getProjectMember(String url);
 
 	String getRejectReason(int project_seq);
+
+	int updateCollectionAmount(int projectSeq, int price);
+
+	void updateDibsCount(int project_seq, int i);
 
 
 

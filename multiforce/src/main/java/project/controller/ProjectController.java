@@ -267,12 +267,12 @@ public class ProjectController {
 	}
 
 	//프로젝트 상세
-	@GetMapping("project_detail/{project_seq}")
-	public String ShowProjectDetail(Model model,@PathVariable("project_seq") int project_seq) {
-		ProjectDTO projects = projectService.getProjectMember(project_seq);
-		
-		List<BundleDTO> bundleList = bundleService.getBundleList(project_seq);
 
+	@GetMapping("project_detail/{url}")
+	public String ShowProjectDetail(Model model,@PathVariable("url") String url) {
+		String fullurl = "/project_detail/" + url;
+		ProjectDTO projects = projectService.getProjectMember(fullurl);
+		List<BundleDTO> bundleList = bundleService.getBundleList(projects.getProject_seq());
 		model.addAttribute("project", projects);
 		model.addAttribute("bundleList", bundleList);
 		return "project/project_detail";

@@ -50,9 +50,9 @@
 	join item i on l.item_seq = i.item_seq
 	left join item_option o on l.item_seq = o.item_seq
 	join bundle b on l.bundle_seq = b.bundle_seq
-	where b.bundle_seq =
+	where 
 	<foreach collection="bundleSeqList" item="item" separator=" or ">
-	 #{item}
+	 b.bundle_seq = #{item}
 	</foreach>
 	 order by bundle_seq asc ,item_list_seq asc, item_seq asc;
 </select>

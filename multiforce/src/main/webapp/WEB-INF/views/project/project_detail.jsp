@@ -72,7 +72,7 @@
 	margin-bottom: 10px;
 }
 
-.item_option_select{
+select[class^='item_option_select']{
 	display: none;
 }
 .add_cart_btn_wrap{
@@ -158,11 +158,21 @@
 								<c:if test="${fn:length(itemList.itemDTO.optionDTOList) != 1 && status.index == 0}">
 									<select class="item_option_select">
 								</c:if>
-								<c:if test="${fn:length(itemList.itemDTO.optionDTOList) != 1}">
+								<c:if test="${fn:length(itemList.itemDTO.optionDTOList) == 1 && status.index == 0}">
+									<select class="item_option_select_only_option">
+								</c:if>
+								<c:choose>
+								<c:when test="${status.index == 0 }">
+									<option value="${option.item_option_seq }" selected="selected">
+										${option.item_option_name }
+									</option>
+								</c:when>
+								<c:otherwise>
 									<option value="${option.item_option_seq }">
 										${option.item_option_name }
 									</option>
-								</c:if>
+								</c:otherwise>
+								</c:choose>
 								<c:if test="${fn:length(itemList.itemDTO.optionDTOList) != 0 && status.count == fn:length(itemList.itemDTO.optionDTOList)}">
 									</select>
 								</c:if>
@@ -211,22 +221,39 @@ $(document).ready(function () {
 	$("#funding_btn").on("click", function(){
 		if("${login_user_seq}" != ""){
 			if(selectBundleInfo.length <= 1 && $("#extra_price").val() == 0){
-				
+				alert("장바구니가 비어있습니다");
+			}else if("${project.project_process_name}" != "진행중"){
+				alert("후원이 불가합니다");
 			}else{
-				fillSelectBundleInfo();
 				$.ajax({
-			        url: "/payment",
-			        type: "POST",
-			        data: JSON.stringify(selectBundleInfo),
-					dataType:"json",
-					contentType: "application/json; charset=UTF-8",
-			        success: function (data) {
-			           location.href = "/payment";
-			        },
-			        error: function (xhr, status, error) {
-			            console.error("Error loading content:", error);
-			        }
-			    });
+					url: "/fundingcheck",
+					type: "post",
+					data: {
+						login_user_seq: "${login_user_seq}",
+						project_seq: "${project.project_seq}"
+					},
+					success: function(result){
+						if(result > 0){
+							alert("이미 후원하셨습니다");
+						}else{
+							fillSelectBundleInfo();
+							$.ajax({
+						        url: "/payment",
+						        type: "POST",
+						        data: JSON.stringify(selectBundleInfo),
+								dataType:"json",
+								contentType: "application/json; charset=UTF-8",
+						        success: function (data) {
+						           location.href = "/payment";
+						        },
+						        error: function (xhr, status, error) {
+						            console.error("Error loading content:", error);
+						        }
+						    });
+						}
+					}
+				})
+				
 			}
 			console.log(selectBundleInfo);
 		}else{
@@ -283,10 +310,19 @@ $(document).ready(function () {
 			selectBundleInfo.push(bundle);
 		});
 		let extraPrice = {};
-		console.log($("#extra_price").val())
 		extraPrice.name = "추가 후원금";
 		extraPrice.price = $("#extra_price").val() == "" ? 0 : $("#extra_price").val();
 		selectBundleInfo.push(extraPrice);
+		
+		let project = {};
+		project.longTitle = "${project.long_title}";
+		project.projectSeq = "${project.project_seq}";
+		project.url = "${project.url}";
+		project.mainImage = "${project.main_images_url}";
+		project.collector = "${project.memberDTO.nickname}";
+		project.profile = "${project.memberDTO.profile_img}";
+		project.dueDate = "${project.due_date}";
+		selectBundleInfo.push(project);
 		
 	}
 	
@@ -416,9 +452,9 @@ $(document).ready(function () {
 		chosenBoxForm.find(".count").val(1);
 		bundleItemArr.each(function(i, item){
 			let bundleItemName = $(item).children(".item_name_wrap").data("name");
-			let itemOptionSeq = $(item).children(".item_option_select").val();
-			let itemOptionName = $(item).children(".item_option_select").find(":selected").text() == "" ?
-									"" : "옵션: " + $(item).children(".item_option_select").find(":selected").text();
+			let itemOptionSeq = $(item).children("select[class^='item_option_select']").val();
+			let itemOptionName = $(item).children("select[class^='item_option_select']").find(":selected").text() == "" ?
+									"" : "옵션: " + $(item).children("select[class^='item_option_select']").find(":selected").text();
 			let itemOptionRealName = $(item).children(".item_option_select").find(":selected").text();
 			let itemCount = $(item).find(".item_count_wrap").data("count");
 			
@@ -441,7 +477,7 @@ $(document).ready(function () {
         url: "/viewcountupdate",
         type: "POST",
         data:{
-        	project_seq: "${project_seq}"
+        	project_seq: "${project.project_seq}"
         }
 	});
 //==================== 프로젝트 계획, 업데이트, 커뮤니티 클릭 이벤트 ============================
@@ -480,14 +516,19 @@ $(document).ready(function () {
 //==========================1:1 대화=================================
 	$("#ask_btn").on("click",function(){
 		if("${login_user_seq}" != ""){
-			let url = "/ask?";
-			let project_seq = "${project.project_seq}";//나중엔 프로젝트 상세페이지 들어오면 자동으로 넣어지게
-			let collector_seq = "${project.memberDTO.member_seq}";//마찬가지
-			let asker_seq = "${login_user_seq}";
-			url += ("project_seq=" + project_seq);
-			url += ("&collector_seq=" + collector_seq);
-			url += ("&asker_seq=" + asker_seq);
-			window.open(url, "_blank","width= 500, height= 600");
+			if("${login_user_seq}" != "${project.memberDTO.member_seq}"){
+				let url = "/ask?";
+				let project_seq = "${project.project_seq}";//나중엔 프로젝트 상세페이지 들어오면 자동으로 넣어지게
+				let collector_seq = "${project.memberDTO.member_seq}";//마찬가지
+				let asker_seq = "${login_user_seq}";
+				url += ("project_seq=" + project_seq);
+				url += ("&collector_seq=" + collector_seq);
+				url += ("&asker_seq=" + asker_seq);
+				window.open(url, "_blank","width= 500, height= 600");
+			}else{
+				location.href = "/allask";
+			}
+			
 		}else{
 			if(confirm("로그인이 필요한 서비스입니다. 로그인 하시겠습니까?")){
 				var fromPath = window.location.pathname.substring(1) == "" ?
