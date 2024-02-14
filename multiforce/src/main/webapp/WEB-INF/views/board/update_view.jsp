@@ -17,74 +17,106 @@
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"
   />
-  
-  <style>
-  #com_box{
-  border:solid 1px black;
-  
-  }
-  </style>
+  <link rel="stylesheet" type="text/css" href="/css/project/update_and_community.css">
+  <link rel="stylesheet" type="text/css" href="/css/board/main.css">
+
 </head>
 <body>
 
 <div>
 <%
-String loggedInUserId = null;
+int loggedInUserId = 0;
 int user_id = 0;
 if(session.getAttribute("login_user_seq") != null){
-	loggedInUserId = (String) session.getAttribute("login_user_seq");
+	loggedInUserId = (Integer) session.getAttribute("login_user_seq");
 
 	}
 %>
-
-<c:forEach var="update" items="${project}">
-
-
-		
+<c:choose>
+    <c:when test="${project_manager}">
         
-    <div style="padding:5px; border:solid 1px black;margin-bottom:5px;">
-    <!-- 자기 글이면 삭제 보여주기 -->
-        <c:if test="${update.member_seq eq loggedin_user}">
-            <button onclick="deleteUpdate(${update.update_seq})">삭제하기</button>
-        </c:if>
-    프로젝트 번호: ${update.project_seq}</br>
-    글쓴이: ${update.member_seq}</br>
-    글번호: ${update.update_seq}</br>
-    글: ${update.content }
-   
-
-     	
-<%
-if (loggedInUserId != null) {
-%>       
-    <div>
-    <i id="heartIcon_${update.update_seq}" class="${update.likedByCurrentUser ? 'fa fa-heart' : 'fa fa-heart-o'}" 
-    aria-hidden="true" style="${update.likedByCurrentUser ? 'color: red;' : ''}" onclick="likePost(${update.update_seq})"></i>
-    <span id="like_${update.update_seq}"></span>
-    </div>
-    <%
-}
-
-%>
-<c:if test="${userIsFunding}">
-    <a href="#" onclick="toggleCommentForm(event, ${update.update_seq})">댓글달기</a>
-</c:if>
+        <div class="update_big_btn"><a href="/update/write/${project_id}" class="btn-2">업데이트 글쓰기</a></div>
+    </c:when>
+</c:choose>
+<c:choose>
+    <c:when test="${empty project}">
+        <p class="update_empty">게시물이 없습니다.</p>
+    </c:when>
+    <c:otherwise>
+        <c:forEach var="update" items="${project}">
 		
+		
+				
+		        
+		    <div style="padding:5px; margin-bottom:5px;">
+		    <!-- 자기 글이면 삭제 보여주기 -->
+		       
+				
+				<div class="update_post_box">
+				
+			    
+			    <div class="header">
+			    	<div>
+			    	${update.nickname} | ${update.update_date }
+			    	</div>
+			    	
+			    	<div>
+			    	<c:if test="${update.member_seq eq loggedin_user}">
+			            <button class="btn-1" onclick="deleteUpdate(${update.update_seq})">삭제하기</button>
+			        </c:if>
+			    	</div>
+			    </div>
+			    
+			    <div class="content">${update.content}</div>
 			
-	<div id="comments_${update.update_seq}">
-	</div>
+		     	
+				
+				
+				
+				<div class="bottom">
+					<div>
+					<%
+					if (loggedInUserId != 0) {
+					%>       
+					    <div>
+					    <i id="heartIcon_${update.update_seq}" class="${update.likedByCurrentUser ? 'fa fa-heart' : 'fa fa-heart-o'}" 
+					    aria-hidden="true" style="${update.likedByCurrentUser ? 'color: red;' : ''}" onclick="likePost(${update.update_seq})"></i>
+					    <span id="like_${update.update_seq}"></span>
+					    </div>
+					    <%
+					}
+					
+					%>
+					</div>
+					<div>
+					<c:if test="${userIsFunding}">
+					    <a href="#" onclick="toggleCommentForm(event, ${update.update_seq})">댓글달기</a>
+					</c:if>
+					</div>
+				</div>
+				
+				</div>
+					
+						
+				<div class="update_post_box sub-comment" id="comments_${update.update_seq}">
+				</div>
+		
+		        
+		    
+		        <div id="commentForm_${update.update_seq}" style="display: none;">
+		            <textarea id="commentText_${update.update_seq}" rows="4" cols="50"></textarea> 
+		            <button onclick="submitComment(${update.update_seq})">댓글 등록</button>
+		        </div>
+		    </div>
+		    
+		    </hr>
+		
+		</c:forEach>
+    </c:otherwise>
+</c:choose>
 
-        
-    
-        <div id="commentForm_${update.update_seq}" style="display: none;">
-            <textarea id="commentText_${update.update_seq}" rows="4" cols="50"></textarea> 
-            <button onclick="submitComment(${update.update_seq})">댓글 등록</button>
-        </div>
-    </div>
-    
-    </hr>
 
-</c:forEach>
+
 
 </div>
 
@@ -233,14 +265,15 @@ function toggleCommentForm(event, updateSeq) {
 
                 
                 $.each(comments, function (index, comment) {
-                	var commentHtml = '<div id="com_box">댓글: ' + comment.content + '</br>아이디:' +
-                    comment.member.nickname + '</br>날짜: ' + comment.time;
+                	var commentHtml = '<div class="header"><div>' + comment.member.nickname + ' | ' +
+                	comment.time + '</div>';
 	
 	                if (comment.member_seq == loggedInUserId) {
-	                    commentHtml += '<button onclick="deleteComment(' + comment.update_reply_seq + ')">삭제하기</button>';
+	                    commentHtml += '<div><button class="btn-1" onclick="deleteComment(' + comment.update_reply_seq + ')">삭제하기</button></div>';
 	                }
 	
 	                commentHtml += '</div>';
+	                commentHtml += '<div class="content">'+ comment.content +'</div>';
 	
 	                commentsDiv.append(commentHtml);
                 });
