@@ -323,27 +323,26 @@ $(document).ready(function() {
 
 
 <body>
-<div class="wrap">
-	<div class="out_con">
+
+<div class="out_con">
+
+	<div class="follow_title">팔로우</div>
 	
-		<div class="follow_title">팔로우</div>
-		
-		<div class="menu_con"><!-- 상단 선택바 고정 -->
-			<div class="menu_item" id="funded_detail" style="color: black; font-weight:600;"> 후원한 창작자 </div>
-			<div class="menu_item" id="following_detail" > 팔로잉 </div>
-			<div class="menu_item" id="follower_detail" > 팔로워 </div>
-		</div>
-		<hr class="menu_under_hr">
-		
-		<div class="result_con">
-			<div class="result" ></div>
-		</div>
-	
-		<div class="empty_con">
-		</div>
-	
+	<div class="menu_con"><!-- 상단 선택바 고정 -->
+		<div class="menu_item" id="funded_detail" style="color: black; font-weight:600;"> 후원한 창작자 </div>
+		<div class="menu_item" id="following_detail" > 팔로잉 </div>
+		<div class="menu_item" id="follower_detail" > 팔로워 </div>
 	</div>
-	<%@ include file="/WEB-INF/views/common/footer.jsp" %>
+	<hr class="menu_under_hr">
+	
+	<div class="result_con">
+		<div class="result" ></div>
+	</div>
+
+	<div class="empty_con">
+	</div>
+
 </div>
+
 </body>
 </html>

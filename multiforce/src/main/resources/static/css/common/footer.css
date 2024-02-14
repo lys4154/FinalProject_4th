@@ -10,16 +10,14 @@ footer{
   color: #292929;
   font-size: 16px;
   font-weight: 500;
-  
+
 	
 }
 .wrap {
 	height: auto;
- /*min-height:840px;*/
   	position:relative;
   	padding-bottom:70px;/* footer height */
-  	min-height: 100%;
-  	
+  	min-height: 170vh;  	
 }
 html, body {
    margin:0;

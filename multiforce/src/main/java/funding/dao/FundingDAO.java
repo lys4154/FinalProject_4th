@@ -14,12 +14,9 @@ public interface FundingDAO {
 
 	//마이페이지 - 후원한 프로젝트
 	List<FundingDTO> getFundedProject(int memberSeq);
-
-	//후원한 프로젝트 - 진행중 후원
-	List<FundingDTO> ongoingFunded(int memberSeq);
 	
 	//후원한 프로젝트 - 진행중 후원 + 프로젝트정보
-	List<Map<String, Object>> getFunded(int memberSeq);
+	List<FundingDTO> getFunded(int memberSeq);
 
 	//후원한 프로젝트 - 성공한 후원
 	List<FundingDTO> successFunded(int memberSeq);

@@ -21,14 +21,9 @@ public class FundingService {
 	public List<FundingDTO> getFundedProject(int memberSeq) {
 		return fundingDao.getFundedProject(memberSeq);
 	}
-
-	//후원한 프로젝트 페이지 - 진행중 후원
-	public List<FundingDTO> ongoingFunded(int memberSeq) {
-		return fundingDao.ongoingFunded(memberSeq);
-	}
 	
 	//후원한 프로젝트 페이지 - 진행중 후원 + 프로젝트정보
-	public List<Map<String, Object>> getFunded(int memberSeq) {
+	public List<FundingDTO> getFunded(int memberSeq) {
 		return fundingDao.getFunded(memberSeq);
 	}
 

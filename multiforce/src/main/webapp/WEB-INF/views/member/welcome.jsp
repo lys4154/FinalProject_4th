@@ -19,17 +19,16 @@ if("${result}" == "false"){
 </script>
 
 <body>
-<div class="wrap">
-	<div class="out_con">
+
+<div class="out_con">
+
+	<div>${member_name } 회원님, </div>
+	<div>멀티포스 펀딩의 회원이 되신걸 환영합니다.</div>
 	
-		<div>${member_name } 회원님, </div>
-		<div>멀티포스 펀딩의 회원이 되신걸 환영합니다.</div>
-		
-		<div class="go_login"><a href="login">로그인</a> 후 이용해주세요.</div>
-	
-	</div>	
-	<%@ include file="/WEB-INF/views/common/footer.jsp" %>
-</div>
+	<div class="go_login"><a href="login">로그인</a> 후 이용해주세요.</div>
+
+</div>	
+
 </body>
 
 </html>

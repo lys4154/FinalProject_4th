@@ -10,46 +10,53 @@
 	select * from funding where member_seq=#{memberSeq}
 </select>
 
-
-<!-- 후원한 프로젝트 페이지 - 후원 진행중 -->
-<select id="ongoingFunded" parameterType="int" resultType="fundingdto">
-	SELECT * FROM FUNDING
-	WHERE member_seq =#{memberSeq}
-	AND fund_duedate > now()
+<!-- 후원한 프로젝트 -->
+<select id="getFunded" resultMap="fundingMap">
+	select * from funding f
+	join funding_bundle_count c on f.fund_seq = c.fund_seq
+	join chosen_option o on c.bundle_count_seq = o.bundle_count_seq
+	left join item_option n on o.item_option_seq = n.item_option_seq
+	join item i on n.item_seq = i.item_seq
+	join item_list l on l.item_seq = i.item_seq
+	join bundle b on c.bundle_seq = b.bundle_seq
+	join project p on f.project_seq = p.project_seq
+	join member_info m on m.member_seq = p.member_seq
+	where f.member_seq = #{memberSeq}	
+	and p.project_process = 4
 	AND del_status = false
-	ORDER BY project_seq ASC
-</select>
-
-<!-- 후원한 프로젝트 페이지 + 프로젝트정보 -->
-<select id="getFunded" parameterType="int" resultType="java.util.HashMap">
-    SELECT FUNDING.*, PROJECT.*
-    FROM FUNDING
-    INNER JOIN PROJECT ON FUNDING.project_seq = PROJECT.project_seq
-    WHERE FUNDING.member_seq = #{memberSeq}
-        AND FUNDING.fund_duedate > NOW()
-        AND FUNDING.del_status = FALSE
 </select>
 
 
 <!-- 후원한 프로젝트 페이지 - 후원 성공 -->
-<select id="successFunded" parameterType="int" resultType="fundingdto">
-<![CDATA[
-	SELECT * FROM FUNDING
-	WHERE member_seq =#{memberSeq}
-	AND fund_duedate < now()
+<select id="successFunded" resultMap="fundingMap">
+	select * from funding f
+	join funding_bundle_count c on f.fund_seq = c.fund_seq
+	join chosen_option o on c.bundle_count_seq = o.bundle_count_seq
+	left join item_option n on o.item_option_seq = n.item_option_seq
+	join item i on n.item_seq = i.item_seq
+	join item_list l on l.item_seq = i.item_seq
+	join bundle b on c.bundle_seq = b.bundle_seq
+	join project p on f.project_seq = p.project_seq
+	join member_info m on m.member_seq = p.member_seq
+	where f.member_seq = #{memberSeq}	
+	and p.project_process = 6
+	and p.project_process = 7
 	AND pay_status = true
-	ORDER BY project_seq ASC
-]]>
 </select>
 
 <!-- 후원한 프로젝트 페이지 - 후원 취소 -->
-<select id="cancelFunded" parameterType="int" resultType="fundingdto">
-<![CDATA[
-	SELECT * FROM FUNDING
-	WHERE member_seq =#{memberSeq}
+<select id="cancelFunded" resultMap="fundingMap">
+	select * from funding f
+	join funding_bundle_count c on f.fund_seq = c.fund_seq
+	join chosen_option o on c.bundle_count_seq = o.bundle_count_seq
+	left join item_option n on o.item_option_seq = n.item_option_seq
+	join item i on n.item_seq = i.item_seq
+	join item_list l on l.item_seq = i.item_seq
+	join bundle b on c.bundle_seq = b.bundle_seq
+	join project p on f.project_seq = p.project_seq
+	join member_info m on m.member_seq = p.member_seq
+	where f.member_seq = #{memberSeq}
 	AND del_status= true
-	ORDER BY project_seq ASC
-]]>
 </select>
 
 
@@ -107,6 +114,7 @@
 	<result property="collection_amount" column="collection_amount"/>
 	<result property="goal_price" column="goal_price"/>
 	<result property="delivery_date" column="delivery_date"/>
+	<result property="project_process" column="project_process"/>
 </resultMap>
 <resultMap type="memberdto" id="collectorMap">
 	<id property="member_seq" column="member_seq"/>

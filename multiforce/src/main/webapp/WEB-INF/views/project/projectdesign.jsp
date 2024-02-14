@@ -27,6 +27,7 @@
 </style>
 </head>
 <body>
+
 <h1>프로젝트 기획</h1>
 
 <div class="menuTab">
@@ -49,9 +50,9 @@
 	</ul>
 	<hr>
 </div>
-
 <div id="content_container">
 </div>
+	
 <script>
     $(document).ready(function () {
 
@@ -108,7 +109,5 @@
         }
     });
 </script>
-<hr>
 </body>
-<%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </html>

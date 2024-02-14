@@ -103,7 +103,7 @@ $(document).ready(function() {
 		                	        "</div>" +
 		                	        "<div class=\"pro_right\">" +
 		                	        	"<div class=\"pro_title\">" +
-			                	       		"<div class=\"pro_category\"> 카테고리 " + response[i].category + "</div>" +
+			                	       		"<div class=\"pro_category\"> " + response[i].category_kor + "</div>" +
 				                	        "<div class=\"pro_longtitle\">  <a href=\"" + response[i].url + "\">" + response[i].long_title + "  </a> </div>" +
 			                	        "</div>" +
 			                	        "<div> 기간 " + response[i].start_date + " ~ " + response[i].due_date + "<span id=\"pro_day\"> (D-" + response[i].term + ")</span></div>" +
@@ -155,26 +155,20 @@ $(document).ready(function() {
 	                       $(".empty_result").empty();
 	                       
 	               		for (var i = 0; i < response.length; i++) {	               		    
-	                           // 날짜 포매팅
-	                           var fundDate = new Date(response[i].fund_date);
-	                           var dueDate = new Date(response[i].due_date);
-	                           var deliDate = new Date(response[i].delivery_date);
-	                           
-	                           var formattedFund = fundDate.getFullYear() + "-" + (fundDate.getMonth() + 1) + "-" + fundDate.getDate();
-	                           var formattedPay = dueDate.getFullYear() + "-" + (dueDate.getMonth() + 1) + "-" + (dueDate.getDate() + 1);
-	                           var formattedDeli = deliDate.getFullYear() + "-" + (deliDate.getMonth() + 1) + "-" + deliDate.getDate();
-	
+								
+	               			console.log(response[i].bCountDTOList[0].bundleDTOList[0].bundle_name);
+	               			
 	                           $(".result").append(
                         			"<div class=\"pro_con\">" +
 	                        			"<div class=\"pro_left\">" +			                	        
-	                        		        "<div> <a href=\"" + response[i].url + "\"> <img src=\"" + response[i].main_images_url + "\" class=\"pro_img\"></a> </div>" +
+	                        		        "<div> <a href=\"" + response[i].pDTO.url + "\"> <img src=\"" + response[i].pDTO.main_images_url + "\" class=\"pro_img\"></a> </div>" +
 	                        		    "</div>" +
 	                        		    "<div class=\"pro_right\">" +
-	                        	       		"<div class=\"fund_info\"> <span>후원일 " + formattedFund + "</span> | <span> 후원번호 " + response[i].fund_seq + "</span> </div>" +
-		                        	        "<div class=\"pro_longtitle\">  <a href=\"" + response[i].url + "\">" + response[i].long_title + "  </a> </div>" +
+	                        	       		"<div class=\"fund_info\"> <span>후원일 " + response[i].fund_date + "</span> | <span> 후원번호 " + response[i].fund_seq + "</span> </div>" +
+		                        	        "<div class=\"pro_longtitle\">  <a href=\"" + response[i].pDTO.url + "\">" + response[i].pDTO.long_title + "  </a> </div>" +
 		                        	        "<div class=\"pay_info\">"+
-			                        	        "<div> " + response[i].fund_option + " </div>" +
-			                        	        "<div> <span class=\"fund_pay\"> 후원 성공시 " + formattedPay + " 결제 예정 </span> </div>" +
+			                        	        "<div> 상품 - " + response[i].bCountDTOList[0].bundleDTOList[0].bundle_name + "</div>" +
+			                        	        "<div> <span class=\"fund_pay\"> 후원 성공시 " + response[i].pDTO.due_date + " 결제 예정 </span> </div>" +
 			                        	        "<div class=\"amount\"> " + response[i].price.toLocaleString() + "원 결제 예정 </div>" +
 		                        	        "</div>"+
 		                        	    "</div>" +
@@ -411,44 +405,43 @@ $(document).ready(function() {
 
 
 <body>
-<div class="wrap">
-	<div class="out_con" >
-		<div class="top_con" ><!-- 상단 회원정보 고정 -->
-			<div><img alt="프로필 이미지" src="${loginMember.profile_img}"  id="profile_img"></div>
-			<div class="nick_con">
-				<div>
-					<span id="my_nick">${loginMember.nickname} </span>
-					<span> <a href="/settings" ><img alt="회원정보 수정으로 가는 이모티콘" src="/settings/settings.png" id="set_icon"></a></span>
-				</div>
-				<div class="url_con">
-					<span>${pageContext.request.scheme}://${pageContext.request.serverName}:${pageContext.request.serverPort}</span><span id="url_new">${loginMember.member_url}</span>
-				</div>			
+
+<div class="out_con" >
+	<div class="top_con" ><!-- 상단 회원정보 고정 -->
+		<div><img alt="프로필 이미지" src="${loginMember.profile_img}"  id="profile_img"></div>
+		<div class="nick_con">
+			<div>
+				<span id="my_nick">${loginMember.nickname} </span>
+				<span> <a href="/settings" ><img alt="회원정보 수정으로 가는 이모티콘" src="/settings/settings.png" id="set_icon"></a></span>
 			</div>
+			<div class="url_con">
+				<span>${pageContext.request.scheme}://${pageContext.request.serverName}:${pageContext.request.serverPort}</span><span id="url_new">${loginMember.member_url}</span>
+			</div>			
 		</div>
-		
-		
-		<div class="menu_con"><!-- 상단 선택바 고정 -->
-			<div class="menu_item" id="myprofile_detail" style="cursor:pointer; color: #292929; font-weight:600;" > 프로필 </div>
-			<div class="menu_item" id="myproject_detail" style="cursor:pointer;"> 올린 프로젝트 <span></span> </div>
-			<div class="menu_item" id="funded_detail" style="cursor:pointer;"> 후원한 프로젝트 </div>
-			<div class="menu_item" id="follower_detail" style="cursor:pointer;"> 팔로워 </div>
-			<div class="menu_item" id="following_detail" style="cursor:pointer;"> 팔로잉 </div>		
-		</div>
-		<hr class="menu_under_hr">
-		
-		
-		
-		<div class="result_count" ></div>
-		<div class="res_con" >
-			<div class="result" ></div>
-		</div>
-		
-		<div class="empty_con">
-		</div>
-		
 	</div>
-	<%@ include file="/WEB-INF/views/common/footer.jsp" %>
+	
+	
+	<div class="menu_con"><!-- 상단 선택바 고정 -->
+		<div class="menu_item" id="myprofile_detail" style="cursor:pointer; color: #292929; font-weight:600;" > 프로필 </div>
+		<div class="menu_item" id="myproject_detail" style="cursor:pointer;"> 올린 프로젝트 <span></span> </div>
+		<div class="menu_item" id="funded_detail" style="cursor:pointer;"> 후원한 프로젝트 </div>
+		<div class="menu_item" id="follower_detail" style="cursor:pointer;"> 팔로워 </div>
+		<div class="menu_item" id="following_detail" style="cursor:pointer;"> 팔로잉 </div>		
+	</div>
+	<hr class="menu_under_hr">
+	
+	
+	
+	<div class="result_count" ></div>
+	<div class="res_con" >
+		<div class="result" ></div>
+	</div>
+	
+	<div class="empty_con">
+	</div>
+	
 </div>
+
 </body>
 
 </html>

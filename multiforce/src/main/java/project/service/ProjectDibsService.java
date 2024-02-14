@@ -42,6 +42,11 @@ public class ProjectDibsService {
 			return "성공";
 		}
 	}
+
+	
+	public int selectdibs(int member_seq, int project_seq) {
+		return dibsDao.selectdibs(member_seq, project_seq);
+	}
 	
 
 

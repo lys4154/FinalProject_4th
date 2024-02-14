@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpSession;
 import member.dto.MemberDTO;
 import project.dao.ProjectDAO;
 import project.dto.ProjectDTO;
+import project.dto.ProjectDiscoverDTO;
 import project.dto.ProjectMemberDTO;
 
 @Service
@@ -229,6 +230,16 @@ public class ProjectService {
 		ProjectDTO dto = projectDao.getProjectMember(project_seq);
 		return dto;
 
+	}
+
+	//메인페이지 - 업데이트 프로젝트
+	public List<ProjectMemberDTO> newUpdateProject() {
+		return projectDao.newUpdateProject();
+	}
+
+	//메인페이지 - 인기 프로젝트
+	public List<ProjectMemberDTO> popularProject() {
+		return projectDao.popularProject();
 	}
 
 

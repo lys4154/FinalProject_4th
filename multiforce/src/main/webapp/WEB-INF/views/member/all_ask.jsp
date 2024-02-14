@@ -15,42 +15,41 @@
 <link rel="stylesheet" href="/css/member/all_ask.css">
 
 <body>
-<div class="wrap">
-	<div class="out_con">
-		<div id="ask_title">메세지</div>
-		<div id="content_container">
-			<div id="all_ask_wrap" >
-				<h3>받은 문의</h3>
-				<ul id="my_project_ask">
-					<li id="collector_chatroom_list">
 
-					</li>
-				</ul>
-				<h3>보낸 문의</h3>
-				<ul id="project_ask">
-					<li id="asker_chatroom_list">
-					</li>
-				</ul>
-			</div>
-			<div class="chat_window" >
-				<%@ include file="/WEB-INF/views/member/ask.jsp" %>
-			</div>
-			<div style="display:none">
-				<ul id="chatroom_list">
-					<li class="chatroom_wrap">
-						<div class="chatroom_long_title">
-						</div >
-						<div  class="chatroom_last_chat">
-						</div>
-						<div  class="chatroom_last_chat_date">
-						</div >
-					</li>
-				</ul>
-			</div>
+<div class="out_con">
+	<div id="ask_title">메세지</div>
+	<div id="content_container">
+		<div id="all_ask_wrap" >
+			<h3>받은 문의</h3>
+			<ul id="my_project_ask">
+				<li id="collector_chatroom_list">
+
+				</li>
+			</ul>
+			<h3>보낸 문의</h3>
+			<ul id="project_ask">
+				<li id="asker_chatroom_list">
+				</li>
+			</ul>
+		</div>
+		<div class="chat_window" >
+			<%@ include file="/WEB-INF/views/member/ask.jsp" %>
+		</div>
+		<div style="display:none">
+			<ul id="chatroom_list">
+				<li class="chatroom_wrap">
+					<div class="chatroom_long_title">
+					</div >
+					<div  class="chatroom_last_chat">
+					</div>
+					<div  class="chatroom_last_chat_date">
+					</div >
+				</li>
+			</ul>
 		</div>
 	</div>
-	<%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </div>
+
 </body>
 <script>
 function createChatroomWrap(longTitle, lastChat, lastChatDate, chatroomSeq, ac){

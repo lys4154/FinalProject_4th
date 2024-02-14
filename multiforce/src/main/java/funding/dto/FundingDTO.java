@@ -1,5 +1,6 @@
 package funding.dto;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -16,7 +17,7 @@ public class FundingDTO{
 	int member_seq;
 	int	project_seq;
 	int	price;
-	LocalDateTime fund_date;
+	LocalDate fund_date;
 	boolean del_status;
 	LocalDateTime del_date;
 	String pay_option;
@@ -63,10 +64,10 @@ public class FundingDTO{
 	public void setPrice(int price) {
 		this.price = price;
 	}
-	public LocalDateTime getFund_date() {
+	public LocalDate getFund_date() {
 		return fund_date;
 	}
-	public void setFund_date(LocalDateTime fund_date) {
+	public void setFund_date(LocalDate fund_date) {
 		this.fund_date = fund_date;
 	}
 	public boolean isDel_status() {

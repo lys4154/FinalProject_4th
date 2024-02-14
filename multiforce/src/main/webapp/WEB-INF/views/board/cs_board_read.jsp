@@ -152,6 +152,6 @@ function deletePost(comment_id) {
     }
 }
 </script>
-<%@ include file="/WEB-INF/views/common/footer.jsp" %>
+
 </body>
 </html>
