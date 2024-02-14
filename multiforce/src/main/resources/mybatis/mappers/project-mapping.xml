@@ -16,9 +16,9 @@
     select * from project where
 </select>
 
-    <select id="getRejectReason" resultType="approvalRequest.dto.ApprovalRequestDTO">
-	    select approval_reason from approval_request where project_seq = #{project_seq}
-	</select>
+<select id="getRejectReason" resultType="String">
+    select approval_reason from approval_request where project_seq = #{project_seq}
+</select>
 
 <select id="getAllApprovedProjects" resultType="projectdto">
     select * from project where project_process=3

@@ -7,6 +7,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Project Community</title>
+  <link rel="stylesheet" type="text/css" href="/css/project/update_and_community.css">
+  <link rel="stylesheet" type="text/css" href="/css/board/main.css">
   <style>
   #com_box{
   border:solid 1px black;
@@ -35,25 +37,19 @@
 </head>
 <body>
 <%
-String loggedInUserId = null;
+int loggedInUserId = 0;
 int user_id = 0;
 if(session.getAttribute("login_user_seq") != null){
-	loggedInUserId = (String) session.getAttribute("login_user_seq");
+	loggedInUserId = (int) session.getAttribute("login_user_seq");
 
 	}
 %>
 <section class="community-section">
-    <h2>프로젝트 커뮤니티</h2>
-    
-
-    <div class="post">
-        <p>프로젝트 번호: ${projects.project_seq }</p>
-        <p>프로젝트 내용: ${projects.content }</p>
-        <p>목표 금액: ${projects.goal_price }</p>
-        
-        <p></p>
-    </div>
-    <hr>
+<c:choose>
+    <c:when test="${empty community_posts}">
+        <p class="update_empty">게시물이 없습니다.</p>
+    </c:when>
+</c:choose>
     
 <c:if test="${userIsFunding}">
      <form action="/community_post" method="POST" onsubmit="return validateForm()">
@@ -76,7 +72,7 @@ if(session.getAttribute("login_user_seq") != null){
         </c:if>
 	    
 	   <%
-if (loggedInUserId != null) {
+if (loggedInUserId != 0) {
 %>       
     <div>
     <i id="heartIcon_${community.pro_board_seq}" class="${community.likedByCurrentUser ? 'fa fa-heart' : 'fa fa-heart-o'}" 
