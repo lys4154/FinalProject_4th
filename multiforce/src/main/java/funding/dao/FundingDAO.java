@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 import funding.dto.FundingDTO;
+import project.dto.FundingBundleCountDTO;
 
 @Repository
 @Mapper
@@ -31,5 +32,16 @@ public interface FundingDAO {
 	void delStatusChange(int fundSeq);
 
 	FundingDTO getPaymentInfo(int fundseq);
+
+	int insertFunding(FundingDTO dto);
+
+	Integer findFundingSeq(int project_seq, int member_seq);
+
+	int insertFundingBundleCount(FundingBundleCountDTO countDto);
+
+	int findCountSeq(int fundSeq, int bundleSeq);
+
+	void insertChosenOption(int countSeq, int optionSeq);
+
 
 }

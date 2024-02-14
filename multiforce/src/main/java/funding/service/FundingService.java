@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import funding.dao.FundingDAO;
 import funding.dto.FundingDTO;
+import project.dao.ProjectDAO;
+import project.dto.FundingBundleCountDTO;
 
 
 @Service
@@ -16,6 +18,10 @@ public class FundingService {
 	
 	@Autowired
 	private FundingDAO fundingDao;
+	@Autowired
+	private FundingBundleCountDTO countDto;
+	@Autowired
+	private ProjectDAO projectDao;
 
 	//마이페이지 - 후원한 프로젝트
 	public List<FundingDTO> getFundedProject(int memberSeq) {
@@ -55,7 +61,35 @@ public class FundingService {
 	public int insertFunding(HashMap<String, Object> map) {
 		//펀딩 먼저 넣기 => fundingseq 값 가져오기 => fundingseq 값 + bundleseq + count fundingbundlecount에 넣기
 		//fundingbundlecount seq 값 가져오기 => 옵션seq 넣기
-		return 0;
+		FundingDTO dto = (FundingDTO)map.get("dto");
+		List<Map<String,Object>> list = (List<Map<String,Object>>)map.get("list");
+		int result = fundingDao.insertFunding(dto);
+		int fundSeq = fundingDao.findFundingSeq(dto.getProject_seq(), dto.getMember_seq());
+		for (Map<String, Object> lmap : list) {
+			int bundleSeq = (int)lmap.get("seq");
+			int perchaseCount = Integer.parseInt((String)lmap.get("count"));
+			countDto.setFund_seq(fundSeq);
+			countDto.setBundle_seq(bundleSeq);
+			countDto.setPerchase_count(perchaseCount);
+			int r = fundingDao.insertFundingBundleCount(countDto);
+			int countSeq = fundingDao.findCountSeq(fundSeq, bundleSeq);
+			for (Map<String, Object> imap : (List<Map<String, Object>>)lmap.get("item")) {
+				int optionSeq = Integer.parseInt((String)imap.get("optionSeq"));
+				fundingDao.insertChosenOption(countSeq, optionSeq);
+			}
+		}
+		int projectSeq = dto.getProject_seq();
+		int price = dto.getPrice();
+		int pResult = projectDao.updateCollectionAmount(projectSeq, price);
+		return fundSeq;
+	}
+
+	public int fundingCheck(int project_seq , int login_user_seq) {
+		Integer result = fundingDao.findFundingSeq(project_seq, login_user_seq);
+		if(result == null) {
+			result = 0;
+		}
+		return result;
 	}
 
 

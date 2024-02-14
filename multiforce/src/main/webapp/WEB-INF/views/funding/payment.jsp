@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
     <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+    <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
     <%@ include file="/WEB-INF/views/common/header.jsp" %>
 <!DOCTYPE html>
 <html>
@@ -11,24 +12,37 @@
 </head>
 <body>
 <div>
-	<h3>선물 정보</h3>
 	<div>
-		<h4>선물 구성</h4>
-		<c:set var="totalPrice" value="0"/>
-		<c:forEach var="bundle" items="${paymentList}">
+		<h3>프로젝트 정보</h3>
+		<c:set var="project" value="${paymentList[fn:length(paymentList) -1] }"/>
+		<div>
+			<div>
+				<img src="${project.profile }"><span>${project.collector}</span>
+			</div>
+			<a href="${project.url }">
+				${project.longTitle}
+			</a>
+		</div>
+		<h3>선물 정보</h3>
+		<div>
+			<h4>선물 구성</h4>
+			<c:set var="totalPrice" value="0"/>
+		<c:forEach var="bundle" items="${paymentList}" end="${fn:length(paymentList) -2 }">
 			<c:set var="extraPrice" value="추가 후원금"/>
 			<c:if test="${bundle.name == extraPrice}">
 				<span>${bundle.name }</span>
-				<div>${bundle.price }원</div>
+				<div><fmt:formatNumber value="${bundle.price }" pattern="#,###" />원</div>
+				<c:set var="totalPrice" value="${totalPrice + bundle.price}"/>
 			</c:if>
-			<c:if test="${bundle.name != extraPrice}">
+			<c:if test="${bundle.name != extraPrice}" >
 				<span>${bundle.name }</span>
 				<span>(x${bundle.count })</span>
-				<div>${bundle.price }원</div>
+				<div><fmt:formatNumber value="${bundle.price }" pattern="#,###" />원</div>
+				<c:set var="totalPrice" value="${totalPrice + bundle.price * bundle.count}"/>
 			</c:if>
-			<c:set var="totalPrice" value="${totalPrice + bundle.price }"/>
+			
 			<ul>
-				<c:forEach var="item" items="${bundle.item }">
+				<c:forEach var="item" items="${bundle.item }" >
 					<li>
 						<div>
 							<span>
@@ -74,6 +88,7 @@
 			추가주소: <input type="text" value="${dto.extra_address }" name="extra_address" readonly>
 		</div>
 		<input type="hidden" value="${totalPrice }" name="price">
+		<input type="hidden" value="${login_user_seq }" name="member_seq">
 		<h3>결제 방법</h3>
 		<label for="payment">결제수단</label>
 		<select id="payment" name="pay_option">
@@ -91,7 +106,7 @@
 				<fmt:formatNumber value="${totalPrice }" pattern="#,###" />원
 			</div>
 		</div>
-		<input type="button" value="후원하기">
+		<input type="submit" value="후원하기">
 	</form>
 	<!-- 결제 방법 영역-->
 		
@@ -99,6 +114,9 @@
 		카드 : 15~16 숫자 들어가면 결제 완료
 		계좌이체 : 10~30 숫자 들어가면 결제 완료
 		 -->	
+	
+	</div>
+		
 </div>
  <script>
     document.getElementById('payment').addEventListener('change', function (ev) {
@@ -136,20 +154,6 @@
         }
     }
 </script>
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
 <!--  <script>
  	document.getElementById('pay').addEventListener('click', function(ev){
  		var payvalue = document.getElementById("payment").value;

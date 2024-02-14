@@ -42,8 +42,8 @@ function inputPrice(num) {
 </script>
 </head>
 <body>
- <h1>펀딩 계획</h1>
- <form action="fundingPlan" method="post">
+  <h1>펀딩 계획</h1>
+ 
   <label for="start_date">시작일:</label>
   <input type="date" id="start_date" name="start_date"><br><br>
   
@@ -52,7 +52,6 @@ function inputPrice(num) {
   
   <label for="goal_price">목표 금액:</label>
   <input type="text" id="goal_price" name="goal_price" onKeyup="inputPrice(this);"><br><br>
-  
   <button type="button" id="submitBtn">저장</button>
 </form>
 

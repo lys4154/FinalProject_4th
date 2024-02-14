@@ -15,7 +15,6 @@
 <link rel="stylesheet" href="/css/member/all_ask.css">
 
 <body>
-
 <div class="out_con">
 	<div id="ask_title">메세지</div>
 	<div id="content_container">
@@ -23,38 +22,41 @@
 			<h3>받은 문의</h3>
 			<ul id="my_project_ask">
 				<li id="collector_chatroom_list">
-
-				</li>
-			</ul>
-			<h3>보낸 문의</h3>
-			<ul id="project_ask">
-				<li id="asker_chatroom_list">
-				</li>
-			</ul>
-		</div>
-		<div class="chat_window" >
-			<%@ include file="/WEB-INF/views/member/ask.jsp" %>
-		</div>
-		<div style="display:none">
-			<ul id="chatroom_list">
-				<li class="chatroom_wrap">
-					<div class="chatroom_long_title">
-					</div >
-					<div  class="chatroom_last_chat">
-					</div>
-					<div  class="chatroom_last_chat_date">
-					</div >
-				</li>
-			</ul>
+					</li>
+				</ul>
+				<h3>보낸 문의</h3>
+				<ul id="project_ask">
+					<li id="asker_chatroom_list">
+					</li>
+				</ul>
+			</div>
+			<div class="chat_window" >
+				<%@ include file="/WEB-INF/views/member/ask.jsp" %>
+			</div>
+			<div style="display:none">
+				<ul id="chatroom_list">
+					<li class="chatroom_wrap">
+						<div class="chatroom_long_title">
+						</div >
+						<div class="chatroom_nickname">
+						</div >
+						<div  class="chatroom_last_chat">
+						</div>
+						<div  class="chatroom_last_chat_date">
+						</div >
+					</li>
+				</ul>
+			</div>
 		</div>
 	</div>
 </div>
 
 </body>
 <script>
-function createChatroomWrap(longTitle, lastChat, lastChatDate, chatroomSeq, ac){
+function createChatroomWrap(longTitle, lastChat, lastChatDate, chatroomSeq, nickname, ac){
 	let chatroomWrap = $(".chatroom_wrap").clone();
 	chatroomWrap.find(".chatroom_long_title").append(longTitle);
+	chatroomWrap.find(".chatroom_nickname").append(nickname);
 	chatroomWrap.find(".chatroom_last_chat").append(lastChat);
 	chatroomWrap.find(".chatroom_last_chat_date").append(lastChatDate);
 	chatroomWrap.attr("id", "chatroom_" + chatroomSeq);
@@ -81,8 +83,9 @@ $.ajax({
 				let lastChat = r.collector[i].last_chat;
 				let lastChatDate = r.collector[i].last_chat_date;
 				let chatroomSeq = r.collector[i].chatroom_seq;
+				let opNickname = r.collector[i].nickname; //상대방 닉네임
 				let ac = "collector";
-				let chatroomWrap = createChatroomWrap(longTitle, lastChat, lastChatDate, chatroomSeq, ac);
+				let chatroomWrap = createChatroomWrap(longTitle, lastChat, lastChatDate, chatroomSeq,opNickname, ac);
 				$("#collector_chatroom_list").append(chatroomWrap);
 			}
 		}
@@ -96,8 +99,9 @@ $.ajax({
 				let lastChat = r.asker[i].last_chat;
 				let lastChatDate = r.asker[i].last_chat_date;
 				let chatroomSeq = r.asker[i].chatroom_seq;
+				let opNickname = r.asker[i].nickname;
 				let ac = "asker";
-				let chatroomWrap = createChatroomWrap(longTitle, lastChat, lastChatDate, chatroomSeq, ac);
+				let chatroomWrap = createChatroomWrap(longTitle, lastChat, lastChatDate, chatroomSeq, opNickname, ac);
 				$("#asker_chatroom_list").append(chatroomWrap);
 			}
 		}

@@ -150,7 +150,7 @@ public interface ProjectDAO {
 
 	List<ProjectDTO> getRejectedProjectsPage(int offset, int pageSize);
 
-	ProjectDTO getProjectMember(int project_seq);
+	ProjectDTO getProjectMember(String url);
 
 	String getRejectReason(int project_seq);
 
@@ -159,6 +159,11 @@ public interface ProjectDAO {
 	
 	//메인페이지 - 인기 프로젝트
 	List<ProjectMemberDTO> popularProject();
+
+	int updateCollectionAmount(int projectSeq, int price);
+
+	void updateDibsCount(int project_seq, int i);
+
 
 
 

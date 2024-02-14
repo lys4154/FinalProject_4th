@@ -16,9 +16,9 @@
     select * from project where
 </select>
 
-    <select id="getRejectReason" resultType="approvalRequest.dto.ApprovalRequestDTO">
-	    select approval_reason from approval_request where project_seq = #{project_seq}
-	</select>
+<select id="getRejectReason" resultType="String">
+    select approval_reason from approval_request where project_seq = #{project_seq}
+</select>
 
 <select id="getAllApprovedProjects" resultType="projectdto">
     select * from project where project_process=3
@@ -413,7 +413,7 @@ update project set view_count = view_count + 1 where project_seq = #{project_seq
 SELECT *
 FROM project
 JOIN member_info ON project.member_seq = member_info.member_seq
-WHERE project.project_seq = #{projectSeq}
+WHERE project.url = #{url} and project_process >= 3
 </select>
 <resultMap type="projectdto" id="projectMap">
 	<id property="project_seq" column="project_seq"/>
@@ -437,6 +437,7 @@ WHERE project.project_seq = #{projectSeq}
 	<result property="description" column="description"/>
 </resultMap>
 
+
 <!-- 메인페이지 업데이트 프로젝트 12개 -->
 <select id="newUpdateProject" resultType="projectmemberdto">
 	SELECT project.*, member_info.nickname 
@@ -457,7 +458,12 @@ WHERE project.project_seq = #{projectSeq}
 	LIMIT 10
 </select>
 
-
-
+<!-- 펀딩 추가 후 프로젝트 모금액 업데이트 -->
+<update id="updateCollectionAmount">
+update project set collection_amount = collection_amount + #{price} where project_seq = #{projectSeq}
+</update>
 
 </mapper>
+
+
+

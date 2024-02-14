@@ -36,10 +36,6 @@
 			<a href="#" id="tab_info">기본정보</a>
 		</li>
 		
-		<li class="tab_fundingPlan">
-			<a href="#" id="tab_fundingPlan">펀딩 계획</a>
-		</li>
-		
 		<li class="tab_gift">
 			<a href="#" id="tab_gift">상품 구성</a>
 		</li>
@@ -55,6 +51,9 @@
 	
 <script>
     $(document).ready(function () {
+    	
+    	var baseUrl = window.location.origin;
+        loadContent(baseUrl + "/tab_info");
 
     	$("#tab_info").click();
     	
@@ -65,7 +64,7 @@
             loadContent(baseUrl + "/tab_info");
         });
 
-    	/* $("#tab_fundingPlan").click();
+    	/*$("#tab_fundingPlan").click();
     	
         $("#tab_fundingPlan").click(function (e) {
             e.preventDefault();
@@ -74,14 +73,14 @@
             loadContent(baseUrl + "/tab_fundingPlan"); 
         }); */
         
-		/* $("#tab_gift").click();
+		$("#tab_gift").click();
     	
         $("#tab_gift").click(function (e) {
             e.preventDefault();
            // var pid = $(this).data("project-id");
             var baseUrl = window.location.origin;
             loadContent(baseUrl + "/tab_gift"); 
-        }); */
+        }); 
         
 		$("#tab_projectPlan").click();
     	
@@ -109,5 +108,6 @@
         }
     });
 </script>
+<hr>
 </body>
 </html>

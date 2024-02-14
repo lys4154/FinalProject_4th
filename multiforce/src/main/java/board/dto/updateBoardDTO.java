@@ -15,7 +15,14 @@ public class updateBoardDTO {
 	    private int del_status;
 	    private LocalDateTime del_date;
 	    boolean LikedByCurrentUser;
+	    private String nickname;
 	    
+		public String getNickname() {
+			return nickname;
+		}
+		public void setNickname(String nickname) {
+			this.nickname = nickname;
+		}
 		public boolean isLikedByCurrentUser() {
 			return LikedByCurrentUser;
 		}

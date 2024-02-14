@@ -44,11 +44,15 @@ $(document).ready(function(){
 					if(r[i].is_read == false){
 						noReadCount++;
 					}
+					
 					$("#header_notification_list").append(
 							"<div id='notification_"+r[i].notification_seq+"' class='notifications'><a href='/projectdetail/"
 							+r[i].project_seq+"'>"+r[i].message + "</a><input type='button' value='삭제' class='notification_delete_btn' id='delete_"
 							+r[i].notification_seq+"'><span> 읽음 여부: "+r[i].is_read+"</span></div>");
 					
+				}
+				if(r.length == 0){
+					$("#header_notification_list").append("<h3 id='no_notification'>알림이 없습니다.</<h3>");
 				}
 				addNotiDelBtnEvent();
 				addNotiEvent();

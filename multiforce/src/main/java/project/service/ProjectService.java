@@ -40,7 +40,6 @@ public class ProjectService {
 	
 	//반려이유 가져오기
 	public String getRejectReason(int project_seq) {
-		System.out.println("Reason:"+projectDao.getRejectReason(project_seq));
 		return projectDao.getRejectReason(project_seq);
 	}
 	
@@ -226,8 +225,8 @@ public class ProjectService {
 		return projectDao.getRejectedProjectsPage(offset, pageSize);
 	}
 
-	public ProjectDTO getProjectMember(int project_seq) {
-		ProjectDTO dto = projectDao.getProjectMember(project_seq);
+	public ProjectDTO getProjectMember(String url) {
+		ProjectDTO dto = projectDao.getProjectMember(url);
 		return dto;
 
 	}
