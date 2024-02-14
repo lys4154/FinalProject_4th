@@ -413,7 +413,7 @@ update project set view_count = view_count + 1 where project_seq = #{project_seq
 SELECT *
 FROM project
 JOIN member_info ON project.member_seq = member_info.member_seq
-WHERE project.project_seq = #{projectSeq}
+WHERE project.url = #{url} and project_process >= 3
 </select>
 <resultMap type="projectdto" id="projectMap">
 	<id property="project_seq" column="project_seq"/>
@@ -435,4 +435,11 @@ WHERE project.project_seq = #{projectSeq}
 	<result property="nickname" column="nickname"/>
 	<result property="profile_img" column="profile_img"/>
 </resultMap>
+<!-- 펀딩 추가 후 프로젝트 모금액 업데이트 -->
+<update id="updateCollectionAmount">
+update project set collection_amount = collection_amount + #{price} where project_seq = #{projectSeq}
+</update>
+
 </mapper>
+
+

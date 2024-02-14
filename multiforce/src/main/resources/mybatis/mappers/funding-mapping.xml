@@ -159,6 +159,56 @@ join member_info m on m.member_seq = p.member_seq
 where f.fund_seq = #{fundseq};	
 </select>
 
+<!-- 후원 정보 넣기 -->
+<insert id="insertFunding">
+insert into funding(
+	member_seq, 
+	project_seq,
+	price,
+	extra_price,
+	pay_option, 
+	pay_number, 
+	pay_company, 
+	name, 
+	phone, 
+	postcode, 
+	road_address,
+	jibun_address,
+	extra_address,
+	detail_address,
+	fund_duedate
+	) 
+	values(
+	
+	#{member_seq},
+	#{project_seq}, 
+	#{price},
+	#{extra_price}, 
+	#{pay_option}, 
+	#{pay_number}, 
+	#{pay_company}, 
+	#{name}, 
+	#{phone}, 
+	#{postcode}, 
+	#{road_address},
+	#{jibun_address},
+	#{extra_address},
+	#{detail_address},
+	#{fund_duedate}
+	)
+</insert>
+<select id="findFundingSeq">
+select fund_seq from funding where project_seq = #{project_seq} and member_seq = #{member_seq} and del_status = false
+</select>
+<insert id="insertFundingBundleCount" parameterType="countdto">
+insert into funding_bundle_count(fund_seq, bundle_seq, perchase_count) values (#{fund_seq}, #{bundle_seq}, #{perchase_count})
+</insert>
+<select id="findCountSeq">
+select bundle_count_seq from funding_bundle_count where fund_seq = #{fundSeq} and bundle_seq = #{bundleSeq}
+</select>
+<insert id="insertChosenOption">
+insert into chosen_option(bundle_count_seq, item_option_seq) values (#{countSeq}, #{optionSeq})
+</insert>
 
 
 

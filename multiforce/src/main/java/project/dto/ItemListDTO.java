@@ -12,8 +12,7 @@ public class ItemListDTO {
 	int item_seq;
 	int bundle_seq;
 	int item_count;
-  
-  ItemDTO itemDTO;
+	ItemDTO itemDTO;
 
 	public int getItem_list_seq() {
 		return item_list_seq;

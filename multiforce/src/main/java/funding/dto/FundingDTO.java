@@ -1,5 +1,6 @@
 package funding.dto;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -17,10 +18,11 @@ public class FundingDTO{
 	int	project_seq;
 	int	price;
 	LocalDateTime fund_date;
+	LocalDate fund_duedate;
 	boolean del_status;
 	LocalDateTime del_date;
 	String pay_option;
-	int pay_number;
+	String pay_number;
 	String pay_company;
 	boolean pay_status;
 	LocalDateTime pay_date;
@@ -35,10 +37,24 @@ public class FundingDTO{
 	String extra_address;
 	String detail_address;
 	String postcode;
+	int extra_price;
 	List<FundingBundleCountDTO> bCountDTOList;
 	ProjectDTO pDTO;
 	MemberDTO collectorDTO;
 	
+	
+	public LocalDate getFund_duedate() {
+		return fund_duedate;
+	}
+	public void setFund_duedate(LocalDate fund_duedate) {
+		this.fund_duedate = fund_duedate;
+	}
+	public int getExtra_price() {
+		return extra_price;
+	}
+	public void setExtra_price(int extra_price) {
+		this.extra_price = extra_price;
+	}
 	public int getFund_seq() {
 		return fund_seq;
 	}
@@ -87,10 +103,11 @@ public class FundingDTO{
 	public void setPay_option(String pay_option) {
 		this.pay_option = pay_option;
 	}
-	public int getPay_number() {
+	
+	public String getPay_number() {
 		return pay_number;
 	}
-	public void setPay_number(int pay_number) {
+	public void setPay_number(String pay_number) {
 		this.pay_number = pay_number;
 	}
 	public String getPay_company() {
@@ -188,6 +205,17 @@ public class FundingDTO{
 	}
 	public void setCollectorDTO(MemberDTO collectorDTO) {
 		this.collectorDTO = collectorDTO;
+	}
+	@Override
+	public String toString() {
+		return "FundingDTO [fund_seq=" + fund_seq + ", member_seq=" + member_seq + ", project_seq=" + project_seq
+				+ ", price=" + price + ", fund_date=" + fund_date + ", del_status=" + del_status + ", del_date="
+				+ del_date + ", pay_option=" + pay_option + ", pay_number=" + pay_number + ", pay_company="
+				+ pay_company + ", pay_status=" + pay_status + ", pay_date=" + pay_date + ", name=" + name + ", phone="
+				+ phone + ", requeste=" + requeste + ", track_num=" + track_num + ", track_status=" + track_status
+				+ ", road_address=" + road_address + ", jibun_address=" + jibun_address + ", extra_address="
+				+ extra_address + ", detail_address=" + detail_address + ", postcode=" + postcode + ", bCountDTOList="
+				+ bCountDTOList + ", pDTO=" + pDTO + ", collectorDTO=" + collectorDTO + "]";
 	}
 	
 	

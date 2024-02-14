@@ -29,7 +29,7 @@ public class TestController {
 	@GetMapping("/test2")
 	public ModelAndView test2(){
 		ModelAndView mv = new ModelAndView();
-		FundingDTO dto = fundingService.getPaymentInfo(2);
+		FundingDTO dto = fundingService.getPaymentInfo(8);
 		mv.addObject("dto", dto);
 		mv.setViewName("test2");
 		return mv;
