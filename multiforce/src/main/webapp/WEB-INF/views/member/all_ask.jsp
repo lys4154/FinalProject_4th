@@ -15,15 +15,13 @@
 <link rel="stylesheet" href="/css/member/all_ask.css">
 
 <body>
-<div class="wrap">
-	<div class="out_con">
-		<div id="ask_title">메세지</div>
-		<div id="content_container">
-			<div id="all_ask_wrap" >
-				<h3>받은 문의</h3>
-				<ul id="my_project_ask">
-					<li id="collector_chatroom_list">
-
+<div class="out_con">
+	<div id="ask_title">메세지</div>
+	<div id="content_container">
+		<div id="all_ask_wrap" >
+			<h3>받은 문의</h3>
+			<ul id="my_project_ask">
+				<li id="collector_chatroom_list">
 					</li>
 				</ul>
 				<h3>보낸 문의</h3>
@@ -51,8 +49,8 @@
 			</div>
 		</div>
 	</div>
-	<%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </div>
+
 </body>
 <script>
 function createChatroomWrap(longTitle, lastChat, lastChatDate, chatroomSeq, nickname, ac){

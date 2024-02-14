@@ -12,20 +12,123 @@
 <link rel="stylesheet" href="/css/common/mainpage.css">
 
 <script>
+$(document).ready(function() {	
+	
+
+    $(".dibs_btn").click(function() {
+    	
+    	var projectSeq = $(this).data("project_seq");
+    	
+		if("${login_user_seq}" == ""){
+			if(confirm("로그인 후에 이용하실 수 있는 서비스입니다. 로그인 하시겠습니까?")){
+				location.href = "/login?from=" + location.search;
+			}
+		}else{
+			$.ajax({
+				data : {
+					"project_seq": projectSeq,
+					"member_seq": '${login_user_seq}'
+						},
+				type : "POST",
+				dataType: 'json',
+				url : "/addprojectdibs",
+				success : function(r){
+					console.log(r);
+					if(r.result == "성공"){
+						alert("관심 프로젝트 목록에 추가되었습니다.")
+					}else if(r.result == "취소"){
+						alert("관심 프로젝트 목록에서 삭제되었습니다.")
+					}else{
+						alert("알 수 없는 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+					}
+				}
+
+			});
+		}
+	})
+	
+	
+    var currentDate = new Date();
+    
+    var year = currentDate.getFullYear().toString().slice(-2); 
+    var month = ('0' + (currentDate.getMonth() + 1)).slice(-2); // 월은 0부터 시작하므로 1을 더하고 두 자리로 표시
+    var day = ('0' + currentDate.getDate()).slice(-2); 
+    var hours = ('0' + currentDate.getHours()).slice(-2); 
+    var minutes = ('0' + currentDate.getMinutes()).slice(-2); 
+    
+    // #popular_time 요소에 현재 시간 표시
+    $(".popular_time").html(year + "." + month + "." + day + " " + hours + ":" + minutes + " 기준");
+
+	
+	
+	
+	
+})
+
+
+
+
+
+
 </script>
 
 <body>
 <div class="wrap">
 	<div class="out_con">
-		<h1>메인페이지</h1>
-		<c:forEach items="${eventmap }" var="item">
-			<a href="${item.key}">${item.value } class = "temp"></a>
-		</c:forEach>
-		<!-- 
-		넣을만한 컨텐츠
-		인기순
-		에디터 pick(관리자가 찜한거 리스트 보여주기?)
-		-->
+		<div class="banner_update_popular_out_con">
+			<div class="banner_update_out_con">
+				<div class="main_banner">
+						<h1>메인페이지 배너 예정</h1>
+					<c:forEach items="${eventmap }" var="item">
+						<a href="${item.key}">${item.value } class = "temp"></a>
+					</c:forEach>
+				</div>
+				<!-- 
+				넣을만한 컨텐츠
+				인기순
+				에디터 pick(관리자가 찜한거 리스트 보여주기?)
+				-->
+			
+				<div class="main_update_popular">
+					<div class="update_out_con">
+						<div id="update_main_title">업데이트 프로젝트</div>
+						<div class="update_container">
+							<c:forEach var="update" items="${update }">
+								<div class="update_inner_con">
+									<div class="update_img"><a href="${update.url }"><img src="${update.main_images_url}" class="update_images"></a></div>
+									<div class="update_category">${update.category_kor} ㅣ ${update.nickname}</div>
+									<div class="update_title"><a href="${update.url }">${update.long_title}</a></div>
+									<div class="achaive_dibs">
+										<div class="update_achaive">${Math.round((update.collection_amount * 100) / update.goal_price)}% 달성</div>
+										<button class="dibs_btn" data-project_seq="${update.project_seq }">프로젝트 찜</button>
+									</div>						
+								</div>
+							</c:forEach>
+						</div>
+					</div>
+				</div>
+			</div>	
+				
+			<div class="main_popular_container">
+				<div class="popular_main_title">인기 프로젝트 </div>
+				<div class="popular_time">랄라</div>
+				<div class="update_container">
+					<c:forEach var="popular" items="${popular }" varStatus="rank">
+						<div class="popular_inner_con">
+							<div class="popular_img"><a href="${popular.url }"><img src="${popular.main_images_url}" class="popular_images"></a></div>
+							<div class="popular_rank">${rank.index + 1}</div>
+							<div class="popular_inner_right_con">
+								<div class="popular_category">${popular.category_kor} ㅣ ${popular.nickname}</div>
+								<div class="popular_title"><a href="${popular.url }">${popular.long_title}</a></div>
+								<div class="popular_achaive">${Math.round((popular.collection_amount * 100) / popular.goal_price)}% 달성</div>
+								<div class="popular_view_dibs">조회 ${popular.view_count } ㅣ 찜 ${popular.dibs_count }</div>
+							</div>
+						</div>
+					</c:forEach>
+				</div>
+			</div>
+		</div>
+		
 	</div>
 	<%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </div>

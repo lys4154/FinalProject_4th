@@ -434,12 +434,36 @@ WHERE project.url = #{url} and project_process >= 3
 	<result property="member_url" column="member_url"/>
 	<result property="nickname" column="nickname"/>
 	<result property="profile_img" column="profile_img"/>
+	<result property="description" column="description"/>
 </resultMap>
+
+
+<!-- 메인페이지 업데이트 프로젝트 12개 -->
+<select id="newUpdateProject" resultType="projectmemberdto">
+	SELECT project.*, member_info.nickname 
+	FROM project 
+	JOIN member_info ON project.member_seq = member_info.member_seq
+	WHERE project_process = 4
+	ORDER BY start_date DESC
+	LIMIT 12
+</select>
+
+<!-- 메인페이지 인기 프로젝트 10개 -->
+<select id="popularProject" resultType="projectmemberdto">
+	SELECT project.*, member_info.nickname 
+	FROM project 
+	JOIN member_info ON project.member_seq = member_info.member_seq
+	WHERE project_process = 4
+	ORDER BY view_count DESC
+	LIMIT 10
+</select>
+
 <!-- 펀딩 추가 후 프로젝트 모금액 업데이트 -->
 <update id="updateCollectionAmount">
 update project set collection_amount = collection_amount + #{price} where project_seq = #{projectSeq}
 </update>
 
 </mapper>
+
 
 

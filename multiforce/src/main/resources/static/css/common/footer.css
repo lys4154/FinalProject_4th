@@ -13,10 +13,9 @@ footer{
 }
 .wrap {
 	height: auto;
-  	min-height:840px;
   	position:relative;
   	padding-bottom:70px;/* footer height */
-  	
+  	min-height: 170vh;  	
 }
 html, body {
    margin:0;

@@ -265,36 +265,35 @@ $(document).ready(function(){
 	프로필은 어떻게 연결하지
  -->
  
- <div class="wrap">
-	 <div class="out_con">
-	 	<div class="top_title">
-	 		<div class="clicked_category"></div>
-	 		<div class="clicked_category_ment"><span id="clicked_category_count">${count }</span>개의 프로젝트가 있습니다.</div>
-	 	</div>
-	 
-		<div id="search_condition_wrap">
-			<select id="select_process">
-				<option value="0">전체</option>
-				<option value="4">진행 중</option>
-				<option value="3">예정</option>
-				<option value="6">종료</option>
-			</select>
-			<select id="select_sort">
-				<option value="popular">인기순</option>
-				<option value="end">마감 임박순</option>
-				<option value="new">최신순</option>
-			</select>
-		</div>
-		<div id="project_list">
-		
-		</div>
-		<div style="display: flex; justify-content: center;">
-			<input type="button" value="더보기" id="more_project_btn">
-		</div>
-			
-			
+
+<div class="out_con">
+ 	<div class="top_title">
+ 		<div class="clicked_category"></div>
+ 		<div class="clicked_category_ment"><span id="clicked_category_count">${count }</span>개의 프로젝트가 있습니다.</div>
+ 	</div>
+ 
+	<div id="search_condition_wrap">
+		<select id="select_process">
+			<option value="0">전체</option>
+			<option value="4">진행 중</option>
+			<option value="3">예정</option>
+			<option value="6">종료</option>
+		</select>
+		<select id="select_sort">
+			<option value="popular">인기순</option>
+			<option value="end">마감 임박순</option>
+			<option value="new">최신순</option>
+		</select>
 	</div>
-	<%@ include file="/WEB-INF/views/common/footer.jsp" %>
+	<div id="project_list">
+	
+	</div>
+	<div style="display: flex; justify-content: center;">
+		<input type="button" value="더보기" id="more_project_btn">
+	</div>
+		
+		
 </div>
+
 </body>
 </html>

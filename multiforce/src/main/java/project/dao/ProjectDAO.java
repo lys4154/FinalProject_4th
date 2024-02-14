@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import member.dto.MemberDTO;
 import project.dto.ProjectDTO;
+import project.dto.ProjectDiscoverDTO;
 import project.dto.ProjectMemberDTO;
 
 @Repository
@@ -153,9 +154,16 @@ public interface ProjectDAO {
 
 	String getRejectReason(int project_seq);
 
+	//메인페이지 - 업데이트 프로젝트
+	List<ProjectMemberDTO> newUpdateProject();
+	
+	//메인페이지 - 인기 프로젝트
+	List<ProjectMemberDTO> popularProject();
+
 	int updateCollectionAmount(int projectSeq, int price);
 
 	void updateDibsCount(int project_seq, int i);
+
 
 
 

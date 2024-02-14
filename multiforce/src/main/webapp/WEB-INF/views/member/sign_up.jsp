@@ -435,7 +435,7 @@ $(document).ready(function(){
 
 </script>
 <body>
-<div class="wrap">
+
 <div class="out_con">
 	<div class="signup_title"> 회원가입 후 세상에 하나뿐인 특별한 프로젝트를 발견해보세요. </div>
 	<div id="sign_up_container">
@@ -576,8 +576,7 @@ $(document).ready(function(){
 			</div>
 		</form>
 	</div>
-	</div>
-	<%@ include file="/WEB-INF/views/common/footer.jsp" %>
-</div>	
+</div>
+	
 </body>
 </html>

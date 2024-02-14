@@ -79,10 +79,10 @@ public class FundingDTO{
 	public void setPrice(int price) {
 		this.price = price;
 	}
-	public LocalDateTime getFund_date() {
+	public LocalDate getFund_date() {
 		return fund_date;
 	}
-	public void setFund_date(LocalDateTime fund_date) {
+	public void setFund_date(LocalDate fund_date) {
 		this.fund_date = fund_date;
 	}
 	public boolean isDel_status() {

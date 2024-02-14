@@ -325,39 +325,38 @@ $(document).ready(function() {
 
 <body>
 
-<div class="wrap">
-	<div class="out_con" >
-		<div class="top_con" >
-			<div><img alt="프로필 이미지" src="${user.profile_img}" id="profile_img"></div>
-			<div class="nick_con">
-				<div>
-					<span id="my_nick">${user.nickname}</span>
-				</div>				
-				<div class="url_con">
-					<span>${pageContext.request.scheme}://${pageContext.request.serverName}:${pageContext.request.serverPort}</span><span id="url_new">${user.member_url}</span>
-				</div>	
-			</div>
-		</div>
 
-		
-		<div class="menu_con"><!-- 상단 선택바 고정 -->
-			<div class="menu_item" id="myprofile_detail" style="cursor:pointer; color: #292929; font-weight:600;"> 프로필 </div>
-			<div class="menu_item" id="myproject_detail" style="cursor:pointer;"> 올린 프로젝트 </div>
-			<div class="menu_item" id="follower_detail" style="cursor:pointer;"> 팔로워 </div>
-			<div class="menu_item" id="following_detail" style="cursor:pointer;"> 팔로잉 </div>
+<div class="out_con" >
+	<div class="top_con" >
+		<div><img alt="프로필 이미지" src="${user.profile_img}" id="profile_img"></div>
+		<div class="nick_con">
+			<div>
+				<span id="my_nick">${user.nickname}</span>
+			</div>				
+			<div class="url_con">
+				<span>${pageContext.request.scheme}://${pageContext.request.serverName}:${pageContext.request.serverPort}</span><span id="url_new">${user.member_url}</span>
+			</div>	
 		</div>
-		<hr class="menu_under_hr">
-		
-		<div class="result_count" ></div>
-		<div class="res_con" >
-			<div class="result" ></div>
-		</div>
-		
-		<div class="empty_con">
-		</div>
-		
 	</div>
-	<%@ include file="/WEB-INF/views/common/footer.jsp" %>
+
+	
+	<div class="menu_con"><!-- 상단 선택바 고정 -->
+		<div class="menu_item" id="myprofile_detail" style="cursor:pointer; color: #292929; font-weight:600;"> 프로필 </div>
+		<div class="menu_item" id="myproject_detail" style="cursor:pointer;"> 올린 프로젝트 </div>
+		<div class="menu_item" id="follower_detail" style="cursor:pointer;"> 팔로워 </div>
+		<div class="menu_item" id="following_detail" style="cursor:pointer;"> 팔로잉 </div>
+	</div>
+	<hr class="menu_under_hr">
+	
+	<div class="result_count" ></div>
+	<div class="res_con" >
+		<div class="result" ></div>
+	</div>
+	
+	<div class="empty_con">
+	</div>
+	
 </div>
+
 </body>
 </html>

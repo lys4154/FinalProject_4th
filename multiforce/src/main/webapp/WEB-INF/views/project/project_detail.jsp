@@ -9,117 +9,73 @@
 <meta charset="UTF-8">
 <title>프로젝트 상세 페이지</title>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
-<style>
-#project_detail_container{
-	width: 1200px;
-	margin: 0 auto;
-}
-
-.project-info{
-	border: 1px solid black;
-}
-#project_info_upper_part{
-	text-align: center;
-}
-#project_info_lower_part{
-	height:500px;
-}
-#main_images_wrap{
-	display: inline-block;
-	height:100%;
-}
-#main_images_wrap img{
-	height: 100%;
-}
-#other_info_wrap{
-	height: 100%;
-	display: inline-block;
-	position:relative;
-	float: right;
-}
-#content_container{
-	display: inline-block;
-	width: 900px;
-	position:relative;
-	float: left;
-	border: 1px solid black;
-}
-.bundle-info{
-	display: inline-block;
-	width: 256px;
-	border: 1px solid black;
-	padding: 20px 20px 20px 20px;
-}
-#cart{
-	border: 1px solid black;
-	margin-bottom: 10px;
-	padding: 15px;
-}
-.selected_bundle_box{
-	border: 1px solid black;
-	margin-bottom: 10px;
-}
-
-.bundle_box{
-	cursor: pointer;
-	border: 1px solid black;
-	margin-bottom: 10px;
-}
-.bundle_box_chosen{
-	cursor: pointer;
-	border: 1px solid black;
-	margin-bottom: 10px;
-}
-
-select[class^='item_option_select']{
-	display: none;
-}
-.add_cart_btn_wrap{
-	display: none;
-}
-.selected_bundle_box_form{
-	display: none;
-}
-</style>
+<link rel="stylesheet" href="/css/project/project_detail.css">
 </head>
 <body>
 <div id="project_detail_container">
 	<section class="project-info">
 		<div id="project_info_upper_part">
-	    	<h1>${project.long_title}</h1>
+	    	<div id="pro_long_title">${project.long_title}</div>
 	    </div>
 	    <div id="project_info_lower_part">
 		    <div id="main_images_wrap">
-		    	<img src="${project.main_images_url}">
+		    	<img src="${project.main_images_url}" id="main_image">
 		    </div>
 		    <div id="other_info_wrap">
 		    	<div id="project_info_tap">
-				    <p>모인 금액: ${project.collection_amount_format}</p>
-				    <p>목표 금액: ${project.goal_price_format}</p>
-				    <p>펀딩 기간: ${project.start_date} - ${project.due_date}</p>
-				    <p>남은 시간: ${project.term}일</p>
+				    <div>모인 금액</div>
+				    <div class="project_info_tap_result">${project.collection_amount_format}원
+				    	<span id="project_info_achaive">${Math.round((project.collection_amount * 100) / project.goal_price)}% 달성</span>
+				    </div>
+   				    <div>남은 기간</div>
+				    <div class="project_info_tap_result">${project.term}일</div>
+				    
+				    <hr class="project_info_tap_hr">
+				    <div class="project_info_tap_detail">
+					    <div class="project_info_tap_left">목표 금액</div>
+					    <div>${project.goal_price_format}원</div>
+				    </div>
+				    <div class="project_info_tap_detail">
+					    <div class="project_info_tap_left">펀딩 기간</div>
+					    <div>${project.start_date} ~ ${project.due_date}</div>
+				    </div>
+				    <div class="project_info_tap_detail">
+					    <div class="project_info_tap_left">결제</div>
+					    <div>목표 달성시 ${project.due_date.plusDays(1)}에 결제 진행</div>
+				    </div>		
+					<div>
+						<button class="project_dibs_btn" id="dibs_btn" data-project_seq="${project.project_seq }">
+							관심 프로젝트 추가
+						</button>
+					</div>				    		    
 				</div>
+			
 				<div id="collector_info_tap">
-					<span>
-						<img src="${project.memberDTO.profile_img }">
-					</span>
-					<p>
-						${project.memberDTO.nickname }
-					</p>
-					<p>
-						한줄소개
-					</p>
-					<input type="button" value="판매자 문의" id="ask_btn">
+					<img src="${project.memberDTO.profile_img }" id="collector_img" >
+					<div class="collector_info_right">
+						<div class="collector_info_title">창작자
+							<span class="collector_info_nick">${project.memberDTO.nickname }</span>
+						</div>
+						<div class="collector_info_desc">${project.memberDTO.description }</div>						
+					</div>
+				</div>
+				<div class="collector_ask_follow_btn">		
+					<input class="collector_btn" type="button" value="판매자 문의" id="ask_btn">			
+					<input class="collector_btn" type="button" value="팔로우" id="follow_btn" data-member_seq="${project.memberDTO.member_seq }">			
 				</div>
 			</div>
 			
 	    </div>
 	</section>
-	<a href="#" id="projectLink" data-project-id="${project.project_seq}">프로젝트 계획</a>
-	<a href="#" id="updateLink" data-project-id="${project.project_seq}">업데이트</a>
-	<a href="#" id="communityLink" data-project-id="${project.project_seq}">커뮤니티</a>
-	<hr>
+	
+	<div class="project_menu_tab">
+		<a href="#" id="projectLink" data-project-id="${project.project_seq}">프로젝트 계획</a>
+		<a href="#" id="updateLink" data-project-id="${project.project_seq}">업데이트</a>
+		<a href="#" id="communityLink" data-project-id="${project.project_seq}">커뮤니티</a>
+	</div>
+	
+	
+	
 	<div id="content_container">
 		${project.content}
 	</div>
@@ -214,6 +170,7 @@ select[class^='item_option_select']{
 			</div>
 		</li>
 	</ul>
+</div>
 <script>
 $(document).ready(function () {
 	//==========================후원하기 버튼 이벤트============================
@@ -537,6 +494,132 @@ $(document).ready(function () {
 			}
 		}
 	});
+	
+	
+	
+//======================== 찜 =====================================
+    var projectSeq = $("#dibs_btn").data("project_seq");
+    var userSeq = "${login_user_seq}";
+    if ("${login_user_seq}" == "") {
+    	userSeq = 0;
+    }
+    
+    $.ajax({
+        data : {
+            "project_seq": projectSeq,
+            "member_seq": userSeq
+        },
+        type : "GET",
+        url : "/checkprojectdibs",
+        success : function(r){
+            console.log(r);
+            if(r >= 1){
+                $("#dibs_btn").html("관심 프로젝트 취소");
+            }
+        }
+    }); 
+	
+	
+	$("#dibs_btn").on("click",function(){
+		
+		var projectSeq = $(this).data("project_seq");
+		
+		if("${login_user_seq}" == ""){
+			if(confirm("로그인 후에 이용하실 수 있는 서비스입니다. 로그인 하시겠습니까?")){
+				location.href = "/login?from=" + location.search;
+			}
+		}else{			
+			$.ajax({
+				data : {
+					"project_seq": projectSeq,
+					"member_seq": '${login_user_seq}'
+						},
+				type : "POST",
+				url : "/addprojectdibs",
+				dataType: 'json',
+				success : function(r){
+					if(r.result == "성공"){
+						alert("관심 프로젝트 목록에 추가되었습니다.");
+						$("#dibs_btn").html("관심 프로젝트 취소");
+					}else if(r.result == "취소"){
+						alert("관심 프로젝트 목록에서 삭제되었습니다.")
+						$("#dibs_btn").html("관심 프로젝트 추가");						
+					}else{
+						alert("알 수 없는 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+					}
+				}
+			});
+		}		
+	})
+
+	
+	
+//========================== 팔로우 ======================================
+	$("#follow_btn").click(function() {		
+	    var memberSeq = $(this).data("member_seq"); //프로젝트의 멤버seq
+	    
+		if("${login_user_seq}" == ""){
+			if(confirm("로그인 후에 이용하실 수 있는 서비스입니다. 로그인 하시겠습니까?")){
+				location.href = "/login?from=" + location.search;
+			}
+		}else {
+			
+		    $.ajax({
+		        type: "POST",
+		        url: "/follower_btn",
+		        data: { memberSeq: memberSeq },
+		        success: function(response) {
+		            console.log(response);
+		            if(response == 1) {
+		            	alert("성공적으로 팔로우 했습니다.");	            	
+		            } else if(response == 3) {
+	                	if (confirm("이미 팔로우 되어있습니다." +
+	        			"팔로우를 취소 하시겠습니까?")) {	                		
+			                $.ajax({
+			                    type: "POST",
+			                    url: "/following_btn",
+			                    data: { memberSeq: memberSeq },
+			                    success: function(response) {
+			                    	console.log(memberSeq); 
+			    	                if(response == 1) {
+			    	                	alert("팔로우가 취소되었습니다.");
+			    	                	getFollowing();
+			    	                }
+			                    },
+			                    error: function(error) {
+			                        console.log(error);
+			                    }
+			                });
+			        		
+			        	}
+			        }             	                
+			    },
+			    error: function(error) {	            	
+			        console.log(error);
+			    }
+			});			
+			
+		}
+	    
+	    
+
+	})
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 });
 </script>

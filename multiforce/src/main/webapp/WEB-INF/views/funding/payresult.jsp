@@ -35,5 +35,5 @@ ${dto.collectorDTO.nickname }
 	<br>
 </c:forEach>
 </body>
-<%@ include file="/WEB-INF/views/common/footer.jsp" %>
+
 </html>

@@ -144,10 +144,10 @@ public class ProfileController {
     //마이 프로필 - 후원한 프로젝트
     @GetMapping("/getFunded")
     @ResponseBody
-    List<Map<String, Object>> getFunded(HttpSession session) { 
+    List<FundingDTO> getFunded(HttpSession session) { 
 		int memberSeq = (int)session.getAttribute("login_user_seq");
-
-		List<Map<String, Object>> ongoingFunded = fundingservice.getFunded(memberSeq);	//후원 진행중
+				
+		List<FundingDTO> ongoingFunded = fundingservice.getFunded(memberSeq);	//후원 진행중
 		return ongoingFunded;    	
     }
 	
@@ -279,7 +279,7 @@ public class ProfileController {
     	
 		int memberSeq = (int)session.getAttribute("login_user_seq");
 		
-		List<FundingDTO> ongoingFunded = fundingservice.ongoingFunded(memberSeq);	//후원 진행중
+		List<FundingDTO> ongoingFunded = fundingservice.getFunded(memberSeq);	//후원 진행중
 		if(ongoingFunded.size() != 0 ) {
 			List<Integer> fundSeqList = new ArrayList<>(); 								
 			for (FundingDTO fundingDTO : ongoingFunded) {
@@ -327,20 +327,7 @@ public class ProfileController {
 	   	return null;
     }
        
-    
-    
-    //후원한 프로젝트용
-    private List<ProjectDTO> getFundedProjects(HttpSession session, List<FundingDTO> fundedList) { 
-        int memberSeq = (int) session.getAttribute("login_user_seq");
 
-        List<Integer> projectSeqList = new ArrayList<>();
-        for (FundingDTO funded : fundedList) {
-            projectSeqList.add(funded.getProject_seq());
-        }
-        return projectservice.ongoingProject(projectSeqList);
-    }
-        
-    
     
     // 후원한 프로젝트 페이지
     @GetMapping("/funded")
@@ -348,21 +335,14 @@ public class ProfileController {
 
         int memberSeq = (int) session.getAttribute("login_user_seq");
 
-        List<FundingDTO> ongoingFunded = fundingservice.ongoingFunded(memberSeq); // 후원 진행중
+		List<FundingDTO> ongoingFunded = fundingservice.getFunded(memberSeq);	//후원 진행중
         List<FundingDTO> successFunded = fundingservice.successFunded(memberSeq); // 후원 성공
         List<FundingDTO> cancelFunded = fundingservice.cancelFunded(memberSeq); // 후원 취소
-
-        List<ProjectDTO> ongoingProject = getFundedProjects(session, ongoingFunded);
-        List<ProjectDTO> successProject = getFundedProjects(session, successFunded);
-        List<ProjectDTO> cancelProject = getFundedProjects(session, cancelFunded);
 
         ModelAndView mv = new ModelAndView();
         mv.addObject("ongoingFunded", ongoingFunded);
         mv.addObject("successFunded", successFunded);
         mv.addObject("cancelFunded", cancelFunded);
-        mv.addObject("ongoingProject", ongoingProject);
-        mv.addObject("successProject", successProject);
-        mv.addObject("cancelProject", cancelProject);
 
         mv.setViewName("member/funded");
 
@@ -390,10 +370,6 @@ public class ProfileController {
         ModelAndView mv = new ModelAndView();
         FundingDTO dto = fundingservice.getPaymentInfo(fundseq);
 		mv.addObject("dto", dto);
-
-		System.out.println("dto정보" + dto.getbCountDTOList().get(0));
-		//System.out.println(dto.getbCountDTOList().get(1));
-
 
         // URL에 따라서 다른 JSP 페이지로 보내도록 설정
         if (request.getRequestURI().contains("/ongoing_detail/")) {
