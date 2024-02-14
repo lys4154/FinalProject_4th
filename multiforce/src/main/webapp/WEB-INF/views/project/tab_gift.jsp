@@ -7,47 +7,103 @@
 <script src="/js/jquery-3.7.1.min.js"></script>
 <script>
     $(document).ready(function() {
-    $("#addBundle").click(function() {
-        var data = {
-            bundle_price: $("#bundle_price").val(),
-            bundle_name: $("#bundle_name").val(),
-            item_name: $("#item_name").val(),
-        };
-
-        // AJAX를 통해 서버에 JSON 형태의 데이터 전송
-        $.ajax({
-            type: "POST",
-            url: "/addBundle",
-            contentType: "application/json",  // JSON 형태로 데이터 전송
-            data: JSON.stringify(data),  // 데이터를 JSON 문자열로 변환
-            success: function(response) {
-                console.log(response);
-            },
-            error: function(error) {
-                console.error(error);
-            }
+    	$("#addBundle").click(function() {
+        	var packages = {
+        			bundle_price : $("#bundle_price").val(),
+        			bundle_name : $("#bundle_name").val()
+        			/* item_name : $("#item_name").val() */
+        	};
+        	$.ajax({
+        		type: "POST",
+        		url: "/saveBundle",
+        		contentType: "application/json",
+        		data:JSON.stringify(packages),
+        		success: function(response) {
+        			console.log(response);
+        		},
+        		error: function(error) {
+        			console.error(error);
+        		}
+        	});
         });
-    });
+        
+        $("#addItem").click(function() {
+        	var item = {
+        			item_name : $("#item_name").val()
+        	};
+        	$.ajax({
+        		type: "POST",
+        		url: "/saveItem",
+        		contentType: "application/json",
+        		data:JSON.stringify(item),
+        		success: function(response) {
+        			console.log(response);
+        		},
+        		error: function(error) {
+        			console.error(error);
+        		}
+        	});
+        });
+        
+        $("#addCount").click(function() {
+        	var item = {
+        			item_count : $("#item_count").val()
+        	};
+        	$.ajax({
+        		type: "POST",
+        		url: "/saveItemCount",
+        		contentType: "application/json",
+        		data:JSON.stringify(item),
+        		success: function(response) {
+        			console.log(response);
+        		},
+        		error: function(error) {
+        			console.error(error);
+        		}
+        	});
+        });
+        
+        $("#addOption").click(function() {
+        	var item = {
+        			item_option_name : $("#item_option_name").val()
+        	};
+        	$.ajax({
+        		type: "POST",
+        		url: "/saveItemOption",
+        		contentType: "application/json",
+        		data:JSON.stringify(item),
+        		success: function(response) {
+        			console.log(response);
+        		},
+        		error: function(error) {
+        			console.error(error);
+        		}
+        	});
+        });
 });
 </script>  
 </head>
 <body>
-  <h1>선물 계획</h1>
+ <!-- tab_gift -->
+<h1>선물 계획</h1>
   <label for="bundle_price">후원 금액</label>
   <input type="text" id="bundle_price" name="bundle_price"><br><br>
 
   <label for="bundle_name">선물 이름</label>
   <input type="text" id="bundle_name" name="bundle_name"><br><br>
+  <input type="button" id="addBundle" value="번들 추가">
+  <br>
   <label for="item_name">상품 이름</label>
   <input type="text" id="item_name" name="item_name"><br><br>
-
-  <input type="button" id="addBundle" value="추가">
-
-  <h2>선물 목록</h2>
-  <p>후원금에 따른 선물</p>
-  <ul id="reward-list">
-    <!-- 보상이 여기에 동적으로 추가됩니다 -->
-  </ul>
-  <hr>
+  <input type="button" id="addItem" value="상품명 추가">
+  <br>
+  <label for="item_count">상품 개수</label>
+  <input type="text" id="item_count" name="item_count"><br><br>
+  <input type="button" id="addCount" value="상품 개수 추가">
+  <br>
+  <label for="item_option">옵션 이름</label>
+  <input type="text" id="item_option_name" name="item_option_name"><br><br>
+  <input type="button" id="addOption" value="옵션 추가">
+ 
 </body>
 </html>

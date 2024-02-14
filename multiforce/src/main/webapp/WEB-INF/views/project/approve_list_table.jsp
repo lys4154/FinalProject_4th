@@ -11,11 +11,12 @@
 <meta charset="UTF-8">
 </head>
 <body>
-<div id="myModal" class="modal">
+<div id="reasonModal" class="modal">
 
   <div class="modal-content">
     <span class="close">&times;</span>
-    <p></p>
+    <div class="modal-head1">반려이유</div>
+    <p id="reason"></p>
   </div>
 
 </div>
@@ -182,10 +183,10 @@ function confirmApproval(projectSeq) {
 
 $(document).ready(function(){
     $("#view-reason").click(function(){
-        $("#myModal").css("display", "block");
+        $("#reasonModal").css("display", "block");
         
         var projectSeq = $(this).data('projectseq'); // 데이터 속성 이름을 올바르게 가져옵니다.
-		console.log(projectSeq);
+
         $.ajax({
             url: "/rejection-reason/" + projectSeq, 
             type: "GET",
@@ -200,7 +201,7 @@ $(document).ready(function(){
     });
 
     $(".close").click(function(){
-        $("#myModal").css("display", "none");
+        $("#reasonModal").css("display", "none");
     });
 });
 

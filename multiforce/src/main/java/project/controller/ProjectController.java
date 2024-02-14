@@ -84,8 +84,8 @@ public class ProjectController {
 	@GetMapping("/rejection-reason/{project_seq}")
     @ResponseBody
     public String getRejectionReason(@PathVariable("project_seq") Integer project_seq) {
-        String reason = projectService.getRejectReason(project_seq);
-        System.out.println("id:"+project_seq);
+		String reason = projectService.getRejectReason(project_seq);
+        
         return reason != null ? reason : "반려 이유를 가져오는 데 실패했습니다.";
     }
 	//프로젝트 승인 리스트
@@ -243,7 +243,7 @@ public class ProjectController {
 		session.setAttribute("login_user_id", id);
 		session.setAttribute("login_user_level", 1);
 		session.setAttribute("login_user_name", "일반회원");
-		session.setAttribute("login_user_seq", "1");
+		session.setAttribute("login_user_seq", 1);
 		return "board/test";
 	}
 	@GetMapping("test_account2")
@@ -252,7 +252,7 @@ public class ProjectController {
 		session.setAttribute("login_user_id", id);
 		session.setAttribute("login_user_level", 2);
 		session.setAttribute("login_user_name", "일반회원");
-		session.setAttribute("login_user_seq", "2");
+		session.setAttribute("login_user_seq", 2);
 		return "board/test";
 	}
 	
@@ -267,6 +267,7 @@ public class ProjectController {
 	}
 
 	//프로젝트 상세
+
 	@GetMapping("project_detail/{url}")
 	public String ShowProjectDetail(Model model,@PathVariable("url") String url) {
 		String fullurl = "/project_detail/" + url;
@@ -308,8 +309,7 @@ public class ProjectController {
 				HttpSession session) {
 		   
 			//로그인된 유저 아이디 가져옴 
-			String user_id_str = (String) session.getAttribute("login_user_seq");
-			int user_id = Integer.parseInt(user_id_str);
+			int user_id = (int) session.getAttribute("login_user_seq");
 			
 			
 		    ResponseEntity<String> responseEntity = boardService.toggleCommunityLike(pro_board_seq, user_id);
@@ -332,8 +332,8 @@ public class ProjectController {
 			HttpSession session) {
 	   
 		//로그인된 유저 아이디 가져옴 
-		String user_id_str = (String) session.getAttribute("login_user_seq");
-		int user_id = Integer.parseInt(user_id_str);
+		int user_id = (int) session.getAttribute("login_user_seq");
+
 		
 	    ResponseEntity<String> responseEntity = boardService.toggleUpdateLike(updateSeq, user_id);
 
@@ -358,10 +358,10 @@ public class ProjectController {
 	    
 		//현재 유저 세션 가져오기
 		int current_user = 0;
-		String loggedInUserId = (String) session.getAttribute("login_user_seq");
-		current_user = Integer.parseInt(loggedInUserId);
+		current_user = (int) session.getAttribute("login_user_seq");
+
 			
-		if (loggedInUserId != null) {
+		if (current_user != 0) {
 
 		    UpdateReplyDTO reply = new UpdateReplyDTO();
 		    reply.setMember_seq(current_user);
@@ -397,10 +397,9 @@ public class ProjectController {
 		//로그인된 회원이라면
 		if (currentUserObj != null) {
 			
-			String currentUserString = (String) session.getAttribute("login_user_seq");
+			int currentUser = (int) session.getAttribute("login_user_seq");
         	
 			//로그인된 회원 아이디 정수형으로 변환하기
-			int currentUser = Integer.parseInt(currentUserString);
         	model.addAttribute("loggedin_user", currentUser);
         	
         	//후원자인지 true/false 리턴하기 
@@ -429,8 +428,8 @@ public class ProjectController {
 			@RequestParam String content, HttpSession session) {
 		// post_id = project_seq
 		int current_user = 0;
-		String loggedInUserId = (String) session.getAttribute("login_user_seq");
-		current_user = Integer.parseInt(loggedInUserId);
+		current_user = (int) session.getAttribute("login_user_seq");
+
 		
 		boolean userIsFunding = boardService.isUserFunding(current_user, post_id);
         

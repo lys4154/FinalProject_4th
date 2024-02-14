@@ -27,16 +27,13 @@
 </style>
 </head>
 <body>
+<div class="wrap">
 <h1>프로젝트 기획</h1>
 
 <div class="menuTab">
 	<ul class="menu">
 		<li class="tab_info">
 			<a href="#" id="tab_info">기본정보</a>
-		</li>
-		
-		<li class="tab_fundingPlan">
-			<a href="#" id="tab_fundingPlan">펀딩 계획</a>
 		</li>
 		
 		<li class="tab_gift">
@@ -54,6 +51,9 @@
 </div>
 <script>
     $(document).ready(function () {
+    	
+    	var baseUrl = window.location.origin;
+        loadContent(baseUrl + "/tab_info");
 
     	$("#tab_info").click();
     	
@@ -64,7 +64,7 @@
             loadContent(baseUrl + "/tab_info");
         });
 
-    	/* $("#tab_fundingPlan").click();
+    	/*$("#tab_fundingPlan").click();
     	
         $("#tab_fundingPlan").click(function (e) {
             e.preventDefault();
@@ -73,14 +73,14 @@
             loadContent(baseUrl + "/tab_fundingPlan"); 
         }); */
         
-		/* $("#tab_gift").click();
+		$("#tab_gift").click();
     	
         $("#tab_gift").click(function (e) {
             e.preventDefault();
            // var pid = $(this).data("project-id");
             var baseUrl = window.location.origin;
             loadContent(baseUrl + "/tab_gift"); 
-        }); */
+        }); 
         
 		$("#tab_projectPlan").click();
     	
@@ -108,7 +108,8 @@
         }
     });
 </script>
+<%@ include file="/WEB-INF/views/common/footer.jsp" %>
+</div>
 <hr>
 </body>
-<%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </html>

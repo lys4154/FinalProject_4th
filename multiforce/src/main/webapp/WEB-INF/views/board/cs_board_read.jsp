@@ -15,10 +15,10 @@
 <body>
 
 <%
-String loggedInUserId = null;
+int loggedInUserId = 0;
 int user_id = 0;
 if(session.getAttribute("login_user_seq") != null){
-	loggedInUserId = (String) session.getAttribute("login_user_seq");
+	loggedInUserId = (int) session.getAttribute("login_user_seq");
 
 	}
 %>
@@ -152,6 +152,6 @@ function deletePost(comment_id) {
     }
 }
 </script>
-<%@ include file="/WEB-INF/views/common/footer.jsp" %>
+
 </body>
 </html>

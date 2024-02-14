@@ -9,6 +9,7 @@
 <meta charset="UTF-8">
 <title>프로젝트 상세 페이지</title>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
 <style>
 #project_detail_container{
 	width: 1200px;

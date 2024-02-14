@@ -36,6 +36,7 @@ public class BundleService {
 	//프로젝트 상세페이지 번들
 	public List<BundleDTO> getBundleList(int project_seq) {
 		List<Integer> bundleSeqList = bundleDao.getBundleWithPseq(project_seq);
+		System.out.println("BUNDLE:"+bundleSeqList);
 		List<BundleDTO> bundleList = bundleDao.getBundleList(bundleSeqList);
 		return bundleList;
 	}

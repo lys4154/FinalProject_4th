@@ -70,15 +70,19 @@ public class BoardController {
 			HttpSession session) {
 		
 		Object currentUserObj = session.getAttribute("login_user_seq");
-
-		
+		ProjectDTO project_info = projectService.getProjectDetail(project_seq);
+		int project_user = project_info.getMember_seq();
 		List<updateBoardDTO> project_dto = boardService.getAllUpdatePost(project_seq);
-
+		
 		//로그인된 회원이라면
 		if (currentUserObj != null) {
 			
 			int currentUser = (int) session.getAttribute("login_user_seq");
-        	
+			if(project_user == currentUser) {
+				model.addAttribute("project_manager", true);
+			}else {
+				model.addAttribute("project_manager", false);
+			}
 			//로그인된 회원 아이디 정수형으로 변환하기
 
         	model.addAttribute("loggedin_user", currentUser);
@@ -92,10 +96,16 @@ public class BoardController {
 	        	//포스트마다 유저가 좋아요 눌렀는지 true/false 리턴하기
 	            boolean likedByCurrentUser = boardService.isUpdateLikedByUser(update.getUpdate_seq(), currentUser);
 	            update.setLikedByCurrentUser(likedByCurrentUser);
+	            
+	            int memberSeq = update.getMember_seq();
+	            MemberDTO post_user = member.getNicknameById(memberSeq);
+	            String member_nick = post_user.getNickname();
+	            update.setNickname(member_nick);
 	        }
 	    }
 		
 		model.addAttribute("project", project_dto);
+		model.addAttribute("project_id", project_seq);
 		return "board/update_view";
 	}
 	
@@ -241,10 +251,10 @@ public class BoardController {
     public String CustomerServiceWrite(Model model, HttpSession session) {
     	model.addAttribute("boardType", "cs");
     	
-    	String user_id_str = (String) session.getAttribute("login_user_seq");
+    	int user_id_str = (int) session.getAttribute("login_user_seq");
 	
 		
-		if (user_id_str != null) {
+		if (user_id_str != 0) {
 			return "board/cs_write"; 
 		}
 		 model.addAttribute("errorMessage", "권한이 없습니다.");
@@ -290,12 +300,12 @@ public class BoardController {
 		int user_level = 0;
 
 		if(user_level_obj != null) {
-			user_level = (Integer) session.getAttribute("login_user_level");
+			user_level = (int) session.getAttribute("login_user_level");
 		}
 		
 		if(user_id_obj != null) {
-			String user_id_str = (String)session.getAttribute("login_user_seq");
-			user_id = Integer.parseInt(user_id_str);
+			user_id = (int)session.getAttribute("login_user_seq");
+
 		}
 		
 		//글쓴이가 본인인지 확인하기 아니면 관리자인가
@@ -342,10 +352,8 @@ public class BoardController {
 		Object currentUserObj = session.getAttribute("login_user_seq");
 		
 		if (currentUserObj != null) {
-			String currentUserString = (String) session.getAttribute("login_user_seq");
+			int currentUser = (int)session.getAttribute("login_user_seq");
 			
-			//로그인된 회원 아이디 정수형으로 변환하기
-			int currentUser = Integer.parseInt(currentUserString);
 
 
         	BoardDTO board = boardService.getCsPostById(help_ask_seq);
@@ -371,10 +379,9 @@ public class BoardController {
 		LocalDateTime del_date = LocalDateTime.now();
 		
 		try {
-	        String loggedInUserId = (String) session.getAttribute("login_user_seq");
+	        current_user = (int) session.getAttribute("login_user_seq");
 	        
-	        current_user = Integer.parseInt(loggedInUserId);
-	        
+
 	        BoardDTO csComment = boardService.getCsCommentByPostId(help_ask_seq);
 
 	        if (csComment != null && current_user == csComment.getMember_seq()) {
@@ -397,10 +404,10 @@ public class BoardController {
 			,@RequestParam int post_id, Model model, HttpSession session) {
 		
 		int current_user = 0;
-		String loggedInUserId = (String) session.getAttribute("login_user_seq");  
-	    current_user = Integer.parseInt(loggedInUserId);
+		current_user = (int) session.getAttribute("login_user_seq");  
+
 	    
-	    if(loggedInUserId != null) {
+	    if(current_user != 0) {
 
 			BoardDTO comment_dto = new BoardDTO();
 			comment_dto.setTitle("title");
@@ -428,8 +435,8 @@ public class BoardController {
 			
 			// post_id = project_seq
 			int current_user = 0;
-			String loggedInUserId = (String) session.getAttribute("login_user_seq");
-			current_user = Integer.parseInt(loggedInUserId);
+			current_user = (int) session.getAttribute("login_user_seq");
+
 			
 			boolean userIsFunding = boardService.isUserFunding(current_user, project_seq);
 			
@@ -471,10 +478,10 @@ public class BoardController {
                                Model model, HttpSession session) {
         
 		int current_user = 0;
-		String loggedInUserId = (String) session.getAttribute("login_user_seq");
-		current_user = Integer.parseInt(loggedInUserId);
+		current_user = (int)session.getAttribute("login_user_seq");
+
 		
-		if(loggedInUserId != null) {
+		if(current_user != 0) {
 	
 	        BoardDTO dto = new BoardDTO();
 	        dto.setTitle(title);
@@ -497,10 +504,10 @@ public class BoardController {
 	                         Model model, HttpSession session) {
 
 	    int current_user = 0;
-	    String loggedInUserId = (String) session.getAttribute("login_user_seq");
-	    current_user = Integer.parseInt(loggedInUserId);
+	    current_user = (int) session.getAttribute("login_user_seq");
+
 	    
-	    if(loggedInUserId != null) {
+	    if(current_user != 0) {
 	         BoardDTO dto = new BoardDTO();
 	         dto.setTitle(title);
 	         dto.setContent(content);
