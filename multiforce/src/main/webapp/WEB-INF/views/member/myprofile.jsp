@@ -157,6 +157,10 @@ $(document).ready(function() {
 	               		for (var i = 0; i < response.length; i++) {	               		    
 								
 	               			console.log(response[i].bCountDTOList[0].bundleDTOList[0].bundle_name);
+	               			var fundDate = new Date(response[i].fund_date);
+
+	               			
+	               			
 	               			
 	                           $(".result").append(
                         			"<div class=\"pro_con\">" +
@@ -164,10 +168,10 @@ $(document).ready(function() {
 	                        		        "<div> <a href=\"" + response[i].pDTO.url + "\"> <img src=\"" + response[i].pDTO.main_images_url + "\" class=\"pro_img\"></a> </div>" +
 	                        		    "</div>" +
 	                        		    "<div class=\"pro_right\">" +
-	                        	       		"<div class=\"fund_info\"> <span>후원일 " + response[i].fund_date + "</span> | <span> 후원번호 " + response[i].fund_seq + "</span> </div>" +
+	                        	       		"<div class=\"fund_info\"> <span>후원일 " + fundDate.toLocaleDateString() + "</span> | <span> 후원번호 " + response[i].fund_seq + "</span> </div>" +
 		                        	        "<div class=\"pro_longtitle\">  <a href=\"" + response[i].pDTO.url + "\">" + response[i].pDTO.long_title + "  </a> </div>" +
 		                        	        "<div class=\"pay_info\">"+
-			                        	        "<div> 상품 - " + response[i].bCountDTOList[0].bundleDTOList[0].bundle_name + "</div>" +
+			                        	        "<div> 후원품목 - " + response[i].bCountDTOList[0].bundleDTOList[0].bundle_name + "</div>" +
 			                        	        "<div> <span class=\"fund_pay\"> 후원 성공시 " + response[i].pDTO.due_date + " 결제 예정 </span> </div>" +
 			                        	        "<div class=\"amount\"> " + response[i].price.toLocaleString() + "원 결제 예정 </div>" +
 		                        	        "</div>"+

@@ -82,52 +82,13 @@ public class ProfileController {
 	    	
 		int memberSeq = (int) session.getAttribute("login_user_seq");
 		MemberDTO loginMemberSeq = memberservice.loginMemberSeq(memberSeq);
-		
-//		String desc = escapeHtml(loginMemberSeq.getDescription());
-//		System.out.println("치환 - " + desc);
-//		System.out.println("그냥 - " +loginMemberSeq.getDescription());
 
 		ModelAndView mv = new ModelAndView("member/myprofile");		
 		mv.addObject("loginMember",loginMemberSeq);
-//		mv.addObject("desc",desc);
 
 		return mv;
 	}
-/*	
-	public static String escapeHtml(String input) {
-	    if (input == null) {
-	        return null;
-	    }
-	    return input.replace("&", "&amp;")
-	                .replace("\"", "&quot;")
-	                .replace("'", "&#39;")
-	                .replace(" ", "&nbsp;") // 공백 처리
-	                .replace("?", "&#63;")  // 물음표 처리
-	                .replace("!", "&#33;")
-	                .replace("@", "&#64;")
-	                .replace("#", "&#35;")
-	                .replace("$", "&#36;")
-	                .replace("%", "&#37;")
-	                .replace("^", "&#94;")
-	                .replace("&", "&#38;")
-	                .replace("(", "&#40;")
-	                .replace(")", "&#41;")
-	                .replace(",", "&#44;")
-	                .replace(".", "&#46;")
-	                .replace(";", "&#59;")
-	                .replace("{", "&#123;")
-	                .replace("}", "&#125;")
-	                .replace("[", "&#91;")
-	                .replace("]", "&#93;")
-	                .replace("<", "&lt;")
-	                .replace(">", "&gt;")
-	                .replace("/", "&#47;")
-	                .replace("★", "&#9733;") // 별표 처리
-	                .replace("☆", "&#9734;") // 별 처리
-			        .replace("\n", "<br>") // 엔터(개행 문자) 처리
-			        .replace("\r", ""); // 캐리지 리턴 처리
-	}
-*/
+
 
 	//마이 프로필 - 올린 프로젝트
     @GetMapping("/getMyproject")
@@ -280,20 +241,25 @@ public class ProfileController {
 		int memberSeq = (int)session.getAttribute("login_user_seq");
 		
 		List<FundingDTO> ongoingFunded = fundingservice.getFunded(memberSeq);	//후원 진행중
+
 		if(ongoingFunded.size() != 0 ) {
 			List<Integer> fundSeqList = new ArrayList<>(); 								
 			for (FundingDTO fundingDTO : ongoingFunded) {
 			    int fundSeq = fundingDTO.getFund_seq();
 			    fundSeqList.add(fundSeq);												// fund_seq 리스트
-			}		
+			}
+
 				
 			//프로젝트 테이블에서 poject_seq로 member seq 찾아서 리스트 만들기		
 			List<Integer> ongoingProjectSeq = new ArrayList<>();						
-			for (FundingDTO projectSeq : ongoingFunded) {								//poject_seq 리스트
-				ongoingProjectSeq.add(projectSeq.getProject_seq());
+			for (FundingDTO fundingDTO : ongoingFunded) {
+			    ProjectDTO pDTO = fundingDTO.getpDTO(); // 예를 들어서 FundingDTO에 getProjectDTO() 메서드가 있다고 가정합니다.
+			    if (pDTO != null) {
+			        ongoingProjectSeq.add(pDTO.getProject_seq());
+			    }
 			}
+
 			List<ProjectDTO> ongoingProject = projectservice.ongoingProject(ongoingProjectSeq); 
-			
 			
 			List<Integer> memberSeqList = new ArrayList<>();							//member_seq 리스트
 			for (ProjectDTO projectDTO : ongoingProject) {
@@ -340,9 +306,9 @@ public class ProfileController {
         List<FundingDTO> cancelFunded = fundingservice.cancelFunded(memberSeq); // 후원 취소
 
         ModelAndView mv = new ModelAndView();
-        mv.addObject("ongoingFunded", ongoingFunded);
-        mv.addObject("successFunded", successFunded);
-        mv.addObject("cancelFunded", cancelFunded);
+        mv.addObject("ongoing", ongoingFunded);
+        mv.addObject("success", successFunded);
+        mv.addObject("cancel", cancelFunded);
 
         mv.setViewName("member/funded");
 
@@ -354,10 +320,11 @@ public class ProfileController {
 	//후원한 프로젝트 페이지 - 검색 
     @GetMapping("/funded_search")
     @ResponseBody
-    List<ProjectDTO> fundedSearch(@RequestParam(required = false) String keyword, HttpSession session) {
+    List<FundingDTO> fundedSearch(@RequestParam(required = false) String keyword, HttpSession session) {
 
 		int memberSeq = (int)session.getAttribute("login_user_seq");
-		List<ProjectDTO> searchFunded = projectservice.searchFunded(keyword, memberSeq); //프로젝트 긴제목
+		List<FundingDTO> searchFunded = fundingservice.searchFunded(keyword, memberSeq); //프로젝트 긴제목
+		
 		return searchFunded;    	
     }
 

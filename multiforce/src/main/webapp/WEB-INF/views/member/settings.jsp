@@ -359,15 +359,15 @@ $(document).ready(function() {
 						$(".mail_send_result").html("메일이 발송되었습니다. 메일을 확인해주세요.")
 						$(".mail_send_result").css("color", "#fc035a");
 						$(".mail_send_result").css("font-size", "13px");
+						
+						$("#mail_save").css("background-color", "#6e6e6e");
+						$("#mail_save").css("color", "#f0f0f0");
+						$("#mail_send").css("background-color", "white");
+						$("#mail_send").css("color", "#292929");
+						
 					}else{
 						alert("이미 존재하는 이메일입니다");
-					}
-					
-					$("#mail_save").css("background-color", "#6e6e6e");
-					$("#mail_save").css("color", "#f0f0f0");
-					$("#mail_send").css("background-color", "white");
-					$("#mail_send").css("color", "#292929");
-					
+					}									
 					
 				},
 				error: function(request, e){
@@ -393,8 +393,9 @@ $(document).ready(function() {
 				        success: function(response) { 
 				    		console.log(response);
 				    		$("#mail_final").html(authRequestEmail);
+				    		$("#mail_final").show();
 				    		$(".mail_container").hide();
-				    		$("#nick_change").val("변경");
+				    		$("#mail_change").val("변경");
 				    	},
 						error: function(error) {
 						       console.log(error);
@@ -657,7 +658,7 @@ $(document).ready(function() {
 		    	    
 		    		$(".address_added").on("click", ".address_del", function() {
 		    	    	var deleteButton = $(this); // 클릭된 삭제 버튼
-		    	    	if (confirm("해당 배송지를 삭제하시겠습니까? ajax속 ajax")){
+		    	    	if (confirm("해당 배송지를 삭제하시겠습니까?")){
 		    	    		console.log("ajax 속 ajax 출발")
 		    	    		
 		                    // 삭제할 데이터
@@ -667,16 +668,7 @@ $(document).ready(function() {
 		                    var road = deleteButton.data("road");
 		                    var jibun = deleteButton.data("jibun");
 		                    var extra = deleteButton.data("extra");
-		                    var detail = deleteButton.data("detail");
-		    	    		
-				    		console.log("전송전" + name);
-				    		console.log("전송전" + phone);
-				    		console.log("전송전" + postcode);
-				    		console.log("전송전" + road);
-				    		console.log("전송전" + jibun);
-				    		console.log("전송전" + extra);
-				    		console.log("전송전" + detail);
-		                    
+		                    var detail = deleteButton.data("detail");		                    
 		                    
 			    			$.ajax({
 						        type: "POST",

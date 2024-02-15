@@ -70,8 +70,8 @@ input::placeholder {
 	font-size: 16px;
 	font-weight: 600;
 }
-.status_count{
-	
+.bundle_names{
+	line-height: 16px;
 }
 img{
 	width: 160px;

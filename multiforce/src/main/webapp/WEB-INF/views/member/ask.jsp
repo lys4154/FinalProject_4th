@@ -13,8 +13,7 @@
 
 *{
 	font-family: 'Noto Sans KR', sans-serif;
-	color: #5c5c5c;
-	font-size: 14px;	
+	color: #5c5c5c;	
 }
 a{
 	text-decoration: none;
