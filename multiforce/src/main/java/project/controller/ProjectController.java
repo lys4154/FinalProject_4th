@@ -352,6 +352,7 @@ public class ProjectController {
 
 	// 업데이트 댓글 달기 POST
 	@PostMapping("update_comment")
+	@ResponseBody
 	public String InsertUpdateComment(@RequestParam String comment, @RequestParam int update_seq, HttpSession session,
 			Model model) {
 
@@ -369,7 +370,7 @@ public class ProjectController {
 
 			boardService.insertUpdateReply(reply);
 
-			return "redirect:project_detail/" + update_seq;
+			return null;
 		}
 		model.addAttribute("errorMessage", "권한이 없습니다.");
 		return "board/error/error";
