@@ -156,7 +156,7 @@ $(document).ready(function() {
 	            <c:forEach var="ongoing" items="${ongoing}" varStatus="inner">
 	            	<c:if test="${out.index eq inner.index}">
 	            		<div class="pro_left">
-			            	<div><a href="/ongoing_detail/${ongoing.fund_seq }"><img src="${ongoing.pDTO.main_images_url}" alt="프로젝트 이미지"></a></div>
+			            	<div><a href="/ongoing_detail/${ongoing.fund_seq }"><img src="${ongoing.pDTO.main_images_url}"></a></div>
 		            	</div>
 		            	<div class="pro_right">
 			            	<div class="funded_day_seq"><span> 후원일 ${ongoing.fund_date.toLocalDate()}</span> ㅣ <span> 후원번호 ${ongoing.fund_seq}</span></div>
@@ -188,7 +188,7 @@ $(document).ready(function() {
         		<c:forEach var="success" items="${success}" varStatus="inner">
         			<c:if test="${out.index eq inner.index}">	
 	            		<div class="pro_left">
-			            	<div><a href="/success_detail/${success.fund_seq }"><img src="${success.pDTO.main_images_url}" alt="프로젝트 이미지"></a></div>
+			            	<div><a href="/success_detail/${success.fund_seq }"><img src='${success.pDTO.main_images_url}' ></a></div>
 		            	</div>
 		            	<div class="pro_right">
 			            	<div class="funded_day_seq"><span> 후원일 ${success.fund_date.toLocalDate()}</span> ㅣ <span> 후원번호 ${success.fund_seq}</span></div>
@@ -220,7 +220,7 @@ $(document).ready(function() {
         		<c:forEach var="cancel" items="${cancel}" varStatus="inner">
         			<c:if test="${out.index eq inner.index}">
         				<div class="pro_left">
-			            	<div><a href="/cancel_detail/${cancel.fund_seq}"><img src="${cancel.pDTO.main_images_url}" alt="프로젝트 이미지"></a></div>
+			            	<div><a href="/cancel_detail/${cancel.fund_seq}"><img src='${cancel.pDTO.main_images_url}' ></a></div>
 		            	</div>
 		            	<div class="pro_right">	
 			            	<div class="funded_day_seq"><span> 후원일 ${cancel.fund_date.toLocalDate()}</span> ㅣ <span> 후원번호 ${cancel.fund_seq}</span></div>

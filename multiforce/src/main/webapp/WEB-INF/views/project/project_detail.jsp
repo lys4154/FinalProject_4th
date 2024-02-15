@@ -75,87 +75,90 @@
 	</div>
 	
 	
-	
-	<div id="content_container">
-		${project.content}
-	</div>
-	<section class="bundle-info">
-		<h3>선택 목록</h3>
-		<div id="cart">
-			<div id="selected_bundle_list">
-				<h4>선물</h4>
-			</div>
-			<div id="cart_result_wrap">
-				<h4>추가 후원금(선택)</h4>
-				<input type="number" id="extra_price" min="0">원
-				<div id="total_price_wrap"></div>
-				<div id="support_btn_wrap">
-					<input type="button" value="후원하기" id="funding_btn">
-				</div>
-			</div>
+	<div class="content_bundle_container">
+		<div id="content_container">
+			${project.content}
 		</div>
-		<div id="bundle_list">
-			<h3>선물 꾸러미 목록</h3>
-			<c:forEach var="bundle" items="${bundleList }" varStatus="status">
-				<div class="bundle_box" data-seq="${bundle.bundle_seq}">
-					<div class="bundle_name_wrap" data-name='${bundle.bundle_name}'>
-						${bundle.bundle_name}
+		<section class="bundle-info">
+			<div class="bundle_list_sticky">
+				<div id="bundle_list_title">선택 목록</div>
+				<div id="cart">
+					<div id="selected_bundle_list">
+						<div id="selected_list_title">선물</div>
 					</div>
-					<div class="bundle_price_wrap" data-price='${bundle.bundle_price }'>
-						${bundle.bundle_price_format}원
+					<div id="cart_result_wrap">
+						<div id="cart_supplement_title">추가 후원금(선택)</div>
+						<div class="extra_price_div"><input type="number" id="extra_price" min="0">원</div>
+						<div id="total_price_wrap"></div>
+						<div id="support_btn_wrap">
+							<input type="button" value="후원하기" id="funding_btn">
+						</div>
 					</div>
-					<ul class="item_list">
-					<c:forEach var="itemList" items="${bundle.itemListDTOList }" varStatus="status">
-						<li class="item">
-							<div class="item_name_wrap" data-name='${itemList.itemDTO.item_name}'>
-								${itemList.itemDTO.item_name } <span class="item_count_wrap" data-count="${itemList.item_count }">(x${itemList.item_count })</span>
+				</div>
+				<div id="bundle_list">
+					<div id="bundle_inventory_title">선물 꾸러미 목록</div>
+					<c:forEach var="bundle" items="${bundleList }" varStatus="status">
+						<div class="bundle_box" data-seq="${bundle.bundle_seq}">
+							<div class="bundle_name_wrap" data-name='${bundle.bundle_name}'>
+								${bundle.bundle_name}
 							</div>
-							<c:forEach var="option" items="${itemList.itemDTO.optionDTOList }" varStatus="status">
-								<c:if test="${fn:length(itemList.itemDTO.optionDTOList) != 1 && status.index == 0}">
-									<select class="item_option_select">
-								</c:if>
-								<c:if test="${fn:length(itemList.itemDTO.optionDTOList) == 1 && status.index == 0}">
-									<select class="item_option_select_only_option">
-								</c:if>
-								<c:choose>
-								<c:when test="${status.index == 0 }">
-									<option value="${option.item_option_seq }" selected="selected">
-										${option.item_option_name }
-									</option>
-								</c:when>
-								<c:otherwise>
-									<option value="${option.item_option_seq }">
-										${option.item_option_name }
-									</option>
-								</c:otherwise>
-								</c:choose>
-								<c:if test="${fn:length(itemList.itemDTO.optionDTOList) != 0 && status.count == fn:length(itemList.itemDTO.optionDTOList)}">
-									</select>
-								</c:if>
+							<div class="bundle_price_wrap" data-price='${bundle.bundle_price }'>
+								${bundle.bundle_price_format}원
+							</div>
+							<ul class="item_list">
+							<c:forEach var="itemList" items="${bundle.itemListDTOList }" varStatus="status">
+								<li class="item">
+									<div class="item_name_wrap" data-name='${itemList.itemDTO.item_name}'>
+										${itemList.itemDTO.item_name } <span class="item_count_wrap" data-count="${itemList.item_count }">(x${itemList.item_count })</span>
+									</div>
+									<c:forEach var="option" items="${itemList.itemDTO.optionDTOList }" varStatus="status">
+										<c:if test="${fn:length(itemList.itemDTO.optionDTOList) != 1 && status.index == 0}">
+											<select class="item_option_select">
+										</c:if>
+										<c:if test="${fn:length(itemList.itemDTO.optionDTOList) == 1 && status.index == 0}">
+											<select class="item_option_select_only_option">
+										</c:if>
+										<c:choose>
+										<c:when test="${status.index == 0 }">
+											<option value="${option.item_option_seq }" selected="selected">
+												${option.item_option_name }
+											</option>
+										</c:when>
+										<c:otherwise>
+											<option value="${option.item_option_seq }">
+												${option.item_option_name }
+											</option>
+										</c:otherwise>
+										</c:choose>
+										<c:if test="${fn:length(itemList.itemDTO.optionDTOList) != 0 && status.count == fn:length(itemList.itemDTO.optionDTOList)}">
+											</select>
+										</c:if>
+									</c:forEach>
+								</li>
 							</c:forEach>
-						</li>
+							</ul>
+							<div class="add_cart_btn_wrap">
+								<input class='add_cart_btn' type='button' value='장바구니 추가'>
+							</div>
+						</div>
 					</c:forEach>
-					</ul>
-					<div class="add_cart_btn_wrap">
-						<input class='add_cart_btn' type='button' value='장바구니 추가'>
-					</div>
 				</div>
-			</c:forEach>
-		</div>
-	</section>
+			</div>
+		</section>
+	</div>
 <!-- 번들 형식 모음 -->
 	<div class='selected_bundle_box_form'>
 		<div class='selected_bundle_name_wrap' >
 		</div>
 		<div class="delete_btn_wrap">
-			<input type="button" value="x" class="delete_btn">
+			<input type="button" value="목록에서 삭제" class="delete_btn">
 		</div>
 		<ul class='selected_bundle_item_list'>
 		</ul>
 		<div class='selected_bundle_box_lower_wrap'>
 			<div class='count_btn_wrap'>
-				<input type='button' value='-' class="minus_btn">
 				<input type='number' min="1" class="count">
+				<input type='button' value='-' class="minus_btn">
 				<input type='button' value='+' class="plus_btn">
 			</div>
 			<div class='selected_bundle_price_wrap'>
@@ -455,13 +458,21 @@ $(document).ready(function () {
 	
 	$("#projectLink").click(function(e){
 		e.preventDefault();
+		projectLinkFunc();
+
+	});
+	
+	function projectLinkFunc() {
 		$("#content_container").html("<div class='content_container_inner_title'> 프로젝트 소개 </div>" +'${project.purpose}');
 		
 		$("#content_container").append("<div class='content_container_inner_title'> 프로젝트 일정 </div>" + '${project.planning}');
 		$("#content_container").append("<div class='content_container_inner_title'> 프로젝트 예산 </div>" + '${project.budget}');
 		$("#content_container").append("<div class='content_container_inner_title'> 프로젝트 팀 소개 </div>" + '${project.team_introduce}');
-		$("#content_container").append("<div class='content_container_inner_title'> 선물 설명 </div>" +'${project.item_introduce}');
-	});
+		$("#content_container").append("<div class='content_container_inner_title'> 선물 설명 </div>" +'${project.item_introduce}');		
+	}
+	projectLinkFunc();
+	
+	
 	
 	function loadContent(url) {
 	    $.ajax({
