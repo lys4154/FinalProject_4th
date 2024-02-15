@@ -136,7 +136,7 @@
                 <td>${project.goal_price}</td>
                 <td>${project.short_title}</td>
                 <td>${project.category}</td>
-                <td><a class="accept-btn" id="view-reason" href="#" data-projectSeq="${project.project_seq}">반려 이유</a></td>
+                <td style="text-align:center;"><a class="accept-btn" id="view-reason" href="#" data-projectSeq="${project.project_seq}">반려 이유</a></td>
 
             </tr>
         </c:forEach>
