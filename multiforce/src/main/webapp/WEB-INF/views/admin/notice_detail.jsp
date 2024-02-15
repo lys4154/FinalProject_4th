@@ -78,9 +78,11 @@ $(document).ready(function(){
 </c:if>
 <div id="content">내용: ${dto.content}</div>
 </div>
-<div id="modify_btn_wrap">
-<a id="notice_list_btn" href="/notices" id="notices_list">목록</a>
+<div id="modify_btn_wrap"></div>
+<div id="notices_list">
+<a id="notice_list_btn" href="/notices">목록</a>
 </div>
+
 
 </body>
 </html>
