@@ -45,14 +45,13 @@ $(document).ready(function(){
 </span>
 
 	<form action="/notices/discover" style="display:inline-block">
-	<div style="display:inline-block" id="write_btn_wrap">
+	
 		<input type="text" name="query">
-		<input type="hidden" id="discover_category" name="category">
-		
+		<input type="hidden" id="discover_category" name="category">		
 		<input type="submit" value="검색" id="search">
-		</div>
+	
 	</form>
-
+	<div style="display:inline-block" id="write_btn_wrap"> </div>
 <hr>
 
 <c:forEach var="item" items="${list }">
