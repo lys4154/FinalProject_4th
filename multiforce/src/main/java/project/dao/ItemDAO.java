@@ -24,5 +24,9 @@ public interface ItemDAO {
 	Integer getProject_seq(int member_seq);
 
 	int insertItemReturnSeq(ItemDTO dto);
+	
+	List<ItemDTO> getItem_name(int project_seq);
+	
+	List<ItemDTO> getItem_seq(int project_seq);
 
 }
