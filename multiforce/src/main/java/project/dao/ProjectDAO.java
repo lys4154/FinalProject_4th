@@ -26,9 +26,6 @@ public interface ProjectDAO {
 
 	//후원 페이지 - 취소
 	List<ProjectDTO> cancelProject(List<Integer> cancelProjectSeq);
-
-	//후원 페이지 - 검색
-	List<ProjectDTO> searchFunded(String searchKeyword, int memberSeq);
 	
 	//전체 프로젝트
 	List<ProjectDTO> getAllProjects();

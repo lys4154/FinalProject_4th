@@ -92,5 +92,11 @@ public class FundingService {
 		return result;
 	}
 
+	
+	//후원 페이지 - 검색
+	public List<FundingDTO> searchFunded(String keyword, int memberSeq) {
+		return fundingDao.searchFunded(keyword, memberSeq);	
+	}
+
 
 }

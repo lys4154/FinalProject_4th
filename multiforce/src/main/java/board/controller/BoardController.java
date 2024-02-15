@@ -90,19 +90,24 @@ public class BoardController {
         	//후원자인지 true/false 리턴하기 
         	boolean userIsFunding = boardService.isUserFunding(currentUser, project_seq);
 	        model.addAttribute("userIsFunding", userIsFunding);
-	        
-	        for (updateBoardDTO update : project_dto) {
 
-	        	//포스트마다 유저가 좋아요 눌렀는지 true/false 리턴하기
-	            boolean likedByCurrentUser = boardService.isUpdateLikedByUser(update.getUpdate_seq(), currentUser);
-	            update.setLikedByCurrentUser(likedByCurrentUser);
-	            
-	            int memberSeq = update.getMember_seq();
-	            MemberDTO post_user = member.getNicknameById(memberSeq);
-	            String member_nick = post_user.getNickname();
-	            update.setNickname(member_nick);
-	        }
+	        
 	    }
+		for (updateBoardDTO update : project_dto) {
+        	
+        	
+            if(currentUserObj != null) {
+            	//포스트마다 유저가 좋아요 눌렀는지 true/false 리턴하기
+	            boolean likedByCurrentUser = boardService.isUpdateLikedByUser(update.getUpdate_seq(), (int)currentUserObj);
+	            update.setLikedByCurrentUser(likedByCurrentUser);
+            }
+            int memberSeq = update.getMember_seq();
+            
+            MemberDTO post_user = member.getNicknameById(memberSeq);
+            String member_nick = post_user.getNickname();
+            
+            update.setNickname(member_nick);
+        }
 		
 		model.addAttribute("project", project_dto);
 		model.addAttribute("project_id", project_seq);

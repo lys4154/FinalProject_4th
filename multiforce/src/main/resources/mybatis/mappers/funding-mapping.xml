@@ -38,10 +38,10 @@
 	join bundle b on c.bundle_seq = b.bundle_seq
 	join project p on f.project_seq = p.project_seq
 	join member_info m on m.member_seq = p.member_seq
-	where f.member_seq = #{memberSeq}	
-	and p.project_process = 6
-	and p.project_process = 7
-	AND pay_status = true
+	where f.member_seq = #{memberSeq}
+	AND pay_status = 1	
+	and p.project_process IN (6, 7)
+	
 </select>
 
 <!-- 후원한 프로젝트 페이지 - 후원 취소 -->
@@ -217,12 +217,24 @@ select bundle_count_seq from funding_bundle_count where fund_seq = #{fundSeq} an
 <insert id="insertChosenOption">
 insert into chosen_option(bundle_count_seq, item_option_seq) values (#{countSeq}, #{optionSeq})
 </insert>
+
 <select id="getFunding">
 select * from funding where project_seq = #{pseq} and pay_status = false and del_status = false
 </select>
 <update id="updatePayStatus">
 update funding set pay_option = true where fund_seq = #{fund_seq}
 </update>
+
+
+
+    <!-- 후원한 프로젝트 페이지 - 검색 -->
+<select id="searchFunded" parameterType="java.util.Map"  resultType="java.util.Map">
+    SELECT project.*, funding.*
+    FROM project
+    INNER JOIN funding ON project.project_seq = funding.project_seq
+    WHERE (project.long_title LIKE concat("%", #{keyword, jdbcType=VARCHAR}, "%"))
+        AND  funding.member_seq=#{memberSeq, jdbcType=INTEGER}
+</select>
 
 
 </mapper>

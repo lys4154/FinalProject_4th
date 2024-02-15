@@ -48,7 +48,7 @@ $(document).ready(function() {
 		<div class="top">
 			<div ><a href="${dto.pDTO.url }"><img alt="프로젝트 이미지" src="${dto.pDTO.main_images_url }"></a></div>
 			<div class="top_right">
-				<div class="category_creator">${dto.pDTO.category} ㅣ ${dto.collectorDTO.nickname }</div>
+				<div class="category_creator">${dto.pDTO.category_kor} ㅣ ${dto.collectorDTO.nickname }</div>
 				<div class="long_title"><a href="${dto.pDTO.url }">${dto.pDTO.long_title }</a></div>
 				<div class="pro_info">
 					<span class="amount"> <fmt:formatNumber value="${dto.pDTO.collection_amount }" type="currency" currencySymbol="" />원 </span>

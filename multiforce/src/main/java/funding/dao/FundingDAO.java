@@ -43,9 +43,13 @@ public interface FundingDAO {
 
 	void insertChosenOption(int countSeq, int optionSeq);
 
+
 	List<FundingDTO> getFunding(int pseq);
 
 	void updatePayStatus(int fund_seq);
+
+	List<FundingDTO> searchFunded(String keyword, int memberSeq);
+
 
 
 }

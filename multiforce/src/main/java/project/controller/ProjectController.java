@@ -406,13 +406,26 @@ public class ProjectController {
         	boolean userIsFunding = boardService.isUserFunding(currentUser, project_seq);
 	        model.addAttribute("userIsFunding", userIsFunding);
 	        
-	        for (CommunityDTO community : com_post) {
-
-	        	//포스트마다 유저가 좋아요 눌렀는지 true/false 리턴하기
-	            boolean likedByCurrentUser = boardService.isCommunityLikedByUser(community.getPro_board_seq(), currentUser);
-	            community.setLikedByCurrentUser(likedByCurrentUser);
-	        }
+	        
 	    }
+		
+		for (CommunityDTO community : com_post) {
+
+        	
+            if(currentUserObj != null) {
+            	//포스트마다 유저가 좋아요 눌렀는지 true/false 리턴하기
+	            boolean likedByCurrentUser = boardService.isCommunityLikedByUser(community.getPro_board_seq(), (int)currentUserObj);
+	            community.setLikedByCurrentUser(likedByCurrentUser);
+            }
+            int memberSeq = community.getMember_seq();
+            
+            MemberDTO post_user = memberService.getNicknameById(memberSeq);
+            String member_nick = post_user.getNickname();
+            
+            community.setNickname(member_nick);
+   
+            
+        }
 
 		
 		model.addAttribute("community_posts", com_post);
