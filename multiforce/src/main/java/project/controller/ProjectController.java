@@ -544,13 +544,9 @@ public class ProjectController {
 
 	@PostMapping("/saveItemOption")
 	@ResponseBody
-	public String saveItemOption(@RequestBody ItemOptionDTO itemOptionDTO, HttpSession session) {
-		try {
-			if (StringUtils.isNotBlank(itemOptionDTO.getItem_option_name())) {
-				itemOptionService.createItemOption(itemOptionDTO, session);
-			} else {
-				itemOptionService.defaultItemOption(itemOptionDTO, session);
-			}
+	public String saveItemOption(@RequestBody List<ItemOptionDTO> optionList, HttpSession session) {
+		try {	
+				itemOptionService.createItemOption(optionList, session);
 			return "Success";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -609,6 +605,11 @@ public class ProjectController {
 	public String viewCountUpdate(int project_seq) {
 		int result = projectService.viewCountUpdate(project_seq);
 		return "{\"result\": \"" + result + "\"}";
+	}
+	
+	@RequestMapping("/temp")
+	public String temp() {
+		return "/temp";
 	}
 
 }
