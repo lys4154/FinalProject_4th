@@ -10,11 +10,11 @@ public class ImagePathConfig implements WebMvcConfigurer{
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/noticesimages/**")
-		.addResourceLocations("file:///c:/fullstack/workspace_springboot/images/notices/");
+		.addResourceLocations("file:///usr/mydir/images/notices/");
 		
 		//업데이트 글쓰기
 		registry.addResourceHandler("/updateimages/**")
-		.addResourceLocations("file:///c:/fullstack/workspace_springboot/images/update/");
+		.addResourceLocations("file:///usr/mydir/images/update/");
 		
 		//addResourceHandler(url).addResourceLocations(실제 파일 경로)
 		///upload/파일명
@@ -22,20 +22,20 @@ public class ImagePathConfig implements WebMvcConfigurer{
 		
         // memberimages 핸들러 등록
         registry.addResourceHandler("/memberimages/**")
-                .addResourceLocations("file:///c:/fullstack/workspace_springboot/images/members/");
+                .addResourceLocations("file:///usr/mydir/images/members/");
 	
         // settings 이미지
         registry.addResourceHandler("/settings/**")
-                .addResourceLocations("file:///c:/fullstack/workspace_springboot/images/settings/");
+                .addResourceLocations("file:///usr/mydir/images/settings/");
         
         // css 이미지
         registry.addResourceHandler("/for_css/**")
-                .addResourceLocations("file:///c:/fullstack/workspace_springboot/images/for_css/");
+                .addResourceLocations("file:///usr/mydir/images/for_css/");
         
         
         // css 이미지
         registry.addResourceHandler("/project/**")
-                .addResourceLocations("file:///c:/fullstack/workspace_springboot/images/project/");
+                .addResourceLocations("file:///usr/mydir/images/project/");
         
 	}
 	
