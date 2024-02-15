@@ -455,12 +455,12 @@ $(document).ready(function () {
 	
 	$("#projectLink").click(function(e){
 		e.preventDefault();
-		$("#content_container")
-		.html("${project.purpose}")
-		.html("${project.planning}")
-		.html("${project.budget}")
-		.html("${project.team_introduce}")
-		.html("${project.item_introduce}");
+		$("#content_container").html("<div class='content_container_inner_title'> 프로젝트 소개 </div>" +'${project.purpose}');
+		
+		$("#content_container").append("<div class='content_container_inner_title'> 프로젝트 일정 </div>" + '${project.planning}');
+		$("#content_container").append("<div class='content_container_inner_title'> 프로젝트 예산 </div>" + '${project.budget}');
+		$("#content_container").append("<div class='content_container_inner_title'> 프로젝트 팀 소개 </div>" + '${project.team_introduce}');
+		$("#content_container").append("<div class='content_container_inner_title'> 선물 설명 </div>" +'${project.item_introduce}');
 	});
 	
 	function loadContent(url) {

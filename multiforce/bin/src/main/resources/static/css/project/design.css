@@ -1,0 +1,41 @@
+@charset "UTF-8";
+h1{
+	text-align: center;
+}
+.menuTab {
+    text-align: center;
+    width: 100%;
+}
+
+.menu {
+    list-style: none;
+    padding: 0;
+    margin: 0 auto;
+    display: table;
+}
+
+.menu li {
+    display: table-cell;
+    margin-right: 20px;
+}
+
+.menu a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+    li {
+      list-style: none;
+      margin-right: 20px;
+    }
+
+    img {
+      width: 200px;
+      height: 200px;
+    }
+
+ul {
+	margin-left: 20px;
+}

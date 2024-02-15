@@ -1,0 +1,34 @@
+@charset "UTF-8";
+
+footer{
+  width:100%;
+  height:70px;
+  position:absolute;
+  bottom:0;
+  background:#ebebeb;
+  text-align: center;  
+  color: #292929;
+  font-size: 16px;
+  font-weight: 500;
+}
+.wrap {
+	height: auto;
+  	position:relative;
+  	padding-bottom:70px;/* footer height */
+  	min-height: 170vh;  	
+}
+html, body {
+   margin:0;
+   height:100%;
+}
+.footer{
+	display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 68px;	
+    
+}
+.footer_tab{
+    margin: 0 90px;
+}

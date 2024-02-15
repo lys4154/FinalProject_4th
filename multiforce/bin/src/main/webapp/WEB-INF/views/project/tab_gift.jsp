@@ -4,48 +4,123 @@
 <html>
 <head>
   <title>Reward Setting</title>
+<script src="/js/jquery-3.7.1.min.js"></script>
+<script>
+    $(document).ready(function() {
+    	$("#addBundle").click(function() {
+        	var packages = {
+        			bundle_price : $("#bundle_price").val(),
+        			bundle_name : $("#bundle_name").val()
+        			/* item_name : $("#item_name").val() */
+        	};
+        	$.ajax({
+        		type: "POST",
+        		url: "/saveBundle",
+        		contentType: "application/json",
+        		data:JSON.stringify(packages),
+        		success: function(response) {
+        			console.log(response);
+        		},
+        		error: function(error) {
+        			console.error(error);
+        		}
+        	});
+        });
+        
+        $("#addItem").click(function() {
+        	var item = {
+        			item_name : $("#item_name").val()
+        	};
+        	$.ajax({
+        		type: "POST",
+        		url: "/saveItem",
+        		contentType: "application/json",
+        		data:JSON.stringify(item),
+        		success: function(response) {
+        			console.log(response);
+        		},
+        		error: function(error) {
+        			console.error(error);
+        		}
+        	});
+        });
+        
+        $("#addCount").click(function() {
+        	var item = {
+        			item_count : $("#item_count").val()
+        	};
+        	$.ajax({
+        		type: "POST",
+        		url: "/saveItemCount",
+        		contentType: "application/json",
+        		data:JSON.stringify(item),
+        		success: function(response) {
+        			console.log(response);
+        		},
+        		error: function(error) {
+        			console.error(error);
+        		}
+        	});
+        });
+        
+        $("#addOption").click(function() {
+        	var item = {
+        			item_option_name : $("#item_option_name").val()
+        	};
+        	$.ajax({
+        		type: "POST",
+        		url: "/saveItemOption",
+        		contentType: "application/json",
+        		data:JSON.stringify(item),
+        		success: function(response) {
+        			console.log(response);
+        		},
+        		error: function(error) {
+        			console.error(error);
+        		}
+        	});
+        });
+});
+</script>
+<style>
+.bundle {
+	text-align : center;
+}
+
+.item {
+	text-align : center;
+}
+</style>  
 </head>
 <body>
-  <h1>선물 목록</h1>
-  <label for="backer-amount">후원 금액:</label>
-  <input type="text" id="backer-amount" name="backer-amount"><br><br>
-
-  <label for="reward">보상:</label>
-  <input type="text" id="reward" name="reward"><br><br>
-
-  <button onclick="addReward()">보상 추가</button>
-
-  <h2>선물 목록</h2>
-  <p>후원금에 따른 선물</p>
-  <ul id="reward-list">
-    <!-- 보상이 여기에 동적으로 추가됩니다 -->
-  </ul>
-
-  <script>
-    function addReward(event) {
-     // event.preventDefault(); // 기본 동작 방지
-
-      var backerAmountInput = document.getElementById("backer-amount");
-      var rewardInput = document.getElementById("reward");
-      var rewardList = document.getElementById("reward-list");
-
-      var backerAmount = parseInt(backerAmountInput.value.replace(/[^\d]+/g, ''));
-      var reward = rewardInput.value.trim();
-
-      if (isNaN(backerAmount) || backerAmount <= 0 || !reward) {
-        alert("후원 금액과 선물을 입력하세요.");
-        return;
-      }
-
-      var rewardItem = document.createElement("li");
-      rewardItem.appendChild(document.createTextNode(`금액: ${backerAmount.toLocaleString()}원 - 보상: ${reward}`));
-      rewardList.appendChild(rewardItem);
-
-      // 추가 후에 입력 필드 초기화
-      backerAmountInput.value = "";
-      rewardInput.value = "";
-    }
-  </script>
+ <!-- tab_gift -->
+<h1>선물 계획</h1>
+<div class="item">  
+  <label for="item_name">상품 이름</label> <br>
+  <input type="text" id="item_name" name="item_name" placeholder="아이템 이름을 입력해주세요"><br>
+  <input type="button" id="addItem" value="상품명 추가">
+  
+  <br><br>
+  <label for="item_option">옵션 이름</label> <br>
+  옵션이 없으면 빈 칸으로 옵션 추가 버튼을 눌러주세요.<br>
+  <input type="text" id="item_option_name" name="item_option_name"><br>
+  <input type="button" id="addOption" value="옵션 추가">
+  <br><br>
+  <div class="bundle">
+  <label for="bundle_name">선물 이름</label><br>
+  어떤 아이템으로 구성되어있는지 이름을 붙여주세요.<br>
+  <input type="text" id="bundle_name" name="bundle_name"><br>
+  
+  <label for="bundle_price">후원 금액</label> <br>
+  <input type="text" id="bundle_price" name="bundle_price"><br>
+  <input type="button" id="addBundle" value="번들 추가">
+	</div>  
+  
+  
+  <br><br>
+  <label for="item_count">상품 개수</label> <br>
+  <input type="text" id="item_count" name="item_count"><br>
+  <input type="button" id="addCount" value="상품 개수 추가">
+</div>  
 </body>
-<%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </html>

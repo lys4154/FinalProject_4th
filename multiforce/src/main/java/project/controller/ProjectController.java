@@ -266,6 +266,12 @@ public class ProjectController {
 		String fullurl = "/project_detail/" + url;
 		ProjectDTO projects = projectService.getProjectMember(fullurl);
 		List<BundleDTO> bundleList = bundleService.getBundleList(projects.getProject_seq());
+		System.out.println(projects.getBudget());
+		System.out.println(projects.getItem_introduce());
+		System.out.println(projects.getTeam_introduce());
+		System.out.println(projects.getPlanning());
+		System.out.println(projects.getProject_seq());
+		
 		model.addAttribute("project", projects);
 		model.addAttribute("bundleList", bundleList);
 		return "project/project_detail";
@@ -394,23 +400,21 @@ public class ProjectController {
 
 		}
 
-		for (CommunityDTO community : com_post) {
-
-			if (currentUserObj != null) {
-				// 포스트마다 유저가 좋아요 눌렀는지 true/false 리턴하기
-				boolean likedByCurrentUser = boardService.isCommunityLikedByUser(community.getPro_board_seq(),
-						(int) currentUserObj);
-				community.setLikedByCurrentUser(likedByCurrentUser);
-			}
-			int memberSeq = community.getMember_seq();
-
-			MemberDTO post_user = memberService.getNicknameById(memberSeq);
-			String member_nick = post_user.getNickname();
-
-			community.setNickname(member_nick);
-
-		}
-
+		for (CommunityDTO community : com_post) {        	
+            if(currentUserObj != null) {
+            	//포스트마다 유저가 좋아요 눌렀는지 true/false 리턴하기
+	            boolean likedByCurrentUser = boardService.isCommunityLikedByUser(community.getPro_board_seq(), (int)currentUserObj);
+	            community.setLikedByCurrentUser(likedByCurrentUser);
+	            
+            }
+            int memberSeq = community.getMember_seq();
+            
+            MemberDTO post_user = memberService.getNicknameById(memberSeq);
+            String member_nick = post_user.getNickname();
+            
+            community.setNickname(member_nick);   
+            
+        }
 		model.addAttribute("community_posts", com_post);
 		model.addAttribute("projects", project_info);
 

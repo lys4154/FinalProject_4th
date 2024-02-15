@@ -79,6 +79,7 @@ $(document).ready(function(){
 		});
 	}
 	
+	
 	$("#notice_category").on("change", function(){
 		if($("#notice_category").val() == "event"){
 			$("#event_priod").css("display","inline-block");

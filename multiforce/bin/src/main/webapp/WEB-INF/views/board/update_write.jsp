@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ include file="/WEB-INF/views/common/header.jsp" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +9,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-
+	<link rel="stylesheet" type="text/css" href="/css/board/edit_post.css">
+	<link rel="stylesheet" type="text/css" href="/css/board/main.css">
 
 
     <title>업데이트 글쓰기</title>
@@ -30,9 +32,9 @@
 </script>
 </head>
 <body>
-    <div class="cs-container">
+    <div class="main-container">
         <h2>업데이트 글쓰기</h2>
-        <div style="margin-bottom:15px;" id="cs_menu_bar">
+        <div id="cs_menu_bar">
             
         </div>
      
@@ -40,11 +42,12 @@
            
 
             <div class="write-content">
-                <textarea name="contents" cols="30" id="content" rows="10" placeholder="내용"></textarea>
+                <textarea class="content-textarea" name="contents" cols="30" id="content" rows="10" placeholder="내용"></textarea>
             </div>
             <div class="cs-submit-btn">
-                <input type="submit" value="제출" name="submit">
+                <input class="btn-2" type="submit" value="업데이트 등록" name="submit">
             </div>
+            <input type="hidden" name="project_seq" value="${project_seq }">
         </form>
     </div>
  

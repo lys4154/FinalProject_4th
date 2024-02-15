@@ -1,0 +1,154 @@
+@charset "UTF-8";
+
+*{
+	font-family: 'Noto Sans KR', sans-serif;
+	color: #5c5c5c;
+}
+
+a{
+	text-decoration: none;
+	color: black;
+}
+
+
+
+/* 전체 div*/
+.out_con {
+	width: 1040px;
+	margin:20px auto;
+	padding: 10px 10px;
+	font-size: 14px;
+	align-items: center;
+}
+/* 상단, 검색창 */
+.funded_title{
+	font-size: 32px;
+	height: 60px;
+	color: #292929;
+	font-weight: 600;
+}
+.top_con{
+	display: flex;
+	margin: 20px 0;
+	align-items: center;
+}
+.top_search{
+	margin-left: auto;		
+}
+.top_count{
+	font-size: 16px;
+}
+#search_keyword{
+	width: 400px;
+	height: 35px;
+	outline: none;	
+	border: 1px solid #a3a1a1;
+	color: #a3a1a1;
+	padding-left: 10px;
+	font-size: 15px;	
+}
+input::placeholder {
+	color:#a3a1a1;
+}
+.top_under_hr{
+	height: 5px;
+	border: 0;
+	box-shadow: 0 3px 5px -5px grey inset;	
+}
+
+/* 프로젝트 목록*/
+.ongoing_out, .success_out, .cancel_out{
+	padding: 10px auto;
+	margin: 10px 5px 40px 5px;
+	align-items: center;
+	border: 1px solid #cfcfcf;
+	border-radius: 5px;
+	padding: 10px 15px;	
+}
+
+.status_title{
+	font-size: 16px;
+	font-weight: 600;
+}
+.bundle_names{
+	line-height: 16px;
+}
+img{
+	width: 160px;
+	height: 140px;
+	object-fit: cover;	
+}
+.flex, .result_con{
+	display: flex;
+	margin: 5px; 
+}
+.pro_right{
+	padding-left: 20px;
+	line-height: 26px;	
+}
+.long_title{
+	font-size: 16px;
+	font-weight: 600;
+	margin-bottom: 10px;
+}
+.inner_hr{
+	margin: 10px 0;
+	border: 1px solid #cfcfcf;
+	transform: scaleY(0.5);
+}
+.funded_day_seq{
+	font-size: 13px;
+}
+.pay_status{
+	padding: 0 5px;
+	background-color: #ebebeb;
+	color: black;
+	font-weight: 500;	
+}
+.amount{
+	color: #ff4a55;
+}
+.result_con{
+	align-items: center;
+	border: 1px solid #cfcfcf;
+	border-radius: 5px;
+	padding: 10px 15px;
+	margin: 20px 10px;	
+}
+.search_result{
+	margin-top: 20px;
+}
+.result{
+	margin:30px auto;
+}
+
+
+
+/* 후원 내역 없을때 화면 */
+.no_funded_par{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	text-align: center;	
+}
+.no_funded{
+	line-height: 50px;
+	font-size: 16px;
+}
+.empty_ment{
+	margin: 50px;
+}
+#backToMain{
+	width: 300px;
+	height: 40px;
+	font-size: 16px;
+	font-weight: 600;
+	letter-spacing: 2px;
+	background-color: white;
+	border: 1px solid #cfcfcf;
+	border-radius: 5px;
+	cursor:pointer;
+}
+#backToMain:hover{
+	background-color: #ebebeb;
+}
