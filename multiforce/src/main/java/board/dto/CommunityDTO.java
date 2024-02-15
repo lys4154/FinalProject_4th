@@ -16,7 +16,22 @@ public class CommunityDTO {
     private int del_status;
     private LocalDateTime del_date;
     private MemberDTO member;
-    boolean LikedByCurrentUser;
+    private String nickname;
+    private String kor_category;
+    
+    public String getKor_category() {
+		return kor_category;
+	}
+	public void setKor_category(String kor_category) {
+		this.kor_category = kor_category;
+	}
+	public String getNickname() {
+		return nickname;
+	}
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+	boolean LikedByCurrentUser;
     
 	public boolean isLikedByCurrentUser() {
 		return LikedByCurrentUser;

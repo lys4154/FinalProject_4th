@@ -36,5 +36,31 @@
 .update_empty{
 	font-size:20px;
 	text-align:center;
-	fotn-weight:bold;
+	font-weight:bold;
+	outline:none;
+}
+.comm-write-textarea{
+	margin-left:15px;
+	padding-bottom:10px;
+}
+.comm-write-textarea textarea{
+	outline:none;
+	border-radius:10px;
+	padding:6px;
+	width:100%;
+}
+.comm-radio{
+	padding:5px;
+	margin-bottom:5px;
+}
+.comm_post_ta{
+	border-radius:5px;
+	width:100%;
+	padding:7px;
+	outline:none;
+	border:solid 1px #ccc;
+}
+.comm-post-form{
+	margin-bottom:10px;
+	padding:10px;
 }

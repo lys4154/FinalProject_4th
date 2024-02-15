@@ -69,10 +69,7 @@ if(session.getAttribute("login_user_seq") != null){
 			    
 			    <div class="content">${update.content}</div>
 			
-		     	
-				
-				
-				
+
 				<div class="bottom">
 					<div>
 					<%
@@ -97,16 +94,17 @@ if(session.getAttribute("login_user_seq") != null){
 				
 				</div>
 					
-						
-				<div class="update_post_box sub-comment" id="comments_${update.update_seq}">
+				<div  class="comm-write-textarea" id="commentForm_${update.update_seq}" style="display: none;">
+		            <div><textarea id="commentText_${update.update_seq}" rows="4" cols="50"></textarea> </div>
+		            <div><button class="btn-1" onclick="submitComment(${update.update_seq})">댓글 등록</button></div>
+		        </div>		
+		        
+				<div class="sub-comment" id="comments_${update.update_seq}">
 				</div>
 		
 		        
 		    
-		        <div id="commentForm_${update.update_seq}" style="display: none;">
-		            <textarea id="commentText_${update.update_seq}" rows="4" cols="50"></textarea> 
-		            <button onclick="submitComment(${update.update_seq})">댓글 등록</button>
-		        </div>
+		        
 		    </div>
 		    
 		    </hr>
@@ -265,7 +263,7 @@ function toggleCommentForm(event, updateSeq) {
 
                 
                 $.each(comments, function (index, comment) {
-                	var commentHtml = '<div class="header"><div>' + comment.member.nickname + ' | ' +
+                	var commentHtml = '<div class="update_post_box"><div class="header"><div>' + comment.member.nickname + ' | ' +
                 	comment.time + '</div>';
 	
 	                if (comment.member_seq == loggedInUserId) {
@@ -273,7 +271,7 @@ function toggleCommentForm(event, updateSeq) {
 	                }
 	
 	                commentHtml += '</div>';
-	                commentHtml += '<div class="content">'+ comment.content +'</div>';
+	                commentHtml += '<div class="content">'+ comment.content +'</div></div>';
 	
 	                commentsDiv.append(commentHtml);
                 });
