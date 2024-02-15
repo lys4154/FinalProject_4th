@@ -135,7 +135,7 @@ $(document).ready(function() {
 						<div class="update_container">
 							<c:forEach var="update" items="${update }">
 								<div class="update_inner_con">
-									<div class="update_img"><a href="${update.url }"><img src="${update.main_images_url}" class="update_images"></a></div>
+									<div class="update_img"><a href="${update.url }"><img src="${update.main_images_url}"></a></div>
 									<div class="update_category">${update.category_kor} ㅣ ${update.nickname}</div>
 									<div class="update_title"><a href="${update.url }">${update.long_title}</a></div>
 									<div class="achaive_dibs">
@@ -155,7 +155,7 @@ $(document).ready(function() {
 				<div class="popular_container">
 					<c:forEach var="popular" items="${popular }" varStatus="rank">
 						<div class="popular_inner_con">
-							<div class="popular_img"><a href="${popular.url }"><img src="${popular.main_images_url}" class="popular_images"></a></div>
+							<div class="popular_img"><a href="${popular.url }"><img src="${popular.main_images_url}" ></a></div>
 							<div class="popular_rank">${rank.index + 1}</div>
 							<div class="popular_inner_right_con">
 								<div class="popular_category">${popular.category_kor} ㅣ ${popular.nickname}</div>

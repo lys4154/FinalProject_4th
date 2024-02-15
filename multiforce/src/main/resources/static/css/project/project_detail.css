@@ -39,7 +39,7 @@
 	width: 730px;
 	position:relative;
 	float: left;
-	border: 1px solid black;
+	border: 1px solid #fff;
 }
 .bundle-info{
 	display: inline-block;
@@ -204,5 +204,12 @@ select[class^=item_option_select]{
 
 }
 
+
+
+/* -------------*/
+#content_container img{
+	width: 730px;
+	object-fit: cover;	
+}
 
 
