@@ -68,7 +68,7 @@
 	margin-bottom: 10px;
 }
 
-.item_option_select{
+select[class^=item_option_select]{
 	display: none;
 }
 .add_cart_btn_wrap{

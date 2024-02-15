@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 <!DOCTYPE html>
 <html>
@@ -58,30 +59,69 @@ $(document).ready(function() {
     
     // #popular_time 요소에 현재 시간 표시
     $(".popular_time").html(year + "." + month + "." + day + " " + hours + ":" + minutes + " 기준");
-
-	
-	
-	
-	
+    
+ 	var current_page = 1;
+ 	let banner_slider = $("#banner_slider");
+ 	let end_page = ${fn:length(eventmap)};
+ 	$("#event_count").text(current_page + "/" +end_page);
+ 	$("#banner_slider").css("width", end_page * 665.59 + "px");
+   	$("#slider_right_btn").on('click', function(){
+		if(end_page != current_page){
+			banner_slider.css("transform", "translate(-" + (665.59 * current_page) + "px)")
+			banner_slider.css("transitionProperty","transition-property: transform")
+			banner_slider.css("transitionDuration", '0.5s');
+			current_page++;
+			console.log(current_page);
+			console.log("endpage:" +end_page);
+			$("#event_count").text(current_page + "/" +end_page);
+		}
+	});
+   	
+   	$("#slider_left_btn").on('click', function(){
+		if(current_page != 1){
+			current_page--;
+			banner_slider.css("transform", "translate(-" + (664 * (current_page -1)) + "px)")
+			banner_slider.css("transitionProperty","transition-property: transform")
+			banner_slider.css("transitionDuration", '0.5s');
+			$("#event_count").text(current_page + "/" +end_page);
+			console.log(current_page);
+		}
+	});
+   	
+   	
+/*	btn_left.addEventListener('click', function(){
+		if(current_page != 1){
+			current_page--;
+			document.getElementById("movieList").style.transform = "translate(-" + (1428 * (current_page - 1))+ "px)"
+			document.getElementById("movieList").style.transitionProperty = "transition-property: transform;";
+			document.getElementById("movieList").style.transitionDuration = "0.5s";
+			console.log(current_page);
+			
+		}
+	});
+*/    
+    
 })
-
-
-
-
-
-
 </script>
+<style>
 
+</style>
 <body>
 <div class="wrap">
 	<div class="out_con">
 		<div class="banner_update_popular_out_con">
 			<div class="banner_update_out_con">
 				<div class="main_banner">
-						<h1>메인페이지 배너 예정</h1>
-					<c:forEach items="${eventmap }" var="item">
-						<a href="${item.key}">${item.value } class = "temp"></a>
-					</c:forEach>
+					<div id="banner_slider">
+						<c:forEach items="${eventmap }" var="item">
+							<a href="${item.key}"><img src="${item.value }" class = "banner"></a>
+						</c:forEach>
+					</div>
+					<div id="slider_btn_wrap">
+						<div id="event_count"></div>
+						<button id="slider_left_btn"><</button>
+						<button id="slider_right_btn">></button>
+					</div>
 				</div>
 				<!-- 
 				넣을만한 컨텐츠

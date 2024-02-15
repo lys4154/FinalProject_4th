@@ -139,7 +139,7 @@
 <br>
 
 <!-- 카드 기간, cvc 3자리, 비밀번호 2자리 입력 -->
-<input type="button" id="pay" value="결제">
+<input type="button" id="pay" value="인증">
 <input type="button" id="cancel" value="취소">
 
 <script>

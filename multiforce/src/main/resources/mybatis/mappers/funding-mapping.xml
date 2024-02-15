@@ -218,6 +218,15 @@ select bundle_count_seq from funding_bundle_count where fund_seq = #{fundSeq} an
 insert into chosen_option(bundle_count_seq, item_option_seq) values (#{countSeq}, #{optionSeq})
 </insert>
 
+<select id="getFunding">
+select * from funding where project_seq = #{pseq} and pay_status = false and del_status = false
+</select>
+<update id="updatePayStatus">
+update funding set pay_option = true where fund_seq = #{fund_seq}
+</update>
+
+
+
     <!-- 후원한 프로젝트 페이지 - 검색 -->
 <select id="searchFunded" parameterType="java.util.Map"  resultType="java.util.Map">
     SELECT project.*, funding.*
@@ -226,5 +235,6 @@ insert into chosen_option(bundle_count_seq, item_option_seq) values (#{countSeq}
     WHERE (project.long_title LIKE concat("%", #{keyword, jdbcType=VARCHAR}, "%"))
         AND  funding.member_seq=#{memberSeq, jdbcType=INTEGER}
 </select>
+
 
 </mapper>

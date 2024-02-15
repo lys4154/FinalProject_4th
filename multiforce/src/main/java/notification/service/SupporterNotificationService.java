@@ -42,5 +42,16 @@ public class SupporterNotificationService {
 		String message2 = "후원하신 프로젝트 " + shortTitle + "(의) 결제가 이루어질 예정입니다. 결제수단을 확인해주세요.";
 		notificationDao.insertNotification(projectSeq, memberSeq, message2);
 	}
+
+	public void payment(String short_title, int member_seq, int project_seq) {
+		String message1 = "프로젝트 " + short_title + "의 후원을 위한 결제가 완료되었습니다";
+		notificationDao.insertNotification(project_seq, member_seq, message1);
+		
+	}
+
+	public void paymentFailed(String short_title, int member_seq, int project_seq) {
+		String message1 = "프로젝트 " + short_title + "의 후원을 위해 결제수단을 확인해주세요";
+		notificationDao.insertNotification(project_seq, member_seq, message1);
+	}
 	
 }

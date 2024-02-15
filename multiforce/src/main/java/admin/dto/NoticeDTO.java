@@ -24,16 +24,19 @@ public class NoticeDTO {
 		return event_status;
 	}
 	public void setEvent_status() {
-		if(ChronoUnit.MINUTES.between(LocalDateTime.now(), event_start_date) <= 0){
-			if(ChronoUnit.MINUTES.between(LocalDateTime.now(), event_end_date) >= 0) {
-				this.event_status = "진행중";
+		if(event_start_date != null && event_end_date != null) {
+			if(ChronoUnit.MINUTES.between(LocalDateTime.now(), event_start_date) <= 0){
+				if(ChronoUnit.MINUTES.between(LocalDateTime.now(), event_end_date) >= 0) {
+					this.event_status = "진행중";
+				}else {
+					this.event_status = "종료";
+				}
+				
 			}else {
-				this.event_status = "종료";
+				this.event_status = "예정";
 			}
-			
-		}else {
-			this.event_status = "예정";
 		}
+		
 	}
 	public int getNotice_seq() {
 		return notice_seq;
@@ -65,6 +68,7 @@ public class NoticeDTO {
 	}
 	public void setEvent_start_date(LocalDateTime event_start_date) {
 		this.event_start_date = event_start_date;
+		setEvent_status();
 	}
 	public LocalDateTime getEvent_end_date() {
 		return event_end_date;

@@ -364,7 +364,7 @@ where due_date = now() and project_process = 4
 <!--  -->
 <select id="selectProjectMember">
 select m.member_seq, member_id, nickname, email, project_seq, goal_price,
-long_title, short_title, sub_title, category, project_process, member_url, profile_img
+long_title, short_title, sub_title, category, project_process, member_url, profile_img, url, main_images_url
 from project p join member_info m using (member_seq) 
 where project_seq = #{project_seq}
 </select>
@@ -450,6 +450,10 @@ WHERE project.url = #{url} and project_process >= 3
 update project set collection_amount = collection_amount + #{price} where project_seq = #{projectSeq}
 </update>
 
+<!-- 성공 후 일주일 이내의 프로젝트 찾아오기 -->
+<select id="getSuccessIn7">
+select * from project where 7 >= DATEDIFF(now(), DATE_ADD(due_date, interval 1 day)) and project_process = 6
+</select>
 </mapper>
 
 

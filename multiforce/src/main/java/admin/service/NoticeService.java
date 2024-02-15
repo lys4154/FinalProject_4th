@@ -140,11 +140,12 @@ public class NoticeService {
 		HashMap<String, String> map = new HashMap<>();
 		if(list.size() > 0) {
 			for (NoticeDTO dto : list) {
-				int start = dto.getContent().indexOf("<img");
+				int start = dto.getContent().indexOf("src=") + 5;
+				System.out.println(dto.getContent());
 				if(start == -1) {
 					continue;
 				}
-				int end = dto.getContent().indexOf(".", start) + 1 + 4;
+				int end = dto.getContent().indexOf("\"", start);
 				System.out.println(end);
 				String imgTag = dto.getContent().substring(start, end);
 				System.out.println(imgTag);

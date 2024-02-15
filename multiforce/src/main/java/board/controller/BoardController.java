@@ -438,16 +438,11 @@ public class BoardController {
 		public String InsertCommunityComment(@RequestParam String comment, 
 		        @RequestParam int board_seq, @RequestParam int project_seq, HttpSession session) {
 		    
-			
 			// post_id = project_seq
 			int current_user = 0;
 			current_user = (int) session.getAttribute("login_user_seq");
-
-			
 			boolean userIsFunding = boardService.isUserFunding(current_user, project_seq);
-			
-
-	
+		
 		    //NOT NULL이라 임시로 카테고리 저장
 		    String tmpCategory = "cheer";
 		    
@@ -463,10 +458,8 @@ public class BoardController {
 			    reply.setDate(new Date()); 
 			    boardService.insertCommunityReply(reply); 
 			}
-		    
-		    
 
-		    return "redirect:project_detail/"+board_seq;
+		    return "아무거나";
 		}
 	
 	@GetMapping("/getCommComments")

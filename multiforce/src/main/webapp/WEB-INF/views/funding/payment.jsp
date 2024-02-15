@@ -10,6 +10,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <body>
 <div>
 	<div>
@@ -67,26 +68,27 @@
 	<h3>배송지 정보</h3>
 	<form action="/payresult" method="post">
 		<div>
-			수취인 명: <input type="text" value="${dto.member_name }" name="name">
+			수취인 명: <input type="text" value="${dto.member_name }" name="name" id="name">
 		</div>
 		<div>
-			연락처: <input type="text" name="phone">
+			연락처: <input type="text" name="phone" id="phone">
 		</div>
 		<div>
-			우편번호: <input type="text" value="${dto.postcode}" name="postcode" readonly>
+			우편번호: <input type="text" value="${dto.postcode}" name="postcode" id="postcode" readonly>
 		</div>
 		<div>
-			지번주소: <input type="text" value="${dto.jibun_address }" name="jibun_address" readonly>
+			지번주소: <input type="text" value="${dto.jibun_address }" name="jibun_address" id="jibunAddress" readonly>
 		</div>
 		<div>
-			도로명주소: <input type="text" value="${dto.road_address }" name="road_address" readonly>
+			도로명주소: <input type="text" value="${dto.road_address }" name="road_address" id="roadAddress" readonly>
 		</div>
 		<div>
-			상세주소: <input type="text" value="${dto.detail_address }" name="detail_address">
+			상세주소: <input type="text" value="${dto.detail_address }" name="detail_address" id="detailAddress">
 		</div>
 		<div>
-			추가주소: <input type="text" value="${dto.extra_address }" name="extra_address" readonly>
+			추가주소: <input type="text" value="${dto.extra_address }" name="extra_address" id="extraAddress" readonly>
 		</div>
+		<input type="button" value="주소찾기" id="find_address">
 		<input type="hidden" value="${totalPrice }" name="price">
 		<input type="hidden" value="${login_user_seq }" name="member_seq">
 		<h3>결제 방법</h3>
@@ -106,7 +108,7 @@
 				<fmt:formatNumber value="${totalPrice }" pattern="#,###" />원
 			</div>
 		</div>
-		<input type="submit" value="후원하기">
+		<input type="submit" value="후원하기" id="funding_btn">
 	</form>
 	<!-- 결제 방법 영역-->
 		
@@ -136,7 +138,28 @@
             document.getElementById("result").innerHTML = "결제수단을 선택해주세요.";
         }
     });
-
+	
+    $("#funding_btn").on("click", function(e){
+    	let name = $("#name").val();
+    	let phone = $("#phone").val();
+    	let postcode = $("#postcode").val();
+    	let paynumber = $("#pay_number").val();
+    	
+    	if(name == ""){
+    		alert("받으실 분 성함을 입력해주세요");
+    		e.preventDefault();
+    	}else if(phone == ""){
+    		alert("연락처를 입력해주세요");
+    		e.preventDefault();
+    	}else if(postcode == ""){
+    		alert("주소를 입력해주세요");
+    		e.preventDefault();
+    	}else if(paynumber == ""){
+    		alert("결제수단을 인증해주세요");
+    		e.preventDefault();
+    	}
+    });
+    
     function popup(url, callback) {	
         var name = "pay";
         var option = "width=500, height=500, top=100, left=200, location=no";
@@ -152,6 +175,46 @@
                 }
             }, 1000);
         }
+    }
+    
+    $("#find_address").on("click", execDaumPostcode);
+	function execDaumPostcode() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+				isAddressPassed = true;
+                // 도로명 주소의 노출 규칙에 따라 주소를 표시한다.
+                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                var roadAddr = data.roadAddress; // 도로명 주소 변수
+                var extraRoadAddr = ''; // 참고 항목 변수
+
+                // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                    extraRoadAddr += data.bname;
+                }
+                // 건물명이 있고, 공동주택일 경우 추가한다.
+                if(data.buildingName !== '' && data.apartment === 'Y'){
+                   extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                }
+                // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                if(extraRoadAddr !== ''){
+                    extraRoadAddr = ' (' + extraRoadAddr + ')';
+                }
+
+                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                document.getElementById('postcode').value = data.zonecode;
+                document.getElementById("roadAddress").value = roadAddr;
+                document.getElementById("jibunAddress").value = data.jibunAddress;
+                
+                // 참고항목 문자열이 있을 경우 해당 필드에 넣는다.
+                if(roadAddr !== ''){
+                    document.getElementById("extraAddress").value = extraRoadAddr;
+                } else {
+                    document.getElementById("extraAddress").value = '';
+                }               
+            }
+        }).open();
     }
 </script>
 <!--  <script>

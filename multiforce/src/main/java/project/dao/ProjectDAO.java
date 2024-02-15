@@ -161,6 +161,8 @@ public interface ProjectDAO {
 
 	void updateDibsCount(int project_seq, int i);
 
+	List<ProjectDTO> getSuccessIn7();
+
 
 
 

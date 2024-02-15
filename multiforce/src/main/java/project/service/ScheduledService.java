@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import funding.dao.FundingDAO;
+import funding.dto.FundingDTO;
 import member.dto.MemberDTO;
 import member.service.MailService;
 import notification.service.CollectorNotificationService;
@@ -14,6 +16,7 @@ import notification.service.DibsNotificationService;
 import notification.service.FollowerNotificationService;
 import notification.service.SupporterNotificationService;
 import project.dao.ProjectDAO;
+import project.dto.ProjectDTO;
 import project.dto.ProjectMemberDTO;
 
 @Service
@@ -30,6 +33,8 @@ public class ScheduledService {
 	SupporterNotificationService supporterService;
 	@Autowired
 	FollowerNotificationService followerService;
+	@Autowired
+	FundingDAO fundingDao;
 	
 	@Scheduled(cron = "0 0 0 * * *")
 	public void processUpdate() {
@@ -112,15 +117,7 @@ public class ScheduledService {
 				followerService.start(dto.getShort_title(), startFollowerList.get(i), dto.getProject_seq(), dto.getNickname());
 			}
 		}
-		
-		
-		
-		
-		
-		
-		
-	
-			
+
 /*		List<ProjectMemberDTO> failsupporterList = projectDao.selectCollectorFundFail();
 		for (ProjectMemberDTO dto : failsupporterList) {
 			String result
@@ -129,18 +126,37 @@ public class ScheduledService {
 	
 	}
 	
-	@Scheduled(cron = "0 7 0 * * *")
+	@Scheduled(cron = "0 1 0 * * *")
 	public void executePayment() {
-		System.out.println("check");
-		List<ProjectMemberDTO> startCollectorList = projectDao.selectCollectorFundstart();
-		for (ProjectMemberDTO dto : startCollectorList) {
-
-			List<Integer> startFollowerList = projectDao.selectFollowerFundStart(dto.getMember_seq());
-			for (int i = 0; i < startFollowerList.size(); i++) {
-//				(팔로우한 사람)
-				followerService.start(dto.getShort_title(), startFollowerList.get(i), dto.getProject_seq(), dto.getNickname());
+		//7시에 due_date가 일주일 내 + 성공한 경우 그 프로젝트 seq을 바탕으로 funding테이블 뒤져서 결제가 아직 false인것 결제시도
+		List<ProjectDTO> list = projectDao.getSuccessIn7();
+		for (ProjectDTO dto : list) {
+			int pseq = dto.getProject_seq();
+			List<FundingDTO> flist = fundingDao.getFunding(pseq);
+			for (FundingDTO fdto : flist) {
+				//결제 아직 안된 후원의 결제정보 불러오기
+				int price = fdto.getPrice();
+				String company = fdto.getPay_company();
+				String option = fdto.getPay_option();
+				boolean result = paymentProcess(price, company, option);
+				if(result) {
+					fundingDao.updatePayStatus(fdto.getFund_seq());
+					supporterService.payment(dto.getShort_title(), fdto.getMember_seq(), dto.getProject_seq());
+				}else {
+					supporterService.paymentFailed(dto.getShort_title(), fdto.getMember_seq(), dto.getProject_seq());
+				}
 			}
 		}
+		//결제기간 끝난 프로젝트들 리스트 찾아 실제로 얼마나 결제가 되었는지 안내 알림
+		
 	}
 	
+	private boolean paymentProcess(int price, String company, String option) {
+		double random = Math.random();
+		if(random < 0.9) {
+			return true;
+		}else {
+			return false;
+		}
+	}
 }
