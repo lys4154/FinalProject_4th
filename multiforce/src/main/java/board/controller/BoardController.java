@@ -130,8 +130,6 @@ public class BoardController {
 		if (currentUserObj != null) {
 			int currentUser = (int) session.getAttribute("login_user_seq");
         	
-
-
 			
 			boolean userIsProjectManager = boardService.userIsProjectManager(project_seq, currentUser);
 
@@ -168,7 +166,6 @@ public class BoardController {
 	        CommunityDTO communityPost = boardService.getCommunityPostByBoardSeq(pro_board_seq);
 
 	        if (communityPost != null && current_user == communityPost.getMember_seq()) {
-//		        	System.out.println("같은사람 맞음");
 	        	boardService.deleteCommunityPost(pro_board_seq, del_date);
 	            return new ResponseEntity<>("삭제 성공", HttpStatus.OK);
 	        } else {
@@ -192,7 +189,6 @@ public class BoardController {
 	        updateBoardDTO updatePost = boardService.getUpdatePostByUpdateSeq(update_seq);
 
 	        if (updatePost != null && current_user == updatePost.getMember_seq()) {
-//	        	System.out.println("같은사람 맞음");
 
 	        	boardService.deleteUpdatePost(update_seq, del_date);
 	            return new ResponseEntity<>("삭제 성공", HttpStatus.OK);
@@ -238,7 +234,6 @@ public class BoardController {
 	        
 
 	        
-	        //작업중 여기
 	        CommunityDTO CommunityComment = boardService.getCommunityCommentByReplySeq(pro_board_seq);
 	   
 	        System.out.println(current_user+" / "+CommunityComment.getMember_seq());
