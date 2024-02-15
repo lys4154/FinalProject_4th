@@ -63,15 +63,6 @@
             var baseUrl = window.location.origin;
             loadContent(baseUrl + "/tab_info");
         });
-
-    	/*$("#tab_fundingPlan").click();
-    	
-        $("#tab_fundingPlan").click(function (e) {
-            e.preventDefault();
-           // var pid = $(this).data("project-id");
-            var baseUrl = window.location.origin;
-            loadContent(baseUrl + "/tab_fundingPlan"); 
-        }); */
         
 		$("#tab_gift").click();
     	

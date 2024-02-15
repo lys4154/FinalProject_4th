@@ -468,6 +468,11 @@ public class ProjectController {
 		return "project/tab_info";
 	}
 	
+	@RequestMapping("tab_item")
+	public String tabItem() {
+		return "project/tab_item";
+	}
+	
 	@PostMapping("/saveProject")
     @ResponseBody
     public String saveProject(@RequestBody ProjectDTO projectDTO, HttpSession session) {
