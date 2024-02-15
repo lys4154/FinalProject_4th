@@ -43,7 +43,7 @@
 	font-weight: 600;
 	margin-bottom: 10px;
 }
-.update_images{
+.update_img img{
 	width: 144px;
 	height: 144px;
 	object-fit: cover;
@@ -94,7 +94,7 @@
 	font-weight: 600;
 	margin-bottom: 1px;
 }
-.popular_images{
+.popular_img img{
 	width: 90px;
 	height: 90px;
 	object-fit: cover;	

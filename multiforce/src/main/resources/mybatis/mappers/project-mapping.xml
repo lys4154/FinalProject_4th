@@ -414,6 +414,11 @@ WHERE project.url = #{url} and project_process >= 3
 	<result property="collection_amount" column="collection_amount"/>
 	<result property="project_process" column="project_process"/>
 	<result property="content" column="content"/>
+	<result property="purpose" column="purpose"/>
+	<result property="planning" column="planning"/>
+	<result property="budget" column="budget"/>
+	<result property="team_introduce" column="team_introduce"/>
+	<result property="item_introduce" column="item_introduce"/>
 	<association property="memberDTO" resultMap="memberMap"/>
 </resultMap>
 <resultMap type="memberdto" id="memberMap">
