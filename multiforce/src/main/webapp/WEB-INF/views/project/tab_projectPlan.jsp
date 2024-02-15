@@ -39,6 +39,8 @@
 		            }
 		        });
 		    });
+		    
+		    
 		});
 </script>
 </head>
@@ -50,22 +52,10 @@
 <h2>프로젝트 목적</h2>
 <dl>어떤 프로젝트인지 설명해주세요.</dl>
 <div class="container">
-	<textarea class="purpose" name="purposeEditor" id="purpose"></textarea>
+	<textarea class="purpose" name="purposeEditor" id="purpose">${projectPlan.purpose}</textarea>
 </div>
 <script>
 $('.purpose').summernote({
-	/* toolbar: [
-	    // [groupName, [list of button]]
-	    ['style', ['bold', 'italic', 'underline', 'clear']],
-	    ['font', ['strikethrough', 'superscript', 'subscript']],
-	    ['fontsize', ['fontsize']],
-	    ['color', ['color']],
-	    ['para', ['ul', 'ol', 'paragraph']],
-	    ['insert',['picture','link','video']],
-	    ['height', ['height']]
-	  ],
-	height:500,  
-	lang:"ko-KR" */
 	width:1000,
 	height: 500,                 // 에디터 높이
 	minHeight: 500,             // 최소 높이
@@ -106,12 +96,13 @@ function uploadImageFile(file, editor) {
 	});
 }
 </script>
+
 <hr>
 
 <h2>프로젝트 일정</h2>
 <dl>작업 일정을 구체적인 날짜와 작성해주세요.</dl>
 <div class="container">
-	<textarea class="planning" name="planEditor" id="planning"></textarea>
+	<textarea class="planning" name="planEditor" id="planning">${projectPlan.planning}</textarea>
 </div>
 <script>
 $('.planning').summernote({
@@ -143,7 +134,7 @@ $('.planning').summernote({
 <h2>프로젝트 예산</h2>
 <dl>후원 금액을 어떻게 사용할 것인지 작성해주세요.</dl>
 <div class="container">
-	<textarea class="budget" name="budgetEditor" id="budget"></textarea>
+	<textarea class="budget" name="budgetEditor" id="budget">${projectPlan.budget}</textarea>
 </div>
 <script>
 $('.budget').summernote({
@@ -175,7 +166,7 @@ $('.budget').summernote({
 <h2>프로젝트 팀 소개</h2>
 <dl>프로젝트를 진행하는 팀에 대해서 소개해주세요.</dl>
 <div class="container">
-	<textarea class="introduce" name="introduceEditor" id="team_introduce"></textarea>
+	<textarea class="introduce" name="introduceEditor" id="team_introduce">${projectPlan.team_introduce}</textarea>
 </div>
 <script>
 $('.introduce').summernote({
@@ -207,7 +198,7 @@ $('.introduce').summernote({
 <h2>선물 설명</h2>
 <dl>후원 금액별로 받을 수 있는 선물을 설명해주세요.</dl>
 <div class="container">
-	<textarea class="item" name="itemEditor" id="item_introduce"></textarea>
+	<textarea class="item" name="itemEditor" id="item_introduce">${projectPlan.item_introduce}</textarea>
 </div>
 <script>
 $('.item').summernote({
