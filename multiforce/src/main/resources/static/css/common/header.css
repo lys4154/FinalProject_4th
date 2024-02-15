@@ -10,7 +10,7 @@ body{
 }
 a{
   text-decoration: none;
-  color: #5c5c5c;
+  color: #292929;
 }
 header{
 	border-bottom: 1px solid #ebebeb;
@@ -95,7 +95,7 @@ header{
 	padding-bottom: 10px;
 	font-size: 15px;
 	font-weight: 500;
-	margin-bottom: 5px;	
+	margin-bottom: 5px;
 }
 
 .category_tab{
@@ -181,5 +181,6 @@ header{
 
 .category_btn:hover {
 	font-weight: 600;
+	font-size:15px;
 	color: #82c8a0;
 }

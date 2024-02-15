@@ -106,19 +106,6 @@
 </select>
 
 
-
-
-<!-- 후원한 프로젝트 페이지 - 검색 -->
-<select id="searchFunded" parameterType="java.util.Map"  resultType="java.util.Map">
-    SELECT project.*, funding.*
-    FROM project
-    INNER JOIN funding ON project.project_seq = funding.project_seq
-    WHERE (project.long_title LIKE concat("%", #{searchKeyword, jdbcType=VARCHAR}, "%"))
-        AND  funding.member_seq=#{memberSeq, jdbcType=INTEGER}
-</select>
-
-
-
 <!-- 후원한 프로젝트 페이지 -> 후원 내역 상세 -->	
 <select id="getProjectDetail" parameterType="int"  >
 	SELECT project.*, member_info.nickname

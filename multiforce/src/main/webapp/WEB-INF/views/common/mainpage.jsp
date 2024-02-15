@@ -112,7 +112,7 @@ $(document).ready(function() {
 			<div class="main_popular_container">
 				<div class="popular_main_title">인기 프로젝트 </div>
 				<div class="popular_time">랄라</div>
-				<div class="update_container">
+				<div class="popular_container">
 					<c:forEach var="popular" items="${popular }" varStatus="rank">
 						<div class="popular_inner_con">
 							<div class="popular_img"><a href="${popular.url }"><img src="${popular.main_images_url}" class="popular_images"></a></div>
