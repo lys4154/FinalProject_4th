@@ -6,7 +6,7 @@ insert into notification_project(project_seq, member_seq, message)
 values(#{project_seq}, #{member_seq}, #{message})
 </insert>
 <select id="selectAllNotification">
-select * from notification_project where member_seq = #{member_seq}
+select * from notification_project where member_seq = #{member_seq} order by notification_seq desc
 </select>
 <delete id="deleteNotification">
 delete from notification_project where notification_seq = #{notification_seq}

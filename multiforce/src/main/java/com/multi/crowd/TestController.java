@@ -34,4 +34,13 @@ public class TestController {
 		mv.setViewName("test2");
 		return mv;
 	}
+	
+	@GetMapping("/test3")
+	public ModelAndView test3(){
+		ModelAndView mv = new ModelAndView();
+		
+		mv.setViewName("temp");
+		return mv;
+	}
+	
 }

@@ -140,20 +140,21 @@ public class NoticeService {
 		HashMap<String, String> map = new HashMap<>();
 		if(list.size() > 0) {
 			for (NoticeDTO dto : list) {
-				int start = dto.getContent().indexOf("src=") + 5;
-				System.out.println(dto.getContent());
-				if(start == -1) {
-					continue;
+				if(dto.getContent().indexOf("<img") != -1) {
+					int start = dto.getContent().indexOf("src=") + 5;
+					System.out.println(dto.getContent());
+					if(start == -1) {
+						continue;
+					}
+					int end = dto.getContent().indexOf("\"", start);
+					System.out.println(end);
+					String imgTag = dto.getContent().substring(start, end);
+					System.out.println(imgTag);
+					String url = "/notices/detail?seq=" + dto.getNotice_seq() +"&category=" + dto.getCategory() + "&page=1";
+					map.put(url, imgTag);
 				}
-				int end = dto.getContent().indexOf("\"", start);
-				System.out.println(end);
-				String imgTag = dto.getContent().substring(start, end);
-				System.out.println(imgTag);
-				String url = "/notices/detail?seq=" + dto.getNotice_seq() +"&category=" + dto.getCategory() + "&page=1";
-				map.put(url, imgTag);
 			}
 		}
-
 		return map;
 	}
 }

@@ -127,6 +127,16 @@ $(document).ready(function(){
 		})
 	}
 	
+	 $("#project_design_btn").on("click", function(e){
+		if("${login_user_seq}" == ""){
+			if(confirm("로그인이 필요한 서비스입니다. 로그인 하시겠습니까?")){
+				location.href = "/login?from=" + fromPath;
+				e.preventDefault();
+			} else {
+				e.preventDefault();
+			}
+		}	
+	}) 
 	
 // =======================카테고리 이벤트=========================
 	$("#category").on("mouseenter", function(e){
@@ -287,7 +297,7 @@ $(document).ready(function(){
 					<a href="/discover?sort=end">마감임박</a>
 				</div>
 				<div style="display:inline-block">
-					<a id="project_design_btn" href="projectdesign" >프로젝트 등록</a>
+					<a id="project_design_btn" href="/projectdesign" >프로젝트 등록</a>
 				</div>
 				<div style="display:inline-block">				
 					<div id = "change_part" ></div>					

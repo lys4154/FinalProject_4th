@@ -28,4 +28,6 @@ public interface ItemOptionDAO {
 	void insertItemOption(ItemOptionDTO itemOption);
 	
 	void defaultOption(ItemOptionDTO itemOption);
+
+	void insertOptionReturnSeq(ItemOptionDTO option);
 }

@@ -105,6 +105,8 @@
   옵션이 없으면 빈 칸으로 옵션 추가 버튼을 눌러주세요.<br>
   <input type="text" id="item_option_name" name="item_option_name"><br>
   <input type="button" id="addOption" value="옵션 추가">
+  <div id="item_list"></div>
+  
   <br><br>
   <div class="bundle">
   <label for="bundle_name">선물 이름</label><br>
@@ -115,7 +117,6 @@
   <input type="text" id="bundle_price" name="bundle_price"><br>
   <input type="button" id="addBundle" value="번들 추가">
 	</div>  
-  
   
   <br><br>
   <label for="item_count">상품 개수</label> <br>

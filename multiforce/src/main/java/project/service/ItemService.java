@@ -1,5 +1,6 @@
 package project.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,9 +9,11 @@ import org.springframework.stereotype.Service;
 import jakarta.servlet.http.HttpSession;
 import project.dao.BundleDAO;
 import project.dao.ItemDAO;
+import project.dao.ItemOptionDAO;
 import project.dao.ProjectDAO;
 import project.dto.BundleDTO;
 import project.dto.ItemDTO;
+import project.dto.ItemOptionDTO;
 
 @Service
 public class ItemService {
@@ -23,6 +26,9 @@ public class ItemService {
 	
 	@Autowired
 	private ProjectDAO projectDao;
+	
+	@Autowired
+	private ItemOptionDAO optionDao;
 	
 	//후원 상세 - 아이템
 	public List<ItemDTO> getItem(List<Integer> bundleList) {
@@ -40,5 +46,17 @@ public class ItemService {
 		
 		itemDao.insertItem(item);
     }
+
+	public List<ItemDTO> insertItems(List<ItemDTO> items) {
+		for (ItemDTO dto : items) {
+			int res = itemDao.insertItemReturnSeq(dto);
+			for (ItemOptionDTO option : dto.getOptionDTOList()) {
+				option.setItem_seq(dto.getItem_seq());
+				optionDao.insertOptionReturnSeq(option);
+			}
+		}
+		System.out.println(items);
+		return items;
+	}
 
 }

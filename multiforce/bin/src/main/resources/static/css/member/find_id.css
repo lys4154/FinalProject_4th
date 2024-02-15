@@ -1,0 +1,93 @@
+@charset "UTF-8";
+
+.out_con {
+	width: 1040px;
+	margin:10px auto;
+	padding: 10px 10px;
+	font-size: 14px;
+}
+.findid_title{
+	margin-top: 20px;
+	font-size: 22px;
+	text-align:center;
+	color: #5c5c5c;
+	font-weight: 600;
+}
+#find_id_container{
+	margin: 0 auto;
+	margin-top: 30px;
+	width: 500px;
+	border: 1px solid #cfcfcf;
+	border-radius: 5px;
+}
+#find_id_wrap{
+	display: flex;	
+	padding: 40px 70px;
+	flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+.findid_ment{
+	font-size: 15px;
+	align-self: center;
+	margin-bottom: 20px;	
+}
+#user_email, #user_email_dir{
+	width: 220px;
+	height: 35px;
+	border:1px solid #cfcfcf;
+	border-radius: 5px;
+	outline: none;
+	padding-left: 10px;
+	margin-bottom: 5px;
+}
+#user_email_dir{
+	width: 343px;
+}
+select{
+	height: 38px;
+	outline-color: grey;
+	font: inherit;
+	font-size: 14px;
+	border:1px solid #cfcfcf;
+	border-radius: 5px;
+	padding: 0 5px;	
+}
+#find_id_btn{
+	margin-top: 10px;
+	width: 357px;
+	height: 34px;
+	background-color: #82c8a0;
+	color: white;
+	font-size: 16px;
+	border: 1px solid #cfcfcf;
+	border-radius: 5px;
+	cursor: pointer;
+	letter-spacing: 1px;
+	font-weight: 500;
+}
+#sending_msg{
+	color: #82c8a0;
+	font-weight: 500;
+	font-size: 13px;
+}
+.login_pw_con{
+	display:flex;
+	flex-direction: column;
+	margin-top:30px;
+	line-height: 24px;
+	width: 350px;
+    align-items: center;
+}
+a[href="login"], a[href="resetpw"] {
+	font-weight: 600;
+}
+
+
+
+
+
+
+
+
+

@@ -23,7 +23,8 @@
             url : "/project_detail/" + $("#url").val(),
             start_date : $("#start_date").val(),
             due_date : $("#due_date").val(),
-            goal_price : $("#goal_price").val()
+            goal_price : $("#goal_price").val(),
+            account : $("#account").val()
         };
         console.log($("#category").val());
 
@@ -50,10 +51,17 @@
   </style>
 </head>
 <body>
+
 <h1>프로젝트 정보</h1>
 <h3>이 페이지에서 프로젝트의 기본 정보와 펀딩 계획을 작성해주세요</h3>
 <!-- header -->
 <hr>
+<h1>창작자 정보</h1>
+<div class="account">
+	<h2>입금 계좌</h2>
+	후원금을 전달받을 계좌를 등록해주세요.
+	<input type="text" id="account">
+</div>
 <div class=project_info>
 <form action="/saveProject" method="post">
 <div class="contents">
