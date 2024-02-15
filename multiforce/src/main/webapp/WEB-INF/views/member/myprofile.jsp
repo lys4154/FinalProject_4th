@@ -149,6 +149,12 @@ $(document).ready(function() {
 	               					"<div><button class='backToMain'> 프로젝트 둘러보기 </button> </div>" +
                					"</div>"	               					
 	               		);
+	               		
+	               		$(".backToMain").click(function() {
+	               			location.href = '/';
+	               		});
+	               		
+	               		
 	               	} else {
 	                       $(".result_count").html("<div> <span style='color: red;'> " + response.length + "</span> 개의 프로젝트가 있습니다.</div>")
 	                       
@@ -205,7 +211,7 @@ $(document).ready(function() {
              	if (Object.keys(response).length === 0) {
              		$(".empty_con").html(     				
              				"<div class='empty_result'>" +
-             					"<div class='empty_ment'> 팔로워한 사용자가 없습니다.</div>" +
+             					"<div class='empty_ment'> 팔로우한 사용자가 없습니다.</div>" +
              				"</div>"
              		);
                  } else {
@@ -400,6 +406,9 @@ $(document).ready(function() {
 		   }
 	
 	});
+	
+	
+
 
 	
 })//ready

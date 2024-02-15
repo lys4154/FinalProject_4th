@@ -15,7 +15,7 @@ footer{
 	height: auto;
   	position:relative;
   	padding-bottom:70px;/* footer height */
-  	min-height: 170vh;  	
+  	min-height: 150vh;  	
 }
 html, body {
    margin:0;

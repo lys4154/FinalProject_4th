@@ -29,4 +29,12 @@
 	values (#{project_seq}, #{item_name})
 </insert>
 
+<select id="getItem_name" parameterType="int" resultType="project.dto.ItemDTO">
+	select item_name from item where project_seq=#{project_seq}
+</select>
+
+<select id="getItem_seq" parameterType="int" resultType="project.dto.ItemDTO">
+	select item_seq from item where project_seq=#{project_seq}
+</select>
+
 </mapper>	

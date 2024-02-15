@@ -18,7 +18,7 @@
 }
 
 .main_update_popular{
-	display: flex;
+
 
 }
 .update_out_con{
@@ -55,8 +55,12 @@
 	height: 250px;
 }
 .update_category{
-	font-size: 12px;
+	font-size: 11px;
 	margin: 5px 0;
+	display: -webkit-box ;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 1;
+	overflow: hidden;
 }
 .update_title, .popular_title{
 	color: #5c5c5c;
@@ -66,6 +70,7 @@
 	-webkit-line-clamp: 2;
 	overflow: hidden;
 	margin-bottom: 10px;
+	font-size: 13px;
 }
 .update_achaive, .popular_achaive{
 	font-size: 13px;
@@ -116,8 +121,12 @@
 	font-weight: 600;
 }
 .popular_category{
-	font-size: 12px;
+	font-size: 11px;
 	margin-bottom: 1px;
+	display: -webkit-box ;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 1;
+	overflow: hidden;
 }
 .popular_title{
 	font-size: 13px;

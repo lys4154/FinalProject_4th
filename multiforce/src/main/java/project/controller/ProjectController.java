@@ -511,9 +511,20 @@ public class ProjectController {
 //    }
 
 	@RequestMapping("/tab_gift")
-	public String tabGift() {
+	public String tabGift(Model model, HttpSession session) {
+		List<ItemDTO> itemList = itemService.getItemName(session);
+		model.addAttribute("itemList",itemList);
 		return "project/tab_gift";
 	}
+	
+	/*
+	 * @PostMapping("setItemName") public Map<String, Integer>
+	 * setItemName(@RequestParam("item_name") String item_name, HttpSession session)
+	 * { Map<String, Integer> result = new HashMap<>();
+	 * 
+	 * int item_seq = itemListService.getItem_seq(item_name, session);
+	 * result.put("item_seq", item_seq); return result; }
+	 */
 
 	@PostMapping("saveBundle")
 	@ResponseBody

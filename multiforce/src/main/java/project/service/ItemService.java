@@ -58,5 +58,14 @@ public class ItemService {
 		System.out.println(items);
 		return items;
 	}
+	
+	public List<ItemDTO> getItemName(HttpSession session) {
+		int member_seq = projectDao.getMember_seq((String)session.getAttribute("login_user_id"));
+		int project_seq = itemDao.getProject_seq(member_seq);
+		List<ItemDTO> item_seq = itemDao.getItem_seq(project_seq);
+		System.out.println("projectSeq = " + project_seq);
+		System.out.println("ItemSeq = " + item_seq);
+		return itemDao.getItem_name(project_seq);
+	}
 
 }
