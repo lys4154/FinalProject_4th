@@ -126,6 +126,51 @@
 /* ------------------ */
 .main_banner{
 	height: 250px;
-	border: 1px solid orange;
 	margin-bottom: 20px;
+	overflow: hidden;
+}
+
+#banner_slider{
+	height: 100%;
+}
+.banner{
+	height: 100%;
+	width: 664px;
+}
+#slider_btn_wrap{
+	position: relative;
+	top: -40px;
+	left: 500px;
+	width: 120px;
+
+}
+#event_count{
+	border: 0px;
+	background-color: rgb(0, 0, 0, 0.6);
+	border-radius: 25px;
+	color: white;
+	display: inline-block;
+	width: 30px;
+	height: 30px;
+}
+#slider_left_btn{
+	position: relative;
+	margin-left: 10px;
+
+}
+#slider_right_btn{
+	position: relative;
+	float: right;
+}
+button[id^=slider_]{
+	border: 0px;
+	background-color: rgb(0, 0, 0, 0.6);
+	border-radius: 25px;
+	width: 30px;
+	height: 30px;
+	color: white;
+	cursor: pointer;
+}
+button[id^=slider_]:hover{
+	background-color: rgb(0, 0, 0, 0.8);
 }

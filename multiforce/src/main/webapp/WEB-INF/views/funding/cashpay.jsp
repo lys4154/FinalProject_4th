@@ -36,7 +36,7 @@ function inputAccount(num) {
 
 
 <br>
-<input type="button" id="pay" value="결제">
+<input type="button" id="pay" value="인증">
 <input type="button" id="cancel" value="취소">
 
 <script>

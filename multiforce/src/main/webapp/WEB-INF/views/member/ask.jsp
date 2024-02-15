@@ -180,6 +180,7 @@ if(location.pathname == "/ask"){
 		let read = "${dto.asker_read}";
 		chatroomSeq = "${dto.chatroom_seq}";
 		let chat = `${dto.chat}`;
+		console.log("${dto.main_images_url}");
 		appendChat(chat, read, "${dto.profile_img}");
 		fillChatInfo("${dto.long_title}","${dto.url}", "${dto.main_images_url}");
 		updateMyRead(chatroomSeq, whoAmI, readAt);

@@ -138,7 +138,7 @@ $(document).ready(function(){
 	});
 	
 // =======================검색=========================
-	projectNameArr = [];
+	projectList = [];
 	
 	$.ajax({
 		type : "POST",
@@ -146,7 +146,10 @@ $(document).ready(function(){
 		dataType: 'json',
 		success : function(r){
 			for(let i = 0; i < r.length; i++){
-				projectNameArr.push(r[i].long_title);
+				let project = {};
+				project.longTitle = r[i].long_title;
+				project.url = r[i].url;
+				projectList.push(project);
 			}
 		}
 	});
@@ -163,12 +166,10 @@ $(document).ready(function(){
 		}else{
 			let count = 0;
 			$("#search_result").css("display", "inline-block");
-			for(let i = 0; i < projectNameArr.length; i++){
-				if(projectNameArr[i].includes(checkWord)){
-					result += ("<a href='discover?query= " + checkWord + "'>" + projectNameArr[i] +"</a>" + "<br>");
+			for(let i = 0; i < projectList.length; i++){
+				if(projectList[i].longTitle.includes(checkWord)){
+					result += ("<a href='"+ projectList[i].url +"'>" + projectList[i].longTitle +"</a>" + "<br>");
 					count++;
-				}else{
-					$("#search_result").css("display", "none");
 				}
 				if(count == 5){
 					break;

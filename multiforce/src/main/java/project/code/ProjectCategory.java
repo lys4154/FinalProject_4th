@@ -10,7 +10,7 @@ public enum ProjectCategory {
 	DESIGN_STATIONERY("디자인 문구", "design_stationery"),
 	CHARACTER_AND_GOODS("캐릭터·굿즈", "character_and_goods"),
 	HOME_AND_LIVING("홈·리빙", "home_and_living"),
-	TECHNOLOGY_AND_HOUSEHOLE_APPLIANCE("테크·가전", "technology_and_household_appliance"),
+	TECHNOLOGY_AND_HOUSEHOLD_APPLIANCE("테크·가전", "technology_and_household_appliance"),
 	PET("반려동물", "pet"),
 	FOOD("푸드", "food"),
 	PERFUME_AND_BEAUTY("향수·뷰티", "perfume_and_beauty"),

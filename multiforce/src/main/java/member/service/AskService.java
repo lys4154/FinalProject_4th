@@ -30,6 +30,8 @@ public class AskService {
 			result.setLong_title(dto.getLong_title());
 			result.setProfile_img(dto.getProfile_img());
 			result.setMember_url(dto.getMember_url());
+			result.setMain_images_url(dto.getMain_images_url());
+			result.setUrl(dto.getUrl());
 		}
 		return result;
 	}

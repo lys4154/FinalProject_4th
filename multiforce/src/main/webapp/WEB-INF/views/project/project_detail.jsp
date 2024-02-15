@@ -455,7 +455,12 @@ $(document).ready(function () {
 	
 	$("#projectLink").click(function(e){
 		e.preventDefault();
-		$("#content_container").html("${project.content}");
+		$("#content_container")
+		.html("${project.purpose}")
+		.html("${project.planning}")
+		.html("${project.budget}")
+		.html("${project.team_introduce}")
+		.html("${project.item_introduce}");
 	});
 	
 	function loadContent(url) {
