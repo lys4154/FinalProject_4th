@@ -407,7 +407,7 @@ update project set view_count = view_count + 1 where project_seq = #{project_seq
 SELECT *
 FROM project
 JOIN member_info ON project.member_seq = member_info.member_seq
-WHERE project.url = #{url} and project_process >= 3
+WHERE project.url = #{url} and project_process
 </select>
 <resultMap type="projectdto" id="projectMap">
 	<id property="project_seq" column="project_seq"/>

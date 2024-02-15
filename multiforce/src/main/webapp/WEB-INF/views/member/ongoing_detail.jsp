@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 
 
@@ -152,11 +153,13 @@ $(document).ready(function() {
 				<div class="info_flex_left">선물 구성 </div>
 				<div class="info_flex_right">
 					<div class="bundle">
-					
 						 <c:forEach var="count" items="${dto.bCountDTOList}">
 							<c:forEach var="bundle" items="${count.bundleDTOList}">
 				    		<div class="info_inner">
-				    		<div>* ${bundle.bundle_name} <span> ( x${count.perchase_count})</span></div>
+				    		<c:if test="${not empty bundle.bundle_name}">
+				    			<div>* ${bundle.bundle_name} <span> ( x${count.perchase_count})</span></div>
+				    		</c:if>
+				    		
 				    			<c:forEach var="item" items="${bundle.itemListDTOList}">	
 				    				<div class="item_option">
 				    					<span>${item.itemDTO.item_name} </span>
@@ -168,8 +171,9 @@ $(document).ready(function() {
    							</div>
   								</c:forEach>
 						</c:forEach>
-				    				
-				    </div>				    
+				    		
+				    </div>
+				    <div>추가 후원금: ${dto.extra_price }</div>					    
 				</div>
 			</div>
 		</div>
@@ -179,7 +183,14 @@ $(document).ready(function() {
 			<div class="contents_title">결제 정보</div>
 			<div class="info_flex"> 
 				<div class="info_flex_left">결제 수단 </div>
-				<div class="info_flex_right"> ${dto.pay_option }</div>
+				<div class="info_flex_right">
+					<c:if test="${dto.pay_option == 'card'}">
+						카드
+					</c:if>
+					<c:if test="${dto.pay_option == 'cash'}">
+						계좌이체
+					</c:if>
+				</div>
 			</div>
 			<div class="info_flex">
 				<div class="info_flex_left">결제 금액 </div>

@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.ModelAndView;
+
 import project.code.ProjectCategory;
 import board.dto.BoardDTO;
 import board.dto.CommunityDTO;
@@ -617,6 +619,18 @@ public class ProjectController {
 	@RequestMapping("/temp")
 	public String temp() {
 		return "/temp";
+	}
+	
+	
+	@GetMapping("/preview/{url}")
+	public String preview(Model model, @PathVariable("url") String url) {
+		//String fullurl = "/project_detail/" + url;
+		ProjectDTO projects = projectService.getProjectMember(url);
+		List<BundleDTO> bundleList = bundleService.getBundleList(projects.getProject_seq());
+	
+		model.addAttribute("project", projects);
+		model.addAttribute("bundleList", bundleList);
+		return "project/project_detail";
 	}
 
 }

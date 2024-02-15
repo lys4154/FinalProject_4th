@@ -13,12 +13,12 @@
 <!-- 후원한 프로젝트 -->
 <select id="getFunded" resultMap="fundingMap">
 	select * from funding f
-	join funding_bundle_count c on f.fund_seq = c.fund_seq
-	join chosen_option o on c.bundle_count_seq = o.bundle_count_seq
+	left join funding_bundle_count c on f.fund_seq = c.fund_seq
+	left join chosen_option o on c.bundle_count_seq = o.bundle_count_seq
 	left join item_option n on o.item_option_seq = n.item_option_seq
-	join item i on n.item_seq = i.item_seq
-	join item_list l on l.item_seq = i.item_seq
-	join bundle b on c.bundle_seq = b.bundle_seq
+	left join item i on n.item_seq = i.item_seq
+	left join item_list l on l.item_seq = i.item_seq
+	left join bundle b on c.bundle_seq = b.bundle_seq
 	join project p on f.project_seq = p.project_seq
 	join member_info m on m.member_seq = p.member_seq
 	where f.member_seq = #{memberSeq}	
@@ -30,12 +30,12 @@
 <!-- 후원한 프로젝트 페이지 - 후원 성공 -->
 <select id="successFunded" resultMap="fundingMap">
 	select * from funding f
-	join funding_bundle_count c on f.fund_seq = c.fund_seq
-	join chosen_option o on c.bundle_count_seq = o.bundle_count_seq
+	left join funding_bundle_count c on f.fund_seq = c.fund_seq
+	left join chosen_option o on c.bundle_count_seq = o.bundle_count_seq
 	left join item_option n on o.item_option_seq = n.item_option_seq
-	join item i on n.item_seq = i.item_seq
-	join item_list l on l.item_seq = i.item_seq
-	join bundle b on c.bundle_seq = b.bundle_seq
+	left join item i on n.item_seq = i.item_seq
+	left join item_list l on l.item_seq = i.item_seq
+	left join bundle b on c.bundle_seq = b.bundle_seq
 	join project p on f.project_seq = p.project_seq
 	join member_info m on m.member_seq = p.member_seq
 	where f.member_seq = #{memberSeq}
@@ -99,6 +99,7 @@
 	<result property="jibun_address" column="jibun_address"/>
 	<result property="extra_address" column="extra_address"/>
 	<result property="detail_address" column="detail_address"/>
+	<result property="extra_price" column="extra_price"/>
 	<association property="pDTO" resultMap="projectMap"/>
 	<association property="collectorDTO" resultMap="collectorMap"/>
 	<collection property="bCountDTOList" resultMap="countMap"/>
@@ -156,15 +157,15 @@
 </resultMap>
 <select id="getPaymentInfo" resultMap="fundingMap">
 select * from funding f
-join funding_bundle_count c on f.fund_seq = c.fund_seq
-join chosen_option o on c.bundle_count_seq = o.bundle_count_seq
+left join funding_bundle_count c on f.fund_seq = c.fund_seq
+left join chosen_option o on c.bundle_count_seq = o.bundle_count_seq
 left join item_option n on o.item_option_seq = n.item_option_seq
-join item i on n.item_seq = i.item_seq
-join item_list l on l.item_seq = i.item_seq
-join bundle b on c.bundle_seq = b.bundle_seq
+left join item i on n.item_seq = i.item_seq
+left join item_list l on l.item_seq = i.item_seq
+left join bundle b on c.bundle_seq = b.bundle_seq
 join project p on f.project_seq = p.project_seq
 join member_info m on m.member_seq = p.member_seq
-where f.fund_seq = #{fundseq};	
+where f.fund_seq = #{fundseq} and del_status = false;	
 </select>
 
 <!-- 후원 정보 넣기 -->

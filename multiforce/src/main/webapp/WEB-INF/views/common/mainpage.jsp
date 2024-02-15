@@ -67,7 +67,7 @@ $(document).ready(function() {
  	$("#banner_slider").css("width", end_page * 665.59 + "px");
    	$("#slider_right_btn").on('click', function(){
 		if(end_page != current_page){
-			banner_slider.css("transform", "translate(-" + (665.59 * current_page) + "px)")
+			banner_slider.css("transform", "translate(-" + (685 * current_page) + "px)")
 			banner_slider.css("transitionProperty","transition-property: transform")
 			banner_slider.css("transitionDuration", '0.5s');
 			current_page++;
@@ -80,7 +80,7 @@ $(document).ready(function() {
    	$("#slider_left_btn").on('click', function(){
 		if(current_page != 1){
 			current_page--;
-			banner_slider.css("transform", "translate(-" + (664 * (current_page -1)) + "px)")
+			banner_slider.css("transform", "translate(-" + (685 * (current_page -1)) + "px)")
 			banner_slider.css("transitionProperty","transition-property: transform")
 			banner_slider.css("transitionDuration", '0.5s');
 			$("#event_count").text(current_page + "/" +end_page);
@@ -118,7 +118,7 @@ $(document).ready(function() {
 						</c:forEach>
 					</div>
 					<div id="slider_btn_wrap">
-						<div id="event_count"></div>
+					
 						<button id="slider_left_btn"><</button>
 						<button id="slider_right_btn">></button>
 					</div>
