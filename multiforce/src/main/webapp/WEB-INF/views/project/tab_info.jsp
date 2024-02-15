@@ -142,7 +142,7 @@
 					function uploadImageFile(file, editor) {
 					    data = new FormData();
 					    data.append("file", file);
-					    data.append("path", "C:\\fullstack\\workspace_springboot\\images\\notices\\");
+					    data.append("path", "file:///usr/mydir/images");
 					    data.append("url", "/noticesimages/");
 					    $.ajax({
 					        data : data,
