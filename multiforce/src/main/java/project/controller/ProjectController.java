@@ -273,12 +273,7 @@ public class ProjectController {
 		String fullurl = "/project_detail/" + url;
 		ProjectDTO projects = projectService.getProjectMember(fullurl);
 		List<BundleDTO> bundleList = bundleService.getBundleList(projects.getProject_seq());
-		System.out.println(projects.getBudget());
-		System.out.println(projects.getItem_introduce());
-		System.out.println(projects.getTeam_introduce());
-		System.out.println(projects.getPlanning());
-		System.out.println(projects.getProject_seq());
-		
+	
 		model.addAttribute("project", projects);
 		model.addAttribute("bundleList", bundleList);
 		return "project/project_detail";
