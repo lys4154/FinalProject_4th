@@ -26,14 +26,13 @@ public class ImagePathConfig implements WebMvcConfigurer{
 	
         // settings 이미지
         registry.addResourceHandler("/settings/**")
-                .addResourceLocations("file:///usr/mydir/images/settings/");
-        
+                .addResourceLocations("file:///usr/mydir/images/settings/");                 
+      
         // css 이미지
         registry.addResourceHandler("/for_css/**")
                 .addResourceLocations("file:///usr/mydir/images/for_css/");
         
-        
-        // css 이미지
+        // 프로젝트 이미지
         registry.addResourceHandler("/project/**")
                 .addResourceLocations("file:///usr/mydir/images/project/");
         
