@@ -23,4 +23,6 @@ public interface ItemDAO {
 	//project_seq불러오기
 	Integer getProject_seq(int member_seq);
 
+	int insertItemReturnSeq(ItemDTO dto);
+
 }
