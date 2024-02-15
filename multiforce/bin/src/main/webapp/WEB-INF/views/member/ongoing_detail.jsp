@@ -1,15 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
+
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
+<link rel="stylesheet" href="/css/member/ongoing_detail.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400&display=swap" rel="stylesheet">
 </head>
 
 <script>
@@ -17,60 +22,85 @@
 var bundleData;
 
 $(document).ready(function() {	
-
-	if ("${dDay}" < 0) {
-	    $("#pro_status").html("펀딩 종료")
-	    $("#d_day").html("펀딩 종료")
-	}
-
-	if ("${trackNum}" == 0) {
-	    $("#track_num").html("등록된 운송장이 없습니다.")
-	}
-		
 	
 	//넘길 꾸러미 정보 
-	bundleData = [
-	   <c:forEach var="bundleEntry" items="${bundleItem}" varStatus="status">
-	     {
-	       name: "${bundleEntry.key}",
-	       count: ${bundleCount[bundleEntry.key]},
-	       items: [
-	         <c:forEach var="itemEntry" items="${bundleEntry.value}" varStatus="innerStatus">
-	           {
-	             itemName: "${itemEntry}",
-	             options: [
-	               <c:forEach var="optionEntry" items="${itemOption[itemEntry]}" varStatus="optionStatus">
-	                 "${optionEntry}"<c:if test="${!optionStatus.last}">, </c:if>
-	               </c:forEach>
-	             ]
-	           }<c:if test="${!innerStatus.last}">, </c:if>
-	         </c:forEach>
-	       ]
-	     }<c:if test="${!status.last}">, </c:if>
-	   </c:forEach>
-	 ];	
+	bundleData = [];
+	
+		<c:forEach var="count" items="${dto.bCountDTOList}">
+		    <c:forEach var="bundle" items="${count.bundleDTOList}">
+		        // 각 꾸러미에 대한 정보를 객체로 생성하여 배열에 추가
+		        var bundleInfo = {
+		            name: "${bundle.bundle_name}",
+		            count: ${count.perchase_count},
+		            items: []
+		        };
+	
+		        <c:forEach var="item" items="${bundle.itemListDTOList}">
+		            // 각 아이템에 대한 정보를 객체로 생성하여 꾸러미 정보의 items 배열에 추가
+		            var itemInfo = {
+		                itemName: "${item.itemDTO.item_name}",
+		                options: []
+		            };
+	
+		            <c:forEach var="option" items="${item.itemDTO.optionDTOList}">
+		                // 각 옵션에 대한 정보를 배열에 추가
+		                itemInfo.options.push("${option.item_option_name}");
+		            </c:forEach>
+	
+		            bundleInfo.items.push(itemInfo);
+		        </c:forEach>
+	
+		        bundleData.push(bundleInfo);
+		    </c:forEach>
+		</c:forEach>
+	 	
 	
 	document.getElementById("bundleDataInput").value = JSON.stringify(bundleData);
 	
 	
+	//모달띄우기
+	$("#fund_cancel").click(function() {
+		 $(".modal").css("display", "block");
+	});
+	
+	$("#fund_keep").click(function() {
+		$(".modal").css("display", "none");
+	});
+	
+	
 
     $("#cancel").click(function() {
-        let fundSeq = ${fundedDetail.fund_seq};
-        let longTitle = "${projectDetail.long_title}";
-        let dueDate = "${projectDetail.due_date}";
-        let price = ${fundedDetail.price };
+        let fundSeq = ${dto.fund_seq};
+        let longTitle = "${dto.pDTO.long_title}";
+        let dueDate = "${dto.pDTO.due_date}";
+        let price = ${dto.price };
+        let creator = "${dto.collectorDTO.nickname }";
 
         // 폼에 값을 설정
         $("#priceInput").val(price);
         $("#fundSeqInput").val(fundSeq);
         $("#longTitleInput").val(longTitle);
         $("#dueDateInput").val(dueDate);
-        $("#bundleDataInput").val(JSON.stringify(bundleData));;
+        $("#creatorInput").val(creator);
+        $("#bundleDataInput").val(JSON.stringify(bundleData));
 
         // 폼을 제출
         $("#cancelForm").submit();
     });	
-	
+
+	//달성률
+    let amount = ${dto.pDTO.collection_amount * 100};
+    let goal = ${dto.pDTO.goal_price};
+    let achieve = Math.floor(amount/goal);
+    $(".achieve").html(achieve + "%");
+
+
+    //운송장번호
+    if ("${dto.track_num}" == "") {
+    	$("#track_num").html("등록된 운송장 정보가 없습니다.");
+    }
+    
+    
 })
 
 </script>
@@ -78,115 +108,154 @@ $(document).ready(function() {
 
 
 <body>
-<div>
-	<div class="content">
-	
-		<div style="border: 2px solid; ">
-			<div ><a href="${projectDetail.url }"><img alt="프로젝트 이미지" src="${projectDetail.main_images_url }"></a></div>
-			<div>
-				<div>${projectDetail.category}</div>
-				<div><a href="${projectDetail.url }">${projectDetail.long_title }</a></div>
-				<div>${projectDetail.collection_amount }원</div>
-				<div id="d_day">${dDay }일 남음</div>
-				<!-- 창작자 문의 버튼 만들어아햠 -->
+
+<div class="out_con">
+	<div class="content">	
+		<div class="top">
+			<div ><a href="${dto.pDTO.url }"><img alt="프로젝트 이미지" src="${dto.pDTO.main_images_url }"></a></div>
+			<div class="top_right">
+				<div class="category_creator"> <span>${dto.pDTO.category_kor}</span>  ㅣ <span>${dto.collectorDTO.nickname }</span></div>
+				<div class="long_title"><a href="${dto.pDTO.url }">${dto.pDTO.long_title }</a></div>				
+				<div class="pro_info"> 
+					<span class="amount"> <fmt:formatNumber value="${dto.pDTO.collection_amount }" type="currency" currencySymbol="" />원 </span>
+					<span class="achieve"></span>		        	
+		        	<span id="d_day">${dto.pDTO.term }일 남음</span>
+		        </div>				
 			</div>
 		</div>
 	
-		<div style="border: 2px solid; ">
-			<div>후원 정보</div>
-			<div>펀딩 상태 </div> <div id="pro_status">펀딩 진행중</div>
-			<div>후원 번호 </div> <div>${fundedDetail.fund_seq }</div>
-			<div>후원 날짜 </div> <div>${fundedDetail.fund_date.toLocalDate() }</div>
-			<div>펀딩 마감일 </div> <div>${projectDetail.due_date}</div>
-		</div>
-	
-		<div style="border: 2px solid; ">
-			<div>
-				<div>선물 정보</div>
+		<div class="contents_con">
+			<div class="contents_title">후원 정보</div>
+			<div class="info_flex">
+				<div class="info_flex_left">펀딩 상태 </div>
+				<div class="info_flex_right" id="pro_status">펀딩 진행중</div>
 			</div>
-			 
-			<div>선물 구성 </div>
-			<div>
-			    <c:forEach var="bundleEntry" items="${bundleItem}">
-			        <div>꾸러미 이름: <strong>${bundleEntry.key}</strong> <span>${bundleCount[bundleEntry.key]}개</span> </div>
-			        <c:forEach var="itemEntry" items="${bundleEntry.value}">
-			            <div style="color: olive;">아이템 이름 : ${itemEntry}</div>
-			            <c:forEach var="optionEntry" items="${itemOption[itemEntry]}">
-			                <div style="color:navy; ">옵션 : ${optionEntry}</div>
-			            </c:forEach>            
-			        </c:forEach>
-			        <hr>
-			    </c:forEach>
+			<div class="info_flex">
+				<div class="info_flex_left">후원 번호 </div>
+				<div class="info_flex_right">${dto.fund_seq }</div>
 			</div>
-				
-			<div>배송 예정일 </div> <div>${projectDetail.delivery_date.toLocalDate()}</div>
-			<div>후원 금액 </div> <div>${fundedDetail.price }</div>
+			<div class="info_flex">
+				<div class="info_flex_left">후원 날짜 </div>
+				<div class="info_flex_right">${dto.fund_date.toLocalDate()}</div>
+			</div>
+			<div class="info_flex">
+				<div class="info_flex_left">펀딩 마감일 </div>
+				<div class="info_flex_right">${dto.pDTO.due_date}</div>
+			</div>
+		</div>
+	
+		<div class="contents_con" >
+			<div>
+				<div class="contents_title">선물 정보</div>
+			</div>		
+			<div class="info_flex">	 
+				<div class="info_flex_left">선물 구성 </div>
+				<div class="info_flex_right">
+					<div class="bundle">
+					
+						 <c:forEach var="count" items="${dto.bCountDTOList}">
+							<c:forEach var="bundle" items="${count.bundleDTOList}">
+				    		<div class="info_inner">
+				    		<div>* ${bundle.bundle_name} <span> ( x${count.perchase_count})</span></div>
+				    			<c:forEach var="item" items="${bundle.itemListDTOList}">	
+				    				<div class="item_option">
+				    					<span>${item.itemDTO.item_name} </span>
+				    						<c:forEach var="option" items="${item.itemDTO.optionDTOList }">
+				    							<span>(${option.item_option_name })</span>
+			    							</c:forEach>
+	    							</div>
+    							</c:forEach>
+   							</div>
+  								</c:forEach>
+						</c:forEach>
+				    				
+				    </div>				    
+				</div>
+			</div>
 		</div>
 	
 	
-		<div style="border: 2px solid; ">
-			<div>결제 정보</div> 
-			<div>결제 수단 </div> <div> ${fundedDetail.pay_option }</div>
-			<div>결제 금액 </div> <div> ${fundedDetail.price }</div>
-			<div>결제 상태 </div> <div> ${fundedDetail.fund_duedate.toLocalDate().plusDays(1)} 결제 예정</div>
+		<div class="contents_con" >
+			<div class="contents_title">결제 정보</div>
+			<div class="info_flex"> 
+				<div class="info_flex_left">결제 수단 </div>
+				<div class="info_flex_right"> ${dto.pay_option }</div>
+			</div>
+			<div class="info_flex">
+				<div class="info_flex_left">결제 금액 </div>
+				<div class="info_flex_right">
+					<fmt:formatNumber value="${dto.price }" type="currency" currencySymbol="" />원
+				</div>				
+			</div>
+			<div class="info_flex">
+				<div class="info_flex_left">결제 상태 </div>
+				<div class="info_flex_right"> ${dto.pDTO.due_date.plusDays(1)} 결제 예정</div>
+			</div>
 		</div>
 	
 	
-		<div style="border: 2px solid; ">
-			<div>배송 정보</div>
-			<div>받는 사람 </div> <div> ${fundedDetail.name}</div>
-			<div>연락처 </div> <div> ${fundedDetail.phone }</div><br>
-			<div>주소 </div> <div>(${fundedDetail.postcode })</div>
-			<div> ${fundedDetail.road_address }</div>
-			<div> ${fundedDetail.jibun_address }</div>
-			<div> ${fundedDetail.extra_address }</div>
-			<div> ${fundedDetail.detail_address }</div>
-			<div>운송장 번호 </div> <div id="track_num"> ${trackNum }</div>
-			<p>
-		</div>
+		<div class="contents_con" >
+			<div class="contents_title">배송 정보</div>
+			<div class="info_flex">
+				<div class="info_flex_left">받는 사람 </div>
+				<div class="info_flex_right"> ${dto.name}</div>
+			</div>
+			<div class="info_flex">
+				<div class="info_flex_left">연락처 </div>
+				<div class="info_flex_right"> ${dto.phone}</div><br>
+			</div>
+			<div class="info_flex">
+				<div class="info_flex_left">주소 </div>
+				<div class="info_flex_right">(${dto.postcode })</div>
+				<div class="info_flex_right"> ${dto.road_address } ${dto.extra_address } ${dto.detail_address }</div>
+			</div>
+			<div class="info_flex">
+				<div class="info_flex_left">배송 예정일 </div>
+				<div class="info_flex_right">${dto.pDTO.delivery_date}</div>
+			</div>
+			<div class="info_flex">
+				<div class="info_flex_left">운송장 번호 </div>
+				<div class="info_flex_right" id="track_num">${dto.track_num }</div>
+			</div>			
+		</div>		
 	</div>
-			
-		<div>
-			<input type="button" onclick="location='../funded'" value="후원 목록 보기">			
-		</div>	
+
 	
-			<!-- Button trigger modal -->
-		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-		  후원을 취소하시겠어요?
-		</button>
-		
-		<!-- Modal -->
-		<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-			<div class="modal-dialog">
-		    	<div class="modal-content">
-		      		<div class="modal-header">
-		        		<h1 class="modal-title fs-5" id="exampleModalLabel">이 프로젝트에는 후원자님이 필요해요</h1>
-		        		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			      	</div>
-					<div class="modal-body">
-						<h2>후원 취소를 원하시나요?</h2>
-						<h5>혹시 선물 변경을 원하시나요?</h5>
-						후원을 취소하지 않고 원하는 선물로 변경할 수 있어요.<br>
-					  	<p><a href="#" data-bs-toggle="tooltip" title="Tooltip">여기</a> 를 눌러 선물을 변경해보세요!</p>
-					</div>
-				    <div class="modal-footer">
-						<button type="button" class="btn btn-primary" data-bs-dismiss="modal">후원 유지</button>
-			        	<form id="cancelForm" action="/funded_cancel" method="post">
-						    <input type="hidden" id="fundSeqInput" name="fundSeqInput" value="">
-						    <input type="hidden" id="longTitleInput" name="longTitleInput" value="">		        
-					        <input type="hidden" id="bundleDataInput" name="bundleDataInput" value="">
-					        <input type="hidden" id="dueDateInput" name="dueDateInput" value="">
-					        <input type="hidden" id="priceInput" name="priceInput" value="">
-							<button type="button" class="btn btn-secondary" id="cancel">그래도 취소</button>
-						</form>
-			      	</div>
-		   		</div>
+	
+	<div class="button_con">
+		<input type="button" onclick="location='../funded'" value="후원 목록 보기" id="fund_list">
+		<input type="button" id="fund_cancel" value="후원을 취소하시겠어요?">
+	</div>	
+	
+	<!-- Modal -->
+	<div class="modal" style="display: none;">
+		<div class="modal_contents">
+			<div class="modal_header">
+				<div>선착순 마감된 선물은 <strong>취소 후 다시 후원할 수 없습니다.</strong></div>
+				<div>신중하게 고민하고 취소를 결정해주세요.</div>
+				<div>후원자님의 따뜻한 응원과 격려가 누군가에겐 큰 기회가 됩니다.</div>				
 			</div>
-		</div>	
+			<hr>
+			<div class="modal_footer">		
+				<button type="button" id="fund_keep">후원 유지</button>
+		        <form id="cancelForm" action="/funded_cancel" method="post">
+				    <input type="hidden" id="fundSeqInput" name="fundSeqInput" value="">
+				    <input type="hidden" id="longTitleInput" name="longTitleInput" value="">		        
+			        <input type="hidden" id="bundleDataInput" name="bundleDataInput" value="">
+			        <input type="hidden" id="dueDateInput" name="dueDateInput" value="">
+			        <input type="hidden" id="priceInput" name="priceInput" value="">
+			        <input type="hidden" id="creatorInput" name="creatorInput" value="">
+					<button type="button" id="cancel">그래도 취소</button>
+				</form>
+			</div>		
+		</div>
+		<div class="modal_layer"></div>
+	</div> 
+	    
+
 
 </div>
 
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 </body>
 </html>

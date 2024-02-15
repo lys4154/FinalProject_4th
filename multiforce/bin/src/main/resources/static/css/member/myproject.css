@@ -1,0 +1,173 @@
+@charset "UTF-8";
+
+/* 메뉴 */
+.menu_con {
+	display: flex;
+	margin-top: 20px;
+	margin-bottom: 10px;	
+}
+/* 전체 div*/
+.out_con {
+	width: 1040px;
+	margin:20px auto;
+	padding: 10px 10px;
+	font-size: 14px;
+	align-items: center;
+}
+.mypro_title{
+	font-size: 32px;
+	height: 60px;
+	color: #292929;
+	font-weight: 600;
+}
+
+/* 메뉴 탭 */
+.menu_item{
+	font-size: 16px;
+	display: flex;
+	margin-left: 5px;
+	margin-right: 30px;
+	color: grey;
+	transition: transform 0.2s ease;
+	cursor: pointer;	
+}
+.menu_item:hover{
+    transform: scale(1.1);
+    transform-origin: bottom;
+    color: #292929;
+}
+
+/* 메뉴탭 언더바 */
+.menu_under_hr{
+	height: 5px;
+	border: 0;
+	box-shadow: 0 3px 5px -5px grey inset;
+}
+img{
+	width: 180px;
+	height: 150px;
+	object-fit: cover;	
+}
+
+
+/* result null */
+.empty_result {	
+    font-size: 18px;
+    font-weight: 500;
+    display: flex;
+    width: 1000px;
+    height: 300px;
+    align-items: center;
+    justify-content: center;	
+}
+
+
+
+/* */
+.result_con{
+	border: 1px solid #cfcfcf;
+    border-radius: 5px;
+    padding: 20px;
+    display: flex;
+    margin: 20px 0;
+}
+.result_right{
+	margin-left: 20px;
+	display: flex;
+	flex-direction: column;
+    align-items: flex-start;
+    padding: 0 5px 5px 5px;
+    width: 720px;
+}
+.process_title{
+	margin: 10px 0;
+	line-height: 16px;
+}
+.process_sub{
+	margin-bottom: 10px;
+}
+.process_ment{
+	font-size: 13px;
+}
+.process_long_title{
+	font-weight: 600;
+	color: #292929;
+	font-size: 16px;
+}
+.process_status{
+	font-weight:300;
+	background-color: #82c8a0;
+	color: white;
+	border-radius: 5px;
+	padding: 3px 10px;;
+}
+.process_btn{
+	display: flex;
+	flex-direction: column;
+}
+.css_btn{
+	width: 80px;
+	height: 30px;
+	margin-bottom: 20px;
+	color: #292929;
+	border: none;
+	outline: none;
+    border-radius: 20px;
+    font-weight: 500;
+    background-color: #ebebeb;
+    cursor:pointer;
+}
+
+
+/* 메뉴탭별 */
+.pocess_category{
+	font-size: 12px;
+}
+.css_btn_in{
+	width: 80px;
+	height: 30px;
+	margin-top: 20px;
+	color: #292929;
+	border: none;
+	outline: none;
+    border-radius: 20px;
+    font-weight: 500;
+    background-color: #ebebeb;
+    cursor:pointer;
+}
+.approval_date{
+	padding: 0 5px;
+	background-color: #ebebeb;
+	color: black;
+	font-weight: 500;
+	margin: 5px 0 15px 0; 
+}
+.pocess_schedule, .reason{
+	font-size: 12px;
+	color: #292929;
+	font-weight: 500;
+}
+.process_date{
+	margin-top: 5px;
+}
+.process_goal{
+	margin-top: 15px;
+}
+.process_achieve{
+	display: flex;
+	align-items: flex-end
+}
+.css_process_achieve{
+	display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 24px;
+    font-weight: 500;
+    color: #292929;
+    margin-bottom: 10px;
+}
+#final_achieve{
+	font-size: 32px;
+	color: #ff4a55;
+}
+

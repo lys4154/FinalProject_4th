@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-    
+    <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -68,7 +68,8 @@ if(session.getAttribute("login_user_seq") != null){
 		<div class="update_post_box">
 			<div class="header">
 		    	<div>
-		    	${community.nickname} | ${community.date }
+
+		    	${community.nickname} | <fmt:formatDate value="${community.date}" pattern="yyyy-MM-dd" />
 		    	</div>
 		    	
 		    	<div>
@@ -259,7 +260,7 @@ function loadComments(board_seq) {
             
             $.each(comments, function (index, comment) {
             	var commentHtml = '<div class="update_post_box "><div class="header"><div> ' + comment.member.nickname + ' | ' +
-                comment.date + '</div>';
+            	formatDate(comment.date) + '</div>';
 
                 if (comment.member_seq == loggedInUserId) {
                     commentHtml += '<div><button class="btn-1" onclick="deleteComment(' + comment.pro_board_seq + ')">삭제하기</button></div>';
@@ -275,6 +276,14 @@ function loadComments(board_seq) {
             console.error('Error fetching comments:', error);
         }
     });
+}
+function formatDate(date) {
+    var formattedDate = new Date(date);
+    var year = formattedDate.getFullYear();
+    var month = (formattedDate.getMonth() + 1).toString().padStart(2, '0');
+    var day = formattedDate.getDate().toString().padStart(2, '0');
+    var formattedDateString = year + '-' + month + '-' + day;
+    return formattedDateString;
 }
 
 <c:forEach var="community" items="${community_posts}">

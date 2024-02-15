@@ -107,6 +107,10 @@ public class BoardController {
             String member_nick = post_user.getNickname();
             
             update.setNickname(member_nick);
+            
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            String formattedDate = update.getUpdate_date().format(formatter);
+            update.setFormattedDate(formattedDate);
         }
 		
 		model.addAttribute("project", project_dto);
@@ -138,7 +142,7 @@ public class BoardController {
 				
 				
 				boardService.saveUpdateBoard(dto);
-				return "redirect:update/view/"+dto.getProject_seq();
+				return "redirect:project_detail/"+dto.getProject_seq();
 			}
 			
 		}
@@ -270,7 +274,7 @@ public class BoardController {
 	
 	//게시물 리스트 페이징
 	@GetMapping("board_list/cs")
-	public String showAllCsPosts(Model model, @RequestParam(defaultValue = "0") int page) {
+	public String showAllCsPosts(Model model, @RequestParam(defaultValue = "0") int page, HttpSession session) {
 		int pageSize = 10; // 한 페이지에 보여줄 게시물 수
 	    List<BoardDTO> allPosts = boardService.getAllCsPosts();
 	    int totalPages = (int) Math.ceil((double) allPosts.size() / pageSize); // 전체 페이지 수 계산
@@ -288,6 +292,10 @@ public class BoardController {
 	    model.addAttribute("totalPages", totalPages);
 	    model.addAttribute("currentPage", page);
 	   
+	    model.addAttribute("user_available", false);
+	    if(session.getAttribute("login_user_seq") != null) {
+	    	model.addAttribute("user_available", true);
+	    }
 	    
 	    return "board/cs_board_list"; // cs_board_list로 값 전달
 	}

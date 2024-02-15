@@ -1,0 +1,122 @@
+@charset "UTF-8";
+
+*{
+	font-family: 'Noto Sans KR', sans-serif;
+	color: #5c5c5c;
+}
+
+a{
+	text-decoration: none;
+	color: black;
+}
+
+/* 전체 div*/
+.out_con {
+	width: 1040px;
+	margin:20px auto;
+	padding: 10px 10px;
+	font-size: 14px;
+	align-items: center;
+}
+img{
+	width: 180px;
+	height: 150px;
+	object-fit: cover;	
+}
+
+/* 상단 프로젝트 정보*/
+.top{
+	display: flex;
+	align-items: center;
+    margin-bottom: 20px;
+}
+.top_right{
+	padding-left: 20px;
+	line-height: 26px;	
+}
+.long_title{
+	font-size: 22px;
+	font-weight: 600;
+	margin-bottom: 20px;
+}
+.pro_info{
+	font-size: 16px;
+}
+.amount{
+	font-weight: 600;
+	display: inline-block;
+	min-width: 100px;
+	color: #292929;
+}
+.achieve{
+	display: inline-block;
+	min-width: 40px ;
+	color: #fc035a;
+	margin-right: 10px;	
+}
+
+
+/* 하단 내용 */
+.contents_con {
+	padding: 10px;
+	line-height: 28px;
+	border: 1px solid #cfcfcf;
+	border-radius: 5px;
+	margin: 30px 0;
+}
+.contents_title{
+	font-weight: 600;
+	font-size: 16px;
+	margin-bottom: 15px;
+	color: #292929;
+}
+.info_flex{
+	display: flex;
+	padding: 0 5px;
+}
+.info_flex_left{
+	width: 130px;
+}
+.info_flex_right{
+	color: #292929;
+}
+#pro_status{
+	color: #fc035a;
+}
+.item_option{
+	padding-left: 20px;
+}
+.bundle{
+	color: #292929;
+}
+.info_inner{
+	margin-bottom: 10px;
+}
+
+
+/* 버튼 */
+.button_con{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#fund_list, #fund_cancel{
+	margin: 10px 30px;
+}
+#fund_list{
+	background-color: #6e6e6e;
+	color: #f0f0f0;
+	font-size: 18px;
+	font-weight: 500;
+	width: 300px;
+	height: 50px;
+	border: 1px solid #cfcfcf;
+	border-radius: 5px;
+	cursor: pointer;
+}
+#fund_cancel{
+	border: none;
+	background-color: white;
+	cursor: pointer;
+	font-size: 15px;
+}

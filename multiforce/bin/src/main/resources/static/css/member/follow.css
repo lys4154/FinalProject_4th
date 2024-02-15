@@ -1,0 +1,139 @@
+@charset "UTF-8";
+
+*{
+	font-family: 'Noto Sans KR', sans-serif;
+	color: #5c5c5c;
+	list-style: none;
+}
+
+a{
+	text-decoration: none;
+	color: black;
+}
+
+/* 전체 div*/
+.out_con {
+	width: 1040px;
+	margin:20px auto;
+	padding: 10px 10px;
+	font-size: 14px;
+	align-items: center;
+}
+img{
+	width: 80px;
+	height: 80px;
+	object-fit: cover;	
+	border-radius: 50%;
+}
+
+/* 상단 타이틀 */
+.follow_title{
+	font-size: 32px;
+	height: 60px;
+	color: #292929;
+	font-weight: 600;
+}
+
+
+/* 메뉴 탭 */
+.menu_con{
+	display: flex;
+	margin: 20px 0 10px 5px;
+	align-items: center;
+}
+.menu_item{
+	font-size: 16px;
+	display: flex;
+	margin-right: 30px;
+	color: grey;
+	transition: transform 0.2s ease;
+	cursor: pointer;	
+}
+.menu_item:hover{
+    transform: scale(1.1);
+    transform-origin: bottom;
+}
+.menu_under_hr{
+	height: 5px;
+	border: 0;
+	box-shadow: 0 3px 5px -5px grey inset;
+}
+
+
+/* result */
+.result_con{
+	margin-top: 20px;
+	border-radius: 5px;
+	padding: 10px 15px;
+
+}
+.result{
+    display: flex;
+    padding: 10px 15px;
+    margin: 10px 0;
+    flex-direction: column;
+}
+.follow_con{
+	display: flex;
+	flex-direction: row;
+    align-items: center;
+}
+.result_contents{
+	display: flex;
+	flex-direction: column;
+	padding-left: 20px;
+	line-height: 26px;	
+}
+.follow_btn{
+	margin-left: auto;
+	display: flex;
+    align-items: center;
+}
+.follo_nick{
+	font-weight: 500;
+	color: #292929;
+	font-size: 16px;
+	margin-bottom: 10px;
+}
+.follo_hr{
+	border: 1px solid #cfcfcf;
+	transform: scaleY(0.5);
+	margin: 20px 0;
+}
+.result .css_btn{
+	width: 120px;
+	height: 40px;
+	border: 1px solid #a3a1a1;
+    border-radius: 5px;
+    font-size: 15px;
+    font-weight: 600;
+    background-color: white;
+    cursor:pointer;
+}
+
+
+/* empty result*/
+
+/* 필터링 결과 null */
+.empty_result {	
+    font-size: 18px;
+    font-weight: 500;
+    display: flex;
+    width: 1000px;
+    flex-direction: column;
+    align-items: center;	
+}
+.empty_ment{
+	margin: 50px;
+}
+.backToMain{
+	background-color: #6e6e6e;
+	color: #f0f0f0;
+	font-size: 18px;
+	font-weight: 500;
+	width: 300px;
+	height: 50px;
+	border: 1px solid #cfcfcf;
+	border-radius: 5px;
+	cursor: pointer;
+}

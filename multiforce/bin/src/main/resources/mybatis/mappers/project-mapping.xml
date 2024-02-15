@@ -16,12 +16,31 @@
     select * from project where
 </select>
 
+<select id="getRejectReason" resultType="String">
+    select approval_reason from approval_request where project_seq = #{project_seq}
+</select>
+
 <select id="getAllApprovedProjects" resultType="projectdto">
     select * from project where project_process=3
 </select>
 
+<select id="getApprovedProjectsPage" resultType="ProjectDTO">
+    SELECT * FROM project WHERE project_process = 3 LIMIT #{pageSize} OFFSET #{offset}
+</select>
+
+<select id="getUnapprovedProjectsPage" resultType="ProjectDTO">
+    SELECT * FROM project WHERE project_process = 1 LIMIT #{pageSize} OFFSET #{offset}
+</select>
+<select id="getRejectedProjectsPage" resultType="ProjectDTO">
+    SELECT * FROM project WHERE project_process = 2 LIMIT #{pageSize} OFFSET #{offset}
+</select>
+
 <select id="getAllUnapprovedProjects" resultType="projectdto">
     select * from project where project_process=1
+</select>
+
+<select id="getAllRejectedProject" resultType="projectdto">
+    select * from project where project_process=2
 </select>
 
 <select id="approvedCount" resultType="int">
@@ -30,6 +49,10 @@
 
 <select id="unapprovedCount" resultType="int">
     select count(*) from project where project_process=1
+</select>
+
+<select id="rejectedCount" resultType="int">
+    select count(*) from project where project_process=2
 </select>
 
 <!-- 후원한 프로젝트 페이지 - 후원 진행중 -->
@@ -83,54 +106,61 @@
 </select>
 
 
-
-
-<!-- 후원한 프로젝트 페이지 - 검색 -->
-<select id="searchFunded" parameterType="java.util.Map"  resultType="java.util.Map">
-    SELECT project.*, funding.*
-    FROM project
-    INNER JOIN funding ON project.project_seq = funding.project_seq
-    WHERE (project.long_title LIKE concat("%", #{searchKeyword, jdbcType=VARCHAR}, "%"))
-        AND  project.member_seq=#{memberSeq, jdbcType=INTEGER}
-</select>
-
-
-
 <!-- 후원한 프로젝트 페이지 -> 후원 내역 상세 -->	
-<select id="getProjectDetail" parameterType="int" resultType="projectdto">
-	select * from project where project_seq=#{projectSeq}
+<select id="getProjectDetail" parameterType="int"  >
+	SELECT project.*, member_info.nickname
+	FROM project
+	JOIN member_info ON project.member_seq = member_info.member_seq
+	WHERE project.project_seq = #{projectSeq}
 </select>	
 
+<!-- tab_info저장 -->
 <select id="getMember_seq" parameterType="String" resultType="int">
 	select member_seq from member_info where member_id=#{member_id};
 </select> 
 
-<!-- tab_info저장 -->
 <insert id="insertProject" parameterType="project.dto.ProjectDTO">
- INSERT INTO project (member_seq, long_title, short_title, sub_title, main_images_url, url, category)
- VALUES (#{member_seq}, #{long_title}, #{short_title}, #{sub_title}, #{main_images_url}, #{url}, #{category})
+ INSERT INTO project (member_seq, long_title, short_title, sub_title, main_images_url, url, category, start_date, due_date, goal_price)
+ VALUES (#{member_seq}, #{long_title}, #{short_title}, #{sub_title}, #{main_images_url}, #{url}, #{category}, #{start_date}, #{due_date}, #{goal_price})
 </insert>
 
 <!-- tab_fundingPlan 저장 -->
-<insert id="insertFundingPlan" parameterType="java.util.Map">
-    INSERT INTO funding (start_date, due_date, goal_price)
-    VALUES (#{start_date}, #{due_date}, #{goal_price})
-</insert>
+<update id="insertFundingPlan" parameterType="project.dto.ProjectDTO">
+    UPDATE project
+    SET start_date = #{start_date}, due_date = #{due_date}, goal_price = #{goal_price}
+    WHERE project_seq = #{project_seq}
+    order by project_seq desc
+    limit 0,1
+</update>
 
+<!-- projectPlan 저장 -->
+<select id="getProject_seq" parameterType="int" resultType="int">
+	select project_seq from project where member_seq=#{member_seq} order by project_seq desc limit 0,1 
+</select>
+
+<update id="insertProjectPlan" parameterType="project.dto.ProjectDTO">
+	update project
+	set purpose = #{purpose}, planning = #{planning}, budget = #{budget}, team_introduce = #{team_introduce}, item_introduce = #{item_introduce}
+	where project_seq = #{project_seq}
+</update>
 
 <!-- 관심 프로젝트 전체 -->
-<select id="myDibsProject" parameterType="java.util.List" resultType="projectdto">
-    SELECT * FROM project
-    WHERE project_seq IN
+<select id="myDibsProject" parameterType="java.util.List" resultType="projectmemberdto">
+    SELECT p.*, m.nickname
+    FROM project p
+    JOIN member_info m ON p.member_seq = m.member_seq
+    WHERE p.project_seq IN
     <foreach collection="list" item="item" open="(" separator="," close=")">
         #{item}
     </foreach>
 </select>
 
 <!-- 관심 프로젝트 진행중 -->
-<select id="dibsOngoing" parameterType="java.util.List" resultType="projectdto">
-    SELECT * FROM project
-    WHERE project_seq IN
+<select id="dibsOngoing" parameterType="java.util.List" resultType="projectmemberdto">
+    SELECT p.*, m.nickname
+    FROM project p
+    JOIN member_info m ON p.member_seq = m.member_seq
+    WHERE p.project_seq IN
     <foreach collection="list" item="item" open="(" separator="," close=")">
         #{item}
     </foreach>
@@ -144,9 +174,11 @@
 
 
 <!-- 관심 프로젝트 종료된 -->
-<select id="dibsEnd" parameterType="java.util.List" resultType="projectdto">
-    SELECT * FROM project
-    WHERE project_seq IN
+<select id="dibsEnd" parameterType="java.util.List" resultType="projectmemberdto">
+    SELECT p.*, m.nickname
+    FROM project p
+    JOIN member_info m ON p.member_seq = m.member_seq
+    WHERE p.project_seq IN
     <foreach collection="list" item="item" open="(" separator="," close=")">
         #{item}
     </foreach>
@@ -198,7 +230,8 @@
 	SELECT 
 	    project.*,
 	    approval_request.approval_reason,
-	    approval_request.evaluation_date
+	    approval_request.evaluation_date,
+	    approval_request.approval_req_date
 	FROM 
 	    project
 	JOIN 
@@ -213,7 +246,8 @@
 <select id="requestAdmit" resultType="java.util.Map">
 	SELECT 
 	    project.*,
-	    approval_request.evaluation_date
+	    approval_request.evaluation_date,
+	    approval_request.approval_req_date
 	FROM 
 	    project
 	JOIN 
@@ -247,15 +281,12 @@
 	AND project_process = 6
 </select>
 
-
-
-<!-- 내가 올린 프로젝트 - 종료 -->
+<!-- 내가 올린 프로젝트 - 펀딩종료 -->
 <select id="fundingComplete" resultType="projectdto">
 	SELECT * FROM project 
 	WHERE member_seq = #{memberSeq}
 	AND project_process = 7
 </select>
-
 
 <!-- 프로젝트 가져오기 -->
 <select id="getProject" resultType="project.dto.ProjectDTO">
@@ -287,6 +318,7 @@ collection_amount, start_date, due_date, long_title, short_title, sub_title, cat
 from member_info m join project p using (member_seq) 
 where due_date = date(now() - interval 1 day) and project_process = 5
 </select>
+
 <!-- 펀딩 실패 모금자 리스트 불러오기 -->
 <select id="selectSupporterFundFail" resultType="projectmemberdto">
 select f.member_seq, member_id, member_name, nickname, email, f.project_seq, p.short_title from funding f 
@@ -294,6 +326,7 @@ join member_info m on f.member_seq = m.member_seq
 join project p on f.project_seq = p.project_seq 
 where f.project_seq = #{project_seq}
 </select>
+
 <!-- 펀딩 성공 모금자 리스트 불러오기 -->
 <select id="selectCollectorFundSuccess" resultType="projectmemberdto">
 select member_seq, member_id, nickname, email, project_seq, goal_price,
@@ -301,6 +334,7 @@ collection_amount, start_date, due_date, long_title, short_title, sub_title, cat
 from member_info m join project p using (member_seq) 
 where due_date = date(now() - interval 1 day) and project_process = 6
 </select>
+
 <!-- 펀딩 시작 모금자 리스트 불러오기 -->
 <select id="selectCollectorFundstart" resultType="projectmemberdto">
 select m.member_seq, member_id, nickname, email, project_seq, goal_price,
@@ -308,14 +342,17 @@ collection_amount, start_date, due_date, long_title, short_title, sub_title, cat
 from project p join member_info m using (member_seq) 
 where start_date = now() and project_process = 4
 </select>
+
 <!-- 펀딩 시작 프로젝트 찜한 사람 리스트 불러오기 -->
 <select id="selectDibsFundStart">
 select member_seq from project_dibs where project_seq = #{project_seq}
 </select>
+
 <!-- 펀딩 시작 모금자를 팔로우하는 사람 리스트 불러오기 -->
 <select id="selectFollowerFundStart">
 select follower_seq from follow where following_seq = #{member_seq}
 </select>
+
 <!-- 마감임박 프로젝트 찜한 사람 리스트 -->
 <select id="selectDidsFundEnd" resultType="projectmemberdto">
 select d.member_seq, member_id, member_name, nickname, email, d.project_seq, p.short_title from project_dibs d 
@@ -327,7 +364,7 @@ where due_date = now() and project_process = 4
 <!--  -->
 <select id="selectProjectMember">
 select m.member_seq, member_id, nickname, email, project_seq, goal_price,
-long_title, short_title, sub_title, category, project_process, member_url, profile_img
+long_title, short_title, sub_title, category, project_process, member_url, profile_img, url, main_images_url
 from project p join member_info m using (member_seq) 
 where project_seq = #{project_seq}
 </select>
@@ -339,11 +376,85 @@ where project_seq = #{project_seq}
 </delete>
 
 
+<!-- 회원탈퇴 - 본인 프로젝트 삭제 -->
+<delete id="unregisterProjectDelete" parameterType="int">
+	DELETE FROM project
+	WHERE member_seq = #{memberSeq}
+	AND project_process IN (0, 1, 2, 3, 4);
+</delete>
 
 
+<!-- 내가 올린 프로젝트 - 전체 -->
+<select id="getAllProjectsMemberSeq">
+	select * from project where member_seq = #{memberSeq}
+	order by project_process asc
+</select>
+
+<!-- 조회수 증가 -->
+<update id="updateViewCount">
+update project set view_count = view_count + 1 where project_seq = #{project_seq}
+</update>
+
+<!-- 프로젝트 + 멤버 둘다 들고오기 -->
+<select id="getProjectMember" resultMap="projectMap">
+SELECT *
+FROM project
+JOIN member_info ON project.member_seq = member_info.member_seq
+WHERE project.url = #{url} and project_process >= 3
+</select>
+<resultMap type="projectdto" id="projectMap">
+	<id property="project_seq" column="project_seq"/>
+	<result property="long_title" column="long_title"/>
+	<result property="url" column="url"/>
+	<result property="main_images_url" column="main_images_url"/>
+	<result property="category" column="category"/>
+	<result property="start_date" column="start_date"/>
+	<result property="due_date" column="due_date"/>
+	<result property="goal_price" column="goal_price"/>
+	<result property="collection_amount" column="collection_amount"/>
+	<result property="project_process" column="project_process"/>
+	<result property="content" column="content"/>
+	<association property="memberDTO" resultMap="memberMap"/>
+</resultMap>
+<resultMap type="memberdto" id="memberMap">
+	<id property="member_seq" column="member_seq"/>
+	<result property="member_url" column="member_url"/>
+	<result property="nickname" column="nickname"/>
+	<result property="profile_img" column="profile_img"/>
+	<result property="description" column="description"/>
+</resultMap>
 
 
+<!-- 메인페이지 업데이트 프로젝트 12개 -->
+<select id="newUpdateProject" resultType="projectmemberdto">
+	SELECT project.*, member_info.nickname 
+	FROM project 
+	JOIN member_info ON project.member_seq = member_info.member_seq
+	WHERE project_process = 4
+	ORDER BY start_date DESC
+	LIMIT 12
+</select>
 
+<!-- 메인페이지 인기 프로젝트 10개 -->
+<select id="popularProject" resultType="projectmemberdto">
+	SELECT project.*, member_info.nickname 
+	FROM project 
+	JOIN member_info ON project.member_seq = member_info.member_seq
+	WHERE project_process = 4
+	ORDER BY view_count DESC
+	LIMIT 10
+</select>
 
+<!-- 펀딩 추가 후 프로젝트 모금액 업데이트 -->
+<update id="updateCollectionAmount">
+update project set collection_amount = collection_amount + #{price} where project_seq = #{projectSeq}
+</update>
 
+<!-- 성공 후 일주일 이내의 프로젝트 찾아오기 -->
+<select id="getSuccessIn7">
+select * from project where 7 >= DATEDIFF(now(), DATE_ADD(due_date, interval 1 day)) and project_process = 6
+</select>
 </mapper>
+
+
+

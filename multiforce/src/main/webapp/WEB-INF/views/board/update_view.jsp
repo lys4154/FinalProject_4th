@@ -2,6 +2,8 @@
     pageEncoding="UTF-8"%>
     
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="java.time.LocalDateTime" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page import="java.util.List" %>
 
 
@@ -57,7 +59,7 @@ if(session.getAttribute("login_user_seq") != null){
 			    
 			    <div class="header">
 			    	<div>
-			    	${update.nickname} | ${update.update_date }
+			    	${update.nickname} | ${update.formattedDate }
 			    	</div>
 			    	
 			    	<div>
@@ -263,8 +265,14 @@ function toggleCommentForm(event, updateSeq) {
 
                 
                 $.each(comments, function (index, comment) {
+                	var commentTime = new Date(comment.time);
+                	var year = commentTime.getFullYear();
+                	var month = (commentTime.getMonth() + 1).toString().padStart(2, '0'); // Add 1 to month as it is zero-indexed
+                	var day = commentTime.getDate().toString().padStart(2, '0');
+                	var formattedTime = year + '-' + month + '-' + day;
+                	
                 	var commentHtml = '<div class="update_post_box"><div class="header"><div>' + comment.member.nickname + ' | ' +
-                	comment.time + '</div>';
+                	formattedTime  + '</div>';
 	
 	                if (comment.member_seq == loggedInUserId) {
 	                    commentHtml += '<div><button class="btn-1" onclick="deleteComment(' + comment.update_reply_seq + ')">삭제하기</button></div>';

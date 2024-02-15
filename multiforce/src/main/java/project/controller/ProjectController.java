@@ -416,6 +416,7 @@ public class ProjectController {
             	//포스트마다 유저가 좋아요 눌렀는지 true/false 리턴하기
 	            boolean likedByCurrentUser = boardService.isCommunityLikedByUser(community.getPro_board_seq(), (int)currentUserObj);
 	            community.setLikedByCurrentUser(likedByCurrentUser);
+	            
             }
             int memberSeq = community.getMember_seq();
             

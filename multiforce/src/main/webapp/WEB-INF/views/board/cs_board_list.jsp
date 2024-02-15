@@ -18,6 +18,11 @@
 
     
     <div class="main-container">
+    	<div style="margin-bottom:15px;text-align:right;">
+    	<c:if test="${user_available eq true}">
+		    <a class="btn-1" href="/cs/write-form">글쓰기</a>
+		</c:if>
+    	</div>
 	    <table class="board-table">
 	        <colgroup>
 	            <col style="width:7%">

@@ -5,12 +5,23 @@
 
 <mapper namespace="project.dao.ItemDAO">
 
-<!-- 후원 상세 - 아이템 -->
+<!-- 후원 상세 - 아이템 수정필요-->
 <select id="getItem" parameterType="java.util.List" resultType="itemdto">
 	select * from item where bundle_seq in
 	<foreach collection="list" item="item" index="index" open="(" separator="," close=")">
 		#{item}
 	</foreach>
 </select>
+
+<!-- 상품저장(Item) -->
+
+<select id="getProject_seq" parameterType="int" resultType="int">
+	select project_seq from project where member_seq=#{member_seq} order by project_seq desc limit 0,1 
+</select>
+
+<insert id="insertItem" parameterType="project.dto.ItemDTO">
+	insert into item (project_seq, item_name)
+	values (#{project_seq}, #{item_name})
+</insert>
 
 </mapper>	
