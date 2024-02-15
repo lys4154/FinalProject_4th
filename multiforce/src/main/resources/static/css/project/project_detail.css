@@ -44,7 +44,7 @@
 .bundle-info{
 	display: inline-block;
 	width: 260px;
-	padding: 20px 10px 10px 20px;
+	padding: 20px 0px 10px 40px;
 	height: auto;
 }
 #cart{
@@ -153,6 +153,7 @@ select[class^=item_option_select]{
 }
 .collector_info_right{
 	margin-left: 20px;
+	width: 255px;
 }
 .collector_info_title{
 	margin-bottom: 10px;
