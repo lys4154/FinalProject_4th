@@ -628,7 +628,13 @@ $(document).ready(function () {
 	
 	
 	
-	
+	var urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('category') === 'community') {
+        $("#communityLink").trigger("click");
+    }
+    if (urlParams.get('category') === 'update') {
+        $("#updateLink").trigger("click");
+    }
 	
 	
 	

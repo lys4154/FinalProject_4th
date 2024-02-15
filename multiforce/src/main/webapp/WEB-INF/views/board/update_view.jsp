@@ -136,7 +136,9 @@ function deleteUpdate(updateSeq) {
             data: { update_seq: updateSeq },
             success: function(response) {
                 console.log('삭제 성공:', response);
-                location.reload();
+                var currentUrl = window.location.href;
+             	var strippedUrl = currentUrl.split('?')[0];
+             	window.location.href = strippedUrl + "?category=update";
                 
             },
             error: function(error) {
@@ -216,7 +218,9 @@ function toggleCommentForm(event, updateSeq) {
             success: function(response) {
                 console.log(response);
                 console.log('댓글이 성공적으로 전송되었습니다.');
-                location.reload();
+                var currentUrl = window.location.href;
+             	var strippedUrl = currentUrl.split('?')[0];
+             	window.location.href = strippedUrl + "?category=update";
             },
             error: function(error) {
                 console.error('댓글 전송 중 오류가 발생했습니다:', error);
@@ -240,7 +244,9 @@ function toggleCommentForm(event, updateSeq) {
                 data: { update_reply_seq: comment_id },
                 success: function(response) {
                     console.log('삭제 성공:', response);
-                    location.reload();
+                    var currentUrl = window.location.href;
+                 	var strippedUrl = currentUrl.split('?')[0];
+                 	window.location.href = strippedUrl + "?category=update";
                     
                 },
                 error: function(error) {
