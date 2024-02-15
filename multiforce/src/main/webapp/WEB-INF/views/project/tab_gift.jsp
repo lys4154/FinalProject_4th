@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="java.util.List" %>
+<%@ page import="project.dto.ItemDTO" %>
+<%@ page import="project.service.ItemService" %>    
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,6 +28,22 @@
         			console.error(error);
         		}
         	});
+        	
+        	/* var item_name = {
+        			item_name : $("#itemSelect").val()
+        	};
+        	$.ajax({
+        		typd:"POST",
+        		url:"/setItemName",
+        		contentType:"application/json",
+        		data:JSON.stringify(packages),
+        		success:function(response) {
+        			console.log(response);
+        		},
+        		error:function(error) {
+        			console.error(error);
+        		}
+        	}); */
         });
         
         $("#addItem").click(function() {
@@ -190,14 +209,14 @@
   
   <br><br>
   <div class="bundle">
-  <!-- <label for="selectItem">선물 아이템</label><br>
+  <label for="selectItem">선물 아이템</label><br>
   선물을 구성하는 아이템을 추가해주세요.<br>
-  <select id="itemSelect">
-  <option>
-   
-  </option>
+  <select id="itemSelect" name="selectedItem">
+            <c:forEach var="item" items="${itemList}">
+                <option value="${item.item_name}">${item.item_name}</option>
+            </c:forEach>
   </select>
-  <br> -->
+  <br>
   
   <label for="bundle_name">선물 이름</label><br>
   어떤 아이템으로 구성되어있는지 이름을 붙여주세요.<br>

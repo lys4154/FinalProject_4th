@@ -3,6 +3,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
+<link rel="stylesheet" href="/css/admin/notice_detail.css">
 <!DOCTYPE html>
 <html>
 <head>
@@ -67,17 +68,19 @@ $(document).ready(function(){
 
 </script>
 <body>
-<div class="out_con">
-	<div>게시물 번호: ${dto.notice_seq}</div>
-	<div>제목: ${dto.title}</div>
-	<div>분류: ${dto.category}</div>
-	<div>작성 날짜: ${dto.write_date}</div>
-	<c:if test="${dto.category eq 'event'}">
-		<div>이벤트 시작 ${dto.event_start_date } ~ 종료 ${dto.event_end_date }</div>
-	</c:if>
-	<div>내용: ${dto.content}</div>
-	<div id="modify_btn_wrap"></div>
-	<a id="notice_list_btn" href="/notices" id="notices_list">목록</a>
+<div id="container">
+<div id="notice_seq">게시물 번호: ${dto.notice_seq}</div>
+<div id="cat">분류: ${dto.category}</div>
+<div id="title">제목: ${dto.title}</div>
+<div id="write_date">작성 날짜: ${dto.write_date}</div>
+<c:if test="${dto.category eq 'event'}">
+	<div id="date">이벤트 시작 ${dto.event_start_date } ~ 종료 ${dto.event_end_date }</div>
+</c:if>
+<div id="content">내용: ${dto.content}</div>
 </div>
+<div id="modify_btn_wrap">
+<a id="notice_list_btn" href="/notices" id="notices_list">목록</a>
+</div>
+
 </body>
 </html>

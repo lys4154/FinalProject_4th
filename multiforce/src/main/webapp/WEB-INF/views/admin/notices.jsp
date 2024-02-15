@@ -6,6 +6,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
+<link rel="stylesheet" href="/css/admin/notice.css">
 <!DOCTYPE html>
 <html>
 <head>
@@ -33,45 +34,56 @@ $(document).ready(function(){
 });
 </script>
 <body>
-<div class="out_con">
-	<h1>공지사항</h1>
-	<a href="/notices?category=notice&page=1">공지사항</a>
-	<a href="/notices?category=event&page=1">이벤트</a>
-		<form action="/notices/discover" style="display:inline-block">
-			<input type="text" name="query">
-			<input type="hidden" id="discover_category" name="category">
-			<input type="submit" value="검색">
-		</form>
-	<div style="display:inline-block" id="write_btn_wrap"></div>
-	<hr>
-	
-	<c:forEach var="item" items="${list }">
-		<div style="border: 1px solid black">
-			<c:if test="${category == 'notice' }">
-				<span>
-					공지사항
-				</span>
-				<span>
-					${item.write_date }
-				</span>
-				<a href="/notices/detail?seq=${item.notice_seq }&category=${category}&page=${nowPage}">
-					<h4>${item.title }</h4>
-				</a>
-			</c:if>
-			<c:if test="${category == 'event' }">
-				<span>
-					이벤트
-				</span>
-				<span>
-					${item.event_status }
-				</span>
-				<span>
-					${item.write_date }
-				</span>
-				<a href="/notices/detail?seq=${item.notice_seq }&category=${category}&page=${nowPage}">
-					<h4>${item.title }</h4>
-				</a>
-			</c:if>
+
+<h1 id="notice">공지사항</h1>
+<span class="TabContainier__notices">
+<a href="/notices?category=notice&page=1">공지사항</a>
+</span>
+
+<span class="TabContainner__event">
+<a href="/notices?category=event&page=1">이벤트</a>
+</span>
+
+	<form action="/notices/discover" style="display:inline-block">
+	<div style="display:inline-block" id="write_btn_wrap">
+		<input type="text" name="query">
+		<input type="hidden" id="discover_category" name="category">
+		
+		<input type="submit" value="검색" id="search">
+		</div>
+	</form>
+
+<hr>
+
+<c:forEach var="item" items="${list }">
+	<div style="border: 1px solid rgb(230, 230, 230)" id="notice_div">
+		<c:if test="${category == 'notice' }">
+			<span class="cat">
+				공지사항
+			</span>
+			<span class="link">
+			<a href="/notices/detail?seq=${item.notice_seq }&category=${category}&page=${nowPage}">
+				<h3>${item.title }</h3>
+			</a>
+			</span>
+			<span class="write_date">
+				${item.write_date }
+			</span>
+		</c:if>
+		<c:if test="${category == 'event' }">
+			<span class="cat">
+				이벤트
+			</span>
+			<span class="event_status">
+				${item.event_status }
+			</span>			
+			<a href="/notices/detail?seq=${item.notice_seq }&category=${category}&page=${nowPage}">
+				<h3>${item.title }</h3>
+			</a>
+			<span class="write_date">
+				${item.write_date }
+			</span>
+		</c:if>
 		</div>
 	</c:forEach>
 	<hr>
@@ -105,7 +117,7 @@ $(document).ready(function(){
 	<%		}
 		}
 	%>	
-	</div>
+
 </div>
 </body>
 </html>
