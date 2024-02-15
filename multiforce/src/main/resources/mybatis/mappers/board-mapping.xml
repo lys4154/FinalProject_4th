@@ -130,7 +130,7 @@
 	</select>
 	
     <select id="getAllCsPosts" resultType="board.dto.BoardDTO">
-	    select * from help_ask where del_status=false
+	    select * from help_ask where del_status=false and parent_seq IS NULL order by help_ask_seq desc
 	</select>
 	
 	<select id="isUpdateLikedByUser" resultType="boolean">
@@ -172,7 +172,8 @@
         VALUES (#{project_seq}, #{member_seq}, #{category}, #{content})
     </insert>
     <select id="getAllCommPost" resultType="board.dto.CommunityDTO">
-	    select * from community_board where project_seq = #{project_seq} AND parent_seq IS NULL AND del_status=false
+	    select * from community_board where project_seq = #{project_seq} AND parent_seq IS NULL AND
+	     del_status=false order by pro_board_seq desc
 	</select>
     
 </mapper>

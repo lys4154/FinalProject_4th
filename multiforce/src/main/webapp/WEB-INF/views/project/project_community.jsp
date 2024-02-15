@@ -132,7 +132,9 @@ function deleteCommunity(pro_board_seq) {
             data: { pro_board_seq: pro_board_seq},
             success: function(response) {
                 console.log('삭제 성공:', response);
-                location.reload();
+                var currentUrl = window.location.href;
+             	var strippedUrl = currentUrl.split('?')[0];
+             	window.location.href = strippedUrl + "?category=community";
                 
             },
             error: function(error) {
@@ -168,9 +170,10 @@ function submitComment(board_seq, project_seq) {
         url: '/communtiy_comment',
         data: data,
         success: function(response) {
-            console.log(response);
-            console.log('댓글이 성공적으로 전송되었습니다.');
-            location.reload();
+
+            var currentUrl = window.location.href;
+         	var strippedUrl = currentUrl.split('?')[0];
+         	window.location.href = strippedUrl + "?category=community";
         },
         error: function(error) {
             console.error('댓글 전송 중 오류가 발생했습니다:', error);
@@ -234,7 +237,9 @@ function deleteComment(comment_id) {
             data: { pro_board_seq: comment_id },
             success: function(response) {
                 console.log('삭제 성공:', response);
-                location.reload();
+                var currentUrl = window.location.href;
+             	var strippedUrl = currentUrl.split('?')[0];
+             	window.location.href = strippedUrl + "?category=community";
                 
             },
             error: function(error) {

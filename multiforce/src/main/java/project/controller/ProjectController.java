@@ -421,7 +421,7 @@ public class ProjectController {
 
 	@PostMapping("community_post")
 	public String saveCommunityPost(@RequestParam String post_category, @RequestParam int post_id,
-			@RequestParam String content, HttpSession session) {
+			@RequestParam String content, HttpSession session, Model model) {
 		// post_id = project_seq
 		int current_user = 0;
 		current_user = (int) session.getAttribute("login_user_seq");
@@ -439,7 +439,9 @@ public class ProjectController {
 			boardService.saveCommunityPost(com_post);
 		}
 
-		return "redirect:project_detail/" + post_id;
+		ProjectDTO project_url = projectService.getProjectDetail(post_id);
+	
+		return "redirect:"+project_url.getUrl()+"?category=community";
 	}
 
 	@RequestMapping("/tab_info")

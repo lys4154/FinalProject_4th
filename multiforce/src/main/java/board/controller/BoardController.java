@@ -120,16 +120,18 @@ public class BoardController {
 	
 	@PostMapping("update_write")
 	 public String updateWriteProcess(
-             @RequestParam String contents,
-             Model model, HttpSession session, @RequestParam int project_seq) {
+            @RequestParam String contents,
+            Model model, HttpSession session, @RequestParam int project_seq) {
 	
 
 		Object currentUserObj = session.getAttribute("login_user_seq");
 		updateBoardDTO dto = new updateBoardDTO();
 		
+		ProjectDTO project_id = projectService.getProjectDetail(project_seq);
+		
 		if (currentUserObj != null) {
 			int currentUser = (int) session.getAttribute("login_user_seq");
-        	
+       	
 			
 			boolean userIsProjectManager = boardService.userIsProjectManager(project_seq, currentUser);
 
@@ -138,9 +140,9 @@ public class BoardController {
 				dto.setMember_seq(currentUser);
 				dto.setProject_seq(project_seq);
 				
-				
+
 				boardService.saveUpdateBoard(dto);
-				return "redirect:project_detail/"+dto.getProject_seq();
+				return "redirect:"+project_id.getUrl()+"?category=update";
 			}
 			
 		}
