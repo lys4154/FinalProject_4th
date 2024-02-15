@@ -20,7 +20,7 @@
             short_title: $("#short_title").val(),
             sub_title: $("#sub_title").val(),
             main_images_url: $("#main_images_url").val(),
-            url : $("#url").val(),
+            url : "/project_detail/" + $("#url").val(),
             start_date : $("#start_date").val(),
             due_date : $("#due_date").val(),
             goal_price : $("#goal_price").val()
@@ -179,7 +179,7 @@
 			<dl class="projectUrl_titleDescription">
 				<h2>프로젝트에 사용할 URL을 작성해주세요</h2>
 				<br>
-				<input type="text" id="url">
+				<input type="text" id="url" placeholder="/project_detail/">
 			</dl>
 		</div>
 	</div>
