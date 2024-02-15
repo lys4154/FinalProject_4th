@@ -304,7 +304,7 @@ public class ProfileController {
 		List<FundingDTO> ongoingFunded = fundingservice.getFunded(memberSeq);	//후원 진행중
         List<FundingDTO> successFunded = fundingservice.successFunded(memberSeq); // 후원 성공
         List<FundingDTO> cancelFunded = fundingservice.cancelFunded(memberSeq); // 후원 취소
-
+        System.out.println(ongoingFunded);
         ModelAndView mv = new ModelAndView();
         mv.addObject("ongoing", ongoingFunded);
         mv.addObject("success", successFunded);

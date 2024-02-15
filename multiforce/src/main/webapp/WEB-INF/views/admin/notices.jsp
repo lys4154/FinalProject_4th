@@ -75,7 +75,7 @@ $(document).ready(function(){
 	if(request.getAttribute("query") != null && !request.getAttribute("query").equals("")){
 		query = "&query=" + request.getAttribute("query");
 	}
-	int tmp = nowPage/(pageListLength + 1);
+	int tmp = nowPage/(pageListLength);
 	//<-버튼 기능 구현
 	if(tmp == 0){
 %>		<a id="prev_page_btn" href="/notices?category=<%=category%>&page=1<%=query%>">←</a>

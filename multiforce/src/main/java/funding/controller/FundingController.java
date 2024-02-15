@@ -74,9 +74,10 @@ public class FundingController {
 		int fundSeq = fundingService.insertFunding(map);
 		FundingDTO fdto = fundingService.getPaymentInfo(fundSeq);
 		session.removeAttribute("paymentList");
+		System.out.println(fdto);
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("dto", fdto);
-		mv.setViewName("funding/payresult");
+		mv.setViewName("member/ongoing_detail");
 		return mv;
 	}
 	@PostMapping("/fundingcheck")

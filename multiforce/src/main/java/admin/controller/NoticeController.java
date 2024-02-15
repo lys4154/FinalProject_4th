@@ -25,6 +25,8 @@ import admin.service.NoticeService;
 public class NoticeController {
 	@Autowired
 	NoticeService service;
+	@Autowired
+	NoticeDTO dto;
 	
 	@GetMapping("/notices")
 	public ModelAndView notices(String category, String page, String query) {
@@ -122,5 +124,16 @@ public class NoticeController {
 		return notices(category, "", query);
 	}
 	
+	@GetMapping("/createnoticesdummy")
+	public String createNoticesDummy() {
+		for(int i = 0; i < 200; i++) {
+			dto.setCategory("notice");
+			dto.setContent("<p>페이징 확인용</p>");
+			dto.setTitle("페이징 확인용 더미" + i);
+			service.enrollNotice(dto);
+		}
+		
+		return "common/mainpage";
+	}
 	
 }
