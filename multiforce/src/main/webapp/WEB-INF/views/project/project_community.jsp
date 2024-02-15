@@ -52,49 +52,68 @@ if(session.getAttribute("login_user_seq") != null){
 </c:choose>
     
 <c:if test="${userIsFunding}">
-     <form action="/community_post" method="POST" onsubmit="return validateForm()">
-	    <div>
+     <form class="comm-post-form" action="/community_post" method="POST" onsubmit="return validateForm()">
+	    <div class="comm-radio">
 	      <input type="radio" name="post_category" value="cheer" checked>응원글
 	      <input type="radio" name="post_category" value="feedback">의견
 	    </div>
-	    <label for="comment_text">댓글:</label><br>
+
 	    <input type="hidden" name="post_id" value="${projects.project_seq}">
-	    <textarea id="comment_text" name="content"></textarea><br>
-	    <input type="submit" value="등록">
+	    <textarea class="comm_post_ta" id="comment_text" name="content"></textarea><br>
+	    <input class="btn-1" type="submit" value="등록">
 	  </form>
 </c:if>
 	<c:forEach var="community" items="${community_posts}">
-		<p>작성자: ${community.member_seq}</p>
-		<p>날짜: ${community.date}</p>
-	    <p>내용: ${community.content}</p>
-	    <c:if test="${community.member_seq eq loggedin_user}">
-            <button onclick="deleteCommunity(${community.pro_board_seq})">삭제하기</button>
-        </c:if>
-	    
-	   <%
-if (loggedInUserId != 0) {
-%>       
-    <div>
-    <i id="heartIcon_${community.pro_board_seq}" class="${community.likedByCurrentUser ? 'fa fa-heart' : 'fa fa-heart-o'}" 
-    aria-hidden="true" style="${community.likedByCurrentUser ? 'color: red;' : ''}" onclick="likePost(${community.pro_board_seq})"></i>
-    <span id="like_${community.pro_board_seq}"></span>
-    </div>
-    <%
-}
-
-%>
- 		<c:if test="${userIsFunding}">
-		     <a href="#" onclick="toggleCommentForm(event, ${community.pro_board_seq})">댓글달기</a>
-		</c:if>
- 
-	    <div id="comments_${community.pro_board_seq}"></div>
-	    
-	    <div id="commentForm_${community.pro_board_seq}" style="display: none;">
-            <textarea id="commentText_${community.pro_board_seq}" rows="4" cols="50"></textarea> 
-            <button onclick="submitComment(${community.pro_board_seq}, ${community.project_seq })">댓글 등록</button>
-        </div>
+	
+		<div class="update_post_box">
+			<div class="header">
+		    	<div>
+		    	${community.nickname} | ${community.date }
+		    	</div>
+		    	
+		    	<div>
+		    	 <c:if test="${community.member_seq eq loggedin_user}">
+		            <button class="btn-1" onclick="deleteCommunity(${community.pro_board_seq})">삭제하기</button>
+		        </c:if>
+		    	</div>
+		    </div>
+		    
+		    <div class="content">${community.content}</div>
+		    
+		    <div class="bottom">
+		    	   <%
+					if (loggedInUserId != 0) {
+					%>       
+					    <div>
+					    <i id="heartIcon_${community.pro_board_seq}" class="${community.likedByCurrentUser ? 'fa fa-heart' : 'fa fa-heart-o'}" 
+					    aria-hidden="true" style="${community.likedByCurrentUser ? 'color: red;' : ''}" onclick="likePost(${community.pro_board_seq})"></i>
+					    <span id="like_${community.pro_board_seq}"></span>
+					    </div>
+					    <%
+					}
+					
+					%>
+		 		<c:if test="${userIsFunding}">
+				     <a href="#" onclick="toggleCommentForm(event, ${community.pro_board_seq})">댓글달기</a>
+				</c:if>
+		    </div>
+		    
+		</div>
 		
-			<hr>
+
+	    
+
+ 		<div class="comm-write-textarea" id="commentForm_${community.pro_board_seq}" style="display: none;">
+            <textarea id="commentText_${community.pro_board_seq}" rows="4" cols="50"></textarea> 
+            <button class="btn-1" onclick="submitComment(${community.pro_board_seq}, ${community.project_seq })">댓글 등록</button>
+        </div>
+        
+	    <div class="sub-comment" id="comments_${community.pro_board_seq}">
+	    </div>
+	    
+	    
+		
+			
 	</c:forEach>
 </section>
 
@@ -239,14 +258,15 @@ function loadComments(board_seq) {
 
             
             $.each(comments, function (index, comment) {
-            	var commentHtml = '<div id="com_box">댓글: ' + comment.content + '</br>아이디:' +
-                comment.member.nickname + '</br>날짜: ' + comment.time;
+            	var commentHtml = '<div class="update_post_box "><div class="header"><div> ' + comment.member.nickname + ' | ' +
+                comment.date + '</div>';
 
                 if (comment.member_seq == loggedInUserId) {
-                    commentHtml += '<button onclick="deleteComment(' + comment.pro_board_seq + ')">삭제하기</button>';
+                    commentHtml += '<div><button class="btn-1" onclick="deleteComment(' + comment.pro_board_seq + ')">삭제하기</button></div>';
                 }
 
                 commentHtml += '</div>';
+                commentHtml += '<div class="content">'+comment.content+'</div></div>';
 
                 commentsDiv.append(commentHtml);
             });
