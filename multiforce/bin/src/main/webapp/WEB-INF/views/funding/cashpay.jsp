@@ -24,8 +24,7 @@ function inputAccount(num) {
 <h1>계좌이체 페이지</h1>
 은행과 계좌번호를 입력해 주세요
 <br>
-<select>
-<option value="">은행명</option>
+<select id="#select_company">
 <option value="NH">농협</option>
 <option value="Woori">우리</option>
 <option value="KB">국민은행</option>
@@ -37,12 +36,13 @@ function inputAccount(num) {
 
 
 <br>
-<input type="button" id="pay" value="결제">
+<input type="button" id="pay" value="인증">
 <input type="button" id="cancel" value="취소">
 
 <script>
 document.getElementById('pay').addEventListener('click', function(ev) {
-	alert("결제를 진행합니다.");
+	$("#pay_number", opener.document).val($(".account").val());
+	$("#pay_company", opener.document).val($("#select_company").val());
 	window.close();
 	//window.location.href = "payresult"
 });

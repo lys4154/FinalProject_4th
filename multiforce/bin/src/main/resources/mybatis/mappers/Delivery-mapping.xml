@@ -7,7 +7,7 @@
 
 <!-- 회원정보수정 -->
 <select id="getDelivery" resultType="deliverydto">
-	select * from delivery where member_seq=#{memberSeq}
+	select * from delivery where member_seq=#{memberSeq} ORDER BY default_address DESC;
 </select>
 
 <!-- 회원정보수정 - 배송지추가 -->
@@ -31,6 +31,17 @@
 	member_seq=#{memberSeq} AND name=#{name} AND phone=#{phone} AND postcode=#{postcode} AND
 	road_address=#{road} AND detail_address=#{detail}
 </delete>
+
+<!-- 회원정보수정 - 배송지 추가 - 기본배송지 업데이트 -->
+<insert id="allDefaultFalse">
+	UPDATE delivery
+	SET default_address = FALSE
+	WHERE member_seq = #{memberSeq} AND default_address = TRUE;
+</insert>
+
+
+
+
 
 
 </mapper>	

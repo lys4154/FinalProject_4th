@@ -23,6 +23,9 @@
 .update_post_box .bottom div:last-child{
 	font-size:13px;
 }
+.update_post_box .content img{
+	width:100% !important;
+}
 .sub-comment{
 	margin-left:15px;
 }

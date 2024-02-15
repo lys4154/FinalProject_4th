@@ -10,43 +10,53 @@
 	select * from funding where member_seq=#{memberSeq}
 </select>
 
-
-<!-- 후원한 프로젝트 페이지 - 후원 진행중 -->
-<select id="ongoingFunded" parameterType="int" resultType="fundingdto">
-	SELECT * FROM FUNDING
-	WHERE member_seq =#{memberSeq}
-	AND fund_duedate > now()
+<!-- 후원한 프로젝트 -->
+<select id="getFunded" resultMap="fundingMap">
+	select * from funding f
+	join funding_bundle_count c on f.fund_seq = c.fund_seq
+	join chosen_option o on c.bundle_count_seq = o.bundle_count_seq
+	left join item_option n on o.item_option_seq = n.item_option_seq
+	join item i on n.item_seq = i.item_seq
+	join item_list l on l.item_seq = i.item_seq
+	join bundle b on c.bundle_seq = b.bundle_seq
+	join project p on f.project_seq = p.project_seq
+	join member_info m on m.member_seq = p.member_seq
+	where f.member_seq = #{memberSeq}	
+	and p.project_process = 4
 	AND del_status = false
-</select>
-
-<!-- 후원한 프로젝트 페이지 + 프로젝트정보 -->
-<select id="getFunded" parameterType="int" resultType="java.util.HashMap">
-    SELECT FUNDING.*, PROJECT.*
-    FROM FUNDING
-    INNER JOIN PROJECT ON FUNDING.project_seq = PROJECT.project_seq
-    WHERE FUNDING.member_seq = #{memberSeq}
-        AND FUNDING.fund_duedate > NOW()
-        AND FUNDING.del_status = FALSE
 </select>
 
 
 <!-- 후원한 프로젝트 페이지 - 후원 성공 -->
-<select id="successFunded" parameterType="int" resultType="fundingdto">
-<![CDATA[
-	SELECT * FROM FUNDING
-	WHERE member_seq =#{memberSeq}
-	AND fund_duedate < now()
-	AND pay_status = true
-]]>
+<select id="successFunded" resultMap="fundingMap">
+	select * from funding f
+	join funding_bundle_count c on f.fund_seq = c.fund_seq
+	join chosen_option o on c.bundle_count_seq = o.bundle_count_seq
+	left join item_option n on o.item_option_seq = n.item_option_seq
+	join item i on n.item_seq = i.item_seq
+	join item_list l on l.item_seq = i.item_seq
+	join bundle b on c.bundle_seq = b.bundle_seq
+	join project p on f.project_seq = p.project_seq
+	join member_info m on m.member_seq = p.member_seq
+	where f.member_seq = #{memberSeq}
+	AND pay_status = 1	
+	and p.project_process IN (6, 7)
+	
 </select>
 
 <!-- 후원한 프로젝트 페이지 - 후원 취소 -->
-<select id="cancelFunded" parameterType="int" resultType="fundingdto">
-<![CDATA[
-	SELECT * FROM FUNDING
-	WHERE member_seq =#{memberSeq}
-	AND del_status= true 
-]]>
+<select id="cancelFunded" resultMap="fundingMap">
+	select * from funding f
+	join funding_bundle_count c on f.fund_seq = c.fund_seq
+	join chosen_option o on c.bundle_count_seq = o.bundle_count_seq
+	left join item_option n on o.item_option_seq = n.item_option_seq
+	join item i on n.item_seq = i.item_seq
+	join item_list l on l.item_seq = i.item_seq
+	join bundle b on c.bundle_seq = b.bundle_seq
+	join project p on f.project_seq = p.project_seq
+	join member_info m on m.member_seq = p.member_seq
+	where f.member_seq = #{memberSeq}
+	AND del_status= true
 </select>
 
 
@@ -66,5 +76,165 @@
 	insert into funding (fund_date, pay_option, price, paydate, pay_status)
 	values (now(), #{pay_option}, #{price}, #{paydate}, 0)
 </insert>
+
+<!-- 결제정보 상세페이지 정보 끌어오기 -->
+<resultMap type="fundingdto" id="fundingMap">
+	<id property="fund_seq" column="fund_seq"/>
+	<result property="member_seq" column="member_seq"/>
+	<result property="price" column="price"/>
+	<result property="fund_date" column="fund_date"/>
+	<result property="del_status" column="del_status"/>
+	<result property="del_date" column="del_date"/>
+	<result property="pay_option" column="pay_option"/>
+	<result property="pay_number" column="pay_number"/>
+	<result property="pay_status" column="pay_status"/>
+	<result property="pay_date" column="pay_date"/>
+	<result property="name" column="name"/>
+	<result property="phone" column="phone"/>
+	<result property="postcode" column="postcode"/>
+	<result property="requeste" column="requeste"/>
+	<result property="track_num" column="track_num"/>
+	<result property="track_status" column="track_status"/>
+	<result property="road_address" column="road_address"/>
+	<result property="jibun_address" column="jibun_address"/>
+	<result property="extra_address" column="extra_address"/>
+	<result property="detail_address" column="detail_address"/>
+	<association property="pDTO" resultMap="projectMap"/>
+	<association property="collectorDTO" resultMap="collectorMap"/>
+	<collection property="bCountDTOList" resultMap="countMap"/>
+</resultMap>
+<resultMap type="projectdto" id="projectMap">
+	<id property="project_seq" column="project_seq"/>
+	<result property="long_title" column="long_title"/>
+	<result property="url" column="url"/>
+	<result property="main_images_url" column="main_images_url"/>
+	<result property="category" column="category"/>
+	<result property="start_date" column="start_date"/>
+	<result property="due_date" column="due_date"/>
+	<result property="collection_amount" column="collection_amount"/>
+	<result property="goal_price" column="goal_price"/>
+	<result property="delivery_date" column="delivery_date"/>
+	<result property="project_process" column="project_process"/>
+</resultMap>
+<resultMap type="memberdto" id="collectorMap">
+	<id property="member_seq" column="member_seq"/>
+	<result property="member_url" column="member_url"/>
+	<result property="nickname" column="nickname"/>
+	<result property="profile_img" column="profile_img"/>
+</resultMap>
+<resultMap type="countdto" id="countMap">
+	<id property="bundle_count_seq" column="bundle_count_seq"/>
+	<result property="fund_seq" column="fund_seq"/>
+	<result property="bundle_seq" column="bundle_seq"/>
+	<result property="perchase_count" column="perchase_count"/>
+	<collection property="bundleDTOList" resultMap="bundleMap"/>
+</resultMap>
+<resultMap type="bundledto" id="bundleMap">
+	<id property="bundle_seq" column="bundle_seq"/>
+	<result property="project_seq" column="project_seq"/>
+	<result property="bundle_name" column="bundle_name"/>
+	<result property="bundle_price" column="bundle_price"/>
+	<collection property="itemListDTOList" resultMap="itemListMap"/>
+</resultMap>
+<resultMap type="itemlistdto" id="itemListMap">
+	<id property="item_list_seq" column="item_list_seq"/>
+	<result property="item_seq" column="item_seq"/>
+	<result property="bundle_seq" column="bundle_seq"/>
+	<result property="item_count" column="item_count"/>
+	<association property="itemDTO" resultMap="itemMap"/>
+</resultMap>
+<resultMap type="itemdto" id="itemMap">
+	<id property="item_seq" column="item_seq"/>
+	<result property="project_seq" column="project_seq"/>
+	<result property="item_name" column="item_name"/>
+	<collection property="optionDTOList" resultMap="itemOptionMap"/>
+</resultMap>
+<resultMap type="itemoptiondto" id="itemOptionMap">
+	<id property="item_option_seq" column="item_option_seq"/>
+	<result property="item_seq" column="item_seq"/>
+	<result property="item_option_name" column="item_option_name"/>
+</resultMap>
+<select id="getPaymentInfo" resultMap="fundingMap">
+select * from funding f
+join funding_bundle_count c on f.fund_seq = c.fund_seq
+join chosen_option o on c.bundle_count_seq = o.bundle_count_seq
+left join item_option n on o.item_option_seq = n.item_option_seq
+join item i on n.item_seq = i.item_seq
+join item_list l on l.item_seq = i.item_seq
+join bundle b on c.bundle_seq = b.bundle_seq
+join project p on f.project_seq = p.project_seq
+join member_info m on m.member_seq = p.member_seq
+where f.fund_seq = #{fundseq};	
+</select>
+
+<!-- 후원 정보 넣기 -->
+<insert id="insertFunding">
+insert into funding(
+	member_seq, 
+	project_seq,
+	price,
+	extra_price,
+	pay_option, 
+	pay_number, 
+	pay_company, 
+	name, 
+	phone, 
+	postcode, 
+	road_address,
+	jibun_address,
+	extra_address,
+	detail_address,
+	fund_duedate
+	) 
+	values(
+	
+	#{member_seq},
+	#{project_seq}, 
+	#{price},
+	#{extra_price}, 
+	#{pay_option}, 
+	#{pay_number}, 
+	#{pay_company}, 
+	#{name}, 
+	#{phone}, 
+	#{postcode}, 
+	#{road_address},
+	#{jibun_address},
+	#{extra_address},
+	#{detail_address},
+	#{fund_duedate}
+	)
+</insert>
+<select id="findFundingSeq">
+select fund_seq from funding where project_seq = #{project_seq} and member_seq = #{member_seq} and del_status = false
+</select>
+<insert id="insertFundingBundleCount" parameterType="countdto">
+insert into funding_bundle_count(fund_seq, bundle_seq, perchase_count) values (#{fund_seq}, #{bundle_seq}, #{perchase_count})
+</insert>
+<select id="findCountSeq">
+select bundle_count_seq from funding_bundle_count where fund_seq = #{fundSeq} and bundle_seq = #{bundleSeq}
+</select>
+<insert id="insertChosenOption">
+insert into chosen_option(bundle_count_seq, item_option_seq) values (#{countSeq}, #{optionSeq})
+</insert>
+
+<select id="getFunding">
+select * from funding where project_seq = #{pseq} and pay_status = false and del_status = false
+</select>
+<update id="updatePayStatus">
+update funding set pay_option = true where fund_seq = #{fund_seq}
+</update>
+
+
+
+    <!-- 후원한 프로젝트 페이지 - 검색 -->
+<select id="searchFunded" parameterType="java.util.Map"  resultType="java.util.Map">
+    SELECT project.*, funding.*
+    FROM project
+    INNER JOIN funding ON project.project_seq = funding.project_seq
+    WHERE (project.long_title LIKE concat("%", #{keyword, jdbcType=VARCHAR}, "%"))
+        AND  funding.member_seq=#{memberSeq, jdbcType=INTEGER}
+</select>
+
 
 </mapper>

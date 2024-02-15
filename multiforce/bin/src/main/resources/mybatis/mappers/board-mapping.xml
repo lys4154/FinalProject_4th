@@ -2,10 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="board.dao.BoardDAO">
-    <insert id="insertBoard" parameterType="board.dto.BoardDTO">
+    <insert id="insertBoard" parameterType="board.dto.BoardDTO" useGeneratedKeys="true" keyProperty="help_ask_seq">
         INSERT INTO help_ask (title, content, member_seq)
         VALUES (#{title}, #{content}, #{member_seq})
     </insert>
+    
+    <update id="editBoard" parameterType="board.dto.BoardDTO">
+	    UPDATE help_ask SET title = #{title}, content = #{content}
+	    WHERE help_ask_seq = #{help_ask_seq}
+    </update>
     
 
     <insert id="insertUpdateReply" parameterType="board.dto.UpdateReplyDTO">
@@ -24,16 +29,38 @@
         AND member_seq = #{loggedInUserId}
     </select>
     
+    <select id="userIsProjectManager" resultType="boolean" parameterType="projectdto">
+        SELECT COUNT(*) > 0 FROM project WHERE project_seq = #{project_seq} 
+        AND member_seq = #{currentUser}
+    </select>
+    
+    <select id="checkIfCommunityLikedByUser" resultType="boolean" parameterType="board.dto.CommunityLikeDTO">
+        SELECT COUNT(*) > 0 FROM community_like WHERE pro_board_seq = #{pro_board_seq} 
+        AND member_seq = #{loggedInUserId}
+    </select>
+    
     <select id="isUserFunding" resultType="boolean" parameterType="funding.dto.FundingDTO">
         SELECT COUNT(*) > 0 FROM funding where member_seq = #{member_seq} AND project_seq = #{project_seq}
+    </select>
+    
+    <select id="getCsCommentByPostId" parameterType="board.dto.BoardDTO">
+        SELECT * from help_ask where help_ask_seq = #{help_ask_seq}
     </select>
     
     <select id="getUpdatePostByUpdateSeq" parameterType="board.dto.updateBoardDTO">
         SELECT * from update_board where update_seq = #{update_seq}
     </select>
     
+    <select id="getCommunityPostByBoardSeq" parameterType="board.dto.CommunityDTO">
+        SELECT * from community_board where pro_board_seq = #{pro_board_seq}
+    </select>
+    
     <select id="getUpdateCommentByReplySeq" parameterType="board.dto.UpdateReplyDTO">
         SELECT * from update_reply where update_reply_seq = #{update_reply_seq}
+    </select>
+    
+    <select id="getCommunityCommentByReplySeq" parameterType="board.dto.CommunityDTO">
+        SELECT * from community_board where pro_board_seq = #{pro_board_seq}
     </select>
     
     <insert id="insertUpdateLike" parameterType="board.dto.UpdateLikeDTO">
@@ -41,14 +68,46 @@
 	    VALUES (#{updateSeq}, #{loggedInUserId})
 	</insert>
 	
+	
+	
+	
+    <insert id="insertCommunityLike" parameterType="board.dto.CommunityLikeDTO">
+	    INSERT INTO community_like (pro_board_seq, member_seq)
+	    VALUES (#{pro_board_seq}, #{loggedInUserId})
+	</insert>
+	
+	
+	
 	<delete id="deleteUpdateLike" parameterType="board.dto.UpdateLikeDTO">
         DELETE FROM update_like WHERE update_seq = #{updateSeq}
+          AND member_seq = #{loggedInUserId}
+    </delete>
+    
+    <delete id="deleteCommunityLike" parameterType="board.dto.CommunityLikeDTO">
+        DELETE FROM community_like WHERE pro_board_seq = #{pro_board_seq}
           AND member_seq = #{loggedInUserId}
     </delete>
     
     <update id="deleteUpdatePost" parameterType="board.dto.updateBoardDTO">
         UPDATE update_board SET del_status=true, del_date = #{del_date} 
         WHERE update_seq = #{update_seq}
+          
+    </update>
+    <update id="deleteCommunityComment" parameterType="board.dto.CommunityDTO">
+        UPDATE community_board SET del_status=true, del_date = #{del_date} 
+        WHERE pro_board_seq = #{pro_board_seq}
+          
+    </update>
+    
+    <update id="deleteCsComment" parameterType="board.dto.BoardDTO">
+        UPDATE help_ask SET del_status=true, del_date = #{del_date} 
+        WHERE help_ask_seq = #{help_ask_seq}
+          
+    </update>
+    
+    <update id="deleteCommunityPost" parameterType="board.dto.CommunityDTO">
+        UPDATE community_board SET del_status=true, del_date = #{del_date} 
+        WHERE pro_board_seq = #{pro_board_seq}
           
     </update>
     
@@ -62,12 +121,16 @@
 	    SELECT COUNT(*) FROM update_like WHERE update_seq = #{updateSeq}
 	</select>
 	
+	<select id="getCommLikeCount" resultType="int" parameterType="board.dto.CommunityLikeDTO">
+	    SELECT COUNT(*) FROM community_like WHERE pro_board_seq = #{pro_board_seq}
+	</select>
+	
 	<select id="getUpdateSeqByProjectSeq" resultType="int" parameterType="board.dto.updateBoardDTO">
 	    SELECT update_seq FROM update_board WHERE project_seq = #{project_seq} AND del_status=false
 	</select>
 	
     <select id="getAllCsPosts" resultType="board.dto.BoardDTO">
-	    select * from help_ask
+	    select * from help_ask where del_status=false
 	</select>
 	
 	<select id="isUpdateLikedByUser" resultType="boolean">
@@ -76,12 +139,18 @@
         AND member_seq = #{currentUser}
 	</select>
 	
+	<select id="isCommunityLikedByUser" resultType="boolean">
+	    SELECT COUNT(*) > 0 FROM community_like
+        WHERE pro_board_seq = #{pro_board_seq}
+        AND member_seq = #{currentUser}
+	</select>
+	
 	<select id="getCommentsByUpdateSeq" resultType="board.dto.UpdateReplyDTO">
 	    select * from update_reply where update_seq = #{update_seq} AND del_status=false
 	</select>
 	
 	<select id="getCommCommentsByBoardSeq" resultType="board.dto.CommunityDTO">
-	    select * from community_board where parent_seq = #{board_seq}
+	    select * from community_board where parent_seq = #{board_seq} AND del_status=false
 	</select>
 
 
@@ -96,14 +165,14 @@
     </insert>
     
     <select id="getCsCommentsById" resultType="board.dto.BoardDTO">
-	    select * from help_ask where parent_seq = #{help_ask_seq}
+	    select * from help_ask where parent_seq = #{help_ask_seq} AND del_status=false
 	</select>
 	 <insert id="saveCommunityPost" parameterType="board.dto.BoardDTO">
         INSERT INTO community_board (project_seq, member_seq, category, content)
         VALUES (#{project_seq}, #{member_seq}, #{category}, #{content})
     </insert>
     <select id="getAllCommPost" resultType="board.dto.CommunityDTO">
-	    select * from community_board where project_seq = #{project_seq} AND parent_seq IS NULL
+	    select * from community_board where project_seq = #{project_seq} AND parent_seq IS NULL AND del_status=false
 	</select>
     
 </mapper>

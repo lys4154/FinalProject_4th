@@ -1,0 +1,208 @@
+@charset "UTF-8";
+
+
+.out_con {
+	width: 1040px;
+	margin:10px auto;
+	padding: 10px 10px;
+	font-size: 14px;
+}
+
+.signup_title{
+	margin-top: 20px;
+	font-size: 22px;
+	text-align:center;
+	color: #5c5c5c;
+	font-weight: 600;
+}
+
+#sign_up_container{
+    text-align: -webkit-center;
+	margin: 0 auto;
+	margin-top: 30px;
+}
+form{
+	display: inline-block;
+	margin: 0 auto;
+}
+
+td input{
+	border: 0px;
+}
+
+table{
+	border-collapse: collapse;
+  	border: 1px solid #cfcfcf;
+ 	border-style: hidden;
+	width: 720px;
+}
+tbody{
+	border: none;
+
+}
+tr{
+	border: 1px solid #cfcfcf;
+	height: 50px;
+	display: flex;
+	flex-direction: row;
+    align-items: center;
+    border-bottom: none;    
+}
+th{
+	display: flex;
+	width: 110px;
+    text-align: left;
+    padding-left: 15px;
+   	font-weight: 500;
+    color: #5c5c5c;
+}
+td{
+	display: flex;
+}
+.tr_address{
+	height: 120px;
+	border-bottom: 1px solid #cfcfcf;	
+}
+
+#sign_up_container input[type="text"],
+#sign_up_container input[type="date"] {
+    outline: none;    
+}
+#sign_up_container input[type="password"] {
+    outline: none;
+    width: 320px;
+}
+.td_email input[type="text"] {
+    width: 130px;
+    padding: 0 10x;
+    margin-right: 5px;
+    border-bottom: 1px solid #cfcfcf;
+}
+#auth_code_input{
+	width: 200px;
+}
+.td_address{
+	flex-direction: column;
+}
+.address_wrap_1, .address_wrap_2{
+	display: flex;
+}
+input::placeholder {
+	font-size: 13px;
+	color: #a8a8a8;
+}
+
+#user_nickname{
+	width: 280px;
+}
+
+
+#user_name_errmsg, #user_birth_errmsg, #user_id_dup_errmsg,
+#user_id_check_errmsg, #user_nickname_dup_errmsg, #user_nickname_check_errmsg,
+#user_pw_on_caps, #user_pw_errmsg_spcl_num, #user_pw_errmsg_pw_num,
+#user_pw_check_errmsg, #user_email_id_errmsg, #user_email_domain_errmsg {
+	color: #fc035a;
+	font-size: 13px;
+}
+.input_result{
+	padding-left: 10px;
+}
+.tr_password{
+	height: 70px;
+}
+.pw_input{
+	flex-direction: column;
+}
+#email_select{
+	margin: 0 5px 0 2px;
+}
+.td_email{
+	display: flex;
+	flex-direction: column;	
+}
+#auth_code_input, #user_email_id_errmsg{
+	margin-top: 10px;
+}
+
+
+.td_address input[type="text"] {
+    width: 150px;
+    padding: 0 10x;
+    margin-right: 5px;
+    border-bottom: 1px solid #cfcfcf;
+}
+#address_search_result, #detailAddress, #postcode{
+	width: 550px;
+	border-bottom: 1px solid #cfcfcf;
+	margin-top: 10px;
+}
+#postcode{
+	width: 100px;
+	margin-right: 5px;
+}
+
+
+#user_id_dup_check_btn, #user_nickname_dup_check_btn, 
+#mail_auth_btn, #auth_code_check_btn, #find_address{
+	width: 85px;
+	height: 28px;
+	border: none;
+	border-radius: 5px;
+	background-color: #6e6e6e;
+	cursor: pointer;
+	font-size: 13px;
+	font-weight: 300;
+	color: #f0f0f0;
+	letter-spacing: 1px;
+}
+#mail_auth_btn, #find_address{
+	width: 105px;
+	height: 28px;
+}
+#mail_send_msg{
+	padding-left: 10px;
+	font-size: 13px;
+	color: #6e6e6e;
+}
+#auth_code_check_btn{
+	width: 50px;
+}
+#btn_join_wrap{
+	display: flex;
+    height: 80px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+button {
+	outline-color: grey;
+}	
+#btn_join{
+	height: 50px;
+	width: 720px;
+	background-color: #82c8a0;
+	color: white;
+	font-size: 20px;
+	border: 1px solid #cfcfcf;
+	border-radius: 5px;
+	cursor: pointer;
+	letter-spacing: 3px;
+	font-weight: 500;
+}
+
+select{
+	height: 28px;
+	outline-color: grey;
+	font: inherit;
+	font-size: 14px;
+	border:1px solid #cfcfcf;
+	padding: 0 5px;		
+}
+
+#user_id_pass_msg, #user_nickname_pass_msg, 
+#mail_send_msg, #user_email_auth_msg{
+	color: #82c8a0;
+}
+
+
+

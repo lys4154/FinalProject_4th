@@ -16,7 +16,14 @@ public class updateBoardDTO {
 	    private LocalDateTime del_date;
 	    boolean LikedByCurrentUser;
 	    private String nickname;
+	    private String formattedDate;
 	    
+		public String getFormattedDate() {
+			return formattedDate;
+		}
+		public void setFormattedDate(String formattedDate) {
+			this.formattedDate = formattedDate;
+		}
 		public String getNickname() {
 			return nickname;
 		}
