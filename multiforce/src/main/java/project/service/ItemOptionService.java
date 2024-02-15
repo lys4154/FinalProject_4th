@@ -37,21 +37,25 @@ public class ItemOptionService {
 		return optionDao.getItemOption(itemList);
 	}
 	
-	public void createItemOption(ItemOptionDTO itemOption, HttpSession session) {
+	public void createItemOption(List<ItemOptionDTO> optionList, HttpSession session) {
 		int member_seq = projectDao.getMember_seq((String)session.getAttribute("login_user_id"));
 		int project_seq = bundleDao.getProject_seq(member_seq);
-		int bundle_seq = itemListDao.getBundle_seq(project_seq);
+//		int bundle_seq = itemListDao.getBundle_seq(project_seq);
 		int item_seq = itemListDao.getItem_seq(project_seq);
-		itemOption.getItem_seq();
-		itemOption.setItem_seq(item_seq);
-		System.out.println(itemOption.getItem_seq());
-		optionDao.insertItemOption(itemOption);
+		item_seq = item_seq+1;
+		
+		for(ItemOptionDTO optionDTO : optionList) {
+		optionDTO.getItem_seq();
+		optionDTO.setItem_seq(item_seq);
+		System.out.println(optionDTO.getItem_seq());
+		optionDao.insertItemOption(optionDTO);
+		}
 	}
 	
 	public void defaultItemOption(ItemOptionDTO itemOption, HttpSession session) {
 		int member_seq = projectDao.getMember_seq((String)session.getAttribute("login_user_id"));
 		int project_seq = bundleDao.getProject_seq(member_seq);
-		int bundle_seq = itemListDao.getBundle_seq(project_seq);
+//		int bundle_seq = itemListDao.getBundle_seq(project_seq);
 		int item_seq = itemListDao.getItem_seq(project_seq);
 		itemOption.getItem_seq();
 		itemOption.setItem_seq(item_seq);
