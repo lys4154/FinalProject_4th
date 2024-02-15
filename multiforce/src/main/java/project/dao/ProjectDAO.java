@@ -63,6 +63,8 @@ public interface ProjectDAO {
 	//member_seq불러오기
 	Integer getMember_seq(String member_id);
 	
+
+	
 	// 프로젝트 불러오기
 	List<ProjectDTO> getProject(int memberSeq);
 
@@ -163,7 +165,8 @@ public interface ProjectDAO {
 
 	List<ProjectDTO> getSuccessIn7();
 
-
+	//작성중이던 프로젝트 가져오기
+	ProjectDTO loadProjectPlan(int project_seq);
 
 
 }

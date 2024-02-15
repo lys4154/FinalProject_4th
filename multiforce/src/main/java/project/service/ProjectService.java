@@ -113,6 +113,16 @@ public class ProjectService {
 		System.out.println(project.getProject_seq());
 		projectDao.insertProjectPlan(project);
 	}
+	
+	public ProjectDTO loadProjectPlan( HttpSession session) {
+		System.out.println("1111");
+		System.out.println("session = " + (String)session.getAttribute("login_user_id"));
+		int member_seq = projectDao.getMember_seq((String)session.getAttribute("login_user_id"));
+		System.out.println("member_seq = " + member_seq);
+		int project_seq = projectDao.getProject_seq(member_seq);
+		System.out.println("project_seq = " + project_seq);
+		return projectDao.loadProjectPlan(project_seq);
+	}
 
 	//관심 프로젝트 - 관심 취소
 	public int dibsDelete(int projectSeq) {
@@ -237,6 +247,6 @@ public class ProjectService {
 		return projectDao.popularProject();
 	}
 
-
+	
 
 }

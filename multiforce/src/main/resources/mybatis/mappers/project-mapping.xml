@@ -120,9 +120,16 @@
 </select> 
 
 <insert id="insertProject" parameterType="project.dto.ProjectDTO">
- INSERT INTO project (member_seq, long_title, short_title, sub_title, main_images_url, url, category, start_date, due_date, goal_price)
- VALUES (#{member_seq}, #{long_title}, #{short_title}, #{sub_title}, #{main_images_url}, #{url}, #{category}, #{start_date}, #{due_date}, #{goal_price})
+ INSERT INTO project (member_seq, long_title, short_title, sub_title, main_images_url, url, category, start_date, due_date, goal_price, account)
+ VALUES (#{member_seq}, #{long_title}, #{short_title}, #{sub_title}, #{main_images_url}, #{url}, #{category}, #{start_date}, #{due_date}, #{goal_price}, #{account})
 </insert>
+
+<!-- 작성중인 프로젝트 불러오기 -->
+<select id="loadProjectPlan" parameterType="int" resultType="project.dto.ProjectDTO">
+	select purpose, planning, budget, team_introduce, item_introduce 
+	from multiforce_db.project 
+	where project_seq=#{project_seq};
+</select>
 
 <!-- tab_fundingPlan 저장 -->
 <update id="insertFundingPlan" parameterType="project.dto.ProjectDTO">
