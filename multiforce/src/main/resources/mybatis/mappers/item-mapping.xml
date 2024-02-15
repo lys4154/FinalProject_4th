@@ -24,4 +24,9 @@
 	values (#{project_seq}, #{item_name})
 </insert>
 
+<insert id="insertItemReturnSeq" parameterType="project.dto.ItemDTO" useGeneratedKeys="true" keyProperty="item_seq">
+	insert into item (project_seq, item_name)
+	values (#{project_seq}, #{item_name})
+</insert>
+
 </mapper>	

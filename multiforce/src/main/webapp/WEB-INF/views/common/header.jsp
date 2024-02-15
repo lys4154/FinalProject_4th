@@ -287,7 +287,7 @@ $(document).ready(function(){
 					<a href="/discover?sort=end">마감임박</a>
 				</div>
 				<div style="display:inline-block">
-					<a id="project_design_btn" href="projectdesign" >프로젝트 등록</a>
+					<a id="project_design_btn" href="/projectdesign" >프로젝트 등록</a>
 				</div>
 				<div style="display:inline-block">				
 					<div id = "change_part" ></div>					

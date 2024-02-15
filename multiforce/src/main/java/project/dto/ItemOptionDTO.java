@@ -10,6 +10,16 @@ public class ItemOptionDTO {
 	String item_option_name;
 	
 	
+	
+	public ItemOptionDTO() {
+		super();
+	}
+	public ItemOptionDTO(int item_option_seq, int item_seq, String item_option_name) {
+		super();
+		this.item_option_seq = item_option_seq;
+		this.item_seq = item_seq;
+		this.item_option_name = item_option_name;
+	}
 	public int getItem_option_seq() {
 		return item_option_seq;
 	}

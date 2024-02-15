@@ -11,7 +11,17 @@ public class ItemDTO {
 	int project_seq;
 	String item_name;
 	List<ItemOptionDTO> optionDTOList;
-
+	
+	public ItemDTO() {
+		
+	}
+	public ItemDTO(int item_seq, int project_seq, String item_name, List<ItemOptionDTO> optionDTOList) {
+		
+		this.item_seq = item_seq;
+		this.project_seq = project_seq;
+		this.item_name = item_name;
+		this.optionDTOList = optionDTOList;
+	}
 	public List<ItemOptionDTO> getOptionDTOList() {
 		return optionDTOList;
 	}
