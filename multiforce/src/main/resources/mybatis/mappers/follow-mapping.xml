@@ -17,7 +17,7 @@
 
 <!-- 마이프로필 - 팔로워의 팔로워 -->
 <select id="getCountByFollowingSeq" resultType="int">
-	SELECT COUNT(*) FROM FOLLOW WHERE following_seq = #{followingSeq}
+	SELECT COUNT(*) FROM follow WHERE following_seq = #{followingSeq}
 </select>
 
 

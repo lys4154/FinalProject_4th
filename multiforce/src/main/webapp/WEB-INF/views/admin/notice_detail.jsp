@@ -11,6 +11,14 @@
 <title>Insert title here</title>
 </head>
 <script src="/js/jquery-3.7.1.min.js"></script>
+<style>
+.out_con {
+	width: 1040px;
+	margin:0 auto;
+	padding: 10px 10px;
+}
+</style>
+
 <script>
 if("${result}" == "false"){
 	alert("삭제된 게시물입니다")

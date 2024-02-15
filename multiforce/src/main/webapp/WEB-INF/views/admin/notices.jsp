@@ -14,6 +14,14 @@
 <title>Insert title here</title>
 </head>
 <script src="/js/jquery-3.7.1.min.js"></script>
+<style>
+.out_con {
+	width: 1040px;
+	margin:0 auto;
+	padding: 10px 10px;
+}
+</style>
+
 <script>
 $(document).ready(function(){
 	
@@ -26,6 +34,7 @@ $(document).ready(function(){
 });
 </script>
 <body>
+
 <h1 id="notice">공지사항</h1>
 <span class="TabContainier__notices">
 <a href="/notices?category=notice&page=1">공지사항</a>
@@ -75,40 +84,40 @@ $(document).ready(function(){
 				${item.write_date }
 			</span>
 		</c:if>
-	</div>
-</c:forEach>
-<hr>
-<div id="page_btn_wrap">
-<%	int pageListLength = 5;
-	int totalPage = (int)request.getAttribute("totalPage");
-	int nowPage = (int)request.getAttribute("nowPage");
-	String category = (String)request.getAttribute("category");
-	String query = "";
-	if(request.getAttribute("query") != null && !request.getAttribute("query").equals("")){
-		query = "&query=" + request.getAttribute("query");
-	}
-	int tmp = nowPage/(pageListLength + 1);
-	//<-버튼 기능 구현
-	if(tmp == 0){
-%>		<a id="prev_page_btn" href="/notices?category=<%=category%>&page=1<%=query%>">←</a>
-<%	}else{
-%>		<a id="prev_page_btn" href="/notices?category=<%=category%>&page=<%= pageListLength * (tmp - 1) + 1%><%=query%>">←</a>
-<%	}
-%>	
+		</div>
+	</c:forEach>
+	<hr>
+	<div id="page_btn_wrap">
+	<%	int pageListLength = 5;
+		int totalPage = (int)request.getAttribute("totalPage");
+		int nowPage = (int)request.getAttribute("nowPage");
+		String category = (String)request.getAttribute("category");
+		String query = "";
+		if(request.getAttribute("query") != null && !request.getAttribute("query").equals("")){
+			query = "&query=" + request.getAttribute("query");
+		}
+		int tmp = nowPage/(pageListLength + 1);
+		//<-버튼 기능 구현
+		if(tmp == 0){
+	%>		<a id="prev_page_btn" href="/notices?category=<%=category%>&page=1<%=query%>">←</a>
+	<%	}else{
+	%>		<a id="prev_page_btn" href="/notices?category=<%=category%>&page=<%= pageListLength * (tmp - 1) + 1%><%=query%>">←</a>
+	<%	}
+	%>	
+	
+	<%	//페이지 숫자 
+		for(int i = 1; i <= pageListLength; i++){
+	%>		<a class="page_number_btn" href="/notices?category=<%=category%>&page=<%=i + tmp*pageListLength%><%=query%>"><%=i + tmp*pageListLength%></a>
+	<%	//->버튼 기능 구현	
+			if(i + tmp*pageListLength == totalPage){
+	%>			<a id="next_page_btn" href="/notices?category=<%=category%>&page=<%= totalPage%><%=query%>">→</a>
+	<%			break;
+			}else if(i == pageListLength){
+	%>			<a id="next_page_btn" href="/notices?category=<%=category%>&page=<%= pageListLength * (tmp + 1) + 1%><%=query%>">→</a>
+	<%		}
+		}
+	%>	
 
-<%	//페이지 숫자 
-	for(int i = 1; i <= pageListLength; i++){
-%>		<a class="page_number_btn" href="/notices?category=<%=category%>&page=<%=i + tmp*pageListLength%><%=query%>"><%=i + tmp*pageListLength%></a>
-<%	//->버튼 기능 구현	
-		if(i + tmp*pageListLength == totalPage){
-%>			<a id="next_page_btn" href="/notices?category=<%=category%>&page=<%= totalPage%><%=query%>">→</a>
-<%			break;
-		}else if(i == pageListLength){
-%>			<a id="next_page_btn" href="/notices?category=<%=category%>&page=<%= pageListLength * (tmp + 1) + 1%><%=query%>">→</a>
-<%		}
-	}
-%>	
 </div>
-
 </body>
 </html>

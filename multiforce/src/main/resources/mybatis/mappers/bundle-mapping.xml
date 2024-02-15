@@ -54,6 +54,9 @@
 	<foreach collection="bundleSeqList" item="item" separator=" or ">
 	 b.bundle_seq = #{item}
 	</foreach>
+	<if test="bundleSeqList == null or bundleSeqList.size == 0">
+       b.bundle_seq = 0
+    </if>
 	 order by bundle_seq asc ,item_list_seq asc, item_seq asc;
 </select>
 
