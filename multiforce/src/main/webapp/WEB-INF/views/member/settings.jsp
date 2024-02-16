@@ -79,6 +79,7 @@ $(document).ready(function() {
 		}		
 	});
     
+	var filePath= "";
 	//프로필 사진 - 파일 업로드 되면
 	$("#img_upload").change(function() {		
 		var file = $("#img_upload")[0].files[0];		
@@ -95,16 +96,21 @@ $(document).ready(function() {
 	        processData: false,
 	        data: formData,
 	        success: function(response) { 
+	    		filePath = response.filePath;	
 	    		console.log(filePath);
-	    		var filePath = response.filePath;		
+	    		console.log(response);
 	    		$("#img_final").attr("src", filePath);	//사진 바로 보여주기	    		
 	    		$(".img_container").hide();
 	    		$("#img_change").val("변경");
+	    		
+	    		$(".login_user_img").attr("src", filePath); //헤더사진변경
 	    		},
 			error: function(error) {
 			       console.log(error);
 				}
-	     });			
+	     });
+       
+       
 	});	
 	
 	//프로필 사진 - 삭제 버튼

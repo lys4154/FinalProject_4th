@@ -9,10 +9,12 @@ import org.springframework.stereotype.Service;
 import jakarta.servlet.http.HttpSession;
 import project.dao.BundleDAO;
 import project.dao.ItemDAO;
+import project.dao.ItemListDAO;
 import project.dao.ItemOptionDAO;
 import project.dao.ProjectDAO;
 import project.dto.BundleDTO;
 import project.dto.ItemDTO;
+import project.dto.ItemListDTO;
 import project.dto.ItemOptionDTO;
 
 @Service
@@ -29,6 +31,9 @@ public class ItemService {
 	
 	@Autowired
 	private ItemOptionDAO optionDao;
+	
+	@Autowired
+	private ItemListDAO listDao;
 	
 	//후원 상세 - 아이템
 	public List<ItemDTO> getItem(List<Integer> bundleList) {
@@ -66,6 +71,18 @@ public class ItemService {
 		System.out.println("projectSeq = " + project_seq);
 		System.out.println("ItemSeq = " + item_seq);
 		return itemDao.getItem_name(project_seq);
+	}
+
+	public List<BundleDTO> insertBundles(List<BundleDTO> bundles) {
+		for (BundleDTO dto : bundles) {
+			bundleDao.insertBundleReturnSeq(dto);
+			for (ItemListDTO ldto : dto.getItemListDTOList()) {
+				ldto.setBundle_seq(dto.getBundle_seq());
+				listDao.insertItemListReturnSeq(ldto);
+			}
+		}
+		System.out.println(bundles);
+		return bundles;
 	}
 
 }

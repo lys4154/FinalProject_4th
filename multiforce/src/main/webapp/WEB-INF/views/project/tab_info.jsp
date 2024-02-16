@@ -13,14 +13,19 @@
 <link rel="stylesheet" href="/css/project/tab_info.css">
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <script>
-    $(document).ready(function() {
+
+$(document).ready(function(){
     $("#submitBtn").click(function() {
-        var data = {
+        let start = $("#main_images_url").val().indexOf("src=") + 5;
+        let end = $("#main_images_url").val().indexOf("\"", start);
+       // let url = $("#main_images_url").val().substr(start, end);
+        let url = "";
+    	var data = {
             category: $("#project_category").val(),
             long_title: $("#long_title").val(),
             short_title: $("#short_title").val(),
             sub_title: $("#sub_title").val(),
-            main_images_url: $("#main_images_url").val(),
+            main_images_url: url ,
             url : "/project_detail/" + $("#url").val(),
             start_date : $("#start_date").val(),
             due_date : $("#due_date").val(),
@@ -36,8 +41,8 @@
             contentType: "application/json",  // JSON 형태로 데이터 전송
             data: JSON.stringify(data),  // 데이터를 JSON 문자열로 변환
             success: function(response) {
-            	alert("성공하였습니다.");
-                console.log(response);
+            	projectSeq = response
+            	alert("저장되었습니다");
             },
             error: function(error) {
             	alert("실패하였습니다.");
@@ -54,45 +59,43 @@
 <body>
 
 <div id="top_title">프로젝트 정보</div>
-<div id="top_title2">이 페이지에서 프로젝트의 기본 정보와 펀딩 계획을 작성해주세요.</div>
+<div id="top_title2">프로젝트의 기본 정보와 펀딩 계획을 작성해주세요.</div>
 <!-- header -->
 
-<div class="info_flex">
-	<div class="info_title_left">
-		<div>입금 계좌</div>
-		<div>후원금을 전달받을 계좌를 입력해주세요.</div>
-	</div>
-	<div class="info_input_right">		
-		<input type="text" id="account">
-	</div>
+
+<div class="account">
+	<div class="mini_title">입금 계좌</div>
+	<div>후원금을 전달받을 계좌를 입력해주세요.</div>
+	<input type="text" id="account">
 </div>
 
 <div class=project_info>
-<form action="/saveProject" method="post">
-<div class="contents">
-	<div class="planContents">
-		<div class="projectItem_itemDesign">
-			<dl class="projectItem_infoDescription">
-				<h2>프로젝트의 카테고리를 선택해주세요.</h2>
-			</dl>
-		</div>
-	</div>
-	
-	<div class="projectForms">
-		<div class="projectForms_style">
-			<div class="projectForms_selectCategory">
-			<div class="category" id="category_list">
-				<select id="project_category">
-					<%	for(ProjectCategory item : ProjectCategory.values()){ %>
-				<option value="<%=item.getEngName()%>"><%=item.getKorName()%></option>
-					<%}
-					%>
-				</select>				
-		</div>
-				
-				
+	<form action="/saveProject" method="post">
+	<div class="contents">
+		<div class="planContents">
+			<div class="projectItem_itemDesign">
+				<dl class="projectItem_infoDescription">
+					<div class="mini_title">카테고리</div>
+					<div>프로젝트의 카테고리를 선택해주세요.</div>
+				</dl>
 			</div>
 		</div>
+		
+		<div class="projectForms">
+			<div class="projectForms_style">
+				<div class="projectForms_selectCategory">
+					<div class="category" id="category_list_select">
+						<select id="project_category">
+							<%	for(ProjectCategory item : ProjectCategory.values()){ %>
+						<option value="<%=item.getEngName()%>"><%=item.getKorName()%></option>
+							<%}
+							%>
+						</select>				
+					</div>				
+				</div>
+			</div>
+		</div>
+
 	</div>
 	<hr width=100%>
 	
@@ -118,17 +121,63 @@
 				<br>
 				<textarea cols="50" rows="10" id="sub_title" placeholder="프로젝트 요약"></textarea>
 			</dl>
+
 		</div>
-	</div>
-	<hr>
+		
+		<div class="contentsImage">
+			<div class="projectImage_titleDesign">
+				<dl class="projectImage_titleDescription">
+					<div class="mini_title">대표 이미지</div>
+					<div> 프로젝트 대표 이미지를 선택해주세요.</div>
+					<!-- <input type="file" class="real-upload" accept="image/*" id="main_images_url"> -->
+					<textarea id="main_images_url" name="main_image"></textarea>
+					
+						<script>
+						$(document).ready(function() {
+						$('#main_images_url').summernote({
+							width:1010,
+							toolbar: [
+							    ['insert',['picture']]
+							  ],
+						    callbacks: {
+						        onImageUpload : function(files) {
+						            uploadImageFile(files[0], this);
+						        },
+						        
+						    }
+						});
 	
-	<div class="contentsImage">
-		<div class="projectImage_titleDesign">
-			<dl class="projectImage_titleDescription">
-			<h2>프로젝트 대표 이미지를 선택해주세요.</h2>
-				<!-- <input type="file" class="real-upload" accept="image/*" id="main_images_url"> -->
-				<textarea id="main_images_url" name="main_image"></textarea>
+						function uploadImageFile(file, editor) {
+						    data = new FormData();
+						    data.append("file", file);
+						    data.append("path", "file:///usr/mydir/images");
+						    data.append("url", "/noticesimages/");
+						    $.ajax({
+						        data : data,
+						        type : "POST",
+						        url : "/uploadSummernoteImageFile",
+						        contentType : false,
+						        processData : false,
+						        success : function(data) {
+						            // 항상 업로드된 파일의 url이 있어야 한다.
+						            $(editor).summernote('insertImage', data.url);
+						            
+						            var img = new Image();
+						            img.src = data.url;
+						            img.onload = function () {
+						                var newHeight = img.height + 50; // 50은 여분의 여백
+						                var newWidth = img.width;
+						                $(editor).summernote('height', newHeight);
+						                $(editor).summernote('width', newWidth);
+						            };
+						        }
+						    });
+						}
+						});
 				
+
+					</script>
+
 					<script>
 					$(document).ready(function() {
 					$('#main_images_url').summernote({
@@ -147,8 +196,8 @@
 					function uploadImageFile(file, editor) {
 					    data = new FormData();
 					    data.append("file", file);
-					    data.append("path", "file:///usr/mydir/images");
-					    data.append("url", "/noticesimages/");
+					    data.append("path", "/usr/mydir/images/project");
+					    data.append("url", "/project/");
 					    $.ajax({
 					        data : data,
 					        type : "POST",
@@ -177,28 +226,106 @@
 				<!-- 프로젝트 대표 이미지를 올려주세요
 				<br>
 				<input type="file" class="real-upload" accept="image/*" id="main_images_url">
-				
-				<div class="upload"></div>
-				<br>
-				이미지 미리보기
-				<ul class="image-preview"></ul> -->
-			</dl>
+
+					<!-- 프로젝트 대표 이미지를 올려주세요
+					<br>
+					<input type="file" class="real-upload" accept="image/*" id="main_images_url">
+					
+					<div class="upload"></div>
+					<br>
+					이미지 미리보기
+					<ul class="image-preview"></ul> -->
+				</dl>
+			</div>
+		</div>
+		
+		<div class="projectUrl">
+			<div class="projectUrl_titleDesign">
+				<dl class="projectUrl_titleDescription">
+					<div class="mini_title">URL</div>
+					<div>프로젝트에 사용될 URL을 작성해주세요.</div>
+					<input type="text" id="url" placeholder="/project_detail/">
+				</dl>
+			</div>
 		</div>
 	</div>
-	<hr>
 	
-	<div class="projectUrl">
-		<div class="projectUrl_titleDesign">
-			<dl class="projectUrl_titleDescription">
-				<h2>프로젝트에 사용할 URL을 작성해주세요</h2>
-				<br>
-				<input type="text" id="url" placeholder="/project_detail/">
-			</dl>
-		</div>
+	<!-- footer -->
+	
+	<!-- <script> // 이미지 관련 스크립트
+	    function getImageFiles(e) {
+	      const uploadFiles = [];
+	      const files = e.currentTarget.files;
+	      const imagePreview = document.querySelector('.image-preview');
+	      const docFrag = new DocumentFragment();
+	
+	      // 파일 타입 검사
+	      [...files].forEach(file => {
+	        if (!file.type.match("image/.*")) {
+	          alert('이미지 파일만 업로드가 가능합니다.');
+	          return
+	        }
+	
+	        // 파일 갯수 검사
+	        if ([...files].length < 7) {
+	          uploadFiles.push(file);
+	          const reader = new FileReader();
+	          reader.onload = (e) => {
+	            const preview = createElement(e, file);
+	            imagePreview.appendChild(preview);
+	          };
+	          reader.readAsDataURL(file);
+	        }
+	      });
+	    }
+	
+	    function createElement(e, file) {
+	      const li = document.createElement('li');
+	      const img = document.createElement('img');
+	      img.setAttribute('src', e.target.result);
+	      img.setAttribute('data-file', file.name);
+	      li.appendChild(img);
+	
+	      return li;
+	    }
+	
+	    const realUpload = document.querySelector('.real-upload');
+	    const upload = document.querySelector('.upload');
+	
+	    upload.addEventListener('click', () => realUpload.click());
+	
+	    realUpload.addEventListener('change', getImageFiles);
+	  </script>  -->
+	<!-- tab_fundingPlan -->
+	<script>
+	function inputPrice(num) {
+		if(isFinite(num.value) == false) {
+			alert("목표금액은 숫자만 입력할 수 있습니다.");
+			num.value = "";
+			return false;
+		}
+	}
+	</script>
+	<div class="mini_title">펀딩 계획</div>
+	<div class="fund_date">
+	  <label for="start_date">시작일 </label>
+	  <input type="date" id="start_date" name="start_date">
 	</div>
-	<hr>
+	<div class="fund_date">	  
+	  <label for="due_date">마감일 </label>
+	  <input type="date" id="due_date" name="due_date">
+	</div>
+	<div class="goal_price_div">  
+	  <label for="goal_price">목표 금액 </label>
+	  <input type="text" id="goal_price" name="goal_price" onKeyup="inputPrice(this);">
+	</div>
+		
+	  <button type="button" id="submitBtn">저장</button>
+	  <!-- <button type="button" id="submitBtn">저장</button>  -->
+	</form>
+	
 </div>
-</div>
+
 
 <!-- footer -->
 
@@ -266,10 +393,9 @@ function inputPrice(num) {
   
   <label for="goal_price">목표 금액:</label>
   <input type="text" id="goal_price" name="goal_price" onKeyup="inputPrice(this);"><br><br>
-  <button type="button" id="submitBtn">저장</button>
+  <button id="submitBtn">저장</button>
   <!-- <button type="button" id="submitBtn">저장</button>  -->
 </form>
-
 
 </body>
 </html>
