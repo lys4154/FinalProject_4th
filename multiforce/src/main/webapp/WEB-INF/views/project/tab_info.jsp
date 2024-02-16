@@ -10,6 +10,7 @@
 <script src="/js/summernote/summernote-lite.js"></script>
 <script src="/js/summernote/lang/summernote-ko-KR.js"></script>
 <link rel="stylesheet" href="/css/summernote/summernote-lite.css">
+<link rel="stylesheet" href="/css/project/tab_info.css">
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <script>
     $(document).ready(function() {
@@ -52,16 +53,20 @@
 </head>
 <body>
 
-<h1>프로젝트 정보</h1>
-<h3>이 페이지에서 프로젝트의 기본 정보와 펀딩 계획을 작성해주세요</h3>
+<div id="top_title">프로젝트 정보</div>
+<div id="top_title2">이 페이지에서 프로젝트의 기본 정보와 펀딩 계획을 작성해주세요.</div>
 <!-- header -->
-<hr>
-<h1>창작자 정보</h1>
-<div class="account">
-	<h2>입금 계좌</h2>
-	후원금을 전달받을 계좌를 등록해주세요.
-	<input type="text" id="account">
+
+<div class="info_flex">
+	<div class="info_title_left">
+		<div>입금 계좌</div>
+		<div>후원금을 전달받을 계좌를 입력해주세요.</div>
+	</div>
+	<div class="info_input_right">		
+		<input type="text" id="account">
+	</div>
 </div>
+
 <div class=project_info>
 <form action="/saveProject" method="post">
 <div class="contents">

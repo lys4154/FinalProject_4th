@@ -1,4 +1,13 @@
 @charset "UTF-8";
+
+.out_con {
+	width: 1040px;
+	margin:20px auto;
+	padding: 10px 10px;
+	font-size: 14px;
+	align-items: center;
+}	
+
 h1{
 	text-align: center;
 }
