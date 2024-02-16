@@ -27,78 +27,78 @@
 </style>
 </head>
 <body>
-
-<h1>프로젝트 기획</h1>
-
-<div class="menuTab">
-	<ul class="menu">
-		<li class="tab_info">
-			<a href="#" id="tab_info">기본정보</a>
-		</li>
-		
-		<li class="tab_gift">
-			<a href="#" id="tab_gift">상품 구성</a>
-		</li>
-		
-		<li class="tab_projectPlan">
-			<a href="#" id="tab_projectPlan">프로젝트 계획</a>
-		</li>
-	</ul>
-	<hr>
-</div>
-<div id="content_container">
-</div>
+<div class="out_con">
+	<h1>프로젝트 기획</h1>
 	
-<script>
-    $(document).ready(function () {
-    	
-    	var baseUrl = window.location.origin;
-        loadContent(baseUrl + "/tab_info");
-
-    	$("#tab_info").click();
-    	
-    	$("#tab_info").click(function (e) {
-            e.preventDefault();
-            //var pid = $(this).data("project-id");
-            var baseUrl = window.location.origin;
-            loadContent(baseUrl + "/tab_info");
-        });
-        
-		$("#tab_gift").click();
-    	
-        $("#tab_gift").click(function (e) {
-            e.preventDefault();
-           // var pid = $(this).data("project-id");
-            var baseUrl = window.location.origin;
-            loadContent(baseUrl + "/tab_gift"); 
-        }); 
-        
-		$("#tab_projectPlan").click();
-    	
-        $("#tab_projectPlan").click(function (e) {
-            e.preventDefault();
-           // var pid = $(this).data("project-id");
-            var baseUrl = window.location.origin;
-            loadContent(baseUrl + "/tab_projectPlan"); 
-        });
-        
-        
-        function loadContent(url) {
-        
-            $.ajax({
-                url: url,
-                type: "GET",
-                success: function (data) {
-
-                    $("#content_container").html(data);
-                },
-                error: function (xhr, status, error) {
-                    console.error("Error loading content:", error);
-                }
-            });
-        }
-    });
-</script>
-<hr>
+	<div class="menuTab">
+		<ul class="menu">
+			<li class="tab_info">
+				<a href="#" id="tab_info">기본정보</a>
+			</li>
+			
+			<li class="tab_gift">
+				<a href="#" id="tab_gift">상품 구성</a>
+			</li>
+			
+			<li class="tab_projectPlan">
+				<a href="#" id="tab_projectPlan">프로젝트 계획</a>
+			</li>
+		</ul>
+		<hr>
+	</div>
+	<div id="content_container">
+	</div>
+		
+	<script>
+	    $(document).ready(function () {
+	    	
+	    	var baseUrl = window.location.origin;
+	        loadContent(baseUrl + "/tab_info");
+	
+	    	$("#tab_info").click();
+	    	
+	    	$("#tab_info").click(function (e) {
+	            e.preventDefault();
+	            //var pid = $(this).data("project-id");
+	            var baseUrl = window.location.origin;
+	            loadContent(baseUrl + "/tab_info");
+	        });
+	        
+			$("#tab_gift").click();
+	    	
+	        $("#tab_gift").click(function (e) {
+	            e.preventDefault();
+	           // var pid = $(this).data("project-id");
+	            var baseUrl = window.location.origin;
+	            loadContent(baseUrl + "/tab_gift"); 
+	        }); 
+	        
+			$("#tab_projectPlan").click();
+	    	
+	        $("#tab_projectPlan").click(function (e) {
+	            e.preventDefault();
+	           // var pid = $(this).data("project-id");
+	            var baseUrl = window.location.origin;
+	            loadContent(baseUrl + "/tab_projectPlan"); 
+	        });
+	        
+	        
+	        function loadContent(url) {
+	        
+	            $.ajax({
+	                url: url,
+	                type: "GET",
+	                success: function (data) {
+	
+	                    $("#content_container").html(data);
+	                },
+	                error: function (xhr, status, error) {
+	                    console.error("Error loading content:", error);
+	                }
+	            });
+	        }
+	    });
+	</script>
+</div>
 </body>
 </html>

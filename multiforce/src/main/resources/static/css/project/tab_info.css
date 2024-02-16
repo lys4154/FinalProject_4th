@@ -1,0 +1,19 @@
+@charset "UTF-8";
+
+#top_title{
+	margin-top:20px;
+	font-size: 18px;
+	color: #292929;
+	font-weight: 600;
+}
+#top_title2{
+	font-size: 15px;
+	margin-bottom: 30px;
+}
+
+.info_flex{
+	display: flex;
+	flex-direction: column;
+	
+}
+
