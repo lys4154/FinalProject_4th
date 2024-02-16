@@ -50,6 +50,7 @@
 	</div>
 		
 	<script>
+	var projectSeq = 0;
 	    $(document).ready(function () {
 	    	
 	    	var baseUrl = window.location.origin;

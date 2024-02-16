@@ -13,14 +13,19 @@
 <link rel="stylesheet" href="/css/project/tab_info.css">
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <script>
-    $(document).ready(function() {
+
+$(document).ready(function(){
     $("#submitBtn").click(function() {
-        var data = {
+        let start = $("#main_images_url").val().indexOf("src=") + 5;
+        let end = $("#main_images_url").val().indexOf("\"", start);
+       // let url = $("#main_images_url").val().substr(start, end);
+        let url = "";
+    	var data = {
             category: $("#project_category").val(),
             long_title: $("#long_title").val(),
             short_title: $("#short_title").val(),
             sub_title: $("#sub_title").val(),
-            main_images_url: $("#main_images_url").val(),
+            main_images_url: url ,
             url : "/project_detail/" + $("#url").val(),
             start_date : $("#start_date").val(),
             due_date : $("#due_date").val(),
@@ -36,8 +41,8 @@
             contentType: "application/json",  // JSON 형태로 데이터 전송
             data: JSON.stringify(data),  // 데이터를 JSON 문자열로 변환
             success: function(response) {
-            	alert("성공하였습니다.");
-                console.log(response);
+            	projectSeq = response
+            	alert("저장되었습니다");
             },
             error: function(error) {
             	alert("실패하였습니다.");
@@ -166,8 +171,58 @@
 						}
 						});
 				
+
 					</script>
-				
+
+					<script>
+					$(document).ready(function() {
+					$('#main_images_url').summernote({
+						width:200,
+						toolbar: [
+						    ['insert',['picture']]
+						  ],
+					    callbacks: {
+					        onImageUpload : function(files) {
+					            uploadImageFile(files[0], this);
+					        },
+					        
+					    }
+					});
+
+					function uploadImageFile(file, editor) {
+					    data = new FormData();
+					    data.append("file", file);
+					    data.append("path", "/usr/mydir/images/project");
+					    data.append("url", "/project/");
+					    $.ajax({
+					        data : data,
+					        type : "POST",
+					        url : "/uploadSummernoteImageFile",
+					        contentType : false,
+					        processData : false,
+					        success : function(data) {
+					            // 항상 업로드된 파일의 url이 있어야 한다.
+					            $(editor).summernote('insertImage', data.url);
+					            
+					            var img = new Image();
+					            img.src = data.url;
+					            img.onload = function () {
+					                var newHeight = img.height + 50; // 50은 여분의 여백
+					                var newWidth = img.width;
+					                $(editor).summernote('height', newHeight);
+					                $(editor).summernote('width', newWidth);
+					            };
+					        }
+					    });
+					}
+					});
+			
+				</script>
+			
+				<!-- 프로젝트 대표 이미지를 올려주세요
+				<br>
+				<input type="file" class="real-upload" accept="image/*" id="main_images_url">
+
 					<!-- 프로젝트 대표 이미지를 올려주세요
 					<br>
 					<input type="file" class="real-upload" accept="image/*" id="main_images_url">
@@ -267,6 +322,76 @@
 	
 </div>
 
+
+<!-- footer -->
+
+<!-- <script> // 이미지 관련 스크립트
+    function getImageFiles(e) {
+      const uploadFiles = [];
+      const files = e.currentTarget.files;
+      const imagePreview = document.querySelector('.image-preview');
+      const docFrag = new DocumentFragment();
+
+      // 파일 타입 검사
+      [...files].forEach(file => {
+        if (!file.type.match("image/.*")) {
+          alert('이미지 파일만 업로드가 가능합니다.');
+          return
+        }
+
+        // 파일 갯수 검사
+        if ([...files].length < 7) {
+          uploadFiles.push(file);
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            const preview = createElement(e, file);
+            imagePreview.appendChild(preview);
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+    }
+
+    function createElement(e, file) {
+      const li = document.createElement('li');
+      const img = document.createElement('img');
+      img.setAttribute('src', e.target.result);
+      img.setAttribute('data-file', file.name);
+      li.appendChild(img);
+
+      return li;
+    }
+
+    const realUpload = document.querySelector('.real-upload');
+    const upload = document.querySelector('.upload');
+
+    upload.addEventListener('click', () => realUpload.click());
+
+    realUpload.addEventListener('change', getImageFiles);
+  </script>  -->
+<!-- tab_fundingPlan -->
+<script>
+function inputPrice(num) {
+	if(isFinite(num.value) == false) {
+		alert("목표금액은 숫자만 입력할 수 있습니다.");
+		num.value = "";
+		return false;
+	}
+}
+</script>
+ <h1>펀딩 계획</h1>
+ 
+  <label for="start_date">시작일:</label>
+  <input type="date" id="start_date" name="start_date"><br><br>
+  
+  <label for="due_date">마감일:</label>
+  <input type="date" id="due_date" name="due_date"><br><br>
+  
+  <label for="goal_price">목표 금액:</label>
+  <input type="text" id="goal_price" name="goal_price" onKeyup="inputPrice(this);"><br><br>
+  <button id="submitBtn">저장</button>
+  <!-- <button type="button" id="submitBtn">저장</button>  -->
+</form>
 
 </body>
 </html>

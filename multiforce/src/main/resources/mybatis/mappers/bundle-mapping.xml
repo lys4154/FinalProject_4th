@@ -72,7 +72,10 @@
 	insert into bundle (project_seq, bundle_name, bundle_price)
 	values (#{project_seq}, #{bundle_name}, #{bundle_price})
 </insert>
-
+<insert id="insertBundleReturnSeq" parameterType="project.dto.BundleDTO" useGeneratedKeys="true" keyProperty="bundle_seq">
+	insert into bundle (project_seq, bundle_name, bundle_price)
+	values (#{project_seq}, #{bundle_name}, #{bundle_price})
+</insert>
 
 </mapper>	
 

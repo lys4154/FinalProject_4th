@@ -456,14 +456,15 @@ public class ProjectController {
 
 	@PostMapping("/saveProject")
 	@ResponseBody
-	public String saveProject(@RequestBody ProjectDTO projectDTO, HttpSession session) {
+	public int saveProject(@RequestBody ProjectDTO projectDTO, HttpSession session) {
 		try {
+			System.out.println(projectDTO);
 			// 프로젝트 생성 서비스 호출
-			projectService.createProject(projectDTO, session);
-			return "Success";
+			ProjectDTO dto = projectService.createProject(projectDTO, session);
+			return dto.getProject_seq();
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "Error";
+			return 0;
 		}
 	}
 
