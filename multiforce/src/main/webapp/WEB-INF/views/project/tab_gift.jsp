@@ -8,6 +8,7 @@
 <html>
 <head>
   <title>Reward Setting</title>
+  <link rel="stylesheet" href="/css/project/tab_gift.css">
 <script src="/js/jquery-3.7.1.min.js"></script>
 <script>
     $(document).ready(function() {
@@ -175,31 +176,33 @@
     	} 
 });
 </script>
-<style>
-.bundle {
-	text-align : center;
-}
 
-.item {
-	text-align : center;
-}
-</style>  
 </head>
 <body>
  <!-- tab_gift -->
 <h1>선물 계획</h1>
 <div class="item">  
-  <label for="item_name">아이템 이름</label> <br>
-  <input type="text" id="item_name" name="item_name" placeholder="아이템 이름을 입력해주세요"><br>
+ 
+  <div class="item-group">
+   <label for="item_name">아이템 이름</label>
+   <input type="text" id="item_name" name="item_name" placeholder="아이템 이름을 입력해주세요"><br>
+  </div>
   
-  <label for="item_option">옵션 이름</label> <br> 
-  옵션이 없으면 빈 칸으로 옵션 추가 버튼을 눌러주세요.<br>
-  <input type="text" id="item_option_name" name="item_option_name"><br>
-  <input type="button" id="addOption" value="옵션 추가">
-  <h3>옵션목록</h3>
-<div id="option_list"></div>
-<div class="option_wrap_form"></div>
-  <br><br>
+  <div class="item-group">
+	<label for="item_option">
+		옵션 이름
+		<span class="item-sub-text">* 옵션이 없으면 빈 칸으로 옵션 추가 버튼을 눌러주세요.</span>
+	</label>
+	
+
+	<input type="text" id="item_option_name" name="item_option_name"><br>
+	<input type="button" id="addOption" value="옵션 추가">
+	<h3>옵션목록</h3>
+	<div id="option_list"></div>
+	<div class="option_wrap_form"></div>
+
+  </div>
+  
   <input type="button" id="addItem" value="아이템 추가"><br> <br>
   
   <h3>아이템 목록</h3>

@@ -9,20 +9,33 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" href="/css/project/payment.css">
 </head>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <body>
 <div>
 	<div>
-		<h3>프로젝트 정보</h3>
+	
+	
+	<div class="project-head-box">
+	
+	<div style="text-align:center;font-size:20px;"><h3>프로젝트 정보</h3></div>
 		<c:set var="project" value="${paymentList[fn:length(paymentList) -1] }"/>
 		<div>
-			<div>
-				<img src="${project.profile }"><span>${project.collector}</span>
+			<div class="image-part">
+				<div>
+				<img src="${project.main_image_url }">
+				</div>
+
+				
+				
+				<div class="project-title">
+				<a href="${project.url }">
+					${project.longTitle}
+				</a>
+				</div>
 			</div>
-			<a href="${project.url }">
-				${project.longTitle}
-			</a>
+			<span style="padding-right:5px;font-weight:bold;">프로젝트 작성자 - </span><span>${project.collector}</span>
 		</div>
 		<h3>선물 정보</h3>
 		<div>
@@ -61,55 +74,83 @@
 					</li>
 				</c:forEach>
 			</ul>
-		<hr>
+		
 		</c:forEach>
 	</div>
+	</div>
+		
+	<hr>
 	
+	
+	<div class="payment-form-container">
 	<h3>배송지 정보</h3>
 	<form action="/payresult" method="post">
-		<div>
-			수취인 명: <input type="text" value="${dto.member_name }" name="name" id="name">
+		<div class="item-group">
+		    <label for="name">수취인 명: </label>
+		    <input type="text" value="${dto.member_name}" name="name" id="name">
 		</div>
-		<div>
-			연락처: <input type="text" name="phone" id="phone">
+		<div class="item-group">
+		    <label for="phone">연락처: </label>
+		    <input type="text" name="phone" id="phone">
 		</div>
-		<div>
-			우편번호: <input type="text" value="${dto.postcode}" name="postcode" id="postcode" readonly>
+		<div class="item-group">
+		    <label for="postcode">우편번호: </label>
+		    <input type="text" value="${dto.postcode}" name="postcode" id="postcode" readonly>
 		</div>
-		<div>
-			지번주소: <input type="text" value="${dto.jibun_address }" name="jibun_address" id="jibunAddress" readonly>
+		<div class="item-group">
+		    <label for="jibunAddress">지번주소: </label>
+		    <input type="text" value="${dto.jibun_address}" name="jibun_address" id="jibunAddress" readonly>
 		</div>
-		<div>
-			도로명주소: <input type="text" value="${dto.road_address }" name="road_address" id="roadAddress" readonly>
+		<div class="item-group">
+		    <label for="roadAddress">도로명주소: </label>
+		    <input type="text" value="${dto.road_address}" name="road_address" id="roadAddress" readonly>
 		</div>
-		<div>
-			상세주소: <input type="text" value="${dto.detail_address }" name="detail_address" id="detailAddress">
+		<div class="item-group">
+		    <label for="detailAddress">상세주소: </label>
+		    <input type="text" value="${dto.detail_address}" name="detail_address" id="detailAddress">
 		</div>
-		<div>
-			추가주소: <input type="text" value="${dto.extra_address }" name="extra_address" id="extraAddress" readonly>
+		<div class="item-group">
+		    <label for="extraAddress">추가주소: </label>
+		    <input type="text" value="${dto.extra_address}" name="extra_address" id="extraAddress" readonly>
 		</div>
-		<input type="button" value="주소찾기" id="find_address">
+
+		<input type="button" value="주소찾기" id="find_address" class="btn-1">
 		<input type="hidden" value="${totalPrice }" name="price">
 		<input type="hidden" value="${login_user_seq }" name="member_seq">
+		
+		<div class="payment-box">
 		<h3>결제 방법</h3>
 		<label for="payment">결제수단</label>
+		
+		<div class="pay-info-box">
 		<select id="payment" name="pay_option">
 			<option value="">--결제수단--</option> <!-- 여기서는 팝업창 안 나오게 수정 해야됨!! -->
 			<option value="card">카드결제</option>
 			<option value="cash">계좌이체</option>
 		</select>
+		</div>
+		
+		
+		
+		<div class="payment-comp-info">
 		<input type="text" name="pay_company" readonly id="pay_company">
 		<input type="text" name="pay_number" readonly id="pay_number">
+		</div>
+		
+		</div>
+		
 		<div id="result">
 		</div>
-		 <div>
+		 <div class="total-price-box">
 			<h3>총 금액</h3>
-			<div>
+			<div class="price">
 				<fmt:formatNumber value="${totalPrice }" pattern="#,###" />원
 			</div>
+			<input type="submit" value="후원하기" id="funding_btn" class="funding_button">
 		</div>
-		<input type="submit" value="후원하기" id="funding_btn">
+		
 	</form>
+	</div>
 	<!-- 결제 방법 영역-->
 		
 		<!-- 누르면 팝업창 띄우고, option 값에 따른 결제창 보여주기

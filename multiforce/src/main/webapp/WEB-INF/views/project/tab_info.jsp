@@ -101,11 +101,11 @@
 			<dl class="projectTitle_titleDescription">
 				<h2>프로젝트의 이름을 작성해주세요.</h2> 
 				<br>
-				<input type="text" id="long_title">
+				<input type="text" id="long_title" placeholder="프로젝트 이름">
 				<br>
 				<h2>프로젝트의 짧은 이름을 작성해주세요.</h2>
 				<br>
-				<input type="text" id="short_title">
+				<input type="text" id="short_title" placeholder="프로젝트 짧은 이름">
 			</dl>
 		</div>
 	</div>
@@ -116,7 +116,7 @@
 			<dl class="projectSummary_titleDescription">
 				<h2>프로젝트를 요약해 주세요</h2>
 				<br>
-				<textarea cols="50" rows="10" id="sub_title"></textarea>
+				<textarea cols="50" rows="10" id="sub_title" placeholder="프로젝트 요약"></textarea>
 			</dl>
 		</div>
 	</div>

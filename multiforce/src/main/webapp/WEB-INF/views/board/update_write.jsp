@@ -58,7 +58,7 @@
     	    function uploadImageFile(file, editor) {
     			data = new FormData();
     			data.append("file", file);
-    			data.append("path", "C:\\usr\\mydir\\images\\update\\");
+    			data.append("path", "file:\\usr\\mydir\\images\\update\\");
 
     			data.append("url", "/updateimages/");
     			$.ajax({

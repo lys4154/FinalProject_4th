@@ -25,7 +25,7 @@
         var commentText = document.getElementById("comment_text").value.trim();
 
         if (commentText === "") {
-            alert("댓글을 입력해주세요.");
+            alert("글을 입력해주세요.");
             
             return false;
         }
@@ -158,7 +158,10 @@ function toggleCommentForm(event, board_seq) {
 }
 function submitComment(board_seq, project_seq) {
     var commentText = $('#commentText_' + board_seq).val();
-
+    if (!commentText.trim()) {
+        alert('댓글을 입력해주세요.');
+        return;
+    }
     var data = {
         comment: commentText,
         board_seq: board_seq,
