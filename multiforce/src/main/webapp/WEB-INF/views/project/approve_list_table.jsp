@@ -137,7 +137,7 @@
                 <td>${project.goal_price}</td>
                 <td>${project.short_title}</td>
                 <td>${project.category}</td>
-                <td style="text-align:center;"><a class="accept-btn" id="view-reason" href="#" data-projectSeq="${project.project_seq}">반려 이유</a></td>
+                <td style="text-align:center;"><a class="accept-btn view-reason" href="#" data-projectSeq="${project.project_seq}">반려 이유</a></td>
 
             </tr>
         </c:forEach>
@@ -183,9 +183,9 @@ function confirmApproval(projectSeq) {
 }
 
 $(document).ready(function(){
-    $("#view-reason").click(function(){
+    $(".view-reason").click(function(){
         $("#reasonModal").css("display", "block");
-        
+     
         var projectSeq = $(this).data('projectseq'); // 데이터 속성 이름을 올바르게 가져옵니다.
 
         $.ajax({
