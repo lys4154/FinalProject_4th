@@ -11,9 +11,64 @@
 	margin-bottom: 30px;
 }
 
-.info_flex{
-	display: flex;
-	flex-direction: column;
-	
+.mini_title{
+	font-size: 15px;
+	font-weight: 600;
+	color: #292929;
+	margin-top: 20px;
 }
-
+#account, #long_title, #short_title, #url{
+	border: 1px solid #cfcfcf;
+	outline: none;
+	padding-left: 10px;
+	height: 30px;
+	width: 96%;
+}
+#project_category{
+	border: 1px solid #cfcfcf;
+	outline: none;
+	padding-left: 10px;
+	height: 38px;
+	width: 97%;	
+}
+#sub_title{
+	border: 1px solid #cfcfcf;
+	outline: none;
+	padding: 10px;
+	width: 95%;
+	height: 100px;
+	resize: none;
+}
+.fund_date{
+	margin: 5px 0 10px 0;
+}
+.goal_price_div{
+	margin: 5px 0 10px 0;
+}
+#start_date, #due_date{
+	border: 1px solid #cfcfcf;
+	outline: none;
+	padding: 0 10px;
+	height: 30px;
+	width: 100px;
+	margin-left: 25px;
+}
+#goal_price{
+	border: 1px solid #cfcfcf;
+	outline: none;
+	padding-left: 10px;
+	height: 30px;
+	width: 930px;
+	margin-left: 8px;
+}
+#submitBtn{
+	margin-top: 40px;
+	width: 1010px;
+	height: 40px;
+	outline: none;
+	border: 1px solid #cfcfcf;
+	background-color: #82c8a0;
+	color: #fff;
+	cursor: pointer;
+	font-size: 16px;
+}

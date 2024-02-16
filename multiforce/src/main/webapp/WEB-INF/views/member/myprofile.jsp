@@ -424,8 +424,7 @@ $(document).ready(function() {
 		<div><img alt="프로필 이미지" src="${loginMember.profile_img}"  id="profile_img"></div>
 		<div class="nick_con">
 			<div>
-				<span id="my_nick">${loginMember.nickname} </span>
-				<span> <a href="/settings" ><img alt="회원정보 수정으로 가는 이모티콘" src="/settings/settings.png" id="set_icon"></a></span>
+				<span id="my_nick">${loginMember.nickname} </span>				
 			</div>
 			<div class="url_con">
 				<span>${pageContext.request.scheme}://${pageContext.request.serverName}:${pageContext.request.serverPort}</span><span id="url_new">${loginMember.member_url}</span>
