@@ -96,28 +96,32 @@ $(document).ready(function(){
 			</div>
 		</div>
 
-		
-		<div class="contentsTitle">
-			<div class="projectTitle_titleDesign">
-				<dl class="projectTitle_titleDescription">
-					<div class="mini_title">긴 제목</div>
-					<div> 프로젝트의 긴 제목을 작성해주세요. 메인페이지에 표시될 제목입니다.</div> 
-					<input type="text" id="long_title">
-					<div class="mini_title">짧은 제목</div>
-					<div>프로젝트의 짧은 제목을 작성해주세요. 알림 기능에 표시될 제목입니다.</div>
-					<input type="text" id="short_title">
-				</dl>
-			</div>
+	</div>
+	<hr width=100%>
+	
+	<div class="contentsTitle">
+		<div class="projectTitle_titleDesign">
+			<dl class="projectTitle_titleDescription">
+				<h2>프로젝트의 이름을 작성해주세요.</h2> 
+				<br>
+				<input type="text" id="long_title" placeholder="프로젝트 이름">
+				<br>
+				<h2>프로젝트의 짧은 이름을 작성해주세요.</h2>
+				<br>
+				<input type="text" id="short_title" placeholder="프로젝트 짧은 이름">
+			</dl>
 		</div>
-		
-		<div class="contentsSummary">
-			<div class="projectSummary_titleDesign"> 
-				<dl class="projectSummary_titleDescription">
-					<div class="mini_title">프로젝트 요약</div>
-					<div> 프로젝트의 내용을 요약하여 작성해주세요. 긴 제목 하단에 표시됩니다.</div>
-					<textarea cols="50" rows="10" id="sub_title"></textarea>
-				</dl>
-			</div>
+	</div>
+	<hr>
+	
+	<div class="contentsSummary">
+		<div class="projectSummary_titleDesign"> 
+			<dl class="projectSummary_titleDescription">
+				<h2>프로젝트를 요약해 주세요</h2>
+				<br>
+				<textarea cols="50" rows="10" id="sub_title" placeholder="프로젝트 요약"></textarea>
+			</dl>
+
 		</div>
 		
 		<div class="contentsImage">

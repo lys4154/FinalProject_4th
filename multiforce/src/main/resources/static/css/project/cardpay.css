@@ -1,0 +1,31 @@
+@charset "UTF-8";
+
+.cardpay-table{
+	color:#555;
+	margin:0 auto;
+	font-size:14px;
+	border-collapse: collapse;
+	border-spacing:none;
+}
+.cardpay-table tr td{
+	padding:10px;
+}
+.cardpay-table input{
+	outline:none;
+}
+.cardpay-head{
+	background:#f4f4f4;
+	font-weight:bold;
+}
+.btn-1{
+	text-decoration:none;
+	color:#fff;
+	font-size:14px;
+	border:solid 1px #2a2a2a;
+	background:#2a2a2a;
+	padding:5px 15px;
+	cursor:pointer;
+}
+.btn-1:hover {
+    background-color: #000; 
+}

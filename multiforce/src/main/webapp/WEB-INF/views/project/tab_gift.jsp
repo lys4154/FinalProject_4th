@@ -8,6 +8,7 @@
 <html>
 <head>
   <title>Reward Setting</title>
+  <link rel="stylesheet" href="/css/project/tab_gift.css">
 <script src="/js/jquery-3.7.1.min.js"></script>
 <script>
 $(document).ready(function(){
@@ -174,6 +175,67 @@ $(document).ready(function(){
 	
 });
 </script>
+
+
+</head>
+<body>
+ <!-- tab_gift -->
+<h1>선물 계획</h1>
+<div class="item">  
+ 
+  <div class="item-group">
+   <label for="item_name">아이템 이름</label>
+   <input type="text" id="item_name" name="item_name" placeholder="아이템 이름을 입력해주세요"><br>
+  </div>
+  
+  <div class="item-group">
+	<label for="item_option">
+		옵션 이름
+		<span class="item-sub-text">* 옵션이 없으면 빈 칸으로 옵션 추가 버튼을 눌러주세요.</span>
+	</label>
+	
+
+	<input type="text" id="item_option_name" name="item_option_name"><br>
+	<input type="button" id="addOption" value="옵션 추가">
+	<h3>옵션목록</h3>
+	<div id="option_list"></div>
+	<div class="option_wrap_form"></div>
+
+  </div>
+  
+  <input type="button" id="addItem" value="아이템 추가"><br> <br>
+  
+  <h3>아이템 목록</h3>
+  <div id="item_list"></div>  
+  <div class="item_wrap_form"></div>
+  <div id="add_item_list"></div>
+  
+  <br><br>
+  <div class="bundle">
+  <label for="selectItem">선물 아이템</label><br>
+  선물을 구성하는 아이템을 추가해주세요.<br>
+  <select id="itemSelect" name="selectedItem">
+            <c:forEach var="item" items="${itemList}">
+                <option value="${item.item_name}">${item.item_name}</option>
+            </c:forEach>
+  </select>
+  <br>
+  
+  <label for="bundle_name">선물 이름</label><br>
+  어떤 아이템으로 구성되어있는지 이름을 붙여주세요.<br>
+  <input type="text" id="bundle_name" name="bundle_name"><br>
+  
+  <label for="bundle_price">후원 금액</label> <br>
+  <input type="text" id="bundle_price" name="bundle_price"><br>
+  <input type="button" id="addBundle" value="번들 추가">
+	</div>  
+  
+  <br><br>
+  <label for="item_count">상품 개수</label> <br>
+  <input type="text" id="item_count" name="item_count"><br>
+  <input type="button" id="addCount" value="상품 개수 추가">
+</div>  
+
 <body>
 아이템 이름<input type="text" id="item_name_input"><br>
 <input type="button" id="create_item_btn"  value="아이템 생성"><br>
@@ -214,5 +276,6 @@ $(document).ready(function(){
 	<input type="number" class="item_count_input">
 </div>
 <!--  -->
+
 </body>
 </html>

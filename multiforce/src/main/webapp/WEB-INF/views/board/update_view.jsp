@@ -205,7 +205,10 @@ function toggleCommentForm(event, updateSeq) {
 
     function submitComment(updateSeq) {
         var commentText = $('#commentText_' + updateSeq).val();
-
+        if (!commentText.trim()) {
+            alert('댓글을 입력해주세요.');
+            return;
+        }
         var data = {
             comment: commentText,
             update_seq: updateSeq

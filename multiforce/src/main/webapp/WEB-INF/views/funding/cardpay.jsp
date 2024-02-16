@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<link rel="stylesheet" href="/css/project/cardpay.css">
 <style type="text/css">
 	.moveNumber {
 		text-align:center;
@@ -113,34 +114,64 @@
 
 </head>
 <body>
+
+
+<div style="text-align:center;">
 <h1>카드결제 페이지</h1>
-<div>
-	카드사를 선택해주세요<br>
-	<select id="select_company">
-		<option value="신한">신한</option>
-		<option value="국민">국민</option>
-		<option value="농협">농협</option>
-		<option value="기업">기업</option>
-		<option value="우리">우리</option>
-		<option value="하나">하나</option>
-	</select>
 </div>
-카드번호를 입력하세요 <br>
+
+<table border=1 class="cardpay-table">
+<tr>
+<td class="cardpay-head">카드사</td>
+<td>
+<select id="select_company">
+	<option value="신한">신한</option>
+	<option value="국민">국민</option>
+	<option value="농협">농협</option>
+	<option value="기업">기업</option>
+	<option value="우리">우리</option>
+	<option value="하나">하나</option>
+</select>
+</td>
+</tr>
+<tr>
+<td class="cardpay-head">
+카드번호
+</td>
+<td>
 <input type="text" class="moveNumber" onKeyup="inputMoveNumber(this);" maxlength="4"/>&nbsp;-&nbsp;
 <input type="text" class="moveNumber" onKeyup="inputMoveNumber(this);" maxlength="4"/>&nbsp;-&nbsp;
 <input type="text" class="moveNumber" onKeyup="inputMoveNumber(this);" maxlength="4"/>&nbsp;-&nbsp;
 <input type="text" class="moveNumber" maxlength="4"/>
-<br>
-카드 유효기간을 입력해 주세요<br>
+</td>
+</tr>
+<tr>
+<td class="cardpay-head">
+카드 유효기간
+</td>
+<td>
 <input type="text" class="validThru" onKeyup="inputValidThru(this);" placeholder="MM/YY" maxlength="5"/>
-<br>
-카드 비밀번호 2자리를 입력해 주세요<br>
+</td>
+</tr>
+<tr>
+<td class="cardpay-head">
+카드 비밀번호 2자리<br>
+</td>
+<td>
 <input type="text" class="passWord" onKeyup="inputPassWord(this);" maxlength="2"/> **
-<br>
+</td>
+</tr>
+<tr>
 
-<!-- 카드 기간, cvc 3자리, 비밀번호 2자리 입력 -->
-<input type="button" id="pay" value="인증">
-<input type="button" id="cancel" value="취소">
+<td colspan=2 style="text-align:center;">
+<input class="btn-1" type="button" id="pay" value="인증">
+<input class="btn-1" type="button" id="cancel" value="취소">
+
+</td>
+</tr>
+</table>
+
+
 
 <script>
 document.getElementById('pay').addEventListener('click', function(ev) {
