@@ -25,5 +25,7 @@ public interface BundleDAO {
 	//bundle_seq list로 일치하는 번들 + 아이템 + 옵션 한꺼번에
 	List<BundleDTO> getBundleList(List<Integer> bundleSeqList);
 
+	void insertBundleReturnSeq(BundleDTO dto);
+
 	
 }

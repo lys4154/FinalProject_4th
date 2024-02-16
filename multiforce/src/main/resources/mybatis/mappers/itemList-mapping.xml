@@ -22,5 +22,8 @@
 	insert into item_list (bundle_seq, item_seq, item_count)
 	values (#{bundle_seq}, #{item_seq}, #{item_count})
 </insert>
-
+<insert id="insertItemListReturnSeq" parameterType="project.dto.ItemListDTO" useGeneratedKeys="true" keyProperty="item_list_seq">
+	insert into item_list (bundle_seq, item_seq, item_count)
+	values (#{bundle_seq}, #{item_seq}, #{item_count})
+</insert>
 </mapper>
