@@ -13,14 +13,19 @@
 <link rel="stylesheet" href="/css/project/tab_info.css">
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <script>
-    $(document).ready(function() {
+
+$(document).ready(function(){
     $("#submitBtn").click(function() {
-        var data = {
+        let start = $("#main_images_url").val().indexOf("src=") + 5;
+        let end = $("#main_images_url").val().indexOf("\"", start);
+       // let url = $("#main_images_url").val().substr(start, end);
+        let url = "";
+    	var data = {
             category: $("#project_category").val(),
             long_title: $("#long_title").val(),
             short_title: $("#short_title").val(),
             sub_title: $("#sub_title").val(),
-            main_images_url: $("#main_images_url").val(),
+            main_images_url: url ,
             url : "/project_detail/" + $("#url").val(),
             start_date : $("#start_date").val(),
             due_date : $("#due_date").val(),
@@ -36,8 +41,8 @@
             contentType: "application/json",  // JSON 형태로 데이터 전송
             data: JSON.stringify(data),  // 데이터를 JSON 문자열로 변환
             success: function(response) {
-            	alert("성공하였습니다.");
-                console.log(response);
+            	projectSeq = response
+            	alert("저장되었습니다");
             },
             error: function(error) {
             	alert("실패하였습니다.");
@@ -147,8 +152,8 @@
 					function uploadImageFile(file, editor) {
 					    data = new FormData();
 					    data.append("file", file);
-					    data.append("path", "file:///usr/mydir/images");
-					    data.append("url", "/noticesimages/");
+					    data.append("path", "/usr/mydir/images/project");
+					    data.append("url", "/project/");
 					    $.ajax({
 					        data : data,
 					        type : "POST",
@@ -266,7 +271,7 @@ function inputPrice(num) {
   
   <label for="goal_price">목표 금액:</label>
   <input type="text" id="goal_price" name="goal_price" onKeyup="inputPrice(this);"><br><br>
-  <button type="button" id="submitBtn">저장</button>
+  <button id="submitBtn">저장</button>
   <!-- <button type="button" id="submitBtn">저장</button>  -->
 </form>
 

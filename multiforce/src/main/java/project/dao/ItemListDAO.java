@@ -20,5 +20,7 @@ public interface ItemListDAO {
 	
 	//item_List입력
 	void insertItemList(ItemListDTO itemList);
+
+	void insertItemListReturnSeq(ItemListDTO ldto);
 	
 }

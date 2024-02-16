@@ -119,7 +119,7 @@
 	select member_seq from member_info where member_id=#{member_id};
 </select> 
 
-<insert id="insertProject" parameterType="project.dto.ProjectDTO">
+<insert id="insertProject" parameterType="project.dto.ProjectDTO" useGeneratedKeys="true" keyProperty="project_seq">
  INSERT INTO project (member_seq, long_title, short_title, sub_title, main_images_url, url, category, start_date, due_date, goal_price, account)
  VALUES (#{member_seq}, #{long_title}, #{short_title}, #{sub_title}, #{main_images_url}, #{url}, #{category}, #{start_date}, #{due_date}, #{goal_price}, #{account})
 </insert>

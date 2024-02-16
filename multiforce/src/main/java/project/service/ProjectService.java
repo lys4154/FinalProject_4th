@@ -98,11 +98,12 @@ public class ProjectService {
 	//member_seq 받아오기
 	
 	// 프로젝트 생성
-	public void createProject(ProjectDTO project, HttpSession session) {
+	public ProjectDTO createProject(ProjectDTO project, HttpSession session) {
 		int member_seq = projectDao.getMember_seq((String)session.getAttribute("login_user_id"));
 		project.setMember_seq(member_seq);
 		System.out.println(project.getMember_seq());
         projectDao.insertProject(project);
+        return project;
     }
 	
 	public void createProjectPlan(ProjectDTO project, HttpSession session) {
