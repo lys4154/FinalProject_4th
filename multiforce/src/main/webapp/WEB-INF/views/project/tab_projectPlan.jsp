@@ -10,6 +10,11 @@
 <script src="/js/summernote/summernote-lite.js"></script>
 <script src="/js/summernote/lang/summernote-ko-KR.js"></script>
 <link rel="stylesheet" href="/css/summernote/summernote-lite.css">
+<link rel="stylesheet" href="/css/project/tab_projectPlan.css">
+
+
+
+
 <script>
 		$(document).ready(function() {
 		    // Button click event
@@ -46,17 +51,18 @@
 </head>
 <body>
 <form action="/projectPlan" id="projectPlan">
-<h1>프로젝트 계획</h1>
-<br>
 
-<h2>프로젝트 목적</h2>
-<dl>어떤 프로젝트인지 설명해주세요.</dl>
+<div id="top_title">프로젝트 계획</div>
+<div id="top_title2">프로젝트의 구체적인 정보과 계획을 작성해주세요.</div>
+
+<div class="mini_title">프로젝트 목적</div>
+<div class="mini_title2">어떤 프로젝트인지 설명해주세요.</div>
 <div class="container">
 	<textarea class="purpose" name="purposeEditor" id="purpose">${projectPlan.purpose}</textarea>
 </div>
 <script>
 $('.purpose').summernote({
-	width:1000,
+	width:1030,
 	height: 500,                 // 에디터 높이
 	minHeight: 500,             // 최소 높이
 	maxHeight: 500,             // 최대 높이
@@ -97,16 +103,17 @@ function uploadImageFile(file, editor) {
 }
 </script>
 
-<hr>
+<hr class="div_hr">
 
-<h2>프로젝트 일정</h2>
-<dl>작업 일정을 구체적인 날짜와 작성해주세요.</dl>
+<div class="mini_title">프로젝트 일정</div>
+<div class="mini_title2">작업 일정을 구체적인 날짜와 함께 작성해주세요.</div>
+
 <div class="container">
 	<textarea class="planning" name="planEditor" id="planning">${projectPlan.planning}</textarea>
 </div>
 <script>
 $('.planning').summernote({
-	width:1000,
+	width:1030,
 	height: 500,                 // 에디터 높이
 	minHeight: 500,             // 최소 높이
 	maxHeight: 500,             // 최대 높이
@@ -129,16 +136,18 @@ $('.planning').summernote({
 	}
 });
 </script>
-<hr>
 
-<h2>프로젝트 예산</h2>
-<dl>후원 금액을 어떻게 사용할 것인지 작성해주세요.</dl>
+<hr class="div_hr">
+
+<div class="mini_title">프로젝트 예산</div>
+<div class="mini_title2">후원 금액은 어떻게 사용될 예정인지 작성해주세요.</div>
+
 <div class="container">
 	<textarea class="budget" name="budgetEditor" id="budget">${projectPlan.budget}</textarea>
 </div>
 <script>
 $('.budget').summernote({
-	width:1000,
+	width:1030,
 	height: 500,                 // 에디터 높이
 	minHeight: 500,             // 최소 높이
 	maxHeight: 500,             // 최대 높이
@@ -161,10 +170,12 @@ $('.budget').summernote({
 	}
 });
 </script>
-<hr>
 
-<h2>프로젝트 팀 소개</h2>
-<dl>프로젝트를 진행하는 팀에 대해서 소개해주세요.</dl>
+<hr class="div_hr">
+
+<div class="mini_title">프로젝트 팀 소개</div>
+<div class="mini_title2">프로젝트를 진행하는 팀에 대해서 소개해주세요.</div>
+
 <div class="container">
 	<textarea class="introduce" name="introduceEditor" id="team_introduce">${projectPlan.team_introduce}</textarea>
 </div>
@@ -193,16 +204,18 @@ $('.introduce').summernote({
 	}
 });
 </script>
-<hr>
 
-<h2>선물 설명</h2>
-<dl>후원 금액별로 받을 수 있는 선물을 설명해주세요.</dl>
+<hr class="div_hr">
+
+<div class="mini_title">선물 설명</div>
+<div class="mini_title2">후원 금액별 선물 구성과 선물에 대해 설명해주세요.</div>
+
 <div class="container">
 	<textarea class="item" name="itemEditor" id="item_introduce">${projectPlan.item_introduce}</textarea>
 </div>
 <script>
 $('.item').summernote({
-	width:1000,
+	width:1030,
 	height: 500,                 // 에디터 높이
 	minHeight: 500,             // 최소 높이
 	maxHeight: 500,             // 최대 높이
@@ -225,7 +238,7 @@ $('.item').summernote({
 	}
 });
 </script>
-<br>
+
 <input type="button" id="saveProjectPlan" value="저장하기">
 </form>
 </body>

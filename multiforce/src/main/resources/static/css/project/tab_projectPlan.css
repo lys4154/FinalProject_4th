@@ -1,0 +1,39 @@
+@charset "UTF-8";
+
+#top_title{
+	margin-top:20px;
+	font-size: 18px;
+	color: #292929;
+	font-weight: 600;
+}
+#top_title2{
+	font-size: 15px;
+	margin-bottom: 30px;
+}
+.mini_title{
+	font-size: 16px;
+	font-weight: 600;
+	color: #292929;
+	margin-top: 25px;
+}
+.mini_title2{
+	margin-bottom: 10px;
+}
+.div_hr{
+	border: 1px solid #cfcfcf;
+	margin: 50px 0;
+	width: 1030px;
+}
+
+#saveProjectPlan{
+	margin-top: 40px;
+	width: 1030px;
+	height: 40px;
+	outline: none;
+	border: 1px solid #cfcfcf;
+	background-color: #82c8a0;
+	color: #fff;
+	cursor: pointer;
+	font-size: 16px;
+	
+}
