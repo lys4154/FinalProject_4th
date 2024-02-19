@@ -42,7 +42,19 @@
 .active-pagination{
 	background:#dedcde;
 }
-
+.detail-btn{
+	text-decoration:none;
+	color:#fff;
+	font-size:13px;
+	border:solid 1px #357edd;
+	background:#357edd;
+	padding:5px 10px;
+	border-radius:5px;
+	cursor:pointer;
+}
+.detail-btn:hover {
+    background-color: #2a5db0; 
+}
 .accept-btn{
 	text-decoration:none;
 	color:#fff;
@@ -115,4 +127,28 @@
 	font-size:22px;
 	font-weight:bold;
 	margin-bottom:10px;
+}
+.preview_table{
+  width:100%;
+  border-collapse: collapse;
+  border-top: 3px solid #168;
+}
+.preview_table tr th{
+	 color: #168;
+  background: #f0f6f9;
+  text-align: center;
+}
+
+
+.preview_table th, .preview_table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+.preview_img{
+	max-width:100%;
+	max-height:300px;
+}
+.preview_content img{
+	max-width:100%;
+	max-height:200px;
 }
