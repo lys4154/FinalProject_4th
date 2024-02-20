@@ -175,17 +175,21 @@ if(location.pathname == "/ask"){
 	}
 	whoAmI = "asker";
 	if("${result}" == "채팅기록 있음"){
+		
+		var mainImage = "${dto.main_images_url}";
+		mainImage = mainImage.replace(/&amp;/g, '&');
+
 		console.log("if가 도나");
 		let read = "${dto.asker_read}";
 		chatroomSeq = "${dto.chatroom_seq}";
 		let chat = `${dto.chat}`;
 		console.log("${dto.main_images_url}");
 		appendChat(chat, read, "${dto.profile_img}");
-		fillChatInfo("${dto.long_title}","${dto.url}", "${dto.main_images_url}");
+		fillChatInfo("${dto.long_title}","${dto.url}", mainImage);
 		updateMyRead(chatroomSeq, whoAmI, readAt);
 	}else{
 		chatroomSeq = "${dto.chatroom_seq}";
-		fillChatInfo("${dto.long_title}","${dto.url}", "${dto.main_images_url}");
+		fillChatInfo("${dto.long_title}","${dto.url}", mainImage);
 	}
 }
 

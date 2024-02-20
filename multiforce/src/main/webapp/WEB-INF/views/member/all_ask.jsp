@@ -132,8 +132,12 @@ function chatroomWrapClickEAdd(){
 				}else if(whoAmI == "collector"){
 					appendChat(r.chat, r.collector_read, r.profile_img);
 				}
+
+				//이미지 문자열 치환 추가
+				var mainImage = r.main_images_url;
+				mainImage = mainImage.replace(/&amp;/g, '&');
 				
-				fillChatInfo(r.long_title, r.url, r.main_images_url);
+				fillChatInfo(r.long_title, r.url, mainImage);
 				updateMyRead(chatroomSeq, whoAmI, readAt);
 			}
 		});
