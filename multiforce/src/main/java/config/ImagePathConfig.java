@@ -22,20 +22,13 @@ public class ImagePathConfig implements WebMvcConfigurer{
 		
         // memberimages 핸들러 등록
         registry.addResourceHandler("/memberimages/**")
-                .addResourceLocations("file:///usr/mydir/images/members/");
-	
-        // settings 이미지
-        registry.addResourceHandler("/settings/**")
-                .addResourceLocations("file:///usr/mydir/images/settings/");                 
-      
-        // css 이미지
-        registry.addResourceHandler("/for_css/**")
-                .addResourceLocations("file:///usr/mydir/images/for_css/");
-        
+                .addResourceLocations("file:///c:/fullstack/workspace_springboot/images/members/");
+       
         // 프로젝트 이미지
         registry.addResourceHandler("/project/**")
-                .addResourceLocations("file:///usr/mydir/images/project/");
+                .addResourceLocations("file:///c:/fullstack/workspace_springboot/images/project/");
         
 	}
 	
 }
+
