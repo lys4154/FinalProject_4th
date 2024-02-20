@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import approvalRequest.dto.ApprovalRequestDTO;
 import approvalRequest.service.ApprovalRequestService;
 import jakarta.servlet.http.HttpSession;
+import member.dto.MemberDTO;
+import member.service.MemberService;
 import project.dto.ProjectDTO;
 import project.service.ProjectService;
 
@@ -23,6 +25,9 @@ public class ApprovalRequestController {
 	
 	@Autowired
 	private ProjectService projectService;
+	
+	@Autowired
+	private MemberService memberService;
 	
 	@PostMapping("post_project_reject")
 	public String InsertProjectReject(@RequestParam String content, 
@@ -77,5 +82,32 @@ public class ApprovalRequestController {
 		
 		return "redirect:/project_approve_list";
 	}
+	@GetMapping("project_preview/{project_seq}")
+	public String ProjectPreview(Model model, 
+			@PathVariable("project_seq") int project_seq, HttpSession session) {
+	
+		Object user_level_attribute = session.getAttribute("login_user_level");
+		
+		int current_user = 0;
+		if (user_level_attribute != null) {
+			current_user = (int) session.getAttribute("login_user_level");
+		} else {
+			model.addAttribute("errorMessage", "해당 페이지에 권한이 없습니다.");
+			return "board/error/error";
+		}
+		
+		if (current_user == 2) {
+			ProjectDTO project_preview = projectService.getProjectDetail(project_seq);
+			MemberDTO member_nick = memberService.getNicknameById(project_preview.getMember_seq());
+			
+			model.addAttribute("project", project_preview);
+			model.addAttribute("member_nickname", member_nick);
+			return "project/project_preview";
+		}
+		
+		model.addAttribute("errorMessage", "해당 페이지에 권한이 없습니다.");
+		return "board/error/error";
+	}
+	
 	
 }

@@ -26,6 +26,7 @@
     <table class="approval-table">
 	    <thead>
 	        <tr>
+	        	<th>프로젝트 상세</th>
 	            <th>프로젝트 번호</th>
 				<th>회원</th>
 				<th>목표 금액</th>
@@ -38,6 +39,9 @@
 	    <tbody>
 	        <c:forEach items="${projects}" var="project">
 	            <tr>
+	            	<td>
+	            	<a class="detail-btn" href="project_preview/${project.project_seq}" onclick="openPopup(this.href); return false;">상세보기</a>
+	            	</td>
 	                <td>${project.project_seq}</td>
 	                <td>${project.nickname}</td>
 	                <td>${project.goal_price}</td>
