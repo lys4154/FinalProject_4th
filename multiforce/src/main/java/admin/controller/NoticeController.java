@@ -65,6 +65,8 @@ public class NoticeController {
 		if(seq != null && !seq.equals("")) {
 			int parsedSeq = Integer.parseInt(seq);
 			NoticeDTO dto = service.selectNotice(parsedSeq);
+//			int parsedSeq = Integer.parseInt(seq);
+//			NoticeDTO dto = service.selectNotice(parsedSeq);
 			m.addAttribute("dto", dto);
 		}
 		return "admin/notice_write";
