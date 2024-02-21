@@ -25,7 +25,7 @@
 </head>
 <body>
 
-<div>
+<div style="margin-top:20px;">
 <%
 int loggedInUserId = 0;
 int user_id = 0;
@@ -50,16 +50,17 @@ if(session.getAttribute("login_user_seq") != null){
 		
 				
 		        
-		    <div style="padding:5px; margin-bottom:5px;">
+		    <div class="update-fullbox">
 		    <!-- 자기 글이면 삭제 보여주기 -->
 		       
 				
-				<div class="update_post_box">
+				<div class="update_post_container">
 				
 			    
 			    <div class="header">
 			    	<div>
-			    	${update.nickname} | ${update.formattedDate }
+				    	<div class="user">${update.nickname}</div>
+				    	<div class="date">${update.formattedDate }</div>
 			    	</div>
 			    	
 			    	<div>
@@ -101,7 +102,10 @@ if(session.getAttribute("login_user_seq") != null){
 		            <div><button class="btn-1" onclick="submitComment(${update.update_seq})">댓글 등록</button></div>
 		        </div>		
 		        
-				<div class="sub-comment" id="comments_${update.update_seq}">
+				
+				<div class="comment-bg">
+					<div class="update-comment" id="comments_${update.update_seq}">
+					</div>
 				</div>
 		
 		        
@@ -280,8 +284,8 @@ function toggleCommentForm(event, updateSeq) {
                 	var day = commentTime.getDate().toString().padStart(2, '0');
                 	var formattedTime = year + '-' + month + '-' + day;
                 	
-                	var commentHtml = '<div class="update_post_box"><div class="header"><div>' + comment.member.nickname + ' | ' +
-                	formattedTime  + '</div>';
+                	var commentHtml = '<div class="single-comment"><div class="header"><div><div class="user">' + comment.member.nickname + ' </div><div class="date">' +
+                	formattedTime  + '</div></div>';
 	
 	                if (comment.member_seq == loggedInUserId) {
 	                    commentHtml += '<div><button class="btn-1" onclick="deleteComment(' + comment.update_reply_seq + ')">삭제하기</button></div>';
