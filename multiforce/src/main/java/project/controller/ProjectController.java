@@ -635,5 +635,10 @@ public class ProjectController {
 		model.addAttribute("bundleList", bundleList);
 		return "project/project_detail";
 	}
+	
+	@RequestMapping("/projectstart")
+	public String projectStart() {
+		return "project/projectStart";
+	}
 
 }
