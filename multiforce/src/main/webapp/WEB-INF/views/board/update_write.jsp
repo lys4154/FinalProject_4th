@@ -12,8 +12,9 @@
 	<script src="/js/summernote/summernote-lite.js"></script>
 	<script src="/js/summernote/lang/summernote-ko-KR.js"></script>
 	<link rel="stylesheet" href="/css/summernote/summernote-lite.css">
-	<link rel="stylesheet" type="text/css" href="/css/board/edit_post.css">
 	<link rel="stylesheet" type="text/css" href="/css/board/main.css">
+	<link rel="stylesheet" type="text/css" href="/css/board/edit_post.css">
+	
 
 
     <title>업데이트 글쓰기</title>
@@ -33,7 +34,7 @@
     }
     $(document).ready(function(){
     	 $('#summernote').summernote({
-    			width:1000,
+    			width:1025,
     			height: 500,                 // 에디터 높이
     			minHeight: 500,             // 최소 높이
     			maxHeight: 500,             // 최대 높이

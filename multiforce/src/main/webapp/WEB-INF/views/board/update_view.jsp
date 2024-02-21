@@ -19,8 +19,9 @@
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"
   />
-  <link rel="stylesheet" type="text/css" href="/css/project/update_and_community.css">
   <link rel="stylesheet" type="text/css" href="/css/board/main.css">
+  <link rel="stylesheet" type="text/css" href="/css/project/update_and_community.css">
+
 
 </head>
 <body>

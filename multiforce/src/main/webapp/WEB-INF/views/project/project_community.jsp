@@ -7,8 +7,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Project Community</title>
-  <link rel="stylesheet" type="text/css" href="/css/project/update_and_community.css">
   <link rel="stylesheet" type="text/css" href="/css/board/main.css">
+  <link rel="stylesheet" type="text/css" href="/css/project/update_and_community.css">
   <style>
   #com_box{
   border:solid 1px black;
