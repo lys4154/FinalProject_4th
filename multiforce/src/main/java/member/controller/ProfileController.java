@@ -465,7 +465,7 @@ public class ProfileController {
 	@ResponseBody
 	public Map<String, Object> profileimgUpload(MemberProfileImgDTO dto) throws IllegalStateException, IOException  {
 
-		String savePath = "/usr/mydir/images/members/";
+		String savePath = "c:/fullstack/workspace_springboot/images/members/";
 		String fileName = null ;
 		String newFileName = null;
 		
