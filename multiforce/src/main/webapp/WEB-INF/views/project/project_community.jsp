@@ -44,7 +44,7 @@ if(session.getAttribute("login_user_seq") != null){
 
 	}
 %>
-<section class="community-section">
+<section class="community-section" style="padding-top:10px;">
 <c:choose>
     <c:when test="${empty community_posts}">
         <p class="update_empty">게시물이 없습니다.</p>
